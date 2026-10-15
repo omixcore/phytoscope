@@ -27,13 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for the species-agnostic layer: metadata harvesting, dialect detection,
- * GTF parsing and cross-species loading.
- *
- * <p>These tests are the evidence that PhytoScope is a general framework rather
- * than an Arabidopsis-only viewer: every bundled example must load through the
- * same code path and report its own species, assembly and sequence regions.</p>
+ * Historical illustrative fixtures for grammar and numeric-loader regression only.
+ * These values are not authoritative biological data and do not validate a reference genome.
+ * Verified public-reference checks live in AdaptiveChromosomeTest,
+ * FullAnnotationValidationTest and ReferenceDatasetIntegrityTest.
  */
+@DisplayName("Legacy parser regression fixtures (not biological validation)")
 class SpeciesAgnosticTest {
 
     // ------------------------------------------------------------------
@@ -41,22 +40,22 @@ class SpeciesAgnosticTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("The bundled catalogue covers five distinct species across six datasets")
+    @DisplayName("The bundled catalogue retains four historical fixture formats")
     void shouldExposeFiveSpecies() {
-        assertEquals(6, ExampleDataset.CATALOGUE.size());
-        long distinct = ExampleDataset.CATALOGUE.stream()
+        assertEquals(4, LegacyAnnotationFixtures.CATALOGUE.size());
+        long distinct = LegacyAnnotationFixtures.CATALOGUE.stream()
                 .map(ExampleDataset::species)
                 .distinct()
                 .count();
-        assertEquals(5, distinct, "A species may have multiple reference assemblies");
+        assertEquals(4, distinct);
     }
 
     @Test
     @DisplayName("The catalogue exercises both annotation dialects")
     void shouldCoverBothFormats() {
-        boolean gff3 = ExampleDataset.CATALOGUE.stream()
+        boolean gff3 = LegacyAnnotationFixtures.CATALOGUE.stream()
                 .anyMatch(d -> d.format() == AnnotationFormat.GFF3);
-        boolean gtf = ExampleDataset.CATALOGUE.stream()
+        boolean gtf = LegacyAnnotationFixtures.CATALOGUE.stream()
                 .anyMatch(d -> d.format() == AnnotationFormat.GTF);
         assertTrue(gff3, "At least one GFF3 example is expected");
         assertTrue(gtf, "At least one GTF example is expected");
@@ -65,9 +64,9 @@ class SpeciesAgnosticTest {
     @Test
     @DisplayName("Dataset lookup by id works and rejects unknown ids")
     void shouldLookUpById() {
-        assertNotNull(ExampleDataset.byId("mint"));
-        assertEquals("Mentha spicata", ExampleDataset.byId("mint").species());
-        assertNull(ExampleDataset.byId("nonexistent"));
+        assertNotNull(LegacyAnnotationFixtures.byId("mint"));
+        assertEquals("Mentha spicata", LegacyAnnotationFixtures.byId("mint").species());
+        assertNull(LegacyAnnotationFixtures.byId("nonexistent"));
     }
 
     // ------------------------------------------------------------------
@@ -82,7 +81,7 @@ class SpeciesAgnosticTest {
     @EnumSource(ExampleDatasetId.class)
     @DisplayName("Every bundled species loads through the same path")
     void shouldLoadEverySpecies(ExampleDatasetId id) throws Exception {
-        ExampleDataset dataset = ExampleDataset.byId(id.value);
+        ExampleDataset dataset = LegacyAnnotationFixtures.byId(id.value);
         assertNotNull(dataset, "catalogue entry must exist for " + id.value);
 
         GenomeDataService service = new GenomeDataService();
@@ -114,7 +113,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Rice example: metadata and gene structure are recovered")
     void shouldLoadRiceWithMetadata() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("rice"));
+        service.loadExample(LegacyAnnotationFixtures.byId("rice"));
 
         assertEquals("Oryza sativa Japonica Group", service.getSpecies());
         assertEquals("IRGSP-1.0 (Nipponbare)", service.getAssembly());
@@ -142,7 +141,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Rice example: chromosome 2 is populated and independently addressable")
     void shouldExposeRiceChromosomeTwo() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("rice"));
+        service.loadExample(LegacyAnnotationFixtures.byId("rice"));
 
         assertTrue(service.setActiveSequence("Chr2"), "the selector must be able to reach Chr2");
         assertEquals("Chr2", service.getActiveSequence());
@@ -178,7 +177,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Rice example: alternative splicing is preserved")
     void shouldRecoverRiceAlternativeSplicing() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("rice"));
+        service.loadExample(LegacyAnnotationFixtures.byId("rice"));
 
         Gene gene = service.findGene("Os01g0100600");
         assertNotNull(gene);
@@ -194,7 +193,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Soybean GTF loads even though it has no ## directives")
     void shouldLoadGtfDataset() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("soybean"));
+        service.loadExample(LegacyAnnotationFixtures.byId("soybean"));
 
         assertEquals("Glycine max", service.getSpecies());
         assertEquals(AnnotationFormat.GTF, service.getFormat());
@@ -213,7 +212,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Soybean GTF exposes later chromosomes through the same selector")
     void shouldSwitchGtfChromosomes() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("soybean"));
+        service.loadExample(LegacyAnnotationFixtures.byId("soybean"));
 
         // Glyma02 is a sparse, multi-isoform chromosome: four genes, one of them
         // carrying four alternative transcripts.
@@ -255,7 +254,7 @@ class SpeciesAgnosticTest {
     @DisplayName("GTF hierarchy is linked by gene_id / transcript_id")
     void shouldAssembleGtfHierarchy() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("soybean"));
+        service.loadExample(LegacyAnnotationFixtures.byId("soybean"));
 
         Gene gene = service.findGene("Glyma.01G000100");
         assertNotNull(gene, "gene_id must become the gene identifier");
@@ -271,7 +270,7 @@ class SpeciesAgnosticTest {
     @DisplayName("GTF minus-strand genes keep their transcription order")
     void shouldHandleGtfMinusStrand() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("soybean"));
+        service.loadExample(LegacyAnnotationFixtures.byId("soybean"));
 
         Gene gene = service.findGene("Glyma.01G000300");
         assertNotNull(gene);
@@ -375,7 +374,7 @@ class SpeciesAgnosticTest {
     @DisplayName("The bundled examples report their real chromosome size")
     void shouldApplyPublishedChromosomeLengths() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("rice"));
+        service.loadExample(LegacyAnnotationFixtures.byId("rice"));
 
         int[] span = service.getActiveSequenceSpan();
         assertNotNull(span);
@@ -432,7 +431,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Arabidopsis ships all five chromosomes at their published sizes")
     void shouldExposeFiveArabidopsisChromosomes() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("arabidopsis"));
+        service.loadExample(LegacyAnnotationFixtures.byId("arabidopsis"));
 
         assertEquals(List.of("Chr1", "Chr2", "Chr3", "Chr4", "Chr5"), service.getChromosomes(),
                 "the reference model must not be limited to a couple of chromosomes");
@@ -464,7 +463,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Genes keep their real coordinates on every chromosome, not just Chr1")
     void shouldKeepRealCoordinatesOnLateChromosomes() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("arabidopsis"));
+        service.loadExample(LegacyAnnotationFixtures.byId("arabidopsis"));
 
         // AT3G01010 sits at the top of chromosome 3 in the real annotation.
         Gene chr3 = service.findGene("AT3G01010");
@@ -519,7 +518,7 @@ class SpeciesAgnosticTest {
         // begins well past position 1, so a viewer that blindly opened the whole
         // chromosome would render every gene as a single pixel.
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("arabidopsis"));
+        service.loadExample(LegacyAnnotationFixtures.byId("arabidopsis"));
         service.setActiveSequence("Chr4");
 
         List<Gene> genes = service.getGenesOnActiveSequence();
@@ -543,7 +542,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Mint ships a plastome plus three mitochondrial contigs")
     void shouldExposeMintOrganellePanel() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("mint"));
+        service.loadExample(LegacyAnnotationFixtures.byId("mint"));
 
         // Organelle sequences are not called "Chr1..N", and the mitochondrial
         // genome is assembled into several contigs: both facts are simply read
@@ -573,7 +572,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Mitochondrial genes keep their classic shorthand and structure")
     void shouldReadMitochondrialGeneModels() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("mint"));
+        service.loadExample(LegacyAnnotationFixtures.byId("mint"));
 
         // Mt1 carries the four-exon nad7, which is the most structurally
         // interesting example in the organelle panel.
@@ -609,7 +608,7 @@ class SpeciesAgnosticTest {
         // panel simply leaves those records out — the annotation stays honest
         // about what it contains.
         GenomeDataService service = new GenomeDataService();
-        service.loadExample(ExampleDataset.byId("mint"));
+        service.loadExample(LegacyAnnotationFixtures.byId("mint"));
 
         for (Gene gene : service.getGenes()) {
             int span = gene.getEnd() - gene.getStart();
@@ -633,7 +632,7 @@ class SpeciesAgnosticTest {
     @EnumSource(ExampleDatasetId.class)
     @DisplayName("Every bundled species offers more than one selectable sequence")
     void shouldOfferMultipleSequencesForEverySpecies(ExampleDatasetId id) throws Exception {
-        ExampleDataset dataset = ExampleDataset.byId(id.value);
+        ExampleDataset dataset = LegacyAnnotationFixtures.byId(id.value);
 
         GenomeDataService service = new GenomeDataService();
         service.loadExample(dataset);
@@ -829,7 +828,7 @@ class SpeciesAgnosticTest {
     @EnumSource(ExampleDatasetId.class)
     @DisplayName("Every species ships a matching expression panel")
     void shouldLoadExpressionForEverySpecies(ExampleDatasetId id) throws Exception {
-        ExampleDataset dataset = ExampleDataset.byId(id.value);
+        ExampleDataset dataset = LegacyAnnotationFixtures.byId(id.value);
         ExpressionDataService expression = new ExpressionDataService();
         expression.loadExample(dataset);
 
@@ -853,7 +852,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Mint plastid panel is leaf-biased, as expected for photosynthetic genes")
     void shouldShowMintLeafBias() throws Exception {
         ExpressionDataService expression = new ExpressionDataService();
-        expression.loadExample(ExampleDataset.byId("mint"));
+        expression.loadExample(LegacyAnnotationFixtures.byId("mint"));
 
         assertEquals("Leaf", expression.getProfile("rbcL").topTissue().tissue());
         assertEquals("Leaf", expression.getProfile("psbA").topTissue().tissue());
@@ -863,7 +862,7 @@ class SpeciesAgnosticTest {
     @DisplayName("Unit is read from the expression file header")
     void shouldReadUnitFromHeader() throws Exception {
         ExpressionDataService expression = new ExpressionDataService();
-        expression.loadExample(ExampleDataset.byId("rice"));
+        expression.loadExample(LegacyAnnotationFixtures.byId("rice"));
         assertEquals("TPM", expression.getValueUnit());
     }
 }

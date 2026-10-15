@@ -65,7 +65,7 @@ def extract(archive):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--cache', type=Path, required=True)
-    parser.add_argument('--update-examples', action='store_true', help='Refresh the bundled maize/soybean panels and rice Chr3-Chr12')
+    parser.add_argument('--update-examples', action='store_true', help='Refresh all four version-pinned reference examples')
     args = parser.parse_args()
     args.cache.mkdir(parents=True, exist_ok=True)
     root = Path(__file__).resolve().parents[1]
@@ -92,23 +92,10 @@ def main():
                               genes=genes, feature_count=len(rows))
         print(name, len(regions), len(rows), flush=True)
     if args.update_examples:
-        for name in ('maize', 'soybean'):
+        for name in SOURCES:
             output = root / f'src/main/resources/data/species/{name}/{name}_chromosomes.gff3'
             output.parent.mkdir(parents=True, exist_ok=True)
             output.write_bytes((dest / (name + '.gff3')).read_bytes())
-        # Preserve the original rice Chr1/Chr2 models and their expression IDs.
-        output = root / 'src/main/resources/data/species/rice/oryza_sativa_chr1.gff3'
-        marker = '# Chr3-Chr12: unchanged Ensembl Plants 62 gene families except sequence aliases'
-        original = output.read_text(encoding='utf-8').split(marker)[0].rstrip()
-        rows = []
-        for line in (dest / 'rice.gff3').read_text(encoding='utf-8').splitlines():
-            cols = line.split('\t')
-            if not line.startswith('#') and len(cols) == 9 and cols[0] not in ('1', '2'):
-                cols[0] = 'Chr' + cols[0]
-                rows.append('\t'.join(cols))
-        header = marker + '\n# (source numeric N -> display ChrN). No expression values were generated.\n'
-        header += '# Source: ' + manifest['rice']['source'] + '\n'
-        output.write_text(original + '\n\n' + header + '\n'.join(rows) + '\n', encoding='utf-8')
     (dest / 'expected.tsv').write_text(
         'dataset\tsequence\tstart\tend\n' + ''.join(
             f'{name}\t{seq}\t1\t{end}\n'

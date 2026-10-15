@@ -38,7 +38,7 @@ import java.util.Set;
  * </pre>
  *
  * <p>Instead of {@code --gff3}, one of the bundled examples may be named with
- * {@code --example arabidopsis|rice|soybean|mint}.</p>
+ * {@code --example arabidopsis|rice|maize|soybean}.</p>
  */
 public final class BatchRenderer {
 
@@ -277,7 +277,7 @@ public final class BatchRenderer {
                   --gff3 <file>          annotation file (GFF3 or GTF)
                   --expression <file>    optional expression matrix (TSV/CSV)
                   --example <id>         use a bundled example instead of --gff3;
-                                         one of: arabidopsis, rice, soybean, mint
+                                         one of: arabidopsis, rice, maize, soybean
                   --loci <id[,id...]>    genes to render; all genes when omitted
                   --out <dir>            output directory (default: phytoscope-exports)
                   --format <png|svg|both>  output format (default: both)
@@ -289,7 +289,7 @@ public final class BatchRenderer {
 
                 Examples:
                   # one gene of a bundled species
-                  --example mint --loci rbcL --out figures --format png
+                  --example maize --out figures --format svg
 
                   # every gene of a local annotation, vector only
                   --gff3 genes.gff3 --expression tpm.tsv --out figures --format svg

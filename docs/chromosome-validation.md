@@ -56,15 +56,48 @@ these explicitly nuclear-chromosome fixtures**, never when users import data.
 lengths and SHA-256 hashes of both downloaded archives and extracted fixtures.
 `expected.tsv` records the independently extracted expected coordinate extents.
 
-The bundled catalogue includes Arabidopsis (5 nuclear chromosomes), rice (12),
-maize (10) and a separate soybean v2.1 panel (20). Rice retains its earlier
-Chr1/Chr2 genes and expression IDs; the new Chr3–Chr12 rows use aliases `ChrN`
-for source IDs `N`. No gene coordinates were fabricated. The older soybean GTF
-example remains explicitly labelled as a three-chromosome excerpt; its assembly
-and expression data are not mixed with the new soybean reference. Mint remains
-an organelle panel (four sequences), not a nuclear genome example. New maize
-and soybean v2.1 panels are annotation-only; no expression measurements were
-invented, and loading them clears expression from the previous example.
+The bundled catalogue now contains only four reviewed references: Arabidopsis
+(5 nuclear chromosomes), rice (12), maize (10), and soybean v2.1 (20). Every
+bundled GFF3 is byte-for-byte identical to its row-verified test fixture. Sequence
+IDs and lengths are retained from the source, without aliases or manual overrides.
+
+The older manually assembled excerpts and their untraceable expression values
+have been removed from the application. Historical numerical and grammar fixtures
+are retained only under `src/test/resources/legacy-regression`, explicitly marked
+as illustrative. They exercise parser behaviour and are **not scientific evidence**.
+They are excluded from the application JAR. No measured expression data are bundled.
+
+## Reference acceptance audit (2026-10-15)
+
+Three independent types of checks are required, rather than repeated runs alone:
+
+1. **Reference identity:** verify the version and accession in the original
+   annotation header against assembly records, with the correct reference material.
+2. **File identity:** compare each downloaded archive with the provider's published
+   BSD `sum` and block count; retain SHA-256 hashes to pin exact bytes locally.
+3. **Biological record preservation:** match every bundled feature row to the
+   original archive and compare all nuclear chromosome lengths; then import each
+   complete annotation and compare its sequences and gene counts against an
+   independent streaming inventory.
+
+| Plant / reference material | Exact assembly accession | Nuclear chromosomes | Assembly record |
+| --- | --- | ---: | --- |
+| Arabidopsis Col-0 / TAIR10 | GCA_000001735.1 | 5 | [NCBI](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001735.1/) |
+| Rice Nipponbare / IRGSP-1.0 | GCA_001433935.1 | 12 | [NCBI](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_001433935.1/) |
+| Maize B73 / NAM 5.0 | GCA_902167145.1 | 10 | [NCBI](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_902167145.1/) |
+| Soybean Williams 82 / Glycine_max_v2.1 | GCA_000004515.4 | 20 | [NCBI](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000004515.4/) |
+
+These are established, fixed reference assemblies, not a claim to use the newest
+assembly available. Assembly and annotation versions are not interchangeable:
+the annotation is explicitly Ensembl Plants release 62 for each named assembly.
+The provider's release directory may contain several archives; checks use the
+exact filenames recorded in the manifest.
+
+`tools/audit_reference_datasets.py` fails on archive SHA changes, provider
+checksum mismatches, accession/version mismatches, chromosome count/length
+mismatches, any edited bundled feature row, or a main/test fixture discrepancy.
+Its machine-readable results are shipped in
+`src/main/resources/data/reference-provenance.json`.
 
 ## Automated checks
 
@@ -75,12 +108,17 @@ invented, and loading them clears expression from the previous example.
   Existing `SpeciesAgnosticTest` also covers headerless GTF and scaffold naming.
 - `AdaptiveChromosomeUiTest`: actual JavaFX controls under Monocle; all chromosome
   choices, the count label, menu-to-dropdown synchronization and switching
-  among 20, 12, 10, 5, 4 and 3 sequences. Snapshots go to `target/validation/`.
+  among 20, 12, 10 and 5 nuclear chromosomes. Snapshots go to `target/validation/`.
 - `FullAnnotationValidationTest`: optional tests against the complete local
   archives; no network downloads occur inside tests.
 
-Full verification completed with **92 tests, 0 failures, 0 errors, 0 skipped**;
-Maven `verify` also packaged the executable JAR. The UI test uses headless JavaFX,
+The current reference-only catalogue passed **97 tests, 0 failures, 0 errors,
+0 skipped**, including all four full annotation imports, the four shipped-data
+integrity checks and actual JavaFX control tests. `clean verify` packaged the
+executable JAR from a clean output directory. Archive inspection also confirmed
+that none of the legacy fixtures, removed organelle examples or expression tables
+are included in the application JAR.
+The UI test uses headless JavaFX,
 so it does not certify platform-specific native file dialogs.
 
 ## Reproduce
@@ -93,6 +131,7 @@ mvn -Pui-tests test
 
 # Download source archives and regenerate the portable fixtures / examples.
 python tools/build_chromosome_fixtures.py --cache /path/to/annotation-cache --update-examples
+python tools/audit_reference_datasets.py --cache /path/to/annotation-cache
 
 # Recheck all complete annotations and package the application.
 mvn -Pui-tests -Dphytoscope.fullAnnotationDir=/path/to/annotation-cache verify

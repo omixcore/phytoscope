@@ -1,7 +1,7 @@
+# LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
 ##gff-version 3
 ##species=Arabidopsis thaliana
 ##assembly=TAIR10
-##description=PhytoScope bundled sample: classic genes from the start of all five Arabidopsis chromosomes, with coordinates from the TAIR10 public annotation (Araport11) and the RefSeq records NC_003070-NC_003076
 ##sequence-region Chr1 1 15000
 Chr1	TAIR10	gene	3631	5899	.	+	.	ID=AT1G01010;Name=AT1G01010;Note=NAC domain containing protein 1;Alias=ANAC001,NAC001;locus_tag=AT1G01010
 Chr1	TAIR10	mRNA	3631	5899	.	+	.	ID=AT1G01010.1;Parent=AT1G01010;Name=AT1G01010.1
@@ -100,14 +100,7 @@ Chr1	TAIR10	CDS	31901	32153	.	-	0	Parent=AT1G01050.1
 Chr1	TAIR10	exon	32562	33153	.	-	.	Parent=AT1G01050.1
 Chr1	TAIR10	CDS	32562	32973	.	-	0	Parent=AT1G01050.1
 Chr1	TAIR10	five_prime_UTR	32974	33153	.	-	.	Parent=AT1G01050.1
-#
 
-# ---- Chromosome 2 (TAIR10, RefSeq NC_003071, 19,698,289 bp) ----
-# The top of chromosome 2 carries the NOR / rDNA repeat cluster, so the first
-# annotated features are rRNA genes and small protein-coding loci rather than
-# the classic genes seen on chromosome 1. Coordinates below are from the
-# NCBI RefSeq NC_003071.7 record (TAIR10 assembly, Araport11 annotation).
-#
 ##sequence-region Chr2 1 19698289
 Chr2	TAIR10	gene	1025	3173	.	+	.	ID=AT2G01008;Name=AT2G01008;Note=maternal effect embryo arrest protein;locus_tag=AT2G01008
 Chr2	TAIR10	mRNA	1025	3173	.	+	.	ID=AT2G01008.1;Parent=AT2G01008;Name=AT2G01008.1
@@ -134,12 +127,6 @@ Chr2	TAIR10	exon	9648	9767	.	-	.	Parent=AT2G01023.1
 Chr2	TAIR10	CDS	9648	9767	.	-	0	Parent=AT2G01023.1
 
 
-#
-# ---- Chromosome 3 (TAIR10, RefSeq NC_003074.8, 23,459,830 bp) ----
-# The leading loci of chromosome 3 are laid out head-to-tail along the
-# short arm; the first CDS-bearing gene is AT3G01010. Coordinates are from
-# the NCBI RefSeq NC_003074.8 record (TAIR10 assembly, Araport11 annotation).
-#
 ##sequence-region Chr3 1 23459830
 Chr3	TAIR10	gene	1609	4159	.	-	.	ID=AT3G01015;Name=AT3G01015;Note=TPX2 (targeting protein for Xklp2) protein family;locus_tag=AT3G01015
 Chr3	TAIR10	mRNA	3203	4159	.	-	.	ID=AT3G01015.1;Parent=AT3G01015;Name=AT3G01015.1
@@ -177,12 +164,6 @@ Chr3	TAIR10	CDS	18489	18782	.	-	0	Parent=AT3G01060.2
 Chr3	TAIR10	mRNA	18489	18813	.	-	.	ID=AT3G01060.3;Parent=AT3G01060;Name=AT3G01060.3
 Chr3	TAIR10	CDS	18489	18782	.	-	0	Parent=AT3G01060.3
 
-#
-# ---- Chromosome 4 (TAIR10, RefSeq NC_003075.7, 18,585,056 bp) ----
-# Chromosome 4 opens with the AT4G00005/00020/00026 cluster, then the
-# fibrillin and chalcone-synthase loci. Coordinates are from the NCBI RefSeq
-# NC_003075.7 record (TAIR10 assembly, Araport11 annotation).
-#
 ##sequence-region Chr4 1 18585056
 Chr4	TAIR10	gene	1180	1536	.	-	.	ID=AT4G00005;Name=AT4G00005;Note=PRA1 (Prenylated rab acceptor) family protein;locus_tag=AT4G00005
 Chr4	TAIR10	mRNA	1180	1536	.	-	.	ID=AT4G00005.1;Parent=AT4G00005;Name=AT4G00005.1
@@ -208,13 +189,6 @@ Chr4	TAIR10	gene	14627	16079	.	+	.	ID=AT4G00040;Name=AT4G00040;Note=Chalcone and
 Chr4	TAIR10	mRNA	14627	14833	.	+	.	ID=AT4G00040.1;Parent=AT4G00040;Name=AT4G00040.1
 Chr4	TAIR10	CDS	14653	14833	.	+	0	Parent=AT4G00040.1
 
-#
-# ---- Chromosome 5 (TAIR10, RefSeq NC_003076.8, 26,975,502 bp) ----
-# The first annotated feature on chromosome 5 is the AT5G01010
-# retinal-binding protein at the top of the left arm, followed by a run of
-# protein-kinase and enolase loci. Coordinates are from the NCBI RefSeq
-# NC_003076.8 record (TAIR10 assembly, Araport11 annotation).
-#
 ##sequence-region Chr5 1 26975502
 Chr5	TAIR10	gene	2	303	.	+	.	ID=AT5G00730;Name=AT5G00730;Note=other RNA;locus_tag=AT5G00730
 Chr5	TAIR10	ncRNA	2	303	.	+	.	ID=AT5G00730.1;Parent=AT5G00730;Name=AT5G00730.1

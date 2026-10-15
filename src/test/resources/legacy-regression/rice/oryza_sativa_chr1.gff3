@@ -1,8 +1,7 @@
+# LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
 ##gff-version 3
 ##species=Oryza sativa Japonica Group
 ##assembly=IRGSP-1.0 (Nipponbare)
-##description=PhytoScope multi-species example: gene excerpts on all 12 rice nuclear chromosomes. Coordinates from the IRGSP-1.0 / RAP-DB public annotation (NCBI AP014957 for Chr1, AP014958 for Chr2, Oryza sativa Japonica Group cultivar Nipponbare).
-##source=RAP-DB / IRGSP-1.0 via NCBI AP014957 (Chr1) and AP014958 (Chr2)
 ##sequence-region Chr1 1 30000
 ##sequence-region Chr2 1 35937250
 ##sequence-region Chr3 1 36413819
@@ -15,16 +14,6 @@
 ##sequence-region Chr10 1 23207287
 ##sequence-region Chr11 1 29021106
 ##sequence-region Chr12 1 27531856
-#
-# Rice is a monocot (Poaceae) model crop with a compact ~430 Mb genome whose
-# gene models are generally intron-poor compared with Arabidopsis. It is
-# included as the cereal representative in this panel. All 12 nuclear
-# chromosomes have gene models; this is an excerpt, not a whole annotation.
-#
-# The Chr2 block below opens with the same OSNPB-style locus tags that RAP-DB
-# assigns, but keeps the short Os02g* symbol as the display id so the two
-# chromosomes read consistently.
-#
 Chr1	IRGSP-1.0	gene	3449	10297	.	+	.	ID=Os01g0100100;Name=Os01g0100100;locus_tag=Os01g0100100;Note=RabGAP/TBC domain containing protein;Alias=Os01t0100100-01
 Chr1	IRGSP-1.0	mRNA	3449	10297	.	+	.	ID=Os01g0100100.1;Parent=Os01g0100100;Name=Os01g0100100.1
 Chr1	IRGSP-1.0	exon	3449	3616	.	+	.	Parent=Os01g0100100.1
@@ -88,9 +77,6 @@ Chr1	IRGSP-1.0	exon	28760	29010	.	-	.	Parent=Os01g0100700.1
 Chr1	IRGSP-1.0	CDS	28760	29010	.	-	.0	Parent=Os01g0100700.1
 Chr1	IRGSP-1.0	exon	29630	29980	.	-	.	Parent=Os01g0100700.1
 Chr1	IRGSP-1.0	CDS	29630	29980	.	-	.2	Parent=Os01g0100700.1
-#
-# --- Chromosome 2 (AP014958) ---------------------------------------------
-#
 Chr2	IRGSP-1.0	gene	627	800	.	+	.	ID=Os02g0100050;Name=Os02g0100050;Note=Os02g0100050;locus_tag=Os02g0100050
 Chr2	IRGSP-1.0	mRNA	627	800	.	+	.	ID=Os02g0100050.1;Parent=Os02g0100050;Name=Os02g0100050.1
 Chr2	IRGSP-1.0	exon	627	800	.	+	.	Parent=Os02g0100050.1
@@ -139,11 +125,7 @@ Chr2	IRGSP-1.0	gene	13079	13520	.	+	.	ID=Os02g0100250;Name=Os02g0100250;Note=Os0
 Chr2	IRGSP-1.0	mRNA	13079	13520	.	+	.	ID=Os02g0100250.1;Parent=Os02g0100250;Name=Os02g0100250.1
 Chr2	IRGSP-1.0	exon	13079	13520	.	+	.	Parent=Os02g0100250.1
 Chr2	IRGSP-1.0	CDS	13079	13520	.	+	0	Parent=Os02g0100250.1
-##
 
-# Chr3-Chr12: unchanged Ensembl Plants 62 gene families except sequence aliases
-# (source numeric N -> display ChrN). No expression values were generated.
-# Source: https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/oryza_sativa/Oryza_sativa.IRGSP-1.0.62.gff3.gz
 Chr3	RAP2022-09-01	gene	4583	6476	.	+	.	ID=gene:Os03g0100010;biotype=protein_coding;gene_id=Os03g0100010;logic_name=rapdb_genes
 Chr3	RAP2022-09-01	mRNA	4583	6476	.	+	.	ID=transcript:Os03t0100010-00;Parent=gene:Os03g0100010;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os03t0100010-00
 Chr3	RAP2022-09-01	five_prime_UTR	4583	4636	.	+	.	Parent=transcript:Os03t0100010-00

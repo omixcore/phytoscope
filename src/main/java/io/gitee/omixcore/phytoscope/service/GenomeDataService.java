@@ -33,7 +33,7 @@ public class GenomeDataService {
      */
     @Deprecated
     public static final String SAMPLE_RESOURCE =
-            "/data/species/arabidopsis/arabidopsis_thaliana_demo.gff3";
+            "/data/species/arabidopsis/arabidopsis_chromosomes.gff3";
 
     private final List<Gene> genes = new ArrayList<>();
     private final Map<String, Gene> geneIndex = new LinkedHashMap<>();

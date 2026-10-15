@@ -39,14 +39,13 @@ import java.util.Map;
 public class ExpressionDataService {
 
     /**
-     * Classpath path of the default bundled example expression matrix.
+     * No expression measurements are bundled; retained as a null compatibility constant.
      *
      * @deprecated the bundled panel is described by {@link ExampleDataset};
      *             prefer {@link #loadExample(ExampleDataset)}.
      */
     @Deprecated
-    public static final String SAMPLE_RESOURCE =
-            "/data/species/arabidopsis/arabidopsis_thaliana_expression.tsv";
+    public static final String SAMPLE_RESOURCE = null;
 
     /** Sample groups (tissues / stages / treatments), in file-header order. */
     private final List<String> tissues = new ArrayList<>();
@@ -65,7 +64,7 @@ public class ExpressionDataService {
     // Loading
     // ------------------------------------------------------------------
 
-    /** Loads the default bundled example expression matrix. */
+    /** Loads expression only when the default reference supplies measurements; otherwise clears it. */
     public void loadSampleData() throws IOException {
         loadExample(ExampleDataset.defaultDataset());
     }

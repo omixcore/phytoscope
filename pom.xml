@@ -18,7 +18,7 @@
     <description>
         Species-agnostic plant genome structure browser (JavaFX desktop, Java 21).
         Reads GFF3/GTF from any organism, overlays expression heat-map tracks,
-        and ships a five-species example panel plus a headless batch renderer.
+        and ships four version-pinned reference examples plus a headless batch renderer.
     </description>
 
     <properties>

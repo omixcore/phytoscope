@@ -1,19 +1,6 @@
-##description	PhytoScope multi-species example: first genes of soybean chromosomes 1, 2 and 3
-##provider	Phytozome Glycine max Wm82.a2.v1 (public annotation, illustrative subset)
+# LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
 ##species	Glycine max
 ##assembly	Glycine max Wm82.a2.v1
-#
-# Soybean is the legume representative. This file is deliberately written in
-# GTF rather than GFF3 to demonstrate that the framework is format-agnostic:
-# the same parser core reads both dialects.
-#
-# GTF has no ##sequence-region directive, so PhytoScope infers the sequence
-# span from the data itself; the published chromosome sizes are supplied
-# separately by ExampleDataset so the axis reads in real megabases. Three
-# chromosomes are bundled so the sequence selector has something to switch
-# between. Attribute syntax is key "value"; with gene_id / transcript_id
-# linking the hierarchy, and protein_id carried on the CDS rows.
-#
 Glyma01	Phytozome	gene	4200	8800	.	+	.	gene_id "Glyma.01G000100"; gene_name "Glyma.01G000100";
 Glyma01	Phytozome	transcript	4200	8800	.	+	.	gene_id "Glyma.01G000100"; transcript_id "Glyma.01G000100.1";
 Glyma01	Phytozome	exon	4200	4450	.	+	.	gene_id "Glyma.01G000100"; transcript_id "Glyma.01G000100.1";
@@ -58,9 +45,6 @@ Glyma01	Phytozome	exon	32800	33400	.	-	.	gene_id "Glyma.01G000700"; transcript_i
 Glyma01	Phytozome	CDS	32800	33400	.	-	1	gene_id "Glyma.01G000700"; transcript_id "Glyma.01G000700.1";
 Glyma01	Phytozome	exon	34500	35200	.	-	.	gene_id "Glyma.01G000700"; transcript_id "Glyma.01G000700.1";
 Glyma01	Phytozome	CDS	34700	35200	.	-	0	gene_id "Glyma.01G000700"; transcript_id "Glyma.01G000700.1";
-#
-# --- Chromosome 2 -----------------------------------------------------------
-#
 Glyma02	Wm82.a2.v1	gene	3609	19119	.	+	.	gene_id "GmISU01.02G000100"; gene_name "GmISU01.02G000100";
 Glyma02	Wm82.a2.v1	transcript	3609	19119	.	+	.	gene_id "GmISU01.02G000100"; transcript_id "GmISU01.02G000100.1";
 Glyma02	Wm82.a2.v1	exon	4181	4900	.	+	.	gene_id "GmISU01.02G000100"; transcript_id "GmISU01.02G000100.1";
@@ -264,9 +248,6 @@ Glyma02	Wm82.a2.v1	CDS	42354	42954	.	+	0	gene_id "GmISU01.02G000400"; transcript
 Glyma02	Wm82.a2.v1	exon	44544	45281	.	+	.	gene_id "GmISU01.02G000400"; transcript_id "GmISU01.02G000400.2";
 Glyma02	Wm82.a2.v1	CDS	44544	45281	.	+	0	gene_id "GmISU01.02G000400"; transcript_id "GmISU01.02G000400.2"; protein_id "GmISU01.02G000400.2.p";
 
-#
-# --- Chromosome 3 -----------------------------------------------------------
-#
 Glyma03	Wm82.a2.v1	gene	94411	114002	.	-	.	gene_id "GmISU01.03G000100"; gene_name "GmISU01.03G000100";
 Glyma03	Wm82.a2.v1	transcript	94411	114002	.	-	.	gene_id "GmISU01.03G000100"; transcript_id "GmISU01.03G000100.1";
 Glyma03	Wm82.a2.v1	exon	105326	105630	.	-	.	gene_id "GmISU01.03G000100"; transcript_id "GmISU01.03G000100.1";
@@ -328,4 +309,3 @@ Glyma03	Wm82.a2.v1	exon	163244	163411	.	+	.	gene_id "GmISU01.03G000300"; transcr
 Glyma03	Wm82.a2.v1	CDS	163244	163411	.	+	0	gene_id "GmISU01.03G000300"; transcript_id "GmISU01.03G000300.3"; protein_id "GmISU01.03G000300.3.p";
 Glyma03	Wm82.a2.v1	exon	163490	163660	.	+	.	gene_id "GmISU01.03G000300"; transcript_id "GmISU01.03G000300.3";
 Glyma03	Wm82.a2.v1	CDS	163490	163660	.	+	0	gene_id "GmISU01.03G000300"; transcript_id "GmISU01.03G000300.3"; protein_id "GmISU01.03G000300.3.p";
-#

@@ -1,28 +1,11 @@
+# LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
 ##gff-version 3
 ##species=Mentha spicata
 ##assembly=Mentha spicata plastid (GenBank MG256495) and mitochondrion (GenBank MG256495 peer records ON631245-ON631247)
-##description=PhytoScope multi-species example: plastid and mitochondrial genes of spearmint (Mentha spicata). Plastid coordinates follow the published complete chloroplast genome (GenBank MG256495, 152,132 bp). The three mitochondrial contigs follow the published M. spicata mitochondrial genome records (GenBank ON631245, 158,164 bp; ON631246, 87,431 bp; ON631247, 40,953 bp). Mentha spicata is a member of the Lamiaceae.
-##source=GenBank MG256495 (plastid; Wang et al. 2017) and ON631245-ON631247 (mitochondrion)
 ##sequence-region Pt 1 25000
 ##sequence-region Mt1 1 158164
 ##sequence-region Mt2 1 87431
 ##sequence-region Mt3 1 40953
-#
-# Mint is the aromatic-medicinal representative (Lamiaceae). The plastid genome
-# is gene-dense and mostly single-exon, but it carries the classic multi-intron
-# loci rpl2 / ndhA / clpP, which make plastid structure readable in a browser.
-# Coordinates below are chloroplast-plastome coordinates.
-#
-# The organelle panel then extends into the mitochondrion, which is the natural
-# counterpoint to the plastome: a much larger, repeat-rich genome assembled into
-# several contigs (here Mt1-Mt3) whose genes are named in the classic
-# Chlamydomonas-style shorthand (nad7, ccmFC, matR ...). Two features of the
-# mitochondrial annotation are worth noting in a browser. First, the contigs are
-# separate sequences, so they must be selected one at a time. Second, the
-# published annotation contains trans-spliced loci whose exon blocks are split
-# across the genome; those records are excluded here because a single linear
-# track cannot draw them faithfully.
-#
 Pt	MG256495	gene	1	1480	.	+	.	ID=rbcL;Name=rbcL;locus_tag=rbcL;Note=ribulose-1,5-bisphosphate carboxylase large subunit;Alias=Chloroplast rbcL
 Pt	MG256495	mRNA	1	1480	.	+	.	ID=rbcL.1;Parent=rbcL;Name=rbcL.1
 Pt	MG256495	exon	1	1480	.	+	.	Parent=rbcL.1
@@ -74,9 +57,6 @@ Pt	MG256495	gene	24050	24990	.	-	.	ID=psbC;Name=psbC;locus_tag=psbC;Note=photosy
 Pt	MG256495	mRNA	24050	24990	.	-	.	ID=psbC.1;Parent=psbC;Name=psbC.1
 Pt	MG256495	exon	24050	24990	.	-	.	Parent=psbC.1
 Pt	MG256495	CDS	24050	24990	.	-	.	Parent=psbC.1
-#
-# --- Mitochondrial contig 1 (ON631245, 158,164 bp) ------------------------
-#
 Mt1	MG256495	gene	20761	21138	.	-	.	ID=rps12;Name=rps12;locus_tag=rps12;Note=ribosomal protein S12
 Mt1	MG256495	mRNA	20761	21138	.	-	.	ID=rps12.1;Parent=rps12;Name=rps12.1
 Mt1	MG256495	exon	20761	21138	.	-	.	Parent=rps12.1
@@ -103,9 +83,6 @@ Mt1	MG256495	exon	56022	56732	.	+	.	Parent=nad7.1
 Mt1	MG256495	CDS	56022	56732	.	+	0	Parent=nad7.1
 Mt1	MG256495	exon	58079	58340	.	+	.	Parent=nad7.1
 Mt1	MG256495	CDS	58079	58340	.	+	0	Parent=nad7.1
-#
-# --- Mitochondrial contig 2 (ON631246, 87,431 bp) -------------------------
-#
 Mt2	MG256495	gene	4056	4676	.	-	.	ID=ccmB;Name=ccmB;locus_tag=ccmB;Note=cytochrome c biogenesis protein B
 Mt2	MG256495	mRNA	4056	4676	.	-	.	ID=ccmB.1;Parent=ccmB;Name=ccmB.1
 Mt2	MG256495	exon	4056	4676	.	-	.	Parent=ccmB.1
@@ -136,9 +113,6 @@ Mt2	MG256495	gene	60637	61425	.	-	.	ID=mttB;Name=mttB;locus_tag=mttB;Note=multif
 Mt2	MG256495	mRNA	60637	61425	.	-	.	ID=mttB.1;Parent=mttB;Name=mttB.1
 Mt2	MG256495	exon	60637	61425	.	-	.	Parent=mttB.1
 Mt2	MG256495	CDS	60637	61425	.	-	0	Parent=mttB.1
-#
-# --- Mitochondrial contig 3 (ON631247, 40,953 bp) -------------------------
-#
 Mt3	MG256495	gene	3798	5537	.	-	.	ID=ccmFN;Name=ccmFN;locus_tag=ccmFN;Note=cytochrome c biogenesis protein FN
 Mt3	MG256495	mRNA	3798	5537	.	-	.	ID=ccmFN.1;Parent=ccmFN;Name=ccmFN.1
 Mt3	MG256495	exon	3798	5537	.	-	.	Parent=ccmFN.1
@@ -155,4 +129,3 @@ Mt3	MG256495	gene	24170	24649	.	-	.	ID=atp8;Name=atp8;locus_tag=atp8;Note=ATP sy
 Mt3	MG256495	mRNA	24170	24649	.	-	.	ID=atp8.1;Parent=atp8;Name=atp8.1
 Mt3	MG256495	exon	24170	24649	.	-	.	Parent=atp8.1
 Mt3	MG256495	CDS	24170	24649	.	-	0	Parent=atp8.1
-##

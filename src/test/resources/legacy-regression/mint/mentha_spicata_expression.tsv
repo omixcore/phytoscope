@@ -1,10 +1,5 @@
-﻿## PhytoScope expression matrix - Mentha spicata (spearmint, plastid)
+# LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
 ## Unit: TPM (Transcripts Per Million), mean across aggregated public RNA-seq
-## Sources: public Mentha spicata leaf / root / flower RNA-seq, plastid-mapped reads,
-##          reported against the MG256495 plastome annotation.
-## Note: plastid genes are highly expressed in photosynthetic tissue, which is
-##       clearly visible as a leaf-biased pattern in the panel below.
-## Tissue panel (5): Leaf, Stem, Root, Flower, Rhizome
 GeneID	Leaf	Stem	Root	Flower	Rhizome
 rbcL	8420.50	3150.20	680.40	2860.70	410.30
 atpB	2180.60	940.30	210.50	880.20	145.60

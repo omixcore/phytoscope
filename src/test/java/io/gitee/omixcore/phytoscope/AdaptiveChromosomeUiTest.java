@@ -50,15 +50,15 @@ class AdaptiveChromosomeUiTest {
             var count = (Label) scene.lookup("#sequence-count");
             var menuBar = (MenuBar) ((VBox) view.getTop()).getChildren().getFirst();
             var menu = menuBar.getMenus().stream().filter(m -> m.getText().equals("Chromosome")).findFirst().orElseThrow();
-            for (String id : List.of("soybean-v2", "rice", "maize", "arabidopsis", "mint", "soybean", "soybean-v2")) {
+            for (String id : List.of("soybean", "rice", "maize", "arabidopsis", "soybean")) {
                 datasetSelector.getSelectionModel().select(ExampleDataset.byId(id));
                 int expected = switch (id) {
-                    case "soybean-v2" -> 20;
+                    case "soybean" -> 20;
                     case "rice" -> 12;
                     case "maize" -> 10;
                     case "arabidopsis" -> 5;
-                    case "mint" -> 4;
-                    default -> 3;
+
+                    default -> throw new IllegalArgumentException(id);
                 };
                 assertEquals(expected, selector.getItems().size(), id);
                 assertEquals(expected + " sequences", count.getText());

@@ -1,12 +1,5 @@
-## PhytoScope tissue expression matrix
-## Species: Arabidopsis thaliana (Col-0)
+# LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
 ## Unit: TPM (Transcripts Per Million), mean across aggregated public RNA-seq samples
-## Sources: PEO (Plant Expression Omnibus, peo.ku.dk) organ-specific TPM aggregation,
-##          built on AtGenExpress / Araport11 public Arabidopsis transcriptome data.
-## Note: values are curated from public measurements for the tissues where data exist;
-##       tissues without published measurements for a gene are recorded as 0.00.
-## Tissue panel (6): Root, Stem, Leaf, Flower, Silique, Seed
-#
 GeneID	Root	Stem	Leaf	Flower	Silique	Seed
 AT1G01010	14.27	5.10	6.74	8.92	4.36	1.85
 AT1G01020	9.63	6.21	7.45	5.98	5.11	3.42

@@ -1,9 +1,5 @@
-﻿## PhytoScope expression matrix - Oryza sativa (rice, Nipponbare)
+# LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
 ## Unit: TPM (Transcripts Per Million), mean across aggregated public RNA-seq
-## Sources: RiceXPro (ricexpro.dna.affrc.go.jp) tissue-specific expression profiles,
-##          built on the IRGSP-1.0 / RAP-DB annotation.
-## Note: values curated from public measurements; a few sparse entries are 0.00.
-## Tissue panel (6): Root, Shoot, Leaf, Panicle, Anther, Seed
 GeneID	Root	Shoot	Leaf	Panicle	Anther	Seed
 Os01g0100100	18.40	12.15	9.60	6.30	3.20	2.10
 Os01g0100300	4.50	6.80	11.20	3.10	1.40	0.90

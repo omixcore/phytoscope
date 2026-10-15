@@ -136,6 +136,8 @@ public class MainView extends BorderPane {
             dataService.loadExample(dataset);
             expressionService.loadExample(dataset);
             datasetSelector.getSelectionModel().select(dataset);
+            datasetSelector.setTooltip(new Tooltip(dataset.label() + "\nAssembly: "
+                    + dataset.assembly() + "\n" + dataset.attribution()));
             afterDatasetChanged();
         } catch (Exception ex) {
             showLoadError("load example dataset", ex);

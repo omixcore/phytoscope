@@ -1,8 +1,5 @@
-﻿## PhytoScope expression matrix - Glycine max (soybean, Wm82)
+# LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
 ## Unit: TPM (Transcripts Per Million), mean across aggregated public RNA-seq
-## Sources: SoyBase / Phytozome public soybean tissue RNA-seq, Wm82.a2.v1 annotation.
-## Note: values curated from public measurements; sparse entries are 0.00.
-## Tissue panel (6): Root, Stem, Leaf, Flower, Pod, Seed
 GeneID	Root	Stem	Leaf	Flower	Pod	Seed
 Glyma.01G000100	9.80	7.40	16.20	5.30	4.10	12.60
 Glyma.01G000300	31.50	18.20	12.70	14.90	6.30	8.80

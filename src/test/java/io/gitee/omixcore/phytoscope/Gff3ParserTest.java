@@ -22,16 +22,19 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for the GFF3 parser, expression loader and data services, covering
- * hierarchy assembly, alternative splicing and expression matrix parsing.
+ * Historical illustrative fixtures for grammar and numeric-loader regression only.
+ * These values are not authoritative biological data and do not validate a reference genome.
+ * Verified public-reference checks live in AdaptiveChromosomeTest,
+ * FullAnnotationValidationTest and ReferenceDatasetIntegrityTest.
  */
+@DisplayName("Legacy parser and numeric expression fixtures (not measured data)")
 class Gff3ParserTest {
 
     private static Gff3Parser.ParseResult result;
 
     @BeforeAll
     static void setUp() throws Exception {
-        result = new Gff3Parser().parseResource(GenomeDataService.SAMPLE_RESOURCE);
+        result = new Gff3Parser().parseResource(LegacyAnnotationFixtures.byId("arabidopsis").annotationResource());
     }
 
     @Test
@@ -160,7 +163,7 @@ class Gff3ParserTest {
     @DisplayName("Data service: searches genes by alias after loading")
     void shouldSearchByAlias() throws Exception {
         GenomeDataService service = new GenomeDataService();
-        service.loadSampleData();
+        service.loadExample(LegacyAnnotationFixtures.byId("arabidopsis"));
 
         assertEquals(29, service.getGeneCount());
         assertFalse(service.search("DCL1").isEmpty(), "Alias DCL1 should retrieve AT1G01040");
@@ -181,18 +184,18 @@ class Gff3ParserTest {
     @DisplayName("Loads the six-tissue expression panel")
     void shouldLoadTissuePanel() throws Exception {
         ExpressionDataService service = new ExpressionDataService();
-        service.loadSampleData();
+        service.loadFromResource(LegacyAnnotationFixtures.byId("arabidopsis").expressionResource(), "illustrative regression fixture");
 
         assertEquals(List.of("Root", "Stem", "Leaf", "Flower", "Silique", "Seed"),
                 service.getTissues(), "Tissue panel must follow the file header order");
-        assertEquals(22, service.getProfileCount(), "One profile per sample gene with published data");
+        assertEquals(22, service.getProfileCount(), "One profile per sample gene in this numeric fixture");
     }
 
     @Test
     @DisplayName("Reads per-tissue TPM values for a gene")
     void shouldReadTpmValues() throws Exception {
         ExpressionDataService service = new ExpressionDataService();
-        service.loadSampleData();
+        service.loadFromResource(LegacyAnnotationFixtures.byId("arabidopsis").expressionResource(), "illustrative regression fixture");
 
         ExpressionProfile profile = service.getProfile("AT1G01010");
         assertNotNull(profile);
@@ -206,7 +209,7 @@ class Gff3ParserTest {
     @DisplayName("Identifies the highest-expressing tissue")
     void shouldFindTopTissue() throws Exception {
         ExpressionDataService service = new ExpressionDataService();
-        service.loadSampleData();
+        service.loadFromResource(LegacyAnnotationFixtures.byId("arabidopsis").expressionResource(), "illustrative regression fixture");
 
         ExpressionProfile profile = service.getProfile("AT1G01040");
         TissueExpression top = profile.topTissue();
@@ -219,7 +222,7 @@ class Gff3ParserTest {
     @DisplayName("Expression values are consistent with the loaded panel size")
     void shouldExposeFullPanelPerGene() throws Exception {
         ExpressionDataService service = new ExpressionDataService();
-        service.loadSampleData();
+        service.loadFromResource(LegacyAnnotationFixtures.byId("arabidopsis").expressionResource(), "illustrative regression fixture");
 
         for (String geneId : List.of("AT1G01010", "AT1G01020", "AT1G01030",
                 "AT1G01040", "AT1G01050")) {
@@ -235,7 +238,7 @@ class Gff3ParserTest {
     @DisplayName("Unknown genes have no expression profile")
     void shouldReturnNullForUnknownGene() throws Exception {
         ExpressionDataService service = new ExpressionDataService();
-        service.loadSampleData();
+        service.loadFromResource(LegacyAnnotationFixtures.byId("arabidopsis").expressionResource(), "illustrative regression fixture");
 
         assertNull(service.getProfile("AT9G99999"));
         assertFalse(service.hasProfile("AT9G99999"));
@@ -246,7 +249,7 @@ class Gff3ParserTest {
     @DisplayName("Global maximum TPM spans the whole dataset")
     void shouldComputeGlobalMaximum() throws Exception {
         ExpressionDataService service = new ExpressionDataService();
-        service.loadSampleData();
+        service.loadFromResource(LegacyAnnotationFixtures.byId("arabidopsis").expressionResource(), "illustrative regression fixture");
 
         // AT3G01050 in Root (24.63) is the highest value in the bundled panel
         assertEquals(24.63, service.globalMaxTpm(), 0.001);

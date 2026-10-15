@@ -1,0 +1,66 @@
+{
+  "audit_date": "2026-10-15",
+  "scope": "Reference structure annotations only; no measured expression data bundled",
+  "datasets": {
+    "arabidopsis": {
+      "species": "Arabidopsis thaliana",
+      "assembly": "TAIR10",
+      "assembly_accession": "GCA_000001735.1",
+      "assembly_record": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001735.1/",
+      "source": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/arabidopsis_thaliana/Arabidopsis_thaliana.TAIR10.62.gff3.gz",
+      "release": 62,
+      "chromosome_count": 5,
+      "provider_checksum_url": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/arabidopsis_thaliana/CHECKSUMS",
+      "provider_checksum": "07787 9339 Arabidopsis_thaliana.TAIR10.62.gff3.gz",
+      "archive_sha256": "9f2701d7151b4467941b5dae4171b8955ea4260c4d78f41be4fb3ff44782d2fd",
+      "fixture_sha256": "a21bb6635988a8cfbebde4d7d1804df4a95fea2e7ac2846d71bcc8eab5879711",
+      "verified_original_feature_rows": 571,
+      "status": "PASS"
+    },
+    "rice": {
+      "species": "Oryza sativa Japonica Group",
+      "assembly": "IRGSP-1.0",
+      "assembly_accession": "GCA_001433935.1",
+      "assembly_record": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_001433935.1/",
+      "source": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/oryza_sativa/Oryza_sativa.IRGSP-1.0.62.gff3.gz",
+      "release": 62,
+      "chromosome_count": 12,
+      "provider_checksum_url": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/oryza_sativa/CHECKSUMS",
+      "provider_checksum": "59288 7154 Oryza_sativa.IRGSP-1.0.62.gff3.gz",
+      "archive_sha256": "7b30126babf87e65426598e0acf1ec1540f09b0235ebfe8a799ee39dab7e1075",
+      "fixture_sha256": "0b81520bb1d9ca973dea8a68a1f1e17f0ff32b110dfb5a1d54617ff3ae66f20e",
+      "verified_original_feature_rows": 347,
+      "status": "PASS"
+    },
+    "maize": {
+      "species": "Zea mays",
+      "assembly": "Zm-B73-REFERENCE-NAM-5.0",
+      "assembly_accession": "GCA_902167145.1",
+      "assembly_record": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_902167145.1/",
+      "source": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/zea_mays/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.62.gff3.gz",
+      "release": 62,
+      "chromosome_count": 10,
+      "provider_checksum_url": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/zea_mays/CHECKSUMS",
+      "provider_checksum": "28410 12453 Zea_mays.Zm-B73-REFERENCE-NAM-5.0.62.gff3.gz",
+      "archive_sha256": "cb8ca4d0607d3363e717f911db3a77c77cf882183850f188ff164d6cd130ab56",
+      "fixture_sha256": "975f0ada1eadcca585a67ba60964358b7311d799735399bf075e746debbd3734",
+      "verified_original_feature_rows": 377,
+      "status": "PASS"
+    },
+    "soybean": {
+      "species": "Glycine max",
+      "assembly": "Glycine_max_v2.1",
+      "assembly_accession": "GCA_000004515.4",
+      "assembly_record": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000004515.4/",
+      "source": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/glycine_max/Glycine_max.Glycine_max_v2.1.62.gff3.gz",
+      "release": 62,
+      "chromosome_count": 20,
+      "provider_checksum_url": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/glycine_max/CHECKSUMS",
+      "provider_checksum": "51104 13702 Glycine_max.Glycine_max_v2.1.62.gff3.gz",
+      "archive_sha256": "e7fb0788d891f1b5d7da5c7634fa564af90bf8b97f7a5a03d81d361f4022f387",
+      "fixture_sha256": "34f081abefa1b6a1af4b5312890a4a26d682e6939ef462f1f5a9ee0467fde2e3",
+      "verified_original_feature_rows": 839,
+      "status": "PASS"
+    }
+  }
+}
