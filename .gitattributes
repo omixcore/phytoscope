@@ -1,0 +1,17 @@
+# 统一换行符处理，避免跨平台协作时产生无意义的 diff
+* text=auto eol=lf
+
+# Windows 批处理脚本保持 CRLF
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Shell 脚本保持 LF
+mvnw text eol=lf
+*.sh text eol=lf
+
+# 二进制文件不做换行转换
+*.jar binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.zip binary

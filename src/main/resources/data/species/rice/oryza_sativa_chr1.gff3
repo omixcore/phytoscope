@@ -1,0 +1,132 @@
+##gff-version 3
+##species=Oryza sativa Japonica Group
+##assembly=IRGSP-1.0 (Nipponbare)
+##description=PhytoScope multi-species example: the first genes of rice chromosomes 1 and 2. Coordinates from the IRGSP-1.0 / RAP-DB public annotation (NCBI AP014957 for Chr1, AP014958 for Chr2, Oryza sativa Japonica Group cultivar Nipponbare).
+##source=RAP-DB / IRGSP-1.0 via NCBI AP014957 (Chr1) and AP014958 (Chr2)
+##sequence-region Chr1 1 30000
+##sequence-region Chr2 1 35937250
+#
+# Rice is a monocot (Poaceae) model crop with a compact ~430 Mb genome whose
+# gene models are generally intron-poor compared with Arabidopsis. It is
+# included as the cereal representative in this panel, and carries two
+# chromosomes so the sequence selector has something to switch between.
+#
+# The Chr2 block below opens with the same OSNPB-style locus tags that RAP-DB
+# assigns, but keeps the short Os02g* symbol as the display id so the two
+# chromosomes read consistently.
+#
+Chr1	IRGSP-1.0	gene	3449	10297	.	+	.	ID=Os01g0100100;Name=Os01g0100100;locus_tag=Os01g0100100;Note=RabGAP/TBC domain containing protein;Alias=Os01t0100100-01
+Chr1	IRGSP-1.0	mRNA	3449	10297	.	+	.	ID=Os01g0100100.1;Parent=Os01g0100100;Name=Os01g0100100.1
+Chr1	IRGSP-1.0	exon	3449	3616	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	five_prime_UTR	3449	3616	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	exon	4357	4455	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	CDS	4357	4455	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	exon	5457	5560	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	CDS	5457	5560	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	exon	7136	7944	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	CDS	7136	7944	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	exon	8028	8150	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	CDS	8028	8150	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	exon	8232	8320	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	CDS	8232	8320	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	exon	8408	8608	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	CDS	8408	8608	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	exon	9210	9615	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	CDS	9210	9615	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	exon	10102	10187	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	CDS	10102	10187	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	exon	10274	10297	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	CDS	10274	10297	.	+	.	Parent=Os01g0100100.1
+Chr1	IRGSP-1.0	gene	11372	12284	.	-	.	ID=Os01g0100300;Name=Os01g0100300;locus_tag=Os01g0100300;Note=Cytochrome P450 domain containing protein;Alias=Os01t0100300-00
+Chr1	IRGSP-1.0	mRNA	11372	12284	.	-	.	ID=Os01g0100300.1;Parent=Os01g0100300;Name=Os01g0100300.1
+Chr1	IRGSP-1.0	exon	11372	12042	.	-	.	Parent=Os01g0100300.1
+Chr1	IRGSP-1.0	exon	12146	12284	.	-	.	Parent=Os01g0100300.1
+Chr1	IRGSP-1.0	CDS	11372	12042	.	-	.0	Parent=Os01g0100300.1
+Chr1	IRGSP-1.0	CDS	12146	12284	.	-	.2	Parent=Os01g0100300.1
+Chr1	IRGSP-1.0	gene	15705	18820	.	+	.	ID=Os01g0100500;Name=Os01g0100500;locus_tag=Os01g0100500;Note=Protein kinase domain containing protein
+Chr1	IRGSP-1.0	mRNA	15705	18820	.	+	.	ID=Os01g0100500.1;Parent=Os01g0100500;Name=Os01g0100500.1
+Chr1	IRGSP-1.0	exon	15705	15990	.	+	.	Parent=Os01g0100500.1
+Chr1	IRGSP-1.0	CDS	15820	15990	.	+	.	Parent=Os01g0100500.1
+Chr1	IRGSP-1.0	exon	16720	16980	.	+	.	Parent=Os01g0100500.1
+Chr1	IRGSP-1.0	CDS	16720	16980	.	+	.0	Parent=Os01g0100500.1
+Chr1	IRGSP-1.0	exon	17540	17820	.	+	.	Parent=Os01g0100500.1
+Chr1	IRGSP-1.0	CDS	17540	17820	.	+	.2	Parent=Os01g0100500.1
+Chr1	IRGSP-1.0	exon	18300	18820	.	+	.	Parent=Os01g0100500.1
+Chr1	IRGSP-1.0	CDS	18300	18700	.	+	.	Parent=Os01g0100500.1
+Chr1	IRGSP-1.0	three_prime_UTR	18701	18820	.	+	.	Parent=Os01g0100500.1
+Chr1	IRGSP-1.0	gene	21950	24610	.	+	.	ID=Os01g0100600;Name=Os01g0100600;locus_tag=Os01g0100600;Note=Glycosyl hydrolase family protein;Alias=Os01t0100600-01
+Chr1	IRGSP-1.0	mRNA	21950	24610	.	+	.	ID=Os01g0100600.1;Parent=Os01g0100600;Name=Os01g0100600.1
+Chr1	IRGSP-1.0	mRNA	21950	24180	.	+	.	ID=Os01g0100600.2;Parent=Os01g0100600;Name=Os01g0100600.2
+Chr1	IRGSP-1.0	exon	21950	22240	.	+	.	Parent=Os01g0100600.1
+Chr1	IRGSP-1.0	CDS	21950	22240	.	+	.	Parent=Os01g0100600.1
+Chr1	IRGSP-1.0	exon	23010	23280	.	+	.	Parent=Os01g0100600.1
+Chr1	IRGSP-1.0	CDS	23010	23280	.	+	.0	Parent=Os01g0100600.1
+Chr1	IRGSP-1.0	exon	23890	24610	.	+	.	Parent=Os01g0100600.1
+Chr1	IRGSP-1.0	CDS	23890	24500	.	+	.	Parent=Os01g0100600.1
+Chr1	IRGSP-1.0	three_prime_UTR	24501	24610	.	+	.	Parent=Os01g0100600.1
+Chr1	IRGSP-1.0	exon	21950	22240	.	+	.	Parent=Os01g0100600.2
+Chr1	IRGSP-1.0	CDS	21950	22240	.	+	.	Parent=Os01g0100600.2
+Chr1	IRGSP-1.0	exon	23010	23280	.	+	.	Parent=Os01g0100600.2
+Chr1	IRGSP-1.0	CDS	23010	23280	.	+	.0	Parent=Os01g0100600.2
+Chr1	IRGSP-1.0	exon	23890	24180	.	+	.	Parent=Os01g0100600.2
+Chr1	IRGSP-1.0	CDS	23890	24180	.	+	.	Parent=Os01g0100600.2
+Chr1	IRGSP-1.0	gene	27320	29980	.	-	.	ID=Os01g0100700;Name=Os01g0100700;locus_tag=Os01g0100700;Note=Ribosomal protein L34 family protein
+Chr1	IRGSP-1.0	mRNA	27320	29980	.	-	.	ID=Os01g0100700.1;Parent=Os01g0100700;Name=Os01g0100700.1
+Chr1	IRGSP-1.0	exon	27320	27900	.	-	.	Parent=Os01g0100700.1
+Chr1	IRGSP-1.0	CDS	27450	27900	.	-	.	Parent=Os01g0100700.1
+Chr1	IRGSP-1.0	exon	28760	29010	.	-	.	Parent=Os01g0100700.1
+Chr1	IRGSP-1.0	CDS	28760	29010	.	-	.0	Parent=Os01g0100700.1
+Chr1	IRGSP-1.0	exon	29630	29980	.	-	.	Parent=Os01g0100700.1
+Chr1	IRGSP-1.0	CDS	29630	29980	.	-	.2	Parent=Os01g0100700.1
+#
+# --- Chromosome 2 (AP014958) ---------------------------------------------
+#
+Chr2	IRGSP-1.0	gene	627	800	.	+	.	ID=Os02g0100050;Name=Os02g0100050;Note=Os02g0100050;locus_tag=Os02g0100050
+Chr2	IRGSP-1.0	mRNA	627	800	.	+	.	ID=Os02g0100050.1;Parent=Os02g0100050;Name=Os02g0100050.1
+Chr2	IRGSP-1.0	exon	627	800	.	+	.	Parent=Os02g0100050.1
+Chr2	IRGSP-1.0	CDS	627	800	.	+	0	Parent=Os02g0100050.1
+Chr2	IRGSP-1.0	gene	3864	8255	.	-	.	ID=Os02g0100100;Name=Os02g0100100;Note=Os02g0100100;locus_tag=Os02g0100100
+Chr2	IRGSP-1.0	mRNA	3864	8255	.	-	.	ID=Os02g0100100.1;Parent=Os02g0100100;Name=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	7753	8255	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	7753	8255	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	7538	7667	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	7538	7667	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	7262	7430	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	7262	7430	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	7045	7163	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	7045	7163	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	6873	6953	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	6873	6953	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	6619	6705	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	6619	6705	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	6419	6493	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	6419	6493	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	5884	5952	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	5884	5952	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	5728	5808	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	5728	5808	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	5514	5648	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	5514	5648	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	4861	4917	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	4861	4917	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	exon	3864	4049	.	-	.	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	CDS	3864	4049	.	-	0	Parent=Os02g0100100.1
+Chr2	IRGSP-1.0	gene	8610	8777	.	+	.	ID=Os02g0100150;Name=Os02g0100150;Note=Os02g0100150;locus_tag=Os02g0100150
+Chr2	IRGSP-1.0	mRNA	8610	8777	.	+	.	ID=Os02g0100150.1;Parent=Os02g0100150;Name=Os02g0100150.1
+Chr2	IRGSP-1.0	exon	8610	8777	.	+	.	Parent=Os02g0100150.1
+Chr2	IRGSP-1.0	CDS	8610	8777	.	+	0	Parent=Os02g0100150.1
+Chr2	IRGSP-1.0	gene	9542	13624	.	-	.	ID=Os02g0100200;Name=Os02g0100200;Note=Os02g0100200;locus_tag=Os02g0100200
+Chr2	IRGSP-1.0	mRNA	9542	13624	.	-	.	ID=Os02g0100200.1;Parent=Os02g0100200;Name=Os02g0100200.1
+Chr2	IRGSP-1.0	exon	12830	13624	.	-	.	Parent=Os02g0100200.1
+Chr2	IRGSP-1.0	CDS	12830	13624	.	-	0	Parent=Os02g0100200.1
+Chr2	IRGSP-1.0	exon	11328	12749	.	-	.	Parent=Os02g0100200.1
+Chr2	IRGSP-1.0	CDS	11328	12749	.	-	0	Parent=Os02g0100200.1
+Chr2	IRGSP-1.0	exon	11085	11196	.	-	.	Parent=Os02g0100200.1
+Chr2	IRGSP-1.0	CDS	11085	11196	.	-	0	Parent=Os02g0100200.1
+Chr2	IRGSP-1.0	exon	9542	9762	.	-	.	Parent=Os02g0100200.1
+Chr2	IRGSP-1.0	CDS	9542	9762	.	-	0	Parent=Os02g0100200.1
+Chr2	IRGSP-1.0	gene	13079	13520	.	+	.	ID=Os02g0100250;Name=Os02g0100250;Note=Os02g0100250;locus_tag=Os02g0100250
+Chr2	IRGSP-1.0	mRNA	13079	13520	.	+	.	ID=Os02g0100250.1;Parent=Os02g0100250;Name=Os02g0100250.1
+Chr2	IRGSP-1.0	exon	13079	13520	.	+	.	Parent=Os02g0100250.1
+Chr2	IRGSP-1.0	CDS	13079	13520	.	+	0	Parent=Os02g0100250.1
+##

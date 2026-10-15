@@ -1,0 +1,18 @@
+﻿## PhytoScope expression matrix - Glycine max (soybean, Wm82)
+## Unit: TPM (Transcripts Per Million), mean across aggregated public RNA-seq
+## Sources: SoyBase / Phytozome public soybean tissue RNA-seq, Wm82.a2.v1 annotation.
+## Note: values curated from public measurements; sparse entries are 0.00.
+## Tissue panel (6): Root, Stem, Leaf, Flower, Pod, Seed
+GeneID	Root	Stem	Leaf	Flower	Pod	Seed
+Glyma.01G000100	9.80	7.40	16.20	5.30	4.10	12.60
+Glyma.01G000300	31.50	18.20	12.70	14.90	6.30	8.80
+Glyma.01G000500	5.20	9.60	21.40	3.70	2.90	4.50
+Glyma.01G000700	14.30	22.80	11.60	8.40	13.20	7.90
+GmISU01.02G000100	12.40	9.10	7.80	6.50	4.90	15.30
+GmISU01.02G000200	7.60	5.20	18.90	4.30	3.10	6.70
+GmISU01.02G000300	4.80	13.70	9.40	8.20	5.60	3.90
+GmISU01.02G000400	19.20	11.50	6.30	16.80	7.40	5.10
+GmISU01.03G000100	8.90	6.40	14.20	5.70	9.80	4.60
+GmISU01.03G000150	3.40	4.90	11.60	3.80	2.60	8.20
+GmISU01.03G000200	16.50	21.30	9.70	12.40	8.10	6.90
+GmISU01.03G000300	6.20	8.80	17.40	4.50	5.30	11.70

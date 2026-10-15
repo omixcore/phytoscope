@@ -1,0 +1,286 @@
+package io.gitee.omixcore.phytoscope.ui.component;
+
+import io.gitee.omixcore.phytoscope.model.Exon;
+import io.gitee.omixcore.phytoscope.model.ExpressionProfile;
+import io.gitee.omixcore.phytoscope.model.Gene;
+import io.gitee.omixcore.phytoscope.model.TissueExpression;
+import io.gitee.omixcore.phytoscope.model.Transcript;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+
+import java.util.List;
+
+/**
+ * Right-hand detail panel: structural statistics, transcript breakdown and
+ * tissue expression summary for the selected gene.
+ */
+public class GeneDetailPane extends ScrollPane {
+
+    private final VBox content = new VBox(10);
+
+    /** Expression profile supplier, injected by the main view. */
+    private java.util.function.Function<String, ExpressionProfile> profileLookup = id -> null;
+
+    private double globalMaxTpm = 1.0;
+
+    /** Measurement unit taken from the loaded dataset, e.g. TPM or FPKM. */
+    private String valueUnit = "TPM";
+
+    public GeneDetailPane() {
+        content.setPadding(new Insets(14));
+        content.setStyle("-fx-background-color: #FFFFFF;");
+        setContent(content);
+        setFitToWidth(true);
+        setStyle("-fx-background: #FFFFFF; -fx-border-color: transparent;");
+        showEmptyState();
+    }
+
+    public void setExpressionData(java.util.function.Function<String, ExpressionProfile> lookup,
+                                  double globalMaxTpm) {
+        this.profileLookup = lookup == null ? id -> null : lookup;
+        this.globalMaxTpm = globalMaxTpm <= 0 ? 1.0 : globalMaxTpm;
+    }
+
+    /** Sets the measurement unit shown next to expression values. */
+    public void setValueUnit(String valueUnit) {
+        this.valueUnit = valueUnit == null || valueUnit.isBlank() ? "TPM" : valueUnit;
+    }
+
+    /** Clears the pane back to its empty state, used when no gene is selected. */
+    public void clear() {
+        showEmptyState();
+    }
+
+    private void showEmptyState() {
+        content.getChildren().clear();
+        Label title = new Label("Gene Details");
+        title.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
+        title.setStyle("-fx-text-fill: #2C3E50;");
+
+        Label hint = new Label("Click a gene in the list or on a track to see its\n"
+                + "structural statistics, transcripts and tissue expression.");
+        hint.setStyle("-fx-text-fill: #8899AA; -fx-font-size: 12px;");
+        hint.setWrapText(true);
+
+        content.getChildren().addAll(title, new Separator(), hint);
+    }
+
+    public void showGene(Gene gene) {
+        content.getChildren().clear();
+        if (gene == null) {
+            showEmptyState();
+            return;
+        }
+
+        Label title = new Label(gene.getDisplayName());
+        title.setFont(Font.font("Segoe UI", FontWeight.BOLD, 16));
+        title.setStyle("-fx-text-fill: #E8833A;");
+
+        content.getChildren().add(title);
+        if (gene.getAlias() != null) {
+            Label alias = new Label("Aliases: " + gene.getAlias());
+            alias.setStyle("-fx-text-fill: #8899AA; -fx-font-size: 11px;");
+            alias.setWrapText(true);
+            content.getChildren().add(alias);
+        }
+        content.getChildren().add(new Separator());
+
+        GridPane info = new GridPane();
+        info.setHgap(12);
+        info.setVgap(7);
+        addRow(info, 0, "Gene ID", nullSafe(gene.getId()));
+        addRow(info, 1, "Chromosome", nullSafe(gene.getChromosome()));
+        addRow(info, 2, "Location", String.format("%,d \u2013 %,d", gene.getStart(), gene.getEnd()));
+        addRow(info, 3, "Length", String.format("%,d bp", gene.length()));
+        addRow(info, 4, "Strand", gene.isForwardStrand() ? "forward (+)" : "reverse (\u2212)");
+        addRow(info, 5, "Transcripts", String.valueOf(gene.getTranscripts().size()));
+        addRow(info, 6, "Species", nullSafe(gene.getSpecies()));
+        if (gene.getLocusTag() != null) {
+            addRow(info, 7, "Locus tag", gene.getLocusTag());
+        }
+        content.getChildren().add(info);
+
+        if (gene.getDescription() != null && !gene.getDescription().isBlank()) {
+            Label descTitle = sectionTitle("Description");
+            Text descText = new Text(gene.getDescription());
+            descText.setStyle("-fx-fill: #2C3E50; -fx-font-size: 12px;");
+            TextFlow flow = new TextFlow(descText);
+            flow.setPrefWidth(260);
+            content.getChildren().addAll(new Separator(), descTitle, flow);
+        }
+
+        // Expression summary; the panel label comes from the loaded dataset
+        ExpressionProfile profile = profileLookup.apply(gene.getId());
+        if (profile != null && !profile.isEmpty()) {
+            content.getChildren().addAll(new Separator(), sectionTitle("Sample Expression"));
+            content.getChildren().add(buildExpressionCard(profile));
+        }
+
+        content.getChildren().addAll(new Separator(), sectionTitle("Transcript Structure"));
+        for (Transcript transcript : gene.getTranscripts()) {
+            content.getChildren().add(buildTranscriptCard(transcript));
+        }
+    }
+
+    /**
+     * Builds the expression summary: one bar per sample group scaled to the
+     * dataset maximum, with the measured value printed alongside.
+     */
+    private VBox buildExpressionCard(ExpressionProfile profile) {
+        VBox card = new VBox(5);
+        card.setPadding(new Insets(10));
+        card.setStyle("-fx-background-color: #F7F9FC; -fx-background-radius: 6;"
+                + " -fx-border-color: #E3E9F0; -fx-border-radius: 6;");
+
+        Label caption = new Label("Expression across samples (" + valueUnit + ")");
+        caption.setStyle("-fx-text-fill: #8899AA; -fx-font-size: 11px;");
+
+        card.getChildren().add(caption);
+
+        double max = Math.max(1e-9, globalMaxTpm);
+        for (TissueExpression value : profile.getValues()) {
+            HBox row = new HBox(6);
+            row.setAlignment(Pos.CENTER_LEFT);
+
+            Label name = new Label(value.tissue());
+            name.setMinWidth(52);
+            name.setStyle("-fx-text-fill: #4A5B6B; -fx-font-size: 11px;");
+
+            // Bar width proportional to the dataset maximum
+            double fraction = Math.min(1.0, value.tpm() / max);
+            Region bar = new Region();
+            bar.setPrefHeight(11);
+            bar.setPrefWidth(Math.max(1, fraction * 130));
+            bar.setStyle("-fx-background-color: " + toHex(barColour(fraction)) + ";"
+                    + " -fx-background-radius: 3;");
+
+            Region track = new Region();
+            track.setMinWidth(130);
+            track.setPrefHeight(11);
+
+            HBox barHolder = new HBox(bar);
+            barHolder.setMinWidth(130);
+            barHolder.setAlignment(Pos.CENTER_LEFT);
+
+            Label val = new Label(String.format("%.1f", value.tpm()));
+            val.setFont(Font.font("Consolas", 10.5));
+            val.setStyle("-fx-text-fill: #2C3E50;");
+            val.setMinWidth(40);
+
+            row.getChildren().addAll(name, barHolder, val);
+            card.getChildren().add(row);
+        }
+
+        TissueExpression top = profile.topTissue();
+        if (top != null) {
+            Label peak = new Label(String.format("Peak: %s (%.1f %s)",
+                    top.tissue(), top.tpm(), valueUnit));
+            peak.setStyle("-fx-text-fill: #E8833A; -fx-font-size: 11px;");
+            card.getChildren().add(peak);
+        }
+        return card;
+    }
+
+    private static Color barColour(double fraction) {
+        // Same sequential ramp as the track heat-map, simplified to three stops
+        if (fraction < 0.5) {
+            return Color.web("#A8CEE0").interpolate(Color.web("#63A6B8"), fraction * 2);
+        }
+        return Color.web("#63A6B8").interpolate(Color.web("#D9583B"), (fraction - 0.5) * 2);
+    }
+
+    private static String toHex(Color color) {
+        return String.format("#%02X%02X%02X",
+                (int) Math.round(color.getRed() * 255),
+                (int) Math.round(color.getGreen() * 255),
+                (int) Math.round(color.getBlue() * 255));
+    }
+
+    private VBox buildTranscriptCard(Transcript transcript) {
+        VBox card = new VBox(6);
+        card.setPadding(new Insets(10));
+        card.setStyle("-fx-background-color: #F7F9FC; -fx-background-radius: 6;"
+                + " -fx-border-color: #E3E9F0; -fx-border-radius: 6;");
+
+        Label name = new Label(transcript.getDisplayName()
+                + (transcript.isCanonical() ? "  \u2605 representative" : ""));
+        name.setFont(Font.font("Consolas", FontWeight.BOLD, 12));
+        name.setStyle("-fx-text-fill: #2C3E50;");
+
+        GridPane stats = new GridPane();
+        stats.setHgap(10);
+        stats.setVgap(4);
+        addRow(stats, 0, "Exons", transcript.getExonCount() + "");
+        addRow(stats, 1, "Introns", transcript.getIntronCount() + "");
+        addRow(stats, 2, "Exonic length", transcript.getExonicLength() + " bp");
+        addRow(stats, 3, "CDS length", transcript.getCdsLength() + " bp");
+        if (transcript.getProteinId() != null) {
+            addRow(stats, 4, "Protein ID", transcript.getProteinId());
+        }
+
+        card.getChildren().addAll(name, stats);
+
+        List<Exon> exons = transcript.getExonsByCoordinate();
+        if (!exons.isEmpty()) {
+            Label exonTitle = new Label("Exon coordinates (genomic order)");
+            exonTitle.setStyle("-fx-text-fill: #8899AA; -fx-font-size: 11px;");
+            card.getChildren().add(exonTitle);
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < exons.size(); i++) {
+                Exon exon = exons.get(i);
+                sb.append(String.format("E%d: %,d\u2013%,d (%d bp)", i + 1,
+                        exon.getStart(), exon.getEnd(), exon.length()));
+                if (exon.isCoding()) {
+                    sb.append(" [CDS]");
+                }
+                if (i < exons.size() - 1) {
+                    sb.append("\n");
+                }
+            }
+            Label exonList = new Label(sb.toString());
+            exonList.setFont(Font.font("Consolas", 10.5));
+            exonList.setStyle("-fx-text-fill: #4A5B6B;");
+            card.getChildren().add(exonList);
+        }
+
+        VBox.setVgrow(card, Priority.NEVER);
+        return card;
+    }
+
+    private Label sectionTitle(String text) {
+        Label label = new Label(text);
+        label.setFont(Font.font("Segoe UI", FontWeight.BOLD, 13));
+        label.setStyle("-fx-text-fill: #2C3E50;");
+        return label;
+    }
+
+    private void addRow(GridPane grid, int row, String key, String value) {
+        Label k = new Label(key);
+        k.setStyle("-fx-text-fill: #8899AA; -fx-font-size: 11.5px;");
+        Label v = new Label(value);
+        v.setStyle("-fx-text-fill: #2C3E50; -fx-font-size: 11.5px;");
+        v.setWrapText(true);
+        v.setMaxWidth(180);
+        grid.add(k, 0, row);
+        grid.add(v, 1, row);
+    }
+
+    private static String nullSafe(String value) {
+        return value == null || value.isBlank() ? "\u2014" : value;
+    }
+}

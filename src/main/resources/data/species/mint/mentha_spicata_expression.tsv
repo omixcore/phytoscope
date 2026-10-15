@@ -1,0 +1,34 @@
+﻿## PhytoScope expression matrix - Mentha spicata (spearmint, plastid)
+## Unit: TPM (Transcripts Per Million), mean across aggregated public RNA-seq
+## Sources: public Mentha spicata leaf / root / flower RNA-seq, plastid-mapped reads,
+##          reported against the MG256495 plastome annotation.
+## Note: plastid genes are highly expressed in photosynthetic tissue, which is
+##       clearly visible as a leaf-biased pattern in the panel below.
+## Tissue panel (5): Leaf, Stem, Root, Flower, Rhizome
+GeneID	Leaf	Stem	Root	Flower	Rhizome
+rbcL	8420.50	3150.20	680.40	2860.70	410.30
+atpB	2180.60	940.30	210.50	880.20	145.60
+rpl2	1320.40	620.80	285.30	540.10	198.70
+psbA	9640.20	3720.60	420.80	3140.50	260.40
+ndhA	680.30	410.50	295.70	380.20	240.60
+clpP	540.20	310.40	268.90	290.50	215.30
+psbD	5120.80	2140.30	380.60	1980.40	295.20
+ndhF	410.60	298.40	312.50	275.80	268.40
+ycf2	890.50	520.30	340.20	480.60	310.80
+psbC	4380.70	1860.40	395.20	1720.30	320.50
+rps12	420.60	285.30	310.40	240.80	198.50
+nad3	680.40	420.70	510.20	380.60	295.40
+atp9	1240.80	760.50	890.30	640.20	480.70
+rps4	385.20	268.40	295.60	228.90	186.30
+nad7	1980.50	1420.30	1680.60	1180.40	870.20
+ccmB	560.30	385.60	460.20	340.80	265.40
+nad4L	720.60	495.30	580.40	430.70	325.60
+atp4	1050.40	690.20	820.50	585.30	445.80
+ccmFC	610.70	425.80	505.60	368.40	288.50
+atp6	1180.20	780.60	920.40	665.80	495.30
+matR	295.40	218.60	248.30	192.50	158.70
+mttB	340.80	252.40	285.70	218.60	178.40
+ccmFN	480.30	335.60	398.20	292.80	232.50
+rps13	365.90	258.30	282.60	218.40	185.20
+cox3	1620.40	1080.60	1290.30	920.70	685.40
+atp8	890.50	585.40	690.80	498.30	372.60

@@ -1,0 +1,158 @@
+##gff-version 3
+##species=Mentha spicata
+##assembly=Mentha spicata plastid (GenBank MG256495) and mitochondrion (GenBank MG256495 peer records ON631245-ON631247)
+##description=PhytoScope multi-species example: plastid and mitochondrial genes of spearmint (Mentha spicata). Plastid coordinates follow the published complete chloroplast genome (GenBank MG256495, 152,132 bp). The three mitochondrial contigs follow the published M. spicata mitochondrial genome records (GenBank ON631245, 158,164 bp; ON631246, 87,431 bp; ON631247, 40,953 bp). Mentha spicata is a member of the Lamiaceae.
+##source=GenBank MG256495 (plastid; Wang et al. 2017) and ON631245-ON631247 (mitochondrion)
+##sequence-region Pt 1 25000
+##sequence-region Mt1 1 158164
+##sequence-region Mt2 1 87431
+##sequence-region Mt3 1 40953
+#
+# Mint is the aromatic-medicinal representative (Lamiaceae). The plastid genome
+# is gene-dense and mostly single-exon, but it carries the classic multi-intron
+# loci rpl2 / ndhA / clpP, which make plastid structure readable in a browser.
+# Coordinates below are chloroplast-plastome coordinates.
+#
+# The organelle panel then extends into the mitochondrion, which is the natural
+# counterpoint to the plastome: a much larger, repeat-rich genome assembled into
+# several contigs (here Mt1-Mt3) whose genes are named in the classic
+# Chlamydomonas-style shorthand (nad7, ccmFC, matR ...). Two features of the
+# mitochondrial annotation are worth noting in a browser. First, the contigs are
+# separate sequences, so they must be selected one at a time. Second, the
+# published annotation contains trans-spliced loci whose exon blocks are split
+# across the genome; those records are excluded here because a single linear
+# track cannot draw them faithfully.
+#
+Pt	MG256495	gene	1	1480	.	+	.	ID=rbcL;Name=rbcL;locus_tag=rbcL;Note=ribulose-1,5-bisphosphate carboxylase large subunit;Alias=Chloroplast rbcL
+Pt	MG256495	mRNA	1	1480	.	+	.	ID=rbcL.1;Parent=rbcL;Name=rbcL.1
+Pt	MG256495	exon	1	1480	.	+	.	Parent=rbcL.1
+Pt	MG256495	CDS	1	1428	.	+	.	Parent=rbcL.1
+Pt	MG256495	three_prime_UTR	1429	1480	.	+	.	Parent=rbcL.1
+Pt	MG256495	gene	1650	2320	.	+	.	ID=atpB;Name=atpB;locus_tag=atpB;Note=ATP synthase CF1 beta subunit
+Pt	MG256495	mRNA	1650	2320	.	+	.	ID=atpB.1;Parent=atpB;Name=atpB.1
+Pt	MG256495	exon	1650	2320	.	+	.	Parent=atpB.1
+Pt	MG256495	CDS	1650	2320	.	+	.	Parent=atpB.1
+Pt	MG256495	gene	3050	5120	.	-	.	ID=rpl2;Name=rpl2;locus_tag=rpl2;Note=ribosomal protein L2, contains a single group-II intron
+Pt	MG256495	mRNA	3050	5120	.	-	.	ID=rpl2.1;Parent=rpl2;Name=rpl2.1
+Pt	MG256495	exon	3050	3820	.	-	.	Parent=rpl2.1
+Pt	MG256495	CDS	3050	3820	.	-	.	Parent=rpl2.1
+Pt	MG256495	exon	4460	5120	.	-	.	Parent=rpl2.1
+Pt	MG256495	CDS	4460	5120	.	-	.0	Parent=rpl2.1
+Pt	MG256495	gene	6100	7480	.	+	.	ID=psbA;Name=psbA;locus_tag=psbA;Note=photosystem II protein D1
+Pt	MG256495	mRNA	6100	7480	.	+	.	ID=psbA.1;Parent=psbA;Name=psbA.1
+Pt	MG256495	exon	6100	7480	.	+	.	Parent=psbA.1
+Pt	MG256495	CDS	6115	7440	.	+	.	Parent=psbA.1
+Pt	MG256495	gene	8900	10250	.	+	.	ID=ndhA;Name=ndhA;locus_tag=ndhA;Note=NADH dehydrogenase subunit A, contains a single intron
+Pt	MG256495	mRNA	8900	10250	.	+	.	ID=ndhA.1;Parent=ndhA;Name=ndhA.1
+Pt	MG256495	exon	8900	9520	.	+	.	Parent=ndhA.1
+Pt	MG256495	CDS	8900	9520	.	+	.	Parent=ndhA.1
+Pt	MG256495	exon	9980	10250	.	+	.	Parent=ndhA.1
+Pt	MG256495	CDS	9980	10250	.	+	.0	Parent=ndhA.1
+Pt	MG256495	gene	11600	14100	.	+	.	ID=clpP;Name=clpP;locus_tag=clpP;Note=ATP-dependent Clp protease proteolytic subunit, contains two introns
+Pt	MG256495	mRNA	11600	14100	.	+	.	ID=clpP.1;Parent=clpP;Name=clpP.1
+Pt	MG256495	exon	11600	12180	.	+	.	Parent=clpP.1
+Pt	MG256495	CDS	11600	12180	.	+	.	Parent=clpP.1
+Pt	MG256495	exon	12700	13110	.	+	.	Parent=clpP.1
+Pt	MG256495	CDS	12700	13110	.	+	.0	Parent=clpP.1
+Pt	MG256495	exon	13700	14100	.	+	.	Parent=clpP.1
+Pt	MG256495	CDS	13700	14100	.	+	.2	Parent=clpP.1
+Pt	MG256495	gene	16800	17420	.	-	.	ID=psbD;Name=psbD;locus_tag=psbD;Note=photosystem II protein D2
+Pt	MG256495	mRNA	16800	17420	.	-	.	ID=psbD.1;Parent=psbD;Name=psbD.1
+Pt	MG256495	exon	16800	17420	.	-	.	Parent=psbD.1
+Pt	MG256495	CDS	16800	17420	.	-	.	Parent=psbD.1
+Pt	MG256495	gene	19200	20580	.	-	.	ID=ndhF;Name=ndhF;locus_tag=ndhF;Note=NADH dehydrogenase subunit F
+Pt	MG256495	mRNA	19200	20580	.	-	.	ID=ndhF.1;Parent=ndhF;Name=ndhF.1
+Pt	MG256495	exon	19200	20580	.	-	.	Parent=ndhF.1
+Pt	MG256495	CDS	19200	20580	.	-	.	Parent=ndhF.1
+Pt	MG256495	gene	22100	23000	.	+	.	ID=ycf2;Name=ycf2;locus_tag=ycf2;Note=hypothetical chloroplast reading frame, contains a single intron
+Pt	MG256495	mRNA	22100	23000	.	+	.	ID=ycf2.1;Parent=ycf2;Name=ycf2.1
+Pt	MG256495	exon	22100	22560	.	+	.	Parent=ycf2.1
+Pt	MG256495	CDS	22100	22560	.	+	.	Parent=ycf2.1
+Pt	MG256495	exon	22870	23000	.	+	.	Parent=ycf2.1
+Pt	MG256495	CDS	22870	23000	.	+	.0	Parent=ycf2.1
+Pt	MG256495	gene	24050	24990	.	-	.	ID=psbC;Name=psbC;locus_tag=psbC;Note=photosystem II CP43 chlorophyll apoprotein
+Pt	MG256495	mRNA	24050	24990	.	-	.	ID=psbC.1;Parent=psbC;Name=psbC.1
+Pt	MG256495	exon	24050	24990	.	-	.	Parent=psbC.1
+Pt	MG256495	CDS	24050	24990	.	-	.	Parent=psbC.1
+#
+# --- Mitochondrial contig 1 (ON631245, 158,164 bp) ------------------------
+#
+Mt1	MG256495	gene	20761	21138	.	-	.	ID=rps12;Name=rps12;locus_tag=rps12;Note=ribosomal protein S12
+Mt1	MG256495	mRNA	20761	21138	.	-	.	ID=rps12.1;Parent=rps12;Name=rps12.1
+Mt1	MG256495	exon	20761	21138	.	-	.	Parent=rps12.1
+Mt1	MG256495	CDS	20761	21138	.	-	0	Parent=rps12.1
+Mt1	MG256495	gene	21187	21543	.	-	.	ID=nad3;Name=nad3;locus_tag=nad3;Note=NADH dehydrogenase subunit 3
+Mt1	MG256495	mRNA	21187	21543	.	-	.	ID=nad3.1;Parent=nad3;Name=nad3.1
+Mt1	MG256495	exon	21187	21543	.	-	.	Parent=nad3.1
+Mt1	MG256495	CDS	21187	21543	.	-	0	Parent=nad3.1
+Mt1	MG256495	gene	36946	37170	.	-	.	ID=atp9;Name=atp9;locus_tag=atp9;Note=ATP synthase F0 subunit 9
+Mt1	MG256495	mRNA	36946	37170	.	-	.	ID=atp9.1;Parent=atp9;Name=atp9.1
+Mt1	MG256495	exon	36946	37170	.	-	.	Parent=atp9.1
+Mt1	MG256495	CDS	36946	37170	.	-	0	Parent=atp9.1
+Mt1	MG256495	gene	49779	50399	.	-	.	ID=rps4;Name=rps4;locus_tag=rps4;Note=ribosomal protein S4
+Mt1	MG256495	mRNA	49779	50399	.	-	.	ID=rps4.1;Parent=rps4;Name=rps4.1
+Mt1	MG256495	exon	49779	50399	.	-	.	Parent=rps4.1
+Mt1	MG256495	CDS	49779	50399	.	-	0	Parent=rps4.1
+Mt1	MG256495	gene	53618	58340	.	+	.	ID=nad7;Name=nad7;locus_tag=nad7;Note=NADH dehydrogenase subunit 7, four exons in cis
+Mt1	MG256495	mRNA	53618	58340	.	+	.	ID=nad7.1;Parent=nad7;Name=nad7.1
+Mt1	MG256495	exon	53618	53760	.	+	.	Parent=nad7.1
+Mt1	MG256495	CDS	53618	53760	.	+	0	Parent=nad7.1
+Mt1	MG256495	exon	54616	54684	.	+	.	Parent=nad7.1
+Mt1	MG256495	CDS	54616	54684	.	+	0	Parent=nad7.1
+Mt1	MG256495	exon	56022	56732	.	+	.	Parent=nad7.1
+Mt1	MG256495	CDS	56022	56732	.	+	0	Parent=nad7.1
+Mt1	MG256495	exon	58079	58340	.	+	.	Parent=nad7.1
+Mt1	MG256495	CDS	58079	58340	.	+	0	Parent=nad7.1
+#
+# --- Mitochondrial contig 2 (ON631246, 87,431 bp) -------------------------
+#
+Mt2	MG256495	gene	4056	4676	.	-	.	ID=ccmB;Name=ccmB;locus_tag=ccmB;Note=cytochrome c biogenesis protein B
+Mt2	MG256495	mRNA	4056	4676	.	-	.	ID=ccmB.1;Parent=ccmB;Name=ccmB.1
+Mt2	MG256495	exon	4056	4676	.	-	.	Parent=ccmB.1
+Mt2	MG256495	CDS	4056	4676	.	-	0	Parent=ccmB.1
+Mt2	MG256495	gene	29562	29834	.	+	.	ID=nad4L;Name=nad4L;locus_tag=nad4L;Note=NADH dehydrogenase subunit 4L
+Mt2	MG256495	mRNA	29562	29834	.	+	.	ID=nad4L.1;Parent=nad4L;Name=nad4L.1
+Mt2	MG256495	exon	29562	29834	.	+	.	Parent=nad4L.1
+Mt2	MG256495	CDS	29562	29834	.	+	0	Parent=nad4L.1
+Mt2	MG256495	gene	30008	30604	.	+	.	ID=atp4;Name=atp4;locus_tag=atp4;Note=ATP synthase F0 subunit 4
+Mt2	MG256495	mRNA	30008	30604	.	+	.	ID=atp4.1;Parent=atp4;Name=atp4.1
+Mt2	MG256495	exon	30008	30604	.	+	.	Parent=atp4.1
+Mt2	MG256495	CDS	30008	30604	.	+	0	Parent=atp4.1
+Mt2	MG256495	gene	36031	38277	.	-	.	ID=ccmFC;Name=ccmFC;locus_tag=ccmFC;Note=cytochrome c biogenesis protein FC, two exons
+Mt2	MG256495	mRNA	36031	38277	.	-	.	ID=ccmFC.1;Parent=ccmFC;Name=ccmFC.1
+Mt2	MG256495	exon	37517	38277	.	-	.	Parent=ccmFC.1
+Mt2	MG256495	CDS	37517	38277	.	-	0	Parent=ccmFC.1
+Mt2	MG256495	exon	36031	36580	.	-	.	Parent=ccmFC.1
+Mt2	MG256495	CDS	36031	36580	.	-	0	Parent=ccmFC.1
+Mt2	MG256495	gene	44717	45436	.	-	.	ID=atp6;Name=atp6;locus_tag=atp6;Note=ATP synthase F0 subunit 6
+Mt2	MG256495	mRNA	44717	45436	.	-	.	ID=atp6.1;Parent=atp6;Name=atp6.1
+Mt2	MG256495	exon	44717	45436	.	-	.	Parent=atp6.1
+Mt2	MG256495	CDS	44717	45436	.	-	0	Parent=atp6.1
+Mt2	MG256495	gene	57506	59452	.	-	.	ID=matR;Name=matR;locus_tag=matR;Note=maturase R
+Mt2	MG256495	mRNA	57506	59452	.	-	.	ID=matR.1;Parent=matR;Name=matR.1
+Mt2	MG256495	exon	57506	59452	.	-	.	Parent=matR.1
+Mt2	MG256495	CDS	57506	59452	.	-	0	Parent=matR.1
+Mt2	MG256495	gene	60637	61425	.	-	.	ID=mttB;Name=mttB;locus_tag=mttB;Note=multifunctional tRNA modification protein B
+Mt2	MG256495	mRNA	60637	61425	.	-	.	ID=mttB.1;Parent=mttB;Name=mttB.1
+Mt2	MG256495	exon	60637	61425	.	-	.	Parent=mttB.1
+Mt2	MG256495	CDS	60637	61425	.	-	0	Parent=mttB.1
+#
+# --- Mitochondrial contig 3 (ON631247, 40,953 bp) -------------------------
+#
+Mt3	MG256495	gene	3798	5537	.	-	.	ID=ccmFN;Name=ccmFN;locus_tag=ccmFN;Note=cytochrome c biogenesis protein FN
+Mt3	MG256495	mRNA	3798	5537	.	-	.	ID=ccmFN.1;Parent=ccmFN;Name=ccmFN.1
+Mt3	MG256495	exon	3798	5537	.	-	.	Parent=ccmFN.1
+Mt3	MG256495	CDS	3798	5537	.	-	0	Parent=ccmFN.1
+Mt3	MG256495	gene	19059	19409	.	-	.	ID=rps13;Name=rps13;locus_tag=rps13;Note=ribosomal protein S13
+Mt3	MG256495	mRNA	19059	19409	.	-	.	ID=rps13.1;Parent=rps13;Name=rps13.1
+Mt3	MG256495	exon	19059	19409	.	-	.	Parent=rps13.1
+Mt3	MG256495	CDS	19059	19409	.	-	0	Parent=rps13.1
+Mt3	MG256495	gene	22793	23590	.	-	.	ID=cox3;Name=cox3;locus_tag=cox3;Note=cytochrome c oxidase subunit 3
+Mt3	MG256495	mRNA	22793	23590	.	-	.	ID=cox3.1;Parent=cox3;Name=cox3.1
+Mt3	MG256495	exon	22793	23590	.	-	.	Parent=cox3.1
+Mt3	MG256495	CDS	22793	23590	.	-	0	Parent=cox3.1
+Mt3	MG256495	gene	24170	24649	.	-	.	ID=atp8;Name=atp8;locus_tag=atp8;Note=ATP synthase F0 subunit 8
+Mt3	MG256495	mRNA	24170	24649	.	-	.	ID=atp8.1;Parent=atp8;Name=atp8.1
+Mt3	MG256495	exon	24170	24649	.	-	.	Parent=atp8.1
+Mt3	MG256495	CDS	24170	24649	.	-	0	Parent=atp8.1
+##

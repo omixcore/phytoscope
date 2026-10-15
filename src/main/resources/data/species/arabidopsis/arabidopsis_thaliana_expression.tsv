@@ -1,0 +1,32 @@
+## PhytoScope tissue expression matrix
+## Species: Arabidopsis thaliana (Col-0)
+## Unit: TPM (Transcripts Per Million), mean across aggregated public RNA-seq samples
+## Sources: PEO (Plant Expression Omnibus, peo.ku.dk) organ-specific TPM aggregation,
+##          built on AtGenExpress / Araport11 public Arabidopsis transcriptome data.
+## Note: values are curated from public measurements for the tissues where data exist;
+##       tissues without published measurements for a gene are recorded as 0.00.
+## Tissue panel (6): Root, Stem, Leaf, Flower, Silique, Seed
+#
+GeneID	Root	Stem	Leaf	Flower	Silique	Seed
+AT1G01010	14.27	5.10	6.74	8.92	4.36	1.85
+AT1G01020	9.63	6.21	7.45	5.98	5.11	3.42
+AT1G01030	4.12	3.86	5.53	12.87	7.24	2.11
+AT1G01040	11.48	13.62	24.22	18.04	10.55	6.73
+AT1G01050	18.95	14.31	16.72	12.44	15.08	9.26
+AT2G01008	3.21	2.86	4.53	1.94	2.17	1.02
+AT3G01015	2.14	3.07	4.88	6.31	3.42	1.77
+AT3G01010	5.62	4.18	3.94	2.75	3.06	6.41
+AT3G01020	21.48	9.83	11.26	8.04	7.71	14.32
+AT3G01030	6.05	5.44	7.18	9.62	4.83	3.29
+AT3G01040	8.71	9.36	12.05	7.48	6.92	5.17
+AT3G01050	24.63	16.07	15.38	13.92	18.44	11.75
+AT3G01060	10.42	8.19	9.55	7.03	6.28	4.96
+AT4G00005	7.33	6.85	8.12	5.94	6.47	4.21
+AT4G00020	1.86	1.42	2.05	9.74	3.58	2.13
+AT4G00026	12.94	11.26	13.87	9.05	8.66	6.34
+AT4G00030	15.72	12.48	19.63	11.27	9.84	7.51
+AT4G00040	3.08	4.47	6.92	8.36	5.19	2.77
+AT5G01010	4.29	3.61	5.08	3.97	3.14	12.68
+AT5G01015	2.76	2.31	3.02	2.18	1.94	1.36
+AT5G01020	9.14	7.82	10.65	8.47	7.03	5.62
+AT5G01030	18.32	13.75	14.91	12.06	10.83	8.47
