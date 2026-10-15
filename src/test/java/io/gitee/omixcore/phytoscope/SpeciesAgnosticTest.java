@@ -41,14 +41,14 @@ class SpeciesAgnosticTest {
     // ------------------------------------------------------------------
 
     @Test
-    @DisplayName("The bundled catalogue covers four distinct species")
-    void shouldExposeFourSpecies() {
-        assertEquals(4, ExampleDataset.CATALOGUE.size());
+    @DisplayName("The bundled catalogue covers five distinct species across six datasets")
+    void shouldExposeFiveSpecies() {
+        assertEquals(6, ExampleDataset.CATALOGUE.size());
         long distinct = ExampleDataset.CATALOGUE.stream()
                 .map(ExampleDataset::species)
                 .distinct()
                 .count();
-        assertEquals(4, distinct, "Every catalogue entry must be a different species");
+        assertEquals(5, distinct, "A species may have multiple reference assemblies");
     }
 
     @Test
@@ -118,7 +118,8 @@ class SpeciesAgnosticTest {
 
         assertEquals("Oryza sativa Japonica Group", service.getSpecies());
         assertEquals("IRGSP-1.0 (Nipponbare)", service.getAssembly());
-        assertEquals(List.of("Chr1", "Chr2"), service.getChromosomes());
+        assertEquals(java.util.stream.IntStream.rangeClosed(1, 12)
+                .mapToObj(i -> "Chr" + i).toList(), service.getChromosomes());
         assertEquals("Chr1", service.getActiveSequence(),
                 "the first declared sequence is shown first");
 

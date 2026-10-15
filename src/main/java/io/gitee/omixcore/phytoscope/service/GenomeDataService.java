@@ -37,6 +37,7 @@ public class GenomeDataService {
 
     private final List<Gene> genes = new ArrayList<>();
     private final Map<String, Gene> geneIndex = new LinkedHashMap<>();
+    private final Map<String, List<Gene>> genesBySequence = new LinkedHashMap<>();
 
     private GenomeMetadata metadata = GenomeMetadata.fromAnnotation(
             null, null, "", "No data loaded", List.of());
@@ -132,9 +133,11 @@ public class GenomeDataService {
     private void applyResult(Gff3Parser.ParseResult result, Map<String, Integer> sequenceLengths) {
         genes.clear();
         geneIndex.clear();
+        genesBySequence.clear();
 
         genes.addAll(result.genes());
         for (Gene gene : genes) {
+            genesBySequence.computeIfAbsent(gene.getChromosome(), key -> new ArrayList<>()).add(gene);
             geneIndex.put(gene.getDisplayName(), gene);
             if (gene.getId() != null) {
                 geneIndex.put(gene.getId(), gene);
@@ -143,8 +146,12 @@ public class GenomeDataService {
         this.metadata = result.metadata().withSequenceLengths(sequenceLengths);
         this.format = result.format();
         this.rawFeatureCount = result.featureCount();
-        this.activeSequence = metadata.getSequenceNames().isEmpty()
-                ? null : metadata.getSequenceNames().get(0);
+        // Prefer a populated sequence: headers may declare unannotated organelles
+        // or scaffolds before the first nuclear gene. Keep them selectable.
+        this.activeSequence = metadata.getSequenceNames().stream()
+                .filter(name -> genesBySequence.containsKey(name)).findFirst()
+                .orElse(metadata.getSequenceNames().isEmpty()
+                        ? null : metadata.getSequenceNames().get(0));
     }
 
     // ------------------------------------------------------------------
@@ -196,9 +203,7 @@ public class GenomeDataService {
         if (sequence == null) {
             return List.of();
         }
-        return genes.stream()
-                .filter(g -> sequence.equals(g.getChromosome()))
-                .toList();
+        return List.copyOf(genesBySequence.getOrDefault(sequence, List.of()));
     }
 
     /**
@@ -232,7 +237,7 @@ public class GenomeDataService {
     /** Sequences that actually carry at least one gene, in metadata order. */
     public List<String> getPopulatedChromosomes() {
         return getChromosomes().stream()
-                .filter(name -> !getGenesOn(name).isEmpty())
+                .filter(genesBySequence::containsKey)
                 .toList();
     }
 

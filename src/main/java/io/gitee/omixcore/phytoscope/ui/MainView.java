@@ -85,6 +85,7 @@ public class MainView extends BorderPane {
     private final Label statusLabel = new Label();
     private final ComboBox<ExampleDataset> datasetSelector = new ComboBox<>();
     private final ComboBox<String> chromosomeSelector = new ComboBox<>();
+    private final Label sequenceCountLabel = new Label();
 
     private final Pane canvasHolder = new Pane();
     private final ScrollPane browserScroll = new ScrollPane();
@@ -227,6 +228,11 @@ public class MainView extends BorderPane {
         loading = true;
         try {
             chromosomeSelector.getItems().setAll(sequences);
+            chromosomeSelector.setDisable(sequences.isEmpty());
+            sequenceCountLabel.setText(sequences.size() + (sequences.size() == 1 ? " sequence" : " sequences"));
+            sequenceCountLabel.setTooltip(new Tooltip(
+                    "Sequences present in this annotation, including scaffolds and organelles.\n"
+                            + "An excerpt may contain fewer chromosomes than the whole genome."));
             chromosomeSelector.getSelectionModel().select(dataService.getActiveSequence());
         } finally {
             loading = wasLoading;
@@ -290,6 +296,14 @@ public class MainView extends BorderPane {
     private void selectChromosome(String sequence) {
         if (sequence == null || !dataService.setActiveSequence(sequence)) {
             return;
+        }
+        // Menu selection and dropdown selection share one state.
+        boolean wasLoading = loading;
+        loading = true;
+        try {
+            chromosomeSelector.getSelectionModel().select(sequence);
+        } finally {
+            loading = wasLoading;
         }
         showActiveChromosome();
     }
@@ -447,9 +461,10 @@ public class MainView extends BorderPane {
 
         // Dataset selector: switches between the bundled species examples.
         datasetSelector.getItems().setAll(ExampleDataset.CATALOGUE);
+        datasetSelector.setId("dataset-selector");
         datasetSelector.setPrefWidth(260);
         datasetSelector.setTooltip(new Tooltip(
-                "Switch between the bundled example datasets (four species)"));
+                "Switch between the bundled example datasets"));
         datasetSelector.setConverter(new StringConverter<>() {
             @Override
             public String toString(ExampleDataset dataset) {
@@ -469,7 +484,12 @@ public class MainView extends BorderPane {
 
         // Chromosome selector: the browser shows one sequence at a time, and the
         // list is rebuilt from whatever sequences the loaded data declares.
+        chromosomeSelector.setId("chromosome-selector");
+        sequenceCountLabel.setId("sequence-count");
+        sequenceCountLabel.setMinWidth(Region.USE_PREF_SIZE);
+        sequenceCountLabel.setStyle("-fx-text-fill: #6B7B8B; -fx-font-size: 11px;");
         chromosomeSelector.setPrefWidth(175);
+        chromosomeSelector.setVisibleRowCount(12);
         chromosomeSelector.setTooltip(new Tooltip(
                 "Show one chromosome / sequence at a time\n"
                         + "(the list is built from the loaded annotation)"));
@@ -532,7 +552,7 @@ public class MainView extends BorderPane {
                 "Save the current browser view (gene structure tracks)"));
 
         bar.getChildren().addAll(brandBox, spacer0, datasetSelector, chromosomeLabel,
-                chromosomeSelector, spacer1, searchField,
+                chromosomeSelector, sequenceCountLabel, spacer1, searchField,
                 zoomOut, zoomIn, fitAll, focusSelected, exportMenu);
         return bar;
     }

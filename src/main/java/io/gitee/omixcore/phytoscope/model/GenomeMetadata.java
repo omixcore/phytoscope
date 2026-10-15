@@ -33,11 +33,17 @@ public final class GenomeMetadata {
         this.assembly = blankToUnknown(assembly);
         this.description = description == null ? "" : description.trim();
         this.sourceLabel = blankToUnknown(sourceLabel);
-        this.sequenceRegions = List.copyOf(sequenceRegions);
+        // A repeated GFF3 directive must not create duplicate selector entries.
         Map<String, SequenceRegion> index = new LinkedHashMap<>();
-        for (SequenceRegion region : this.sequenceRegions) {
-            index.putIfAbsent(region.id(), region);
+        for (SequenceRegion region : sequenceRegions) {
+            if (region.id() == null || region.id().isBlank()
+                    || region.start() < 1 || region.end() < region.start()) {
+                continue;
+            }
+            index.merge(region.id(), region, (a, b) -> new SequenceRegion(a.id(),
+                    Math.min(a.start(), b.start()), Math.max(a.end(), b.end())));
         }
+        this.sequenceRegions = List.copyOf(index.values());
         this.regionIndex = Map.copyOf(index);
     }
 
@@ -178,7 +184,8 @@ public final class GenomeMetadata {
         boolean changed = false;
         for (SequenceRegion region : sequenceRegions) {
             Integer declaredLength = lengths.get(region.id());
-            if (declaredLength != null && declaredLength > region.length()) {
+            if (declaredLength != null && declaredLength >= region.end()
+                    && (region.start() != 1 || declaredLength != region.end())) {
                 updated.add(new SequenceRegion(region.id(), 1, declaredLength));
                 changed = true;
             } else {

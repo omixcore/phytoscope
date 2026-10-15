@@ -1,15 +1,25 @@
 ##gff-version 3
 ##species=Oryza sativa Japonica Group
 ##assembly=IRGSP-1.0 (Nipponbare)
-##description=PhytoScope multi-species example: the first genes of rice chromosomes 1 and 2. Coordinates from the IRGSP-1.0 / RAP-DB public annotation (NCBI AP014957 for Chr1, AP014958 for Chr2, Oryza sativa Japonica Group cultivar Nipponbare).
+##description=PhytoScope multi-species example: gene excerpts on all 12 rice nuclear chromosomes. Coordinates from the IRGSP-1.0 / RAP-DB public annotation (NCBI AP014957 for Chr1, AP014958 for Chr2, Oryza sativa Japonica Group cultivar Nipponbare).
 ##source=RAP-DB / IRGSP-1.0 via NCBI AP014957 (Chr1) and AP014958 (Chr2)
 ##sequence-region Chr1 1 30000
 ##sequence-region Chr2 1 35937250
+##sequence-region Chr3 1 36413819
+##sequence-region Chr4 1 35502694
+##sequence-region Chr5 1 29958434
+##sequence-region Chr6 1 31248787
+##sequence-region Chr7 1 29697621
+##sequence-region Chr8 1 28443022
+##sequence-region Chr9 1 23012720
+##sequence-region Chr10 1 23207287
+##sequence-region Chr11 1 29021106
+##sequence-region Chr12 1 27531856
 #
 # Rice is a monocot (Poaceae) model crop with a compact ~430 Mb genome whose
 # gene models are generally intron-poor compared with Arabidopsis. It is
-# included as the cereal representative in this panel, and carries two
-# chromosomes so the sequence selector has something to switch between.
+# included as the cereal representative in this panel. All 12 nuclear
+# chromosomes have gene models; this is an excerpt, not a whole annotation.
 #
 # The Chr2 block below opens with the same OSNPB-style locus tags that RAP-DB
 # assigns, but keeps the short Os02g* symbol as the display id so the two
@@ -130,3 +140,280 @@ Chr2	IRGSP-1.0	mRNA	13079	13520	.	+	.	ID=Os02g0100250.1;Parent=Os02g0100250;Name
 Chr2	IRGSP-1.0	exon	13079	13520	.	+	.	Parent=Os02g0100250.1
 Chr2	IRGSP-1.0	CDS	13079	13520	.	+	0	Parent=Os02g0100250.1
 ##
+
+# Chr3-Chr12: unchanged Ensembl Plants 62 gene families except sequence aliases
+# (source numeric N -> display ChrN). No expression values were generated.
+# Source: https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/oryza_sativa/Oryza_sativa.IRGSP-1.0.62.gff3.gz
+Chr3	RAP2022-09-01	gene	4583	6476	.	+	.	ID=gene:Os03g0100010;biotype=protein_coding;gene_id=Os03g0100010;logic_name=rapdb_genes
+Chr3	RAP2022-09-01	mRNA	4583	6476	.	+	.	ID=transcript:Os03t0100010-00;Parent=gene:Os03g0100010;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os03t0100010-00
+Chr3	RAP2022-09-01	five_prime_UTR	4583	4636	.	+	.	Parent=transcript:Os03t0100010-00
+Chr3	RAP2022-09-01	exon	4583	5071	.	+	.	Parent=transcript:Os03t0100010-00;Name=Os03t0100010-00-E1;constitutive=1;ensembl_end_phase=0;ensembl_phase=-1;exon_id=Os03t0100010-00-E1;rank=1
+Chr3	RAP2022-09-01	CDS	4637	5071	.	+	0	ID=CDS:Os03t0100010-00;Parent=transcript:Os03t0100010-00;protein_id=Os03t0100010-00
+Chr3	RAP2022-09-01	exon	5174	5422	.	+	.	Parent=transcript:Os03t0100010-00;Name=Os03t0100010-00-E2;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os03t0100010-00-E2;rank=2
+Chr3	RAP2022-09-01	CDS	5174	5422	.	+	0	ID=CDS:Os03t0100010-00;Parent=transcript:Os03t0100010-00;protein_id=Os03t0100010-00
+Chr3	RAP2022-09-01	CDS	5530	5865	.	+	0	ID=CDS:Os03t0100010-00;Parent=transcript:Os03t0100010-00;protein_id=Os03t0100010-00
+Chr3	RAP2022-09-01	exon	5530	6136	.	+	.	Parent=transcript:Os03t0100010-00;Name=Os03t0100010-00-E3;constitutive=1;ensembl_end_phase=-1;ensembl_phase=0;exon_id=Os03t0100010-00-E3;rank=3
+Chr3	RAP2022-09-01	three_prime_UTR	5866	6136	.	+	.	Parent=transcript:Os03t0100010-00
+Chr3	RAP2022-09-01	exon	6195	6302	.	+	.	Parent=transcript:Os03t0100010-00;Name=Os03t0100010-00-E4;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os03t0100010-00-E4;rank=4
+Chr3	RAP2022-09-01	three_prime_UTR	6195	6302	.	+	.	Parent=transcript:Os03t0100010-00
+Chr3	RAP2022-09-01	exon	6401	6476	.	+	.	Parent=transcript:Os03t0100010-00;Name=Os03t0100010-00-E5;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os03t0100010-00-E5;rank=5
+Chr3	RAP2022-09-01	three_prime_UTR	6401	6476	.	+	.	Parent=transcript:Os03t0100010-00
+Chr3	RAP2022-09-01	gene	8552	9736	.	-	.	ID=gene:Os03g0100020;Name=OsTET4;biotype=protein_coding;gene_id=Os03g0100020;logic_name=rapdb_genes
+Chr3	RAP2022-09-01	mRNA	8552	9736	.	-	.	ID=transcript:Os03t0100020-01;Parent=gene:Os03g0100020;Name=OsTET4-201;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os03t0100020-01
+Chr3	RAP2022-09-01	three_prime_UTR	8552	8670	.	-	.	Parent=transcript:Os03t0100020-01
+Chr3	RAP2022-09-01	exon	8552	9736	.	-	.	Parent=transcript:Os03t0100020-01;Name=Os03t0100020-01-E1;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os03t0100020-01-E1;rank=1
+Chr3	RAP2022-09-01	CDS	8671	9495	.	-	0	ID=CDS:Os03t0100020-01;Parent=transcript:Os03t0100020-01;protein_id=Os03t0100020-01
+Chr3	RAP2022-09-01	five_prime_UTR	9496	9736	.	-	.	Parent=transcript:Os03t0100020-01
+Chr4	RAP2022-09-01	gene	58789	61561	.	+	.	ID=gene:Os04g0100300;biotype=protein_coding;gene_id=Os04g0100300;logic_name=rapdb_genes
+Chr4	RAP2022-09-01	mRNA	58789	61561	.	+	.	ID=transcript:Os04t0100300-00;Parent=gene:Os04g0100300;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os04t0100300-00
+Chr4	RAP2022-09-01	exon	58789	59951	.	+	.	Parent=transcript:Os04t0100300-00;Name=Os04t0100300-00-E1;constitutive=1;ensembl_end_phase=2;ensembl_phase=0;exon_id=Os04t0100300-00-E1;rank=1
+Chr4	RAP2022-09-01	CDS	58789	59951	.	+	0	ID=CDS:Os04t0100300-00;Parent=transcript:Os04t0100300-00;protein_id=Os04t0100300-00
+Chr4	RAP2022-09-01	exon	60080	60276	.	+	.	Parent=transcript:Os04t0100300-00;Name=Os04t0100300-00-E2;constitutive=1;ensembl_end_phase=1;ensembl_phase=2;exon_id=Os04t0100300-00-E2;rank=2
+Chr4	RAP2022-09-01	CDS	60080	60276	.	+	1	ID=CDS:Os04t0100300-00;Parent=transcript:Os04t0100300-00;protein_id=Os04t0100300-00
+Chr4	RAP2022-09-01	exon	60356	60827	.	+	.	Parent=transcript:Os04t0100300-00;Name=Os04t0100300-00-E3;constitutive=1;ensembl_end_phase=2;ensembl_phase=1;exon_id=Os04t0100300-00-E3;rank=3
+Chr4	RAP2022-09-01	CDS	60356	60827	.	+	2	ID=CDS:Os04t0100300-00;Parent=transcript:Os04t0100300-00;protein_id=Os04t0100300-00
+Chr4	RAP2022-09-01	CDS	60897	61536	.	+	1	ID=CDS:Os04t0100300-00;Parent=transcript:Os04t0100300-00;protein_id=Os04t0100300-00
+Chr4	RAP2022-09-01	exon	60897	61561	.	+	.	Parent=transcript:Os04t0100300-00;Name=Os04t0100300-00-E4;constitutive=1;ensembl_end_phase=-1;ensembl_phase=2;exon_id=Os04t0100300-00-E4;rank=4
+Chr4	RAP2022-09-01	three_prime_UTR	61537	61561	.	+	.	Parent=transcript:Os04t0100300-00
+Chr4	RAP2022-09-01	gene	58899	61464	.	-	.	ID=gene:Os04g0100150;biotype=protein_coding;gene_id=Os04g0100150;logic_name=rapdb_genes
+Chr4	RAP2022-09-01	mRNA	58899	61464	.	-	.	ID=transcript:Os04t0100150-00;Parent=gene:Os04g0100150;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os04t0100150-00
+Chr4	RAP2022-09-01	exon	58899	59157	.	-	.	Parent=transcript:Os04t0100150-00;Name=Os04t0100150-00-E4;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os04t0100150-00-E4;rank=4
+Chr4	RAP2022-09-01	three_prime_UTR	58899	59157	.	-	.	Parent=transcript:Os04t0100150-00
+Chr4	RAP2022-09-01	three_prime_UTR	59278	59628	.	-	.	Parent=transcript:Os04t0100150-00
+Chr4	RAP2022-09-01	exon	59278	59868	.	-	.	Parent=transcript:Os04t0100150-00;Name=Os04t0100150-00-E3;constitutive=1;ensembl_end_phase=-1;ensembl_phase=0;exon_id=Os04t0100150-00-E3;rank=3
+Chr4	RAP2022-09-01	CDS	59629	59868	.	-	0	ID=CDS:Os04t0100150-00;Parent=transcript:Os04t0100150-00;protein_id=Os04t0100150-00
+Chr4	RAP2022-09-01	exon	60415	60863	.	-	.	Parent=transcript:Os04t0100150-00;Name=Os04t0100150-00-E2;constitutive=1;ensembl_end_phase=0;ensembl_phase=1;exon_id=Os04t0100150-00-E2;rank=2
+Chr4	RAP2022-09-01	CDS	60415	60863	.	-	2	ID=CDS:Os04t0100150-00;Parent=transcript:Os04t0100150-00;protein_id=Os04t0100150-00
+Chr4	RAP2022-09-01	CDS	60937	60940	.	-	0	ID=CDS:Os04t0100150-00;Parent=transcript:Os04t0100150-00;protein_id=Os04t0100150-00
+Chr4	RAP2022-09-01	exon	60937	61464	.	-	.	Parent=transcript:Os04t0100150-00;Name=Os04t0100150-00-E1;constitutive=1;ensembl_end_phase=1;ensembl_phase=-1;exon_id=Os04t0100150-00-E1;rank=1
+Chr4	RAP2022-09-01	five_prime_UTR	60941	61464	.	-	.	Parent=transcript:Os04t0100150-00
+Chr5	RAP2022-09-01	gene	10947	11430	.	-	.	ID=gene:Os05g0100008;biotype=protein_coding;gene_id=Os05g0100008;logic_name=rapdb_genes
+Chr5	RAP2022-09-01	mRNA	10947	11430	.	-	.	ID=transcript:Os05t0100008-00;Parent=gene:Os05g0100008;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os05t0100008-00
+Chr5	RAP2022-09-01	CDS	10947	11429	.	-	0	ID=CDS:Os05t0100008-00;Parent=transcript:Os05t0100008-00;protein_id=Os05t0100008-00
+Chr5	RAP2022-09-01	exon	10947	11430	.	-	.	Parent=transcript:Os05t0100008-00;Name=Os05t0100008-00-E1;constitutive=1;ensembl_end_phase=0;ensembl_phase=-1;exon_id=Os05t0100008-00-E1;rank=1
+Chr5	RAP2022-09-01	five_prime_UTR	11430	11430	.	-	.	Parent=transcript:Os05t0100008-00
+Chr5	RAP2022-09-01	gene	12831	14076	.	+	.	ID=gene:Os05g0100016;biotype=protein_coding;gene_id=Os05g0100016;logic_name=rapdb_genes
+Chr5	RAP2022-09-01	mRNA	12831	14076	.	+	.	ID=transcript:Os05t0100016-00;Parent=gene:Os05g0100016;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os05t0100016-00
+Chr5	RAP2022-09-01	exon	12831	13261	.	+	.	Parent=transcript:Os05t0100016-00;Name=Os05t0100016-00-E1;constitutive=1;ensembl_end_phase=2;ensembl_phase=0;exon_id=Os05t0100016-00-E1;rank=1
+Chr5	RAP2022-09-01	CDS	12831	13261	.	+	0	ID=CDS:Os05t0100016-00;Parent=transcript:Os05t0100016-00;protein_id=Os05t0100016-00
+Chr5	RAP2022-09-01	CDS	13858	14071	.	+	1	ID=CDS:Os05t0100016-00;Parent=transcript:Os05t0100016-00;protein_id=Os05t0100016-00
+Chr5	RAP2022-09-01	exon	13858	14076	.	+	.	Parent=transcript:Os05t0100016-00;Name=Os05t0100016-00-E2;constitutive=1;ensembl_end_phase=-1;ensembl_phase=2;exon_id=Os05t0100016-00-E2;rank=2
+Chr5	RAP2022-09-01	three_prime_UTR	14072	14076	.	+	.	Parent=transcript:Os05t0100016-00
+Chr6	RAP2022-09-01	gene	38340	38628	.	+	.	ID=gene:Os06g0100550;biotype=protein_coding;gene_id=Os06g0100550;logic_name=rapdb_genes
+Chr6	RAP2022-09-01	mRNA	38340	38628	.	+	.	ID=transcript:Os06t0100550-00;Parent=gene:Os06g0100550;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os06t0100550-00
+Chr6	RAP2022-09-01	five_prime_UTR	38340	38517	.	+	.	Parent=transcript:Os06t0100550-00
+Chr6	RAP2022-09-01	exon	38340	38628	.	+	.	Parent=transcript:Os06t0100550-00;Name=Os06t0100550-00-E1;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os06t0100550-00-E1;rank=1
+Chr6	RAP2022-09-01	CDS	38518	38622	.	+	0	ID=CDS:Os06t0100550-00;Parent=transcript:Os06t0100550-00;protein_id=Os06t0100550-00
+Chr6	RAP2022-09-01	three_prime_UTR	38623	38628	.	+	.	Parent=transcript:Os06t0100550-00
+Chr6	RAP2022-09-01	gene	42260	42548	.	-	.	ID=gene:Os06g0100700;biotype=protein_coding;gene_id=Os06g0100700;logic_name=rapdb_genes
+Chr6	RAP2022-09-01	mRNA	42260	42548	.	-	.	ID=transcript:Os06t0100700-00;Parent=gene:Os06g0100700;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os06t0100700-00
+Chr6	RAP2022-09-01	three_prime_UTR	42260	42265	.	-	.	Parent=transcript:Os06t0100700-00
+Chr6	RAP2022-09-01	exon	42260	42548	.	-	.	Parent=transcript:Os06t0100700-00;Name=Os06t0100700-00-E1;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os06t0100700-00-E1;rank=1
+Chr6	RAP2022-09-01	CDS	42266	42370	.	-	0	ID=CDS:Os06t0100700-00;Parent=transcript:Os06t0100700-00;protein_id=Os06t0100700-00
+Chr6	RAP2022-09-01	five_prime_UTR	42371	42548	.	-	.	Parent=transcript:Os06t0100700-00
+Chr7	RAP2022-09-01	gene	11648	12983	.	-	.	ID=gene:Os07g0100200;Name=OsPDX1.3a;biotype=protein_coding;gene_id=Os07g0100200;logic_name=rapdb_genes
+Chr7	RAP2022-09-01	mRNA	11648	12983	.	-	.	ID=transcript:Os07t0100200-01;Parent=gene:Os07g0100200;Name=OsPDX1.3a-201;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os07t0100200-01
+Chr7	RAP2022-09-01	three_prime_UTR	11648	11936	.	-	.	Parent=transcript:Os07t0100200-01
+Chr7	RAP2022-09-01	exon	11648	12983	.	-	.	Parent=transcript:Os07t0100200-01;Name=Os07t0100200-01-E1;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os07t0100200-01-E1;rank=1
+Chr7	RAP2022-09-01	CDS	11937	12893	.	-	0	ID=CDS:Os07t0100200-01;Parent=transcript:Os07t0100200-01;protein_id=Os07t0100200-01
+Chr7	RAP2022-09-01	five_prime_UTR	12894	12983	.	-	.	Parent=transcript:Os07t0100200-01
+Chr7	RAP2022-09-01	gene	17519	21402	.	+	.	ID=gene:Os07g0100300;Name=SQD2.1;biotype=protein_coding;gene_id=Os07g0100300;logic_name=rapdb_genes
+Chr7	RAP2022-09-01	mRNA	17519	19474	.	+	.	ID=transcript:Os07t0100300-01;Parent=gene:Os07g0100300;Name=SQD2.1-201;biotype=protein_coding;transcript_id=Os07t0100300-01
+Chr7	RAP2022-09-01	five_prime_UTR	17519	17710	.	+	.	Parent=transcript:Os07t0100300-01
+Chr7	RAP2022-09-01	exon	17519	18016	.	+	.	Parent=transcript:Os07t0100300-01;Name=Os07t0100300-01-E1;constitutive=0;ensembl_end_phase=0;ensembl_phase=-1;exon_id=Os07t0100300-01-E1;rank=1
+Chr7	RAP2022-09-01	CDS	17711	18016	.	+	0	ID=CDS:Os07t0100300-01;Parent=transcript:Os07t0100300-01;protein_id=Os07t0100300-01
+Chr7	RAP2022-09-01	exon	18107	18177	.	+	.	Parent=transcript:Os07t0100300-01;Name=Os07t0100300-02-E2;constitutive=0;ensembl_end_phase=2;ensembl_phase=0;exon_id=Os07t0100300-02-E2;rank=2
+Chr7	RAP2022-09-01	CDS	18107	18177	.	+	0	ID=CDS:Os07t0100300-01;Parent=transcript:Os07t0100300-01;protein_id=Os07t0100300-01
+Chr7	RAP2022-09-01	exon	18269	18386	.	+	.	Parent=transcript:Os07t0100300-01;Name=Os07t0100300-02-E3;constitutive=0;ensembl_end_phase=0;ensembl_phase=2;exon_id=Os07t0100300-02-E3;rank=3
+Chr7	RAP2022-09-01	CDS	18269	18386	.	+	1	ID=CDS:Os07t0100300-01;Parent=transcript:Os07t0100300-01;protein_id=Os07t0100300-01
+Chr7	RAP2022-09-01	CDS	18462	18539	.	+	0	ID=CDS:Os07t0100300-01;Parent=transcript:Os07t0100300-01;protein_id=Os07t0100300-01
+Chr7	RAP2022-09-01	exon	18462	19474	.	+	.	Parent=transcript:Os07t0100300-01;Name=Os07t0100300-01-E4;constitutive=0;ensembl_end_phase=-1;ensembl_phase=0;exon_id=Os07t0100300-01-E4;rank=4
+Chr7	RAP2022-09-01	three_prime_UTR	18540	19474	.	+	.	Parent=transcript:Os07t0100300-01
+Chr7	RAP2022-09-01	mRNA	17520	21402	.	+	.	ID=transcript:Os07t0100300-02;Parent=gene:Os07g0100300;Name=SQD2.1-202;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os07t0100300-02
+Chr7	RAP2022-09-01	five_prime_UTR	17520	17710	.	+	.	Parent=transcript:Os07t0100300-02
+Chr7	RAP2022-09-01	exon	17520	18016	.	+	.	Parent=transcript:Os07t0100300-02;Name=Os07t0100300-02-E1;constitutive=0;ensembl_end_phase=0;ensembl_phase=-1;exon_id=Os07t0100300-02-E1;rank=1
+Chr7	RAP2022-09-01	CDS	17711	18016	.	+	0	ID=CDS:Os07t0100300-02;Parent=transcript:Os07t0100300-02;protein_id=Os07t0100300-02
+Chr7	RAP2022-09-01	exon	18107	18177	.	+	.	Parent=transcript:Os07t0100300-02;Name=Os07t0100300-02-E2;constitutive=0;ensembl_end_phase=2;ensembl_phase=0;exon_id=Os07t0100300-02-E2;rank=2
+Chr7	RAP2022-09-01	CDS	18107	18177	.	+	0	ID=CDS:Os07t0100300-02;Parent=transcript:Os07t0100300-02;protein_id=Os07t0100300-02
+Chr7	RAP2022-09-01	exon	18269	18386	.	+	.	Parent=transcript:Os07t0100300-02;Name=Os07t0100300-02-E3;constitutive=0;ensembl_end_phase=0;ensembl_phase=2;exon_id=Os07t0100300-02-E3;rank=3
+Chr7	RAP2022-09-01	CDS	18269	18386	.	+	1	ID=CDS:Os07t0100300-02;Parent=transcript:Os07t0100300-02;protein_id=Os07t0100300-02
+Chr7	RAP2022-09-01	exon	18462	18535	.	+	.	Parent=transcript:Os07t0100300-02;Name=Os07t0100300-02-E4;constitutive=0;ensembl_end_phase=2;ensembl_phase=0;exon_id=Os07t0100300-02-E4;rank=4
+Chr7	RAP2022-09-01	CDS	18462	18535	.	+	0	ID=CDS:Os07t0100300-02;Parent=transcript:Os07t0100300-02;protein_id=Os07t0100300-02
+Chr7	RAP2022-09-01	exon	18929	18984	.	+	.	Parent=transcript:Os07t0100300-02;Name=Os07t0100300-02-E5;constitutive=0;ensembl_end_phase=1;ensembl_phase=2;exon_id=Os07t0100300-02-E5;rank=5
+Chr7	RAP2022-09-01	CDS	18929	18984	.	+	1	ID=CDS:Os07t0100300-02;Parent=transcript:Os07t0100300-02;protein_id=Os07t0100300-02
+Chr7	RAP2022-09-01	exon	19064	19147	.	+	.	Parent=transcript:Os07t0100300-02;Name=Os07t0100300-02-E6;constitutive=0;ensembl_end_phase=1;ensembl_phase=1;exon_id=Os07t0100300-02-E6;rank=6
+Chr7	RAP2022-09-01	CDS	19064	19147	.	+	2	ID=CDS:Os07t0100300-02;Parent=transcript:Os07t0100300-02;protein_id=Os07t0100300-02
+Chr7	RAP2022-09-01	exon	19259	19346	.	+	.	Parent=transcript:Os07t0100300-02;Name=Os07t0100300-02-E7;constitutive=0;ensembl_end_phase=2;ensembl_phase=1;exon_id=Os07t0100300-02-E7;rank=7
+Chr7	RAP2022-09-01	CDS	19259	19346	.	+	2	ID=CDS:Os07t0100300-02;Parent=transcript:Os07t0100300-02;protein_id=Os07t0100300-02
+Chr7	RAP2022-09-01	exon	19511	19588	.	+	.	Parent=transcript:Os07t0100300-02;Name=Os07t0100300-02-E8;constitutive=0;ensembl_end_phase=2;ensembl_phase=2;exon_id=Os07t0100300-02-E8;rank=8
+Chr7	RAP2022-09-01	CDS	19511	19588	.	+	1	ID=CDS:Os07t0100300-02;Parent=transcript:Os07t0100300-02;protein_id=Os07t0100300-02
+Chr7	RAP2022-09-01	exon	19873	19929	.	+	.	Parent=transcript:Os07t0100300-02;Name=Os07t0100300-02-E9;constitutive=0;ensembl_end_phase=2;ensembl_phase=2;exon_id=Os07t0100300-02-E9;rank=9
+Chr7	RAP2022-09-01	CDS	19873	19929	.	+	1	ID=CDS:Os07t0100300-02;Parent=transcript:Os07t0100300-02;protein_id=Os07t0100300-02
+Chr7	RAP2022-09-01	CDS	20396	20903	.	+	1	ID=CDS:Os07t0100300-02;Parent=transcript:Os07t0100300-02;protein_id=Os07t0100300-02
+Chr7	RAP2022-09-01	exon	20396	21402	.	+	.	Parent=transcript:Os07t0100300-02;Name=Os07t0100300-02-E10;constitutive=0;ensembl_end_phase=-1;ensembl_phase=2;exon_id=Os07t0100300-02-E10;rank=10
+Chr7	RAP2022-09-01	three_prime_UTR	20904	21402	.	+	.	Parent=transcript:Os07t0100300-02
+Chr7	RAP2022-09-01	mRNA	19064	21375	.	+	.	ID=transcript:Os07t0100300-03;Parent=gene:Os07g0100300;Name=SQD2.1-203;biotype=protein_coding;transcript_id=Os07t0100300-03
+Chr7	RAP2022-09-01	five_prime_UTR	19064	19065	.	+	.	Parent=transcript:Os07t0100300-03
+Chr7	RAP2022-09-01	exon	19064	19147	.	+	.	Parent=transcript:Os07t0100300-03;Name=Os07t0100300-03-E1;constitutive=0;ensembl_end_phase=1;ensembl_phase=-1;exon_id=Os07t0100300-03-E1;rank=1
+Chr7	RAP2022-09-01	CDS	19066	19147	.	+	0	ID=CDS:Os07t0100300-03;Parent=transcript:Os07t0100300-03;protein_id=Os07t0100300-03
+Chr7	RAP2022-09-01	exon	19259	19346	.	+	.	Parent=transcript:Os07t0100300-03;Name=Os07t0100300-02-E7;constitutive=0;ensembl_end_phase=2;ensembl_phase=1;exon_id=Os07t0100300-02-E7;rank=2
+Chr7	RAP2022-09-01	CDS	19259	19346	.	+	2	ID=CDS:Os07t0100300-03;Parent=transcript:Os07t0100300-03;protein_id=Os07t0100300-03
+Chr7	RAP2022-09-01	exon	19511	19588	.	+	.	Parent=transcript:Os07t0100300-03;Name=Os07t0100300-02-E8;constitutive=0;ensembl_end_phase=2;ensembl_phase=2;exon_id=Os07t0100300-02-E8;rank=3
+Chr7	RAP2022-09-01	CDS	19511	19588	.	+	1	ID=CDS:Os07t0100300-03;Parent=transcript:Os07t0100300-03;protein_id=Os07t0100300-03
+Chr7	RAP2022-09-01	exon	19873	19929	.	+	.	Parent=transcript:Os07t0100300-03;Name=Os07t0100300-02-E9;constitutive=0;ensembl_end_phase=2;ensembl_phase=2;exon_id=Os07t0100300-02-E9;rank=4
+Chr7	RAP2022-09-01	CDS	19873	19929	.	+	1	ID=CDS:Os07t0100300-03;Parent=transcript:Os07t0100300-03;protein_id=Os07t0100300-03
+Chr7	RAP2022-09-01	CDS	20396	20903	.	+	1	ID=CDS:Os07t0100300-03;Parent=transcript:Os07t0100300-03;protein_id=Os07t0100300-03
+Chr7	RAP2022-09-01	exon	20396	21375	.	+	.	Parent=transcript:Os07t0100300-03;Name=Os07t0100300-03-E5;constitutive=0;ensembl_end_phase=-1;ensembl_phase=2;exon_id=Os07t0100300-03-E5;rank=5
+Chr7	RAP2022-09-01	three_prime_UTR	20904	21375	.	+	.	Parent=transcript:Os07t0100300-03
+Chr8	RAP2022-09-01	gene	17351	20091	.	+	.	ID=gene:Os08g0100150;biotype=protein_coding;gene_id=Os08g0100150;logic_name=rapdb_genes
+Chr8	RAP2022-09-01	mRNA	17351	20091	.	+	.	ID=transcript:Os08t0100150-01;Parent=gene:Os08g0100150;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os08t0100150-01
+Chr8	RAP2022-09-01	five_prime_UTR	17351	17532	.	+	.	Parent=transcript:Os08t0100150-01
+Chr8	RAP2022-09-01	exon	17351	17546	.	+	.	Parent=transcript:Os08t0100150-01;Name=Os08t0100150-01-E1;constitutive=1;ensembl_end_phase=2;ensembl_phase=-1;exon_id=Os08t0100150-01-E1;rank=1
+Chr8	RAP2022-09-01	CDS	17533	17546	.	+	0	ID=CDS:Os08t0100150-01;Parent=transcript:Os08t0100150-01;protein_id=Os08t0100150-01
+Chr8	RAP2022-09-01	CDS	19090	19354	.	+	1	ID=CDS:Os08t0100150-01;Parent=transcript:Os08t0100150-01;protein_id=Os08t0100150-01
+Chr8	RAP2022-09-01	exon	19090	20091	.	+	.	Parent=transcript:Os08t0100150-01;Name=Os08t0100150-01-E2;constitutive=1;ensembl_end_phase=-1;ensembl_phase=2;exon_id=Os08t0100150-01-E2;rank=2
+Chr8	RAP2022-09-01	three_prime_UTR	19355	20091	.	+	.	Parent=transcript:Os08t0100150-01
+Chr8	RAP2022-09-01	gene	18289	24063	.	-	.	ID=gene:Os08g0100200;biotype=protein_coding;gene_id=Os08g0100200;logic_name=rapdb_genes
+Chr8	RAP2022-09-01	mRNA	18289	24063	.	-	.	ID=transcript:Os08t0100200-00;Parent=gene:Os08g0100200;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os08t0100200-00
+Chr8	RAP2022-09-01	exon	18289	18376	.	-	.	Parent=transcript:Os08t0100200-00;Name=Os08t0100200-00-E10;constitutive=1;ensembl_end_phase=0;ensembl_phase=2;exon_id=Os08t0100200-00-E10;rank=10
+Chr8	RAP2022-09-01	CDS	18289	18376	.	-	1	ID=CDS:Os08t0100200-00;Parent=transcript:Os08t0100200-00;protein_id=Os08t0100200-00
+Chr8	RAP2022-09-01	exon	20820	20937	.	-	.	Parent=transcript:Os08t0100200-00;Name=Os08t0100200-00-E9;constitutive=1;ensembl_end_phase=2;ensembl_phase=1;exon_id=Os08t0100200-00-E9;rank=9
+Chr8	RAP2022-09-01	CDS	20820	20937	.	-	2	ID=CDS:Os08t0100200-00;Parent=transcript:Os08t0100200-00;protein_id=Os08t0100200-00
+Chr8	RAP2022-09-01	exon	21290	21357	.	-	.	Parent=transcript:Os08t0100200-00;Name=Os08t0100200-00-E8;constitutive=1;ensembl_end_phase=1;ensembl_phase=2;exon_id=Os08t0100200-00-E8;rank=8
+Chr8	RAP2022-09-01	CDS	21290	21357	.	-	1	ID=CDS:Os08t0100200-00;Parent=transcript:Os08t0100200-00;protein_id=Os08t0100200-00
+Chr8	RAP2022-09-01	exon	21687	21808	.	-	.	Parent=transcript:Os08t0100200-00;Name=Os08t0100200-00-E7;constitutive=1;ensembl_end_phase=2;ensembl_phase=0;exon_id=Os08t0100200-00-E7;rank=7
+Chr8	RAP2022-09-01	CDS	21687	21808	.	-	0	ID=CDS:Os08t0100200-00;Parent=transcript:Os08t0100200-00;protein_id=Os08t0100200-00
+Chr8	RAP2022-09-01	exon	22327	22388	.	-	.	Parent=transcript:Os08t0100200-00;Name=Os08t0100200-00-E6;constitutive=1;ensembl_end_phase=0;ensembl_phase=1;exon_id=Os08t0100200-00-E6;rank=6
+Chr8	RAP2022-09-01	CDS	22327	22388	.	-	2	ID=CDS:Os08t0100200-00;Parent=transcript:Os08t0100200-00;protein_id=Os08t0100200-00
+Chr8	RAP2022-09-01	exon	23180	23276	.	-	.	Parent=transcript:Os08t0100200-00;Name=Os08t0100200-00-E5;constitutive=1;ensembl_end_phase=1;ensembl_phase=0;exon_id=Os08t0100200-00-E5;rank=5
+Chr8	RAP2022-09-01	CDS	23180	23276	.	-	0	ID=CDS:Os08t0100200-00;Parent=transcript:Os08t0100200-00;protein_id=Os08t0100200-00
+Chr8	RAP2022-09-01	exon	23363	23449	.	-	.	Parent=transcript:Os08t0100200-00;Name=Os08t0100200-00-E4;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os08t0100200-00-E4;rank=4
+Chr8	RAP2022-09-01	CDS	23363	23449	.	-	0	ID=CDS:Os08t0100200-00;Parent=transcript:Os08t0100200-00;protein_id=Os08t0100200-00
+Chr8	RAP2022-09-01	exon	23518	23610	.	-	.	Parent=transcript:Os08t0100200-00;Name=Os08t0100200-00-E3;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os08t0100200-00-E3;rank=3
+Chr8	RAP2022-09-01	CDS	23518	23610	.	-	0	ID=CDS:Os08t0100200-00;Parent=transcript:Os08t0100200-00;protein_id=Os08t0100200-00
+Chr8	RAP2022-09-01	exon	23741	23799	.	-	.	Parent=transcript:Os08t0100200-00;Name=Os08t0100200-00-E2;constitutive=1;ensembl_end_phase=0;ensembl_phase=1;exon_id=Os08t0100200-00-E2;rank=2
+Chr8	RAP2022-09-01	CDS	23741	23799	.	-	2	ID=CDS:Os08t0100200-00;Parent=transcript:Os08t0100200-00;protein_id=Os08t0100200-00
+Chr8	RAP2022-09-01	exon	24000	24063	.	-	.	Parent=transcript:Os08t0100200-00;Name=Os08t0100200-00-E1;constitutive=1;ensembl_end_phase=1;ensembl_phase=0;exon_id=Os08t0100200-00-E1;rank=1
+Chr8	RAP2022-09-01	CDS	24000	24063	.	-	0	ID=CDS:Os08t0100200-00;Parent=transcript:Os08t0100200-00;protein_id=Os08t0100200-00
+Chr9	RAP2022-09-01	gene	145181	145517	.	+	.	ID=gene:Os09g0100750;biotype=protein_coding;gene_id=Os09g0100750;logic_name=rapdb_genes
+Chr9	RAP2022-09-01	mRNA	145181	145517	.	+	.	ID=transcript:Os09t0100750-01;Parent=gene:Os09g0100750;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os09t0100750-01
+Chr9	RAP2022-09-01	CDS	145181	145414	.	+	0	ID=CDS:Os09t0100750-01;Parent=transcript:Os09t0100750-01;protein_id=Os09t0100750-01
+Chr9	RAP2022-09-01	exon	145181	145517	.	+	.	Parent=transcript:Os09t0100750-01;Name=Os09t0100750-01-E1;constitutive=1;ensembl_end_phase=-1;ensembl_phase=0;exon_id=Os09t0100750-01-E1;rank=1
+Chr9	RAP2022-09-01	three_prime_UTR	145415	145517	.	+	.	Parent=transcript:Os09t0100750-01
+Chr9	RAP2022-09-01	gene	147568	152791	.	-	.	ID=gene:Os09g0100800;biotype=protein_coding;gene_id=Os09g0100800;logic_name=rapdb_genes
+Chr9	RAP2022-09-01	mRNA	147568	152791	.	-	.	ID=transcript:Os09t0100800-01;Parent=gene:Os09g0100800;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os09t0100800-01
+Chr9	RAP2022-09-01	exon	147568	147819	.	-	.	Parent=transcript:Os09t0100800-01;Name=Os09t0100800-01-E9;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os09t0100800-01-E9;rank=9
+Chr9	RAP2022-09-01	three_prime_UTR	147568	147819	.	-	.	Parent=transcript:Os09t0100800-01
+Chr9	RAP2022-09-01	exon	148635	148689	.	-	.	Parent=transcript:Os09t0100800-01;Name=Os09t0100800-01-E8;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os09t0100800-01-E8;rank=8
+Chr9	RAP2022-09-01	three_prime_UTR	148635	148689	.	-	.	Parent=transcript:Os09t0100800-01
+Chr9	RAP2022-09-01	exon	148773	149003	.	-	.	Parent=transcript:Os09t0100800-01;Name=Os09t0100800-01-E7;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os09t0100800-01-E7;rank=7
+Chr9	RAP2022-09-01	three_prime_UTR	148773	149003	.	-	.	Parent=transcript:Os09t0100800-01
+Chr9	RAP2022-09-01	exon	149097	149150	.	-	.	Parent=transcript:Os09t0100800-01;Name=Os09t0100800-01-E6;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os09t0100800-01-E6;rank=6
+Chr9	RAP2022-09-01	three_prime_UTR	149097	149150	.	-	.	Parent=transcript:Os09t0100800-01
+Chr9	RAP2022-09-01	exon	149237	149320	.	-	.	Parent=transcript:Os09t0100800-01;Name=Os09t0100800-01-E5;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os09t0100800-01-E5;rank=5
+Chr9	RAP2022-09-01	three_prime_UTR	149237	149320	.	-	.	Parent=transcript:Os09t0100800-01
+Chr9	RAP2022-09-01	three_prime_UTR	149572	149658	.	-	.	Parent=transcript:Os09t0100800-01
+Chr9	RAP2022-09-01	exon	149572	149766	.	-	.	Parent=transcript:Os09t0100800-01;Name=Os09t0100800-01-E4;constitutive=1;ensembl_end_phase=-1;ensembl_phase=0;exon_id=Os09t0100800-01-E4;rank=4
+Chr9	RAP2022-09-01	CDS	149659	149766	.	-	0	ID=CDS:Os09t0100800-01;Parent=transcript:Os09t0100800-01;protein_id=Os09t0100800-01
+Chr9	RAP2022-09-01	exon	149855	149923	.	-	.	Parent=transcript:Os09t0100800-01;Name=Os09t0100800-01-E3;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os09t0100800-01-E3;rank=3
+Chr9	RAP2022-09-01	CDS	149855	149923	.	-	0	ID=CDS:Os09t0100800-01;Parent=transcript:Os09t0100800-01;protein_id=Os09t0100800-01
+Chr9	RAP2022-09-01	exon	150018	150260	.	-	.	Parent=transcript:Os09t0100800-01;Name=Os09t0100800-01-E2;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os09t0100800-01-E2;rank=2
+Chr9	RAP2022-09-01	CDS	150018	150260	.	-	0	ID=CDS:Os09t0100800-01;Parent=transcript:Os09t0100800-01;protein_id=Os09t0100800-01
+Chr9	RAP2022-09-01	CDS	151832	152605	.	-	0	ID=CDS:Os09t0100800-01;Parent=transcript:Os09t0100800-01;protein_id=Os09t0100800-01
+Chr9	RAP2022-09-01	exon	151832	152791	.	-	.	Parent=transcript:Os09t0100800-01;Name=Os09t0100800-01-E1;constitutive=1;ensembl_end_phase=0;ensembl_phase=-1;exon_id=Os09t0100800-01-E1;rank=1
+Chr9	RAP2022-09-01	five_prime_UTR	152606	152791	.	-	.	Parent=transcript:Os09t0100800-01
+Chr10	RAP2022-09-01	gene	44902	45692	.	+	.	ID=gene:Os10g0100200;biotype=protein_coding;gene_id=Os10g0100200;logic_name=rapdb_genes
+Chr10	RAP2022-09-01	mRNA	44902	45692	.	+	.	ID=transcript:Os10t0100200-01;Parent=gene:Os10g0100200;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os10t0100200-01
+Chr10	RAP2022-09-01	five_prime_UTR	44902	44902	.	+	.	Parent=transcript:Os10t0100200-01
+Chr10	RAP2022-09-01	exon	44902	45692	.	+	.	Parent=transcript:Os10t0100200-01;Name=Os10t0100200-01-E1;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os10t0100200-01-E1;rank=1
+Chr10	RAP2022-09-01	CDS	44903	45178	.	+	0	ID=CDS:Os10t0100200-01;Parent=transcript:Os10t0100200-01;protein_id=Os10t0100200-01
+Chr10	RAP2022-09-01	three_prime_UTR	45179	45692	.	+	.	Parent=transcript:Os10t0100200-01
+Chr10	RAP2022-09-01	gene	46031	58278	.	-	.	ID=gene:Os10g0100300;Name=TIC62;biotype=protein_coding;gene_id=Os10g0100300;logic_name=rapdb_genes
+Chr10	RAP2022-09-01	mRNA	46031	58278	.	-	.	ID=transcript:Os10t0100300-01;Parent=gene:Os10g0100300;Name=TIC62-201;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os10t0100300-01
+Chr10	RAP2022-09-01	three_prime_UTR	46031	46216	.	-	.	Parent=transcript:Os10t0100300-01
+Chr10	RAP2022-09-01	exon	46031	46271	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E11;constitutive=1;ensembl_end_phase=-1;ensembl_phase=2;exon_id=Os10t0100300-01-E11;rank=11
+Chr10	RAP2022-09-01	CDS	46217	46271	.	-	1	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	exon	46356	46553	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E10;constitutive=1;ensembl_end_phase=2;ensembl_phase=2;exon_id=Os10t0100300-01-E10;rank=10
+Chr10	RAP2022-09-01	CDS	46356	46553	.	-	1	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	exon	46681	46866	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E9;constitutive=1;ensembl_end_phase=2;ensembl_phase=2;exon_id=Os10t0100300-01-E9;rank=9
+Chr10	RAP2022-09-01	CDS	46681	46866	.	-	1	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	exon	55111	55202	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E8;constitutive=1;ensembl_end_phase=2;ensembl_phase=0;exon_id=Os10t0100300-01-E8;rank=8
+Chr10	RAP2022-09-01	CDS	55111	55202	.	-	0	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	exon	55774	56016	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E7;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os10t0100300-01-E7;rank=7
+Chr10	RAP2022-09-01	CDS	55774	56016	.	-	0	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	exon	56899	56971	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E6;constitutive=1;ensembl_end_phase=0;ensembl_phase=2;exon_id=Os10t0100300-01-E6;rank=6
+Chr10	RAP2022-09-01	CDS	56899	56971	.	-	1	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	exon	57152	57233	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E5;constitutive=1;ensembl_end_phase=2;ensembl_phase=1;exon_id=Os10t0100300-01-E5;rank=5
+Chr10	RAP2022-09-01	CDS	57152	57233	.	-	2	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	exon	57366	57548	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E4;constitutive=1;ensembl_end_phase=1;ensembl_phase=1;exon_id=Os10t0100300-01-E4;rank=4
+Chr10	RAP2022-09-01	CDS	57366	57548	.	-	2	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	exon	57631	57670	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E3;constitutive=1;ensembl_end_phase=1;ensembl_phase=0;exon_id=Os10t0100300-01-E3;rank=3
+Chr10	RAP2022-09-01	CDS	57631	57670	.	-	0	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	exon	57782	57854	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E2;constitutive=1;ensembl_end_phase=0;ensembl_phase=2;exon_id=Os10t0100300-01-E2;rank=2
+Chr10	RAP2022-09-01	CDS	57782	57854	.	-	1	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	CDS	57990	58258	.	-	0	ID=CDS:Os10t0100300-01;Parent=transcript:Os10t0100300-01;protein_id=Os10t0100300-01
+Chr10	RAP2022-09-01	exon	57990	58278	.	-	.	Parent=transcript:Os10t0100300-01;Name=Os10t0100300-01-E1;constitutive=1;ensembl_end_phase=2;ensembl_phase=-1;exon_id=Os10t0100300-01-E1;rank=1
+Chr10	RAP2022-09-01	five_prime_UTR	58259	58278	.	-	.	Parent=transcript:Os10t0100300-01
+Chr11	RAP2022-09-01	gene	1180	4230	.	-	.	ID=gene:Os11g0100100;Name=OsATG8e;biotype=protein_coding;gene_id=Os11g0100100;logic_name=rapdb_genes
+Chr11	RAP2022-09-01	mRNA	1180	4230	.	-	.	ID=transcript:Os11t0100100-01;Parent=gene:Os11g0100100;Name=OsATG8e-201;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os11t0100100-01
+Chr11	RAP2022-09-01	exon	1180	1427	.	-	.	Parent=transcript:Os11t0100100-01;Name=Os11t0100100-01-E5;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os11t0100100-01-E5;rank=5
+Chr11	RAP2022-09-01	three_prime_UTR	1180	1427	.	-	.	Parent=transcript:Os11t0100100-01
+Chr11	RAP2022-09-01	exon	1515	1633	.	-	.	Parent=transcript:Os11t0100100-01;Name=Os11t0100100-01-E4;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os11t0100100-01-E4;rank=4
+Chr11	RAP2022-09-01	three_prime_UTR	1515	1633	.	-	.	Parent=transcript:Os11t0100100-01
+Chr11	RAP2022-09-01	exon	1704	1756	.	-	.	Parent=transcript:Os11t0100100-01;Name=Os11t0100100-01-E3;constitutive=1;ensembl_end_phase=-1;ensembl_phase=-1;exon_id=Os11t0100100-01-E3;rank=3
+Chr11	RAP2022-09-01	three_prime_UTR	1704	1756	.	-	.	Parent=transcript:Os11t0100100-01
+Chr11	RAP2022-09-01	three_prime_UTR	1974	3730	.	-	.	Parent=transcript:Os11t0100100-01
+Chr11	RAP2022-09-01	exon	1974	3945	.	-	.	Parent=transcript:Os11t0100100-01;Name=Os11t0100100-01-E2;constitutive=1;ensembl_end_phase=-1;ensembl_phase=1;exon_id=Os11t0100100-01-E2;rank=2
+Chr11	RAP2022-09-01	CDS	3731	3945	.	-	2	ID=CDS:Os11t0100100-01;Parent=transcript:Os11t0100100-01;protein_id=Os11t0100100-01
+Chr11	RAP2022-09-01	CDS	4041	4077	.	-	0	ID=CDS:Os11t0100100-01;Parent=transcript:Os11t0100100-01;protein_id=Os11t0100100-01
+Chr11	RAP2022-09-01	exon	4041	4230	.	-	.	Parent=transcript:Os11t0100100-01;Name=Os11t0100100-01-E1;constitutive=1;ensembl_end_phase=1;ensembl_phase=-1;exon_id=Os11t0100100-01-E1;rank=1
+Chr11	RAP2022-09-01	five_prime_UTR	4078	4230	.	-	.	Parent=transcript:Os11t0100100-01
+Chr11	RAP2022-09-01	gene	2049	2282	.	+	.	ID=gene:Os11g0100150;biotype=protein_coding;gene_id=Os11g0100150;logic_name=rapdb_genes
+Chr11	RAP2022-09-01	mRNA	2049	2282	.	+	.	ID=transcript:Os11t0100150-00;Parent=gene:Os11g0100150;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os11t0100150-00
+Chr11	RAP2022-09-01	exon	2049	2282	.	+	.	Parent=transcript:Os11t0100150-00;Name=Os11t0100150-00-E1;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os11t0100150-00-E1;rank=1
+Chr11	RAP2022-09-01	CDS	2049	2282	.	+	0	ID=CDS:Os11t0100150-00;Parent=transcript:Os11t0100150-00;protein_id=Os11t0100150-00
+Chr12	RAP2022-09-01	gene	2682	5428	.	+	.	ID=gene:Os12g0100100;Name=OsRBD1;biotype=protein_coding;gene_id=Os12g0100100;logic_name=rapdb_genes
+Chr12	RAP2022-09-01	mRNA	2682	5419	.	+	.	ID=transcript:Os12t0100100-01;Parent=gene:Os12g0100100;Name=OsRBD1-201;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os12t0100100-01
+Chr12	RAP2022-09-01	five_prime_UTR	2682	2776	.	+	.	Parent=transcript:Os12t0100100-01
+Chr12	RAP2022-09-01	exon	2682	2935	.	+	.	Parent=transcript:Os12t0100100-01;Name=Os12t0100100-01-E1;constitutive=0;ensembl_end_phase=0;ensembl_phase=-1;exon_id=Os12t0100100-01-E1;rank=1
+Chr12	RAP2022-09-01	CDS	2777	2935	.	+	0	ID=CDS:Os12t0100100-01;Parent=transcript:Os12t0100100-01;protein_id=Os12t0100100-01
+Chr12	RAP2022-09-01	exon	3002	3109	.	+	.	Parent=transcript:Os12t0100100-01;Name=Os12t0100100-03-E2;constitutive=0;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os12t0100100-03-E2;rank=2
+Chr12	RAP2022-09-01	CDS	3002	3109	.	+	0	ID=CDS:Os12t0100100-01;Parent=transcript:Os12t0100100-01;protein_id=Os12t0100100-01
+Chr12	RAP2022-09-01	exon	3492	3560	.	+	.	Parent=transcript:Os12t0100100-01;Name=Os12t0100100-03-E3;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os12t0100100-03-E3;rank=3
+Chr12	RAP2022-09-01	CDS	3492	3560	.	+	0	ID=CDS:Os12t0100100-01;Parent=transcript:Os12t0100100-01;protein_id=Os12t0100100-01
+Chr12	RAP2022-09-01	exon	3652	3836	.	+	.	Parent=transcript:Os12t0100100-01;Name=Os12t0100100-03-E4;constitutive=1;ensembl_end_phase=2;ensembl_phase=0;exon_id=Os12t0100100-03-E4;rank=4
+Chr12	RAP2022-09-01	CDS	3652	3836	.	+	0	ID=CDS:Os12t0100100-01;Parent=transcript:Os12t0100100-01;protein_id=Os12t0100100-01
+Chr12	RAP2022-09-01	CDS	4923	5088	.	+	1	ID=CDS:Os12t0100100-01;Parent=transcript:Os12t0100100-01;protein_id=Os12t0100100-01
+Chr12	RAP2022-09-01	exon	4923	5419	.	+	.	Parent=transcript:Os12t0100100-01;Name=Os12t0100100-01-E5;constitutive=0;ensembl_end_phase=-1;ensembl_phase=2;exon_id=Os12t0100100-01-E5;rank=5
+Chr12	RAP2022-09-01	three_prime_UTR	5089	5419	.	+	.	Parent=transcript:Os12t0100100-01
+Chr12	RAP2022-09-01	mRNA	2727	5428	.	+	.	ID=transcript:Os12t0100100-02;Parent=gene:Os12g0100100;Name=OsRBD1-202;biotype=protein_coding;transcript_id=Os12t0100100-02
+Chr12	RAP2022-09-01	five_prime_UTR	2727	3001	.	+	.	Parent=transcript:Os12t0100100-02
+Chr12	RAP2022-09-01	exon	2727	3109	.	+	.	Parent=transcript:Os12t0100100-02;Name=Os12t0100100-02-E1;constitutive=0;ensembl_end_phase=0;ensembl_phase=-1;exon_id=Os12t0100100-02-E1;rank=1
+Chr12	RAP2022-09-01	CDS	3002	3109	.	+	0	ID=CDS:Os12t0100100-02;Parent=transcript:Os12t0100100-02;protein_id=Os12t0100100-02
+Chr12	RAP2022-09-01	exon	3492	3560	.	+	.	Parent=transcript:Os12t0100100-02;Name=Os12t0100100-03-E3;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os12t0100100-03-E3;rank=2
+Chr12	RAP2022-09-01	CDS	3492	3560	.	+	0	ID=CDS:Os12t0100100-02;Parent=transcript:Os12t0100100-02;protein_id=Os12t0100100-02
+Chr12	RAP2022-09-01	exon	3652	3836	.	+	.	Parent=transcript:Os12t0100100-02;Name=Os12t0100100-03-E4;constitutive=1;ensembl_end_phase=2;ensembl_phase=0;exon_id=Os12t0100100-03-E4;rank=3
+Chr12	RAP2022-09-01	CDS	3652	3836	.	+	0	ID=CDS:Os12t0100100-02;Parent=transcript:Os12t0100100-02;protein_id=Os12t0100100-02
+Chr12	RAP2022-09-01	CDS	4923	5088	.	+	1	ID=CDS:Os12t0100100-02;Parent=transcript:Os12t0100100-02;protein_id=Os12t0100100-02
+Chr12	RAP2022-09-01	exon	4923	5428	.	+	.	Parent=transcript:Os12t0100100-02;Name=Os12t0100100-03-E5;constitutive=0;ensembl_end_phase=-1;ensembl_phase=2;exon_id=Os12t0100100-03-E5;rank=4
+Chr12	RAP2022-09-01	three_prime_UTR	5089	5428	.	+	.	Parent=transcript:Os12t0100100-02
+Chr12	RAP2022-09-01	mRNA	2760	5428	.	+	.	ID=transcript:Os12t0100100-03;Parent=gene:Os12g0100100;Name=OsRBD1-203;biotype=protein_coding;transcript_id=Os12t0100100-03
+Chr12	RAP2022-09-01	five_prime_UTR	2760	2776	.	+	.	Parent=transcript:Os12t0100100-03
+Chr12	RAP2022-09-01	exon	2760	2935	.	+	.	Parent=transcript:Os12t0100100-03;Name=Os12t0100100-03-E1;constitutive=0;ensembl_end_phase=0;ensembl_phase=-1;exon_id=Os12t0100100-03-E1;rank=1
+Chr12	RAP2022-09-01	CDS	2777	2935	.	+	0	ID=CDS:Os12t0100100-03;Parent=transcript:Os12t0100100-03;protein_id=Os12t0100100-03
+Chr12	RAP2022-09-01	exon	3002	3109	.	+	.	Parent=transcript:Os12t0100100-03;Name=Os12t0100100-03-E2;constitutive=0;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os12t0100100-03-E2;rank=2
+Chr12	RAP2022-09-01	CDS	3002	3109	.	+	0	ID=CDS:Os12t0100100-03;Parent=transcript:Os12t0100100-03;protein_id=Os12t0100100-03
+Chr12	RAP2022-09-01	exon	3492	3560	.	+	.	Parent=transcript:Os12t0100100-03;Name=Os12t0100100-03-E3;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os12t0100100-03-E3;rank=3
+Chr12	RAP2022-09-01	CDS	3492	3560	.	+	0	ID=CDS:Os12t0100100-03;Parent=transcript:Os12t0100100-03;protein_id=Os12t0100100-03
+Chr12	RAP2022-09-01	exon	3652	3836	.	+	.	Parent=transcript:Os12t0100100-03;Name=Os12t0100100-03-E4;constitutive=1;ensembl_end_phase=2;ensembl_phase=0;exon_id=Os12t0100100-03-E4;rank=4
+Chr12	RAP2022-09-01	CDS	3652	3836	.	+	0	ID=CDS:Os12t0100100-03;Parent=transcript:Os12t0100100-03;protein_id=Os12t0100100-03
+Chr12	RAP2022-09-01	CDS	4923	5088	.	+	1	ID=CDS:Os12t0100100-03;Parent=transcript:Os12t0100100-03;protein_id=Os12t0100100-03
+Chr12	RAP2022-09-01	exon	4923	5428	.	+	.	Parent=transcript:Os12t0100100-03;Name=Os12t0100100-03-E5;constitutive=0;ensembl_end_phase=-1;ensembl_phase=2;exon_id=Os12t0100100-03-E5;rank=5
+Chr12	RAP2022-09-01	three_prime_UTR	5089	5428	.	+	.	Parent=transcript:Os12t0100100-03
+Chr12	RAP2022-09-01	gene	5419	8440	.	-	.	ID=gene:Os12g0100200;biotype=protein_coding;gene_id=Os12g0100200;logic_name=rapdb_genes
+Chr12	RAP2022-09-01	mRNA	5419	8440	.	-	.	ID=transcript:Os12t0100200-00;Parent=gene:Os12g0100200;biotype=protein_coding;tag=Ensembl_canonical;transcript_id=Os12t0100200-00
+Chr12	RAP2022-09-01	three_prime_UTR	5419	5476	.	-	.	Parent=transcript:Os12t0100200-00
+Chr12	RAP2022-09-01	exon	5419	7144	.	-	.	Parent=transcript:Os12t0100200-00;Name=Os12t0100200-00-E2;constitutive=1;ensembl_end_phase=-1;ensembl_phase=0;exon_id=Os12t0100200-00-E2;rank=2
+Chr12	RAP2022-09-01	CDS	5477	7144	.	-	0	ID=CDS:Os12t0100200-00;Parent=transcript:Os12t0100200-00;protein_id=Os12t0100200-00
+Chr12	RAP2022-09-01	exon	7571	8440	.	-	.	Parent=transcript:Os12t0100200-00;Name=Os12t0100200-00-E1;constitutive=1;ensembl_end_phase=0;ensembl_phase=0;exon_id=Os12t0100200-00-E1;rank=1
+Chr12	RAP2022-09-01	CDS	7571	8440	.	-	0	ID=CDS:Os12t0100200-00;Parent=transcript:Os12t0100200-00;protein_id=Os12t0100200-00

@@ -18,7 +18,7 @@
     <description>
         Species-agnostic plant genome structure browser (JavaFX desktop, Java 21).
         Reads GFF3/GTF from any organism, overlays expression heat-map tracks,
-        and ships a four-species example panel plus a headless batch renderer.
+        and ships a five-species example panel plus a headless batch renderer.
     </description>
 
     <properties>
@@ -93,4 +93,27 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>ui-tests</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.testfx</groupId>
+                    <artifactId>openjfx-monocle</artifactId>
+                    <version>21.0.2</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build><plugins><plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration><systemPropertyVariables>
+                    <phytoscope.ui.tests>true</phytoscope.ui.tests>
+                    <glass.platform>Monocle</glass.platform>
+                    <monocle.platform>Headless</monocle.platform>
+                    <prism.order>sw</prism.order>
+                </systemPropertyVariables></configuration>
+            </plugin></plugins></build>
+        </profile>
+    </profiles>
 </project>

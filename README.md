@@ -3,7 +3,7 @@
 > A lightweight, fully local desktop framework (Java + JavaFX + Spring Boot) for
 > visualising gene structure from **any** plant genome annotation, with
 > sample-level expression overlaid as aligned heat-map tracks.
-> Ships with traceable example data from four species across the angiosperm
+> Ships with traceable example data from five species across the angiosperm
 > phylogeny — ready to run out of the box, no download required.
 
 ---
@@ -49,7 +49,7 @@ Typical uses:
 | **Structure statistics** | Exon count, intron count, exonic length, CDS length, exon coordinate listing |
 | **Image export** | Save the whole visible track view as **PNG** (2× raster) or **SVG** (vector) |
 | **Headless batch mode** | Render any number of loci to files without a display, for reproducible figures |
-| **Bundled example panel** | Four species, two annotation dialects, all traceable to public sources |
+| **Bundled example panel** | Five species, two annotation dialects, all traceable to public sources |
 
 ## 3. Tech stack
 
@@ -129,7 +129,7 @@ Header values are read whatever separator is used (`##species=X`,
 
 ## 5. Bundled example data
 
-Four species, chosen to span the angiosperm phylogeny, and two annotation
+Five species across six datasets, chosen to span the angiosperm phylogeny, and two annotation
 dialects to exercise the whole read path. Switch between them from the **Example
 datasets** menu or the toolbar selector.
 
@@ -138,7 +138,9 @@ datasets** menu or the toolbar selector.
 | 1 | *Arabidopsis thaliana* | Thale cress | Rosid · Brassicaceae | TAIR10 / Araport11 | GFF3 |
 | 2 | *Oryza sativa* | Rice (japonica) | Monocot · Poaceae | IRGSP-1.0 (Nipponbare) | GFF3 |
 | 3 | *Glycine max* | Soybean | Rosid · Fabaceae | Wm82.a2.v1 | **GTF** |
-| 4 | *Mentha spicata* | Spearmint | Asterid · Lamiaceae | plastid MG256495 | GFF3 |
+| 4 | *Mentha spicata* | Spearmint | Asterid · Lamiaceae | plastid + mitochondrial contigs | GFF3 |
+| 5 | *Zea mays* | Maize | Monocot · Poaceae | Zm-B73-REFERENCE-NAM-5.0 | GFF3 |
+| 6 | *Glycine max* | Soybean reference | Rosid · Fabaceae | Glycine_max_v2.1 | GFF3 |
 
 Each example deliberately demonstrates a different aspect:
 
@@ -148,8 +150,8 @@ Each example deliberately demonstrates a different aspect:
   AT2G01008, Chr3 and Chr4 carry the AT3G01010–AT3G01060 and AT4G00005–AT4G00040
   clusters, and Chr5 starts with the minus-strand retinal-binding protein
   AT5G01010; `AT1G01020` carries two transcripts and shows alternative splicing
-- **Rice** — a compact monocot cereal; `Os01g0100600` carries two splice isoforms
-- **Soybean** — written in **GTF** with no `##sequence-region` directive, proving
+- **Rice** — excerpts on all **12 nuclear chromosomes**; `Os01g0100600` carries two splice isoforms
+- **Soybean (legacy example)** — three chromosome excerpts, written in **GTF** with no `##sequence-region` directive, proving
   both dialect support and coordinate inference; `Glyma.01G000300` carries two
   isoforms
 - **Mint** — an aromatic medicinal herb; the plastid genome is gene-dense and
@@ -171,6 +173,26 @@ on the span the data actually covers, so the genes are visible immediately.
 those genes at their true coordinates, and **View → Fit all genes** returns to
 the tightest window that still contains every feature.
 Provenance is recorded in each file header and in §10 below.
+
+### Adaptive chromosome selection
+
+The sequence dropdown and Chromosome menu are rebuilt from each imported
+annotation, not from a species-name lookup or a fixed chromosome limit.
+Repeated `##sequence-region` declarations are merged; sequences found only in
+feature rows are included too. GTF files without declarations infer their
+sequence names and coordinate bounds from the annotation. Loading a new dataset
+clears the previous selection and starts on its first populated sequence.
+
+The toolbar reports **sequences present in the loaded file**. This may include
+scaffolds and organelles and may be smaller than the species' whole-genome
+chromosome count when importing an excerpt. PhytoScope does not invent missing
+chromosomes from a species name.
+
+The main reference examples now include Arabidopsis (5 nuclear chromosomes),
+rice (12), maize (10) and soybean v2.1 (20). Maize and soybean v2.1 contain two
+real gene families per chromosome, with full sequence lengths, and no expression
+measurements. The older soybean GTF example remains available separately as a
+three-chromosome excerpt. See [validation details](docs/chromosome-validation.md).
 
 ## 6. Running
 
@@ -223,7 +245,7 @@ java -jar target/phytoscope-0.1.0.jar \
 | --- | --- |
 | `--gff3 <file>` | annotation file (GFF3 or GTF) |
 | `--expression <file>` | optional expression matrix (TSV / CSV) |
-| `--example <id>` | bundled example: `arabidopsis`, `rice`, `soybean`, `mint` |
+| `--example <id>` | bundled example: `arabidopsis`, `rice`, `soybean`, `mint`, `maize`, `soybean-v2` |
 | `--loci <id[,id…]>` | genes to render; all genes when omitted |
 | `--out <dir>` | output directory (default `phytoscope-exports`) |
 | `--format <png\|svg\|both>` | output format (default `both`) |
@@ -263,7 +285,7 @@ self-contained. File names encode locus and window, e.g.
 
 | Action | Effect |
 | --- | --- |
-| Dataset selector | Switch between the four bundled species |
+| Dataset selector | Switch between the bundled datasets |
 | File ▸ Import annotation | Load any GFF3/GTF file from disk |
 | File ▸ Import expression matrix | Attach a matching expression matrix |
 | Scroll up / down | Zoom in / out about the canvas centre |

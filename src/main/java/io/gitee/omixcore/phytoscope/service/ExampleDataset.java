@@ -13,7 +13,7 @@ import java.util.Map;
  * cross-species generality can be demonstrated without any download. Every
  * entry is a small, traceable excerpt of a public genome annotation.</p>
  *
- * <p>The four entries deliberately span the angiosperm phylogeny — a rosid
+ * <p>The entries deliberately span the angiosperm phylogeny — a rosid
  * reference model, a monocot cereal, another rosid legume and an asterid
  * medicinal herb — and deliberately use two different annotation dialects, so
  * that a single walk through the catalogue exercises the whole read path.</p>
@@ -25,8 +25,8 @@ import java.util.Map;
  * in real megabase units and the genes appear where they belong on the
  * chromosome instead of being stretched across the whole window.</p>
  *
- * <p>Every entry bundles more than one sequence, because a sequence selector
- * with a single entry is not a selector. The panel covers nuclear chromosomes
+ * <p>The complete nuclear-chromosome examples are small annotation excerpts,
+ * not whole-genome annotations. Legacy excerpts are explicitly labelled. The panel covers nuclear chromosomes
  * (Arabidopsis, rice, soybean), a plastome and three mitochondrial contigs
  * (mint), and it spans both annotation dialects.</p>
  */
@@ -47,6 +47,8 @@ public record ExampleDataset(String id,
 
     /**
      * The bundled catalogue, shown in the dataset selector.
+     * Maize and soybean v2.1 read their chromosome lengths directly from the
+     * bundled Ensembl GFF3 headers; no separate species lookup is required.
      * Order runs from the reference model outward across the phylogeny.
      *
      * <p>Sequence lengths are the published sizes of the real sequences the
@@ -95,8 +97,18 @@ public record ExampleDataset(String id,
                     "Monocot \u00b7 Poaceae",
                     "Oryza sativa Japonica Group",
                     "IRGSP-1.0 (Nipponbare)",
-                    Map.of("Chr1", 43_270_923,
-                            "Chr2", 35_937_250),
+                    Map.ofEntries(Map.entry("Chr1", 43_270_923),
+                            Map.entry("Chr2", 35_937_250),
+                            Map.entry("Chr3", 36_413_819),
+                            Map.entry("Chr4", 35_502_694),
+                            Map.entry("Chr5", 29_958_434),
+                            Map.entry("Chr6", 31_248_787),
+                            Map.entry("Chr7", 29_697_621),
+                            Map.entry("Chr8", 28_443_022),
+                            Map.entry("Chr9", 23_012_720),
+                            Map.entry("Chr10", 23_207_287),
+                            Map.entry("Chr11", 29_021_106),
+                            Map.entry("Chr12", 27_531_856)),
                     BASE + "rice/oryza_sativa_chr1.gff3",
                     AnnotationFormat.GFF3,
                     BASE + "rice/oryza_sativa_expression.tsv",
@@ -107,7 +119,7 @@ public record ExampleDataset(String id,
             new ExampleDataset(
                     "soybean",
                     "Glycine max",
-                    "Soybean",
+                    "Soybean (3-chromosome GTF excerpt)",
                     "Rosid \u00b7 Fabaceae",
                     "Glycine max",
                     "Glycine max Wm82.a2.v1",
@@ -138,6 +150,21 @@ public record ExampleDataset(String id,
                             + "(Wang et al. 2017, Mitochondrial DNA Part B) plus the "
                             + "mitochondrial contigs ON631245-ON631247; "
                             + "expression from public M. spicata RNA-seq")
+,
+            new ExampleDataset(
+                    "maize", "Zea mays · 10 chromosomes", "Maize (10 chromosomes)", "Monocot · Poaceae",
+                    "Zea mays", "Zm-B73-REFERENCE-NAM-5.0", Map.of(),
+                    BASE + "maize/maize_chromosomes.gff3", AnnotationFormat.GFF3,
+                    null,
+                    "Ensembl Plants release 62; two real gene families per nuclear chromosome; "
+                            + "annotation-only example (no expression measurements)"),
+            new ExampleDataset(
+                    "soybean-v2", "Glycine max v2.1 · 20 chromosomes", "Soybean v2.1 (20 chromosomes)", "Rosid · Fabaceae",
+                    "Glycine max", "Glycine_max_v2.1", Map.of(),
+                    BASE + "soybean/soybean_chromosomes.gff3", AnnotationFormat.GFF3,
+                    null,
+                    "Ensembl Plants release 62; two real gene families per nuclear chromosome; "
+                            + "annotation-only example (no expression measurements)")
     );
 
     /** Looks up a catalogue entry by its short id, or {@code null}. */

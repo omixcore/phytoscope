@@ -387,18 +387,28 @@ public class Gff3Parser {
     private static GenomeMetadata buildMetadata(HeaderInfo header, String label,
                                                 List<String> chromosomes,
                                                 Map<String, int[]> bounds) {
-        List<SequenceRegion> regions = new ArrayList<>(header.regions);
-        // Add any sequence observed in the data but not declared in the header.
-        for (String chromosome : chromosomes) {
-            boolean declared = regions.stream().anyMatch(r -> chromosome.equals(r.id()));
-            if (!declared) {
-                int[] b = bounds.get(chromosome);
-                regions.add(b == null ? new SequenceRegion(chromosome, 1, 1)
-                        : new SequenceRegion(chromosome, b[0], b[1]));
+        // Preserve declaration order, merging duplicate declarations and observed
+        // bounds. Incomplete headers must never clip genes or hide a sequence.
+        Map<String, SequenceRegion> regions = new LinkedHashMap<>();
+        for (SequenceRegion region : header.regions) {
+            if (region.id() != null && !region.id().isBlank()
+                    && region.start() >= 1 && region.end() >= region.start()) {
+                regions.merge(region.id(), region, Gff3Parser::mergeRegions);
             }
         }
+        for (String chromosome : chromosomes) {
+            int[] b = bounds.get(chromosome);
+            SequenceRegion observed = b == null ? new SequenceRegion(chromosome, 1, 1)
+                    : new SequenceRegion(chromosome, b[0], b[1]);
+            regions.merge(chromosome, observed, Gff3Parser::mergeRegions);
+        }
         return GenomeMetadata.fromAnnotation(header.species, header.assembly,
-                header.description, label, regions);
+                header.description, label, new ArrayList<>(regions.values()));
+    }
+
+    private static SequenceRegion mergeRegions(SequenceRegion a, SequenceRegion b) {
+        return new SequenceRegion(a.id(), Math.min(a.start(), b.start()),
+                Math.max(a.end(), b.end()));
     }
 
     private static void trackBounds(Map<String, int[]> bounds, RawFeature raw) {
