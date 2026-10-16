@@ -35,9 +35,11 @@ public final class ComparisonRunner {
         }
         if (!values.containsKey("--loci")) throw new IllegalArgumentException("--compare requires explicit --loci");
         var ids = Arrays.stream(values.get("--loci").split(",")).map(String::trim).distinct().toList();
-        var genes = ids.stream().map(id -> {
-            var g = genome.findGene(id); if (g == null) throw new IllegalArgumentException("Unknown exact gene ID: " + id); return g;
-        }).toList();
+        var genes = ids.stream().map(id -> genome.getGenes().stream()
+                .filter(g -> java.util.Objects.equals(g.getId(), id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unknown exact gene ID: " + id)))
+                .toList();
         var settings = new ComparisonFigure.Settings(
                 ComparisonFigure.Alignment.valueOf(values.getOrDefault("--alignment", "TRANSCRIPTION_START").toUpperCase(Locale.ROOT)),
                 switches.contains("--compress-introns"),
