@@ -42,7 +42,7 @@ public record ExampleDataset(String id, String label, String commonName, String 
 
     /** All classpath parts of a bundled annotation. */
     public List<String> annotationResources() {
-        if ("arabidopsis".equals(id)) {
+        if ("arabidopsis".equals(id) && annotationResource.equals(BASE + "arabidopsis/Chr1.gff3")) {
             return List.of(
                     BASE + "arabidopsis/Chr1.gff3",
                     BASE + "arabidopsis/Chr2.gff3",
