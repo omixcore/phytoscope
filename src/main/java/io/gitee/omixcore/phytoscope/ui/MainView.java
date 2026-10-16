@@ -317,11 +317,13 @@ public class MainView extends BorderPane {
         dataService.setActiveSequence(state.sequence());
         afterDatasetChanged();
         if (state.search() != null && !state.search().isBlank()) {
+            // Search text is view state, not a reason to change the restored
+            // sequence or rebuild the renderer. The saved sequence/window must
+            // remain authoritative during project restoration.
             boolean restoreLoading = loading;
             loading = true;
             try { searchField.setText(state.search()); }
             finally { loading = restoreLoading; }
-            applySearch(state.search(), false);
         }
         if (state.selectedGene() != null) selectGene(dataService.findGene(state.selectedGene()));
         else { geneList.getSelectionModel().clearSelection(); renderer.setSelectedGene(null); detailPane.clear(); }
