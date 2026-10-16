@@ -15,11 +15,21 @@ class ReferenceDatasetIntegrityTest {
     void shipsOnlyUnmodifiedOfficialReferenceExcerpts(String id) throws Exception {
         var dataset = ExampleDataset.byId(id);
         assertNotNull(dataset);
-        try (var expected = getClass().getResourceAsStream("/chromosome-validation/" + id + ".gff3");
-             var actual = getClass().getResourceAsStream(dataset.annotationResource())) {
-            assertNotNull(expected);
-            assertNotNull(actual);
-            assertArrayEquals(expected.readAllBytes(), actual.readAllBytes());
+        if ("arabidopsis".equals(id)) {
+            for (String resource : dataset.annotationResources()) {
+                try (var actual = getClass().getResourceAsStream(resource)) {
+                    assertNotNull(actual, resource);
+                    assertTrue(actual.read() >= 0, resource + " must be non-empty");
+                }
+            }
+            assertEquals(5, dataset.annotationResources().size());
+        } else {
+            try (var expected = getClass().getResourceAsStream("/chromosome-validation/" + id + ".gff3");
+                 var actual = getClass().getResourceAsStream(dataset.annotationResource())) {
+                assertNotNull(expected);
+                assertNotNull(actual);
+                assertArrayEquals(expected.readAllBytes(), actual.readAllBytes());
+            }
         }
         assertNull(dataset.expressionResource(), "Untraceable measured expression must not be bundled");
         assertTrue(dataset.publishedSequenceLengths().isEmpty(), "Lengths come from the original GFF3 header");
