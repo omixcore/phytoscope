@@ -15,7 +15,9 @@
       "archive_sha256": "9f2701d7151b4467941b5dae4171b8955ea4260c4d78f41be4fb3ff44782d2fd",
       "fixture_sha256": "a21bb6635988a8cfbebde4d7d1804df4a95fea2e7ac2846d71bcc8eab5879711",
       "verified_original_feature_rows": 571,
-      "status": "PASS"
+      "status": "BUILD_PENDING",
+      "annotation_scope": "complete nuclear Chr1-Chr5 (materialization pending manual workflow dispatch)",
+      "annotation": "Araport11"
     },
     "rice": {
       "species": "Oryza sativa Japonica Group",
