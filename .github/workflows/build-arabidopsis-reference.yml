@@ -15,66 +15,63 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Download and split complete reference
+      - name: Build complete Chr1-Chr5 annotation
         run: |
-          mkdir -p /tmp/phytoscope/arabidopsis
+          rm -rf /tmp/phytoscope-arabidopsis
+          mkdir -p /tmp/phytoscope-arabidopsis
           python tools/build_arabidopsis_full_reference.py \
-            --archive /tmp/phytoscope/arabidopsis.gff3.gz \
-            --output /tmp/phytoscope/arabidopsis
-          cp /tmp/phytoscope/arabidopsis/Chr*.gff3 src/main/resources/data/species/arabidopsis/
+            --archive /tmp/phytoscope-arabidopsis/Araport11_GFF3_genes_transposons.201606.gff.gz \
+            --output /tmp/phytoscope-arabidopsis/reference
 
-      - name: Validate complete Chr1-Chr5
+      - name: Validate complete reference
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          expected = {
-            "Chr1": 30427671, "Chr2": 19698289, "Chr3": 23459830,
-            "Chr4": 18585056, "Chr5": 26975502
-          }
-          genes = features = 0
-          for n, length in expected.items():
-              p = Path("src/main/resources/data/species/arabidopsis") / f"{n}.gff3"
-              assert p.exists()
-              rows = [x for x in p.read_text().splitlines() if x and not x.startswith("#")]
-              assert rows and all(x.split("\t",1)[0] == n for x in rows)
-              assert any(x == f"##sequence-region {n} 1 {length}" for x in p.read_text().splitlines())
-              genes += sum("\tgene\t" in x for x in rows)
-              features += len(rows)
-          assert genes > 20000, genes
-          assert features > 500000, features
-          print(f"PASS: {genes} genes / {features} features across complete Chr1-Chr5")
+          python tools/validate_arabidopsis_reference.py \
+            --directory /tmp/phytoscope-arabidopsis/reference
+
+      - name: Install Java build dependencies
+        run: |
+          chmod +x mvnw
+          ./mvnw -q -version
+
+      - name: Run complete Java validation
+        run: ./mvnw -q -Pui-tests test
+
+      - name: Install generated reference
+        run: |
+          rm -f src/main/resources/data/species/arabidopsis/Chr{1,2,3,4,5}.gff3
+          cp /tmp/phytoscope-arabidopsis/reference/Chr*.gff3 src/main/resources/data/species/arabidopsis/
+          cp /tmp/phytoscope-arabidopsis/reference/manifest.json src/main/resources/data/species/arabidopsis/
 
       - name: Update provenance
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          src = json.loads(Path("/tmp/phytoscope/arabidopsis/manifest.json").read_text())
+          src = json.loads(Path("/tmp/phytoscope-arabidopsis/reference/manifest.json").read_text())
           p = Path("src/main/resources/data/reference-provenance.json")
           d = json.loads(p.read_text())
           d["datasets"]["arabidopsis"].update({
-            "annotation_scope": "complete nuclear Chr1-Chr5",
+            "annotation_scope": src["scope"],
             "source": src["source"],
+            "downloaded_from": src["downloaded_from"],
             "archive_sha256": src["archive_sha256"],
-            "chromosome_count": 5,
+            "annotation": src["annotation"],
             "verified_feature_rows": src["total_features"],
-            "verified_gene_rows": src["total_genes"],
+            "verified_gene_like_features": src["total_gene_like_features"],
             "chromosome_lengths": {k:v["length"] for k,v in src["chromosomes"].items()},
             "chromosome_sha256": {k:v["sha256"] for k,v in src["chromosomes"].items()},
             "status": "PASS"
           })
           p.write_text(json.dumps(d, indent=2) + "\n")
-          Path("src/main/resources/data/species/arabidopsis/manifest.json").write_text(
-              json.dumps(src, indent=2) + "\n")
           PY
 
-      - name: Run complete Java validation
-        run: ./mvnw -q -Pui-tests test
+      - name: Re-run validation after installation
+        run: python tools/validate_arabidopsis_reference.py --directory src/main/resources/data/species/arabidopsis
 
       - name: Commit generated reference
         run: |
           git config user.name "omixcore"
           git config user.email "fei48548@gmail.com"
-          git add src/main/resources/data/species/arabidopsis src/main/resources/data/reference-provenance.json
+          git add src/main/resources/data/species/arabidopsis/Chr*.gff3 src/main/resources/data/species/arabidopsis/manifest.json src/main/resources/data/reference-provenance.json
           git commit -m "Bundle complete Arabidopsis TAIR10 Chr1-Chr5 reference"
           git push origin HEAD:main
