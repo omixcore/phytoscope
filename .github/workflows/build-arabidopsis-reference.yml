@@ -11,17 +11,25 @@ on:
       - src/main/java/io/gitee/omixcore/phytoscope/service/ExampleDataset.java
       - src/main/java/io/gitee/omixcore/phytoscope/service/GenomeDataService.java
       - src/main/java/io/gitee/omixcore/phytoscope/model/GenomeMetadata.java
+      - src/main/java/io/gitee/omixcore/phytoscope/model/FeatureType.java
+      - src/main/java/io/gitee/omixcore/phytoscope/model/Gene.java
+      - src/main/java/io/gitee/omixcore/phytoscope/service/ExpressionDataService.java
+      - src/main/java/io/gitee/omixcore/phytoscope/ui/MainView.java
+      - src/main/java/io/gitee/omixcore/phytoscope/ui/component/GeneTrackRenderer.java
+      - src/main/java/io/gitee/omixcore/phytoscope/ui/component/SvgExporter.java
       - src/main/java/io/gitee/omixcore/phytoscope/parser/Gff3Parser.java
       - src/test/java/io/gitee/omixcore/phytoscope/AdaptiveChromosomeTest.java
       - src/test/java/io/gitee/omixcore/phytoscope/AdaptiveChromosomeUiTest.java
       - src/test/java/io/gitee/omixcore/phytoscope/FullAnnotationValidationTest.java
       - src/test/java/io/gitee/omixcore/phytoscope/ReferenceDatasetIntegrityTest.java
+      - src/test/java/io/gitee/omixcore/phytoscope/Gff3ParserEdgeCaseTest.java
+      - src/test/java/io/gitee/omixcore/phytoscope/ExpressionDataServiceTest.java
 
 permissions:
   contents: write
 
 concurrency:
-  group: phytoscope-arabidopsis-reference-build
+  group: phytoscope-arabidopsis-reference-build-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
@@ -30,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: Set up Java 21
@@ -103,4 +111,4 @@ jobs:
             exit 0
           fi
           git commit -m "Bundle complete Arabidopsis TAIR10 Chr1-Chr5 reference"
-          git push origin HEAD:main
+          git push origin HEAD:${GITHUB_REF_NAME}
