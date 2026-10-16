@@ -114,6 +114,7 @@ public class MainView extends BorderPane {
     public MainView(GenomeDataService dataService, ExpressionDataService expressionService) {
         this.dataService = dataService;
         this.expressionService = expressionService;
+        renderer.setExpressionData(expressionService);
         setStyle("-fx-background-color: #EEF2F7;");
 
         renderer.setOnGeneSelected(this::selectGene);
