@@ -503,7 +503,7 @@ public class GeneTrackRenderer {
             double fraction = Double.isFinite(value) ? Math.min(1.0, Math.log1p(Math.abs(value)) / Math.log1p(maximum)) : 0;
             String fill = !Double.isFinite(value) ? "#E1E5EA" : expressionColor(fraction, value < 0);
             double x = left + c * EXPRESSION_CELL_WIDTH;
-            gc.setFill(fill); gc.fillRect(x, top + 10, EXPRESSION_CELL_WIDTH - 5, 27);
+            gc.setFill(Color.web(fill)); gc.fillRect(x, top + 10, EXPRESSION_CELL_WIDTH - 5, 27);
             gc.setFill(fraction > 0.58 && Double.isFinite(value) ? Color.WHITE : LABEL_COLOR);
             gc.setFont(Font.font("Consolas", 9));
             String text = Double.isFinite(value) ? formatExpression(value) : "NA";
