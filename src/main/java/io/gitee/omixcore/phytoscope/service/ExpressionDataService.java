@@ -108,11 +108,15 @@ public class ExpressionDataService {
         tissues.clear();
         profiles.clear();
         source = "No data loaded";
+        idColumnLabel = "GeneID";
+        valueUnit = "TPM";
     }
 
     private void parse(InputStream in) throws IOException {
         tissues.clear();
         profiles.clear();
+        idColumnLabel = "GeneID";
+        valueUnit = "TPM";
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
             String line;
