@@ -60,4 +60,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: PhytoScope-${{ matrix.os }}
-          path: target/desktop/
+          path: |
+            target/desktop/*.tar.gz
+            target/desktop/*.zip

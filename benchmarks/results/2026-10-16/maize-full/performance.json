@@ -1,0 +1,31 @@
+{
+  "timestamp_utc" : "2026-10-16T14:41:59.533365674Z",
+  "java" : "21.0.12.1+1-LTS",
+  "os" : "Linux amd64",
+  "available_processors" : 8,
+  "max_heap_bytes" : 3221225472,
+  "method" : "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
+  "import_ms" : 25988.431077,
+  "genes" : 44303,
+  "features" : 1162376,
+  "sequences" : 685,
+  "sources" : [ {
+    "sha256" : "cb8ca4d0607d3363e717f911db3a77c77cf882183850f188ff164d6cd130ab56",
+    "source" : "/workspace/scratch/bd625012ddd5/phytoscope/target/full-archives/maize.gff3.gz"
+  } ],
+  "select_all_sequences_ms" : 48.883992,
+  "search_repetitions" : 100,
+  "search_median_ms" : 41.630047,
+  "search_p95_ms" : 979.115176,
+  "hierarchy_query_ids" : [ "gene:Zm00001eb000010", "gene:Zm00001eb000020", "gene:Zm00001eb000030", "gene:Zm00001eb000040" ],
+  "hierarchy_query_median_ms" : 0.005427,
+  "hierarchy_query_p95_ms" : 0.052028,
+  "hierarchy_records_visited_over_100_queries" : 11500,
+  "comparison_10_loci_layout_ms" : 5697.073109,
+  "comparison_svg_write_ms" : 727.997606,
+  "heap_pool_peaks_bytes" : {
+    "G1 Old Gen" : 1556785312,
+    "G1 Survivor Space" : 29360128,
+    "G1 Eden Space" : 335544320
+  }
+}

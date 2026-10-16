@@ -1,0 +1,21 @@
+{
+  "software_commit": "c534e7d817945d00f22c1153101959e8b9659f67",
+  "application_jar_sha256": "398cc4f25c0293152165903a1f5f9601fd0d81f749c5b5c9d5be2457e05a3522",
+  "tests": {
+    "tests": 117,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "structure_datasets": 8,
+  "exact_structure_tuples": 4641758,
+  "missing_tuples": 0,
+  "extra_tuples": 0,
+  "scope": "Gene/transcript/exon/CDS/UTR explicit parent edges, strand and exact source coordinates; excluded source types listed per dataset.",
+  "performance_context": "Shared Linux container; full-reference timing overlapped regression or packaging activity. Treat these timings as smoke measurements, not controlled comparative performance claims. The three-trial small-locus extraction comparison ran afterward without those background tasks.",
+  "desktop": "Linux runtime-inclusive application image built and launched successfully; remote platform results belong to GitHub Actions.",
+  "limitations": [
+    "No human usability study or OS-native file-dialog evaluation performed.",
+    "Single-assay atlas subset is descriptive; no differential-expression significance or mechanistic discovery claimed."
+  ]
+}

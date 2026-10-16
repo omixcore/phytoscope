@@ -7,6 +7,8 @@ sh mvnw -Pui-tests verify
 python tools/package_desktop.py --jar target/phytoscope-0.2.0.jar
 ```
 
+The script also creates an OS/architecture-specific archive: `.tar.gz` on Linux/macOS (preserving executable permissions) or `.zip` on Windows. Unpack this archive before launching.
+
 The `jpackage` application image contains a Java runtime; recipients do not need
 Maven or a separate JDK. Launch `PhytoScope` from the app image (`PhytoScope.exe`
 on Windows; the `.app` on macOS; `bin/PhytoScope` on Linux). Keep the complete

@@ -1,5 +1,5 @@
 """Build a self-contained OS-specific application image using the current JDK's jpackage."""
-import argparse, os, shutil, subprocess, sys
+import argparse, os, platform, shutil, subprocess, sys
 from pathlib import Path
 p=argparse.ArgumentParser();p.add_argument('--jar',type=Path,required=True);p.add_argument('--out',type=Path,default=Path('target/desktop'));a=p.parse_args()
 if not a.jar.is_file(): raise SystemExit('Build the executable JAR first')
@@ -25,3 +25,8 @@ elif sys.platform=='win32': launcher=a.out/'PhytoScope/PhytoScope.exe'
 else: launcher=a.out/'PhytoScope/bin/PhytoScope'
 subprocess.run([str(launcher.resolve()),'--benchmark','--example','rice','--out','target/packaged-smoke'],check=True)
 print('PASS: packaged runtime launched and parsed the rice example')
+
+image_name='PhytoScope.app' if sys.platform=='darwin' else 'PhytoScope'
+archive=shutil.make_archive(str(a.out/('PhytoScope-'+platform.system()+'-'+platform.machine())),
+                           'zip' if sys.platform=='win32' else 'gztar',root_dir=a.out,base_dir=image_name)
+print('Distributable archive:',archive)

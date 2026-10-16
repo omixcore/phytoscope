@@ -1,0 +1,190 @@
+{
+  "input_sha256": "6a59a49a2bcf4889cb858075aae0eb89ae1d3a1a3dc379ad1c5c4942a41e8471",
+  "loci": [
+    "AT1G67090",
+    "AT5G38410",
+    "AT5G38420",
+    "AT5G38430"
+  ],
+  "trials": [
+    {
+      "trial": 1,
+      "first_tool": "java",
+      "phytoscope": {
+        "timestamp_utc": "2026-10-16T14:48:12.529156270Z",
+        "java": "21.0.12.1+1-LTS",
+        "os": "Linux amd64",
+        "available_processors": 8,
+        "max_heap_bytes": 3221225472,
+        "method": "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
+        "import_ms": 405.7571,
+        "genes": 4,
+        "features": 72,
+        "sequences": 2,
+        "sources": [
+          {
+            "sha256": "6a59a49a2bcf4889cb858075aae0eb89ae1d3a1a3dc379ad1c5c4942a41e8471",
+            "source": "/workspace/scratch/bd625012ddd5/phytoscope/examples/arabidopsis-atlas/annotation.gff3"
+          }
+        ],
+        "select_all_sequences_ms": 0.893204,
+        "search_repetitions": 100,
+        "search_median_ms": 0.00917,
+        "search_p95_ms": 0.144525,
+        "hierarchy_query_ids": [
+          "AT1G67090",
+          "AT5G38410",
+          "AT5G38420",
+          "AT5G38430"
+        ],
+        "hierarchy_query_median_ms": 0.005825,
+        "hierarchy_query_p95_ms": 0.0473,
+        "hierarchy_records_visited_over_100_queries": 7800,
+        "comparison_10_loci_layout_ms": 1042.94517,
+        "comparison_svg_write_ms": 224.554305,
+        "heap_pool_peaks_bytes": {
+          "G1 Old Gen": 1099360,
+          "G1 Survivor Space": 0,
+          "G1 Eden Space": 14680064
+        }
+      },
+      "gffutils": {
+        "tool": "gffutils",
+        "version": "0.13",
+        "python": "3.12.14",
+        "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+        "annotation": "/workspace/scratch/bd625012ddd5/phytoscope/examples/arabidopsis-atlas/annotation.gff3",
+        "index_build_ms": 81.1974889998055,
+        "query_100_repetitions_median_ms": 9.687172999747418,
+        "query_p95_ms": 19.340179999744578,
+        "records": 78,
+        "max_rss_platform_units": 19836,
+        "rss_units": "KiB",
+        "scope": "Selected loci exact hierarchy and coordinate extraction; disk-backed index build measured separately; query queries every selected locus per repetition."
+      },
+      "record_agreement": true,
+      "records": 78
+    },
+    {
+      "trial": 2,
+      "first_tool": "gffutils",
+      "phytoscope": {
+        "timestamp_utc": "2026-10-16T14:48:21.825609503Z",
+        "java": "21.0.12.1+1-LTS",
+        "os": "Linux amd64",
+        "available_processors": 8,
+        "max_heap_bytes": 3221225472,
+        "method": "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
+        "import_ms": 459.321964,
+        "genes": 4,
+        "features": 72,
+        "sequences": 2,
+        "sources": [
+          {
+            "sha256": "6a59a49a2bcf4889cb858075aae0eb89ae1d3a1a3dc379ad1c5c4942a41e8471",
+            "source": "/workspace/scratch/bd625012ddd5/phytoscope/examples/arabidopsis-atlas/annotation.gff3"
+          }
+        ],
+        "select_all_sequences_ms": 0.191481,
+        "search_repetitions": 100,
+        "search_median_ms": 0.013593,
+        "search_p95_ms": 0.049538,
+        "hierarchy_query_ids": [
+          "AT1G67090",
+          "AT5G38410",
+          "AT5G38420",
+          "AT5G38430"
+        ],
+        "hierarchy_query_median_ms": 0.009131,
+        "hierarchy_query_p95_ms": 0.039989,
+        "hierarchy_records_visited_over_100_queries": 7800,
+        "comparison_10_loci_layout_ms": 1572.420853,
+        "comparison_svg_write_ms": 220.34347,
+        "heap_pool_peaks_bytes": {
+          "G1 Old Gen": 1099360,
+          "G1 Survivor Space": 0,
+          "G1 Eden Space": 14680064
+        }
+      },
+      "gffutils": {
+        "tool": "gffutils",
+        "version": "0.13",
+        "python": "3.12.14",
+        "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+        "annotation": "/workspace/scratch/bd625012ddd5/phytoscope/examples/arabidopsis-atlas/annotation.gff3",
+        "index_build_ms": 27.25361500006329,
+        "query_100_repetitions_median_ms": 4.816173000108392,
+        "query_p95_ms": 11.610640000071726,
+        "records": 78,
+        "max_rss_platform_units": 19708,
+        "rss_units": "KiB",
+        "scope": "Selected loci exact hierarchy and coordinate extraction; disk-backed index build measured separately; query queries every selected locus per repetition."
+      },
+      "record_agreement": true,
+      "records": 78
+    },
+    {
+      "trial": 3,
+      "first_tool": "java",
+      "phytoscope": {
+        "timestamp_utc": "2026-10-16T14:48:30.631362944Z",
+        "java": "21.0.12.1+1-LTS",
+        "os": "Linux amd64",
+        "available_processors": 8,
+        "max_heap_bytes": 3221225472,
+        "method": "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
+        "import_ms": 303.023232,
+        "genes": 4,
+        "features": 72,
+        "sequences": 2,
+        "sources": [
+          {
+            "source": "/workspace/scratch/bd625012ddd5/phytoscope/examples/arabidopsis-atlas/annotation.gff3",
+            "sha256": "6a59a49a2bcf4889cb858075aae0eb89ae1d3a1a3dc379ad1c5c4942a41e8471"
+          }
+        ],
+        "select_all_sequences_ms": 0.116738,
+        "search_repetitions": 100,
+        "search_median_ms": 0.008695,
+        "search_p95_ms": 0.038275,
+        "hierarchy_query_ids": [
+          "AT1G67090",
+          "AT5G38410",
+          "AT5G38420",
+          "AT5G38430"
+        ],
+        "hierarchy_query_median_ms": 0.005837,
+        "hierarchy_query_p95_ms": 0.061446,
+        "hierarchy_records_visited_over_100_queries": 7800,
+        "comparison_10_loci_layout_ms": 1166.847771,
+        "comparison_svg_write_ms": 229.45637,
+        "heap_pool_peaks_bytes": {
+          "G1 Old Gen": 1099360,
+          "G1 Survivor Space": 0,
+          "G1 Eden Space": 14680064
+        }
+      },
+      "gffutils": {
+        "tool": "gffutils",
+        "version": "0.13",
+        "python": "3.12.14",
+        "os": "Linux-6.18.44-x86_64-with-glibc2.39",
+        "annotation": "/workspace/scratch/bd625012ddd5/phytoscope/examples/arabidopsis-atlas/annotation.gff3",
+        "index_build_ms": 31.711488999917492,
+        "query_100_repetitions_median_ms": 6.112777999987884,
+        "query_p95_ms": 11.612626999976783,
+        "records": 78,
+        "max_rss_platform_units": 19708,
+        "rss_units": "KiB",
+        "scope": "Selected loci exact hierarchy and coordinate extraction; disk-backed index build measured separately; query queries every selected locus per repetition."
+      },
+      "record_agreement": true,
+      "records": 78
+    }
+  ],
+  "median_import_or_index_ms": {
+    "phytoscope_in_memory": 405.7571,
+    "gffutils_sqlite": 31.711488999917492
+  },
+  "interpretation": "Same loci and exact output agreement. Index construction differs (memory vs SQLite); timings are not a GUI comparison or proof of general superiority. Java heap pool peaks and Python RSS are different quantities."
+}
