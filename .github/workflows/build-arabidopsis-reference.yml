@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - .github/workflows/build-arabidopsis-reference.yml
+      - src/main/java/io/gitee/omixcore/phytoscope/service/ExampleDataset.java
 
 permissions:
   contents: write
