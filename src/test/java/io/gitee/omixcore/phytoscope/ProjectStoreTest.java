@@ -54,4 +54,27 @@ class ProjectStoreTest {
         IOException ex = assertThrows(IOException.class, () -> store.load(tampered));
         assertTrue(ex.getMessage().contains("Checksum mismatch"));
     }
+    @Test
+    void comparisonRunnerResolvesLociByExactGeneId() throws Exception {
+        Path annotation = temp.resolve("collision.gff3");
+        Files.writeString(annotation, """
+                ##gff-version 3
+                c\ts\tgene\t1\t100\t.\t+\t.\tID=gene-A;Name=gene-B
+                c\ts\tgene\t200\t300\t.\t+\t.\tID=gene-B;Name=other
+                """);
+        Path out = temp.resolve("comparison-out");
+        ComparisonRunner.run(new String[]{"--compare", "--gff3", annotation.toString(),
+                "--loci", "gene-B", "--out", out.toString(), "--no-expression"});
+        String table = Files.readString(out.resolve("comparison.tsv"));
+        assertTrue(table.startsWith("\"gene-B\"\t"), table);
+    }
+
+    @Test
+    void batchPngValidationAccountsForDefaultExportScale() {
+        assertThrows(IllegalArgumentException.class,
+                () -> BatchOptions.parse(new String[]{"--example", "rice", "--width", "8000", "--height", "4000"}));
+        assertDoesNotThrow(() ->
+                BatchOptions.parse(new String[]{"--example", "rice", "--width", "4000", "--height", "3000"}));
+    }
+
 }
