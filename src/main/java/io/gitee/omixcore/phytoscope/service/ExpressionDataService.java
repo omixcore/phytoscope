@@ -260,8 +260,8 @@ public class ExpressionDataService {
 
     /** Detects the matrix delimiter using both quote-aware structure and separator counts. */
     private static char detectDelimiter(String line) {
-        char[] candidates = {'\\t', ',', ';'};
-        char best = '\\t';
+        char[] candidates = {'\t', ',', ';'};
+        char best = '\t';
         int bestColumns = 1;
         int bestSeparators = -1;
         for (char candidate : candidates) {
@@ -277,7 +277,7 @@ public class ExpressionDataService {
                 // This candidate conflicts with quoted-field syntax; try the next one.
             }
         }
-        return bestColumns > 1 ? best : '\\t';
+        return bestColumns > 1 ? best : '\t';
     }
 
     private static int countOutsideQuotes(String line, char delimiter) {
