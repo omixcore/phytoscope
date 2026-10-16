@@ -72,8 +72,9 @@ public class GenomeDataService {
      * @param dataset catalogue entry to load
      */
     public void loadExample(ExampleDataset dataset) throws IOException {
-        Gff3Parser.ParseResult result = parser.parseResource(
-                dataset.annotationResource(), dataset.format());
+        Gff3Parser.ParseResult result = dataset.annotationResources().size() == 1
+                ? parser.parseResource(dataset.annotationResource(), dataset.format())
+                : parser.parseResources(dataset.annotationResources(), dataset.format());
         applyResult(result, dataset.publishedSequenceLengths());
     }
 
