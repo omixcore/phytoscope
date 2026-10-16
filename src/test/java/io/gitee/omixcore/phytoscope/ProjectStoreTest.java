@@ -1,6 +1,8 @@
 package io.gitee.omixcore.phytoscope;
 
 import io.gitee.omixcore.phytoscope.project.ProjectStore;
+import io.gitee.omixcore.phytoscope.cli.ComparisonRunner;
+import io.gitee.omixcore.phytoscope.cli.BatchOptions;
 import io.gitee.omixcore.phytoscope.service.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
