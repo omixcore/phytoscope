@@ -709,9 +709,12 @@ class SpeciesAgnosticTest {
                 "chloroplast", 161_000,
                 "mitochondrion", 640_000,
                 "LG7", 91_000_000);
+        String previous = service.getActiveSequence();
         for (Map.Entry<String, Integer> entry : spans.entrySet()) {
-            assertTrue(service.setActiveSequence(entry.getKey()),
-                    "must be able to switch to " + entry.getKey());
+            boolean changed = service.setActiveSequence(entry.getKey());
+            assertEquals(!entry.getKey().equals(previous), changed,
+                    "selection result must reflect whether the sequence changed");
+            previous = entry.getKey();
             assertEquals(entry.getKey(), service.getActiveSequence());
             assertEquals(1, service.getGenesOnActiveSequence().size(),
                     entry.getKey() + " should carry exactly one probe gene");
