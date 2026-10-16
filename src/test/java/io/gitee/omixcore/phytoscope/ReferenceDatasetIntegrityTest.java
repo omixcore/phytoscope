@@ -31,11 +31,20 @@ class ReferenceDatasetIntegrityTest {
                 assertArrayEquals(expected.readAllBytes(), actual.readAllBytes());
             }
         }
-        assertNull(dataset.expressionResource(), "Untraceable measured expression must not be bundled");
+        if ("arabidopsis".equals(id)) {
+            assertEquals("/data/case-studies/arabidopsis-atlas/expression.tsv", dataset.expressionResource());
+            var expression = new ExpressionDataService();
+            expression.loadExample(dataset);
+            assertEquals(4, expression.getProfileCount());
+            assertEquals(6, expression.getTissues().size());
+            assertEquals("TPM", expression.getValueUnit());
+        } else {
+            assertNull(dataset.expressionResource(), "Untraceable measured expression must not be bundled");
+            var expression = new ExpressionDataService();
+            expression.loadExample(dataset);
+            assertTrue(expression.isEmpty());
+        }
         assertTrue(dataset.publishedSequenceLengths().isEmpty(), "Lengths come from the original GFF3 header");
-        var expression = new ExpressionDataService();
-        expression.loadExample(dataset);
-        assertTrue(expression.isEmpty());
     }
 
     @Test
