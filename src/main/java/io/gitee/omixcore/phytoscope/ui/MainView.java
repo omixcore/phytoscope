@@ -150,6 +150,7 @@ public class MainView extends BorderPane {
         pendingLoad = LoadingOperation.run(windowOrNull(), "Loading " + dataset.species(), () -> {
             GenomeDataService next = new GenomeDataService(); next.loadExample(dataset);
             ExpressionDataService measurements = new ExpressionDataService(); measurements.loadExample(dataset);
+            measurements.reconcile(next);
             if (atlas) {
                 measurements.loadFromResource("/data/case-studies/arabidopsis-atlas/expression.tsv", "Expression Atlas E-MTAB-7978 (single-assay conditions)");
                 measurements.reconcile(next);
@@ -184,6 +185,7 @@ public class MainView extends BorderPane {
             loading = true;
             dataService.loadExample(dataset);
             expressionService.loadExample(dataset);
+            expressionService.reconcile(dataService);
             activeExample = dataset;
             comparisonPane.clear();
             datasetSelector.getSelectionModel().select(dataset);
