@@ -293,50 +293,30 @@ public class GeneTrackRenderer {
         drawCoordinateAxis(width);
 
         double y = AXIS_HEIGHT;
-        // Draw only rows intersecting the visible canvas. The canvas itself still
-        // retains the full logical height, but this avoids spending paint time on
-        // thousands of off-screen genes in a whole-genome annotation.
-        double visibleBottom = Math.min(height, browserVisibleHeightHint());
         for (Gene gene : genes) {
             double rowH = rowHeightFor(gene);
-            if (y + rowH >= 0 && y <= visibleBottom) {
-                drawGeneRow(gene, y, rowH);
-            }
+            drawGeneRow(gene, y, rowH);
             y += rowH;
-            if (y > visibleBottom && genes.size() > 5000) {
-                break;
-            }
         }
 
         drawVerticalGridLines(height);
     }
 
-    private double browserVisibleHeightHint() {
-        // Keep a conservative viewport for Canvas-only rendering; the surrounding
-        // ScrollPane clips the remainder. This cap is deliberately independent of
-        // chromosome count or species.
-        return Math.min(lastRenderHeight, 5000);
-    }
-
     private void drawTrackBackgrounds() {
         double y = AXIS_HEIGHT;
         int i = 0;
-        double visibleBottom = browserVisibleHeightHint();
         for (Gene gene : genes) {
             double rowH = rowHeightFor(gene);
-            if (y + rowH >= 0 && y <= visibleBottom) {
-                if (i % 2 == 1) {
-                    gc.setFill(TRACK_ALT);
-                    gc.fillRect(0, y, canvas.getWidth(), rowH);
-                }
-                if (gene == selectedGene) {
-                    gc.setFill(SELECTED_GLOW.deriveColor(0, 1, 1, 0.08));
-                    gc.fillRect(0, y, canvas.getWidth(), rowH);
-                }
+            if (i % 2 == 1) {
+                gc.setFill(TRACK_ALT);
+                gc.fillRect(0, y, canvas.getWidth(), rowH);
+            }
+            if (gene == selectedGene) {
+                gc.setFill(SELECTED_GLOW.deriveColor(0, 1, 1, 0.08));
+                gc.fillRect(0, y, canvas.getWidth(), rowH);
             }
             y += rowH;
             i++;
-            if (y > visibleBottom && genes.size() > 5000) break;
         }
     }
 
