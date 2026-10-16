@@ -310,9 +310,19 @@ public class MainView extends BorderPane {
         var previous = restoredProject; restoredProject = next; activeExample = null;
         boolean before = loading; loading = true;
         try { datasetSelector.getSelectionModel().clearSelection(); } finally { loading = before; }
+
+        // ProjectStore restores the saved active sequence on the staged genome.
+        // Rebuild the browser from that sequence before restoring the search box;
+        // otherwise a cross-chromosome search can leave the renderer on its first hit.
+        dataService.setActiveSequence(state.sequence());
         afterDatasetChanged();
-        if (state.search() != null && !state.search().isBlank()) searchField.setText(state.search());
-        dataService.setActiveSequence(state.sequence()); refreshChromosomeSelector();
+        if (state.search() != null && !state.search().isBlank()) {
+            boolean restoreLoading = loading;
+            loading = true;
+            try { searchField.setText(state.search()); }
+            finally { loading = restoreLoading; }
+            applySearch(state.search(), false);
+        }
         if (state.selectedGene() != null) selectGene(dataService.findGene(state.selectedGene()));
         else { geneList.getSelectionModel().clearSelection(); renderer.setSelectedGene(null); detailPane.clear(); }
         renderer.showWindow(state.start(), state.end());
@@ -656,6 +666,7 @@ public class MainView extends BorderPane {
         HBox.setHgrow(spacer1, Priority.ALWAYS);
 
         searchField.setPromptText("Search gene ID / name / alias");
+        searchField.setId("gene-search");
         searchField.setPrefWidth(220);
         searchField.textProperty().addListener((obs, old, val) -> applySearch(val));
 
@@ -790,17 +801,26 @@ public class MainView extends BorderPane {
     }
 
     private void applySearch(String keyword) {
+        applySearch(keyword, true);
+    }
+
+    /** Applies a saved query without allowing it to change the restored chromosome. */
+    private void applySearch(String keyword, boolean revealAcrossChromosomes) {
         List<Gene> hits = dataService.search(keyword);
-        // A hit on another chromosome is only meaningful if we go there.
-        if (!hits.isEmpty()) {
+        // Interactive searches may reveal the first hit on another chromosome;
+        // project restoration deliberately keeps the saved active sequence.
+        if (revealAcrossChromosomes && !hits.isEmpty()) {
             revealGeneAcrossChromosomes(hits.get(0));
         }
+        List<Gene> visible = hits.stream()
+                .filter(g -> java.util.Objects.equals(g.getChromosome(), dataService.getActiveSequence()))
+                .toList();
         renderer.setSequenceLabel(dataService.getActiveSequence());
-        geneItems.setAll(hits);
-        renderer.setGenes(hits.stream().filter(g -> java.util.Objects.equals(g.getChromosome(), dataService.getActiveSequence())).toList());
+        geneItems.setAll(visible);
+        renderer.setGenes(visible);
         renderer.fitToAll();
         redraw();
-        if (hits.isEmpty()) {
+        if (visible.isEmpty()) {
             geneList.getSelectionModel().clearSelection(); renderer.setSelectedGene(null); detailPane.clear();
         }
     }
