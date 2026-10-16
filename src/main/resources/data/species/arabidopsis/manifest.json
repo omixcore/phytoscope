@@ -2,6 +2,8 @@
   "source": "https://www.arabidopsis.org/download_files/Genes/Araport11_genome_release/Araport11_GFF3_genes_transposons.201606.gff.gz",
   "downloaded_from": "https://plantgarden.jp/en/download/t3702/t3702.G001/Araport11_GFF3_genes_transposons.201606.gff.gz",
   "archive_sha256": "22d8c42ec2ca667fc3f78105f568bf295ee10d2145b2bd76dcd290a469a27b99",
+  "source_provider": "The Arabidopsis Information Resource (TAIR)",
+  "source_release": "Araport11 original release, June 2016",
   "assembly": "TAIR10",
   "annotation": "Araport11",
   "scope": "complete nuclear Chr1-Chr5",
