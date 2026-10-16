@@ -1,3 +1,11 @@
+## 2026-10-16 — Validation hardening
+
+- Fixed quote-aware delimiter detection for expression matrices.
+- Preserved saved browser sequence/renderer state when restoring projects with a search query.
+- Enforced exact gene-ID resolution for comparison CLI loci.
+- Applied PNG raster safety limits after the default export scale.
+- Fixed macOS desktop packaging version validation.
+
 # Changelog
 
 ## 0.2.0
