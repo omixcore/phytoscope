@@ -264,12 +264,10 @@ public class GeneTrackRenderer {
             if (pixelY >= y && pixelY < y + rowH) {
                 double gx1 = toPixel(gene.getStart());
                 double gx2 = toPixel(gene.getEnd());
-                if (pixelX >= gx1 - 4 && pixelX <= gx2 + 4) {
-                    return gene;
-                }
-                return null;
+                return pixelX >= gx1 - 4 && pixelX <= gx2 + 4 ? gene : null;
             }
             y += rowH;
+            if (y > pixelY) return null;
         }
         return null;
     }
@@ -323,18 +321,22 @@ public class GeneTrackRenderer {
     private void drawTrackBackgrounds() {
         double y = AXIS_HEIGHT;
         int i = 0;
+        double visibleBottom = browserVisibleHeightHint();
         for (Gene gene : genes) {
             double rowH = rowHeightFor(gene);
-            if (i % 2 == 1) {
-                gc.setFill(TRACK_ALT);
-                gc.fillRect(0, y, canvas.getWidth(), rowH);
-            }
-            if (gene == selectedGene) {
-                gc.setFill(SELECTED_GLOW.deriveColor(0, 1, 1, 0.08));
-                gc.fillRect(0, y, canvas.getWidth(), rowH);
+            if (y + rowH >= 0 && y <= visibleBottom) {
+                if (i % 2 == 1) {
+                    gc.setFill(TRACK_ALT);
+                    gc.fillRect(0, y, canvas.getWidth(), rowH);
+                }
+                if (gene == selectedGene) {
+                    gc.setFill(SELECTED_GLOW.deriveColor(0, 1, 1, 0.08));
+                    gc.fillRect(0, y, canvas.getWidth(), rowH);
+                }
             }
             y += rowH;
             i++;
+            if (y > visibleBottom && genes.size() > 5000) break;
         }
     }
 
