@@ -58,7 +58,7 @@ public class ExpressionDataService {
     private String idColumnLabel = "GeneID";
 
     /** Unit declared in the file header, e.g. TPM or FPKM; shown in the legend. */
-    private String valueUnit = "TPM";
+    private String valueUnit = "unspecified";
 
     // ------------------------------------------------------------------
     // Loading
@@ -109,104 +109,215 @@ public class ExpressionDataService {
         profiles.clear();
         source = "No data loaded";
         idColumnLabel = "GeneID";
-        valueUnit = "TPM";
+        valueUnit = "unspecified";
+        level = "gene";
+        annotationIds.clear();
+        report = ImportReport.empty();
     }
 
-    private void parse(InputStream in) throws IOException {
-        tissues.clear();
-        profiles.clear();
-        idColumnLabel = "GeneID";
-        valueUnit = "TPM";
+    private ImportReport report = ImportReport.empty();
+    private String level = "gene";
+    private final Map<String, String> annotationIds = new HashMap<>();
 
+    public record ImportReport(int rows, int profiles, int missingCells, int invalidCells,
+                               int matchedIds, int annotationIds, List<String> unmatchedIds,
+                               List<String> warnings) {
+        static ImportReport empty() { return new ImportReport(0, 0, 0, 0, 0, 0, List.of(), List.of()); }
+        public String summary() {
+            return "Read " + rows + " rows; " + profiles + " profiles; " + matchedIds
+                    + " matched of " + profiles + " input IDs against " + annotationIds
+                    + " annotation IDs; " + missingCells + " missing cells; " + invalidCells
+                    + " invalid cells.\n" + String.join("\n", warnings)
+                    + (unmatchedIds.isEmpty() ? "" : "\nUnmatched IDs: " + String.join(", ", unmatchedIds));
+        }
+    }
+
+    public ImportReport getImportReport() { return report; }
+    public void restoreImportAudit(ImportReport original, String originalSource) {
+        if (original != null && original.profiles() == profiles.size()) {
+            List<String> warnings = new ArrayList<>(original.warnings());
+            warnings.add("Restored canonical matrix snapshot; original import diagnostics retained.");
+            report = new ImportReport(original.rows(), profiles.size(), original.missingCells(), original.invalidCells(),
+                    report.matchedIds(), report.annotationIds(), report.unmatchedIds(), List.copyOf(warnings));
+        }
+        source = originalSource;
+    }
+    public String getLevel() { return level; }
+    public List<String> getProfileIds() { return profiles.keySet().stream().sorted().toList(); }
+
+    /** Exact IDs or an unambiguous annotation gene:/transcript: prefix only; no version stripping. */
+    public ImportReport reconcile(GenomeDataService genome) {
+        annotationIds.clear();
+        Map<String, List<String>> candidates = new HashMap<>();
+        List<String> ids = new ArrayList<>();
+        for (var gene : genome.getGenes()) {
+            if (level.equals("transcript")) {
+                for (var tx : gene.getTranscripts()) ids.add(tx.getId());
+            } else ids.add(gene.getId());
+        }
+        for (String id : ids) {
+            if (id == null) continue;
+            candidates.computeIfAbsent(id, key -> new ArrayList<>()).add(id);
+            String shortId = id.replaceFirst("^(gene|transcript):", "");
+            if (!shortId.equals(id)) candidates.computeIfAbsent(shortId, key -> new ArrayList<>()).add(id);
+        }
+        List<String> unmatched = new ArrayList<>();
+        Map<String, List<String>> targetInputs = new HashMap<>();
+        for (String inputId : getProfileIds()) {
+            List<String> matches = candidates.getOrDefault(inputId, List.of()).stream().distinct().toList();
+            if (matches.size() != 1) unmatched.add(inputId);
+            else targetInputs.computeIfAbsent(matches.getFirst(), key -> new ArrayList<>()).add(inputId);
+        }
+        for (var target : targetInputs.entrySet()) {
+            if (target.getValue().size() == 1) annotationIds.put(target.getKey(), target.getValue().getFirst());
+            else unmatched.addAll(target.getValue());
+        }
+        unmatched.sort(String::compareTo);
+        int matched = annotationIds.size();
+        report = new ImportReport(report.rows(), profiles.size(), report.missingCells(),
+                report.invalidCells(), matched, ids.size(), List.copyOf(unmatched), report.warnings());
+        return report;
+    }
+
+    /** Parse into a temporary object so failed imports never erase existing measurements. */
+    private void parse(InputStream in) throws IOException {
+        ExpressionDataService next = new ExpressionDataService();
+        next.readMatrix(in);
+        replaceWith(next);
+    }
+
+    public void replaceWith(ExpressionDataService next) {
+        tissues.clear(); tissues.addAll(next.tissues);
+        profiles.clear(); profiles.putAll(next.profiles);
+        annotationIds.clear(); annotationIds.putAll(next.annotationIds);
+        source = next.source; idColumnLabel = next.idColumnLabel;
+        valueUnit = next.valueUnit; level = next.level; report = next.report;
+    }
+
+    private void readMatrix(InputStream in) throws IOException {
+        int rows = 0, missing = 0, invalid = 0, lineNo = 0;
+        boolean headerSeen = false;
+        char delimiter = '\t';
+        List<String> warnings = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
             String line;
-            boolean headerSeen = false;
-            boolean firstLine = true;
             while ((line = reader.readLine()) != null) {
-                // Strip a UTF-8 BOM if the writer left one on the first line,
-                // otherwise the leading '#' is masked and the header is misread.
-                if (firstLine) {
-                    firstLine = false;
-                    if (!line.isEmpty() && line.charAt(0) == '\uFEFF') {
-                        line = line.substring(1);
+                lineNo++;
+                if (lineNo == 1 && line.startsWith("\uFEFF")) line = line.substring(1);
+                if (line.isBlank()) continue;
+                if (line.stripLeading().startsWith("#")) {
+                    var meta = java.util.regex.Pattern.compile("^#\\s*(unit|level)\\s*[:=]\\s*(.+)$",
+                            java.util.regex.Pattern.CASE_INSENSITIVE).matcher(line.trim());
+                    if (meta.matches()) {
+                        if (headerSeen) throw new IOException("Metadata must precede the header (line " + lineNo + ")");
+                        if (meta.group(1).equalsIgnoreCase("unit")) valueUnit = meta.group(2).trim();
+                        else level = meta.group(2).trim().toLowerCase(java.util.Locale.ROOT);
                     }
-                }
-                if (line.isBlank()) {
                     continue;
                 }
-                if (line.startsWith("#")) {
-                    harvestHeaderMetadata(line);
-                    continue;
-                }
-                String[] cols = splitRow(line);
-                if (cols.length < 2) {
-                    continue;
-                }
-
+                if (!headerSeen) delimiter = detectDelimiter(line);
+                List<String> cols = splitRow(line, delimiter);
                 if (!headerSeen) {
-                    // Header row: first column names the identifier column,
-                    // the rest name the sample groups.
-                    idColumnLabel = cols[0].trim();
-                    for (int i = 1; i < cols.length; i++) {
-                        String name = cols[i].trim();
-                        if (!name.isEmpty()) {
-                            tissues.add(name);
-                        }
+                    if (cols.size() < 2) throw new IOException("Expected an identifier and at least one sample column");
+                    idColumnLabel = cols.getFirst().trim();
+                    if (idColumnLabel.isBlank()) throw new IOException("Identifier heading is blank");
+                    for (int i = 1; i < cols.size(); i++) {
+                        String name = cols.get(i).trim();
+                        if (name.isBlank() || tissues.contains(name)) throw new IOException("Blank or duplicate sample heading at column " + (i + 1));
+                        tissues.add(name);
                     }
+                    if (!List.of("gene", "transcript").contains(level)) throw new IOException("level must be gene or transcript");
                     headerSeen = true;
                     continue;
                 }
-
-                String geneId = cols[0].trim();
-                if (geneId.isEmpty()) {
-                    continue;
-                }
-                ExpressionProfile profile = new ExpressionProfile(geneId);
-                for (int i = 1; i < cols.length && i <= tissues.size(); i++) {
-                    String raw = cols[i].trim();
-                    if (raw.isEmpty() || raw.equalsIgnoreCase("NA") || raw.equals(".")) {
-                        continue;
-                    }
+                rows++;
+                if (cols.size() != tissues.size() + 1) throw new IOException("Column count mismatch at line " + lineNo);
+                String id = cols.getFirst().trim();
+                if (id.isBlank()) throw new IOException("Blank identifier at line " + lineNo);
+                if (profiles.containsKey(id)) throw new IOException("Duplicate identifier '" + id + "' at line " + lineNo + "; resolve duplicates explicitly");
+                ExpressionProfile profile = new ExpressionProfile(id);
+                for (int i = 1; i < cols.size(); i++) {
+                    String raw = cols.get(i).trim();
+                    if (raw.isEmpty() || List.of("NA", "N/A", ".", "NULL").contains(raw.toUpperCase(java.util.Locale.ROOT))) { missing++; continue; }
                     try {
                         double value = Double.parseDouble(raw);
+                        if (!Double.isFinite(value)) throw new NumberFormatException();
+                        if (value < 0 && List.of("TPM", "FPKM", "COUNTS", "COUNT").contains(valueUnit.toUpperCase(java.util.Locale.ROOT))) throw new NumberFormatException();
                         profile.put(tissues.get(i - 1), value, 0);
-                    } catch (NumberFormatException ignored) {
-                        // Skip malformed cells rather than failing the whole load
+                    } catch (NumberFormatException ex) {
+                        invalid++;
+                        if (warnings.size() < 20) warnings.add("Invalid value at line " + lineNo + ", column " + (i + 1) + ": " + raw);
                     }
                 }
-                profiles.put(geneId, profile);
+                profiles.put(id, profile);
             }
         }
+        if (!headerSeen || profiles.isEmpty()) throw new IOException("No expression records found");
+        if (valueUnit.equals("unspecified")) warnings.add("Unit not declared; values are shown as unspecified.");
+        warnings.add("Measurement level: " + level + "; no aggregation or ID version conversion applied.");
+        report = new ImportReport(rows, profiles.size(), missing, invalid, 0, 0, List.of(), List.copyOf(warnings));
     }
 
-    /** Detects the delimiter from a data row, so TSV, CSV and semicolon files all load. */
-    private static String[] splitRow(String line) {
-        if (line.indexOf('\t') >= 0) {
-            return line.split("\t", -1);
-        }
-        if (line.indexOf(',') >= 0) {
-            return line.split(",", -1);
-        }
-        if (line.indexOf(';') >= 0) {
-            return line.split(";", -1);
-        }
-        return line.split("\\s+", -1);
-    }
-
-    /** Reads the declared unit (TPM/FPKM/…) out of a comment line when present. */
-    private void harvestHeaderMetadata(String line) {
-        String lower = line.toLowerCase();
-        if (lower.contains("unit")) {
-            int eq = line.indexOf('=');
-            String value = eq >= 0 ? line.substring(eq + 1) : line.substring(line.indexOf(':') + 1);
-            String cleaned = value.replaceAll("[^A-Za-z0-9/]", " ").trim();
-            if (!cleaned.isEmpty()) {
-                String first = cleaned.split("\\s+")[0];
-                if (first.length() <= 12 && first.matches("[A-Za-z0-9/]+")) {
-                    valueUnit = first.toUpperCase();
+    /** Detects the matrix delimiter using both quote-aware structure and separator counts. */
+    private static char detectDelimiter(String line) {
+        char[] candidates = {'\t', ',', ';'};
+        char best = '\t';
+        int bestColumns = 1;
+        int bestSeparators = -1;
+        for (char candidate : candidates) {
+            try {
+                int columns = splitRow(line, candidate).size();
+                int separators = countOutsideQuotes(line, candidate);
+                if (columns > bestColumns || (columns == bestColumns && separators > bestSeparators)) {
+                    best = candidate;
+                    bestColumns = columns;
+                    bestSeparators = separators;
                 }
+            } catch (IOException ignored) {
+                // This candidate conflicts with quoted-field syntax; try the next one.
             }
         }
+        return bestColumns > 1 ? best : '\t';
+    }
+
+    private static int countOutsideQuotes(String line, char delimiter) {
+        int count = 0;
+        boolean quoted = false;
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                if (quoted && i + 1 < line.length() && line.charAt(i + 1) == '"') {
+                    i++;
+                } else {
+                    quoted = !quoted;
+                }
+            } else if (!quoted && c == delimiter) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /** Single-line RFC-style quoted fields, fixed delimiter chosen from the header. */
+    private static List<String> splitRow(String line, char delimiter) throws IOException {
+        List<String> result = new ArrayList<>();
+        StringBuilder cell = new StringBuilder();
+        boolean quoted = false, closed = false;
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (quoted) {
+                if (c == '"' && i + 1 < line.length() && line.charAt(i + 1) == '"') { cell.append('"'); i++; }
+                else if (c == '"') { quoted = false; closed = true; }
+                else cell.append(c);
+            } else if (c == delimiter) {
+                result.add(cell.toString()); cell.setLength(0); closed = false;
+            } else if (c == '"' && cell.isEmpty() && !closed) quoted = true;
+            else if (closed) throw new IOException("Unexpected characters after a quoted field");
+            else cell.append(c);
+        }
+        if (quoted) throw new IOException("Unclosed quoted field; multiline fields are not supported");
+        result.add(cell.toString());
+        return result;
     }
 
     // ------------------------------------------------------------------
@@ -217,12 +328,19 @@ public class ExpressionDataService {
         return List.copyOf(tissues);
     }
 
+    public ExpressionProfile getRawProfile(String inputId) { return profiles.get(inputId); }
+    /** Views use only successfully reconciled annotation IDs, never an ambiguous raw-ID fallback. */
+    public ExpressionProfile getProfileForAnnotation(String annotationId) {
+        String input = annotationIds.get(annotationId);
+        return input == null ? null : profiles.get(input);
+    }
+
     public ExpressionProfile getProfile(String geneId) {
-        return profiles.get(geneId);
+        return profiles.get(annotationIds.getOrDefault(geneId, geneId));
     }
 
     public boolean hasProfile(String geneId) {
-        return profiles.containsKey(geneId);
+        return getProfile(geneId) != null;
     }
 
     public int getProfileCount() {
@@ -251,17 +369,15 @@ public class ExpressionDataService {
      * Highest value observed anywhere in the dataset, used to scale heat-map colour.
      */
     public double globalMaxTpm() {
-        return profiles.values().stream()
-                .mapToDouble(ExpressionProfile::maxTpm)
-                .max()
-                .orElse(1.0);
+        return profiles.values().stream().flatMap(p -> p.getValues().stream())
+                .mapToDouble(v -> Math.abs(v.tpm())).max().orElse(1.0);
     }
 
     /**
      * Summary of the most highly expressed sample group for one gene.
      */
     public String describe(String geneId) {
-        ExpressionProfile profile = profiles.get(geneId);
+        ExpressionProfile profile = getProfile(geneId);
         if (profile == null || profile.isEmpty()) {
             return "no expression data";
         }

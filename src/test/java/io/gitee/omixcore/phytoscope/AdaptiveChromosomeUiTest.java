@@ -51,7 +51,7 @@ class AdaptiveChromosomeUiTest {
             var menuBar = (MenuBar) ((VBox) view.getTop()).getChildren().getFirst();
             var menu = menuBar.getMenus().stream().filter(m -> m.getText().equals("Chromosome")).findFirst().orElseThrow();
             for (String id : List.of("soybean", "rice", "maize", "arabidopsis", "soybean")) {
-                datasetSelector.getSelectionModel().select(ExampleDataset.byId(id));
+                view.loadExampleData(ExampleDataset.byId(id));
                 int expected = switch (id) {
                     case "soybean" -> 20;
                     case "rice" -> 12;

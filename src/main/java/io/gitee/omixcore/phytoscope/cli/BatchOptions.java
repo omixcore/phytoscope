@@ -73,7 +73,7 @@ public record BatchOptions(Path annotation,
                 case "-h", "--help" -> help = true;
                 default -> {
                     // Tolerate a leading "--" separator from Maven/Spring Boot.
-                    if (arg.startsWith("--") && i == 0) {
+                    if (arg.equals("--") && i == 0) {
                         continue;
                     }
                     throw new IllegalArgumentException("unknown option: " + arg);
@@ -94,6 +94,13 @@ public record BatchOptions(Path annotation,
                 throw new IllegalArgumentException(
                         "--format must be one of png, svg, both (got " + format + ")");
             }
+            double exportWidth = width * io.gitee.omixcore.phytoscope.ui.component.ImageExporter.DEFAULT_SCALE;
+            double exportHeight = height * io.gitee.omixcore.phytoscope.ui.component.ImageExporter.DEFAULT_SCALE;
+            if (!Double.isFinite(width) || !Double.isFinite(height) || !Double.isFinite(padding)
+                    || !Double.isFinite(exportWidth) || !Double.isFinite(exportHeight)
+                    || exportWidth > 16000 || exportHeight > 16000 || exportWidth * exportHeight > 32_000_000
+                    || padding < 0 || padding > 10)
+                throw new IllegalArgumentException("Dimensions must be finite and at most 16000 px / 32 million pixels after PNG export scaling; padding must be 0–10");
             if (width < 200 || height < 200) {
                 throw new IllegalArgumentException("--width and --height must be at least 200");
             }

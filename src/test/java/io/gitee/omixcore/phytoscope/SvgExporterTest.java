@@ -108,7 +108,7 @@ class SvgExporterTest {
     }
 
     @Test
-    @DisplayName("Includes every gene and omits per-track expression bands")
+    @DisplayName("Includes every rendered gene and reports bounded full-genome tracks")
     void shouldIncludeGenesWithoutExpressionTracks() throws Exception {
         org.junit.jupiter.api.Assumptions.assumeTrue(canvasAvailable(),
                 "Canvas requires a graphics toolkit; skipped in headless runs");
@@ -118,11 +118,15 @@ class SvgExporterTest {
         new SvgExporter(stub.renderer).export(out, 1200, 900);
         String svg = out.toString();
 
-        // Every gene label appears
-        for (Gene gene : parseResult.genes()) {
+        // Every visible track label appears; omitted tracks must be declared.
+        for (Gene gene : stub.renderer.getRenderedGenes()) {
             assertTrue(svg.contains(gene.getDisplayName()),
                     "Missing gene label: " + gene.getDisplayName());
         }
+
+        assertTrue(stub.renderer.getRenderedGenes().size() <= 100);
+        assertFalse(stub.renderer.renderNotice().isEmpty());
+        assertTrue(svg.contains(stub.renderer.renderNotice()));
 
         // Expression lives in the detail pane, so the SVG must not draw
         // per-track heat-map bands

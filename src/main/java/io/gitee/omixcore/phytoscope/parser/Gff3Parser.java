@@ -174,8 +174,12 @@ public class Gff3Parser {
      * @param label  human-readable source name recorded in the metadata
      */
     public ParseResult parse(InputStream in, AnnotationFormat format, String label) throws IOException {
+        java.io.BufferedInputStream buffered = new java.io.BufferedInputStream(in);
+        buffered.mark(2); int first = buffered.read(), second = buffered.read(); buffered.reset();
+        InputStream decoded = first == 0x1f && second == 0x8b ? new java.util.zip.GZIPInputStream(buffered) : buffered;
         // Pass 1: collect rows into per-type buckets, preserving file order.
         List<RawFeature> rawGenes = new ArrayList<>();
+        List<RawFeature> conditionalRnas = new ArrayList<>();
         List<RawFeature> rawTranscripts = new ArrayList<>();
         List<RawFeature> rawExons = new ArrayList<>();
         List<RawFeature> rawCds = new ArrayList<>();
@@ -188,11 +192,12 @@ public class Gff3Parser {
         Map<String, int[]> chromosomeBounds = new LinkedHashMap<>();
         int featureCount = 0;
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(decoded, StandardCharsets.UTF_8))) {
             String line;
             boolean inFasta = false;
             boolean firstLine = true;
             while ((line = reader.readLine()) != null) {
+                if (Thread.currentThread().isInterrupted()) throw new IOException("Annotation loading cancelled");
                 // Strip a UTF-8 BOM, otherwise the first directive is not recognised.
                 if (firstLine) {
                     firstLine = false;
@@ -240,7 +245,10 @@ public class Gff3Parser {
                     case CDS -> rawCds.add(raw);
                     case FIVE_UTR -> rawUtr5.add(raw);
                     case THREE_UTR -> rawUtr3.add(raw);
-                    default -> { /* Other types do not take part in structure assembly */ }
+                    default -> {
+                        // miRNA can be a gene-owned transcript or a mature product of a primary transcript.
+                        if (raw.type.equalsIgnoreCase("miRNA")) conditionalRnas.add(raw);
+                    }
                 }
             }
         }
@@ -259,6 +267,9 @@ public class Gff3Parser {
             geneById.put(raw.id, gene);
         }
 
+        for (RawFeature raw : conditionalRnas) {
+            if (raw.getParents().stream().anyMatch(geneById::containsKey)) rawTranscripts.add(raw);
+        }
         Map<String, Transcript> transcriptById = new HashMap<>();
         for (RawFeature raw : rawTranscripts) {
             Gene gene = findGene(raw, geneById);
@@ -282,25 +293,22 @@ public class Gff3Parser {
         }
 
         for (RawFeature raw : rawExons) {
-            Transcript parent = resolveTranscript(raw, transcriptById);
-            if (parent == null) {
-                continue;
+            for (Transcript parent : resolveTranscripts(raw, transcriptById)) {
+                Exon exon = new Exon(raw.id, raw.chromosome, raw.start, raw.end, raw.strand);
+                exon.setAttributes(raw.attributes);
+                exon.setName(raw.name);
+                parent.addExon(exon);
             }
-            Exon exon = new Exon(raw.id, raw.chromosome, raw.start, raw.end, raw.strand);
-            exon.setAttributes(raw.attributes);
-            exon.setName(raw.name);
-            parent.addExon(exon);
         }
 
         for (RawFeature raw : rawCds) {
-            Transcript parent = resolveTranscript(raw, transcriptById);
-            if (parent == null) {
-                continue;
+            for (Transcript parent : resolveTranscripts(raw, transcriptById)) {
+                GenomicFeature cds = new GenomicFeature(raw.id, raw.chromosome, FeatureType.CDS,
+                        raw.start, raw.end, raw.strand);
+                cds.setAttributes(raw.attributes);
+                if (parent.getProteinId() == null) parent.setProteinId(raw.get("protein_id"));
+                attachToExon(parent, cds);
             }
-            GenomicFeature cds = new GenomicFeature(raw.id, raw.chromosome, FeatureType.CDS,
-                    raw.start, raw.end, raw.strand);
-            cds.setAttributes(raw.attributes);
-            attachToExon(parent, cds);
         }
         for (RawFeature raw : rawUtr5) {
             attachUtr(raw, transcriptById, FeatureType.FIVE_UTR);
@@ -502,20 +510,18 @@ public class Gff3Parser {
     // ------------------------------------------------------------------
 
     private void attachUtr(RawFeature raw, Map<String, Transcript> transcriptById, FeatureType type) {
-        Transcript parent = resolveTranscript(raw, transcriptById);
-        if (parent == null) {
-            return;
+        for (Transcript parent : resolveTranscripts(raw, transcriptById)) {
+            GenomicFeature utr = new GenomicFeature(raw.id, raw.chromosome, type,
+                    raw.start, raw.end, raw.strand);
+            utr.setAttributes(raw.attributes);
+            attachToExon(parent, utr);
         }
-        GenomicFeature utr = new GenomicFeature(raw.id, raw.chromosome, type,
-                raw.start, raw.end, raw.strand);
-        utr.setAttributes(raw.attributes);
-        attachToExon(parent, utr);
     }
 
     /**
      * Attaches a CDS or UTR segment to the exon it overlaps.
-     * If the transcript has no exons registered yet, a carrier exon is created
-     * so nothing is lost.
+     * Segments without an overlapping source exon are retained separately,
+     * without inventing exon annotations or splice junctions.
      */
     private void attachToExon(Transcript transcript, GenomicFeature segment) {
         for (Exon exon : transcript.getExons()) {
@@ -528,25 +534,13 @@ public class Gff3Parser {
                 return;
             }
         }
-        Exon synthetic = new Exon(segment.getId(), segment.getChromosome(),
-                segment.getStart(), segment.getEnd(), segment.getStrand());
-        if (segment.getType() == FeatureType.CDS) {
-            synthetic.addCds(segment);
-        } else {
-            synthetic.addUtr(segment);
-        }
-        transcript.addExon(synthetic);
+        transcript.addUnassignedSegment(segment);
     }
 
     /** Locates the transcript via the Parent attribute. */
-    private Transcript resolveTranscript(RawFeature raw, Map<String, Transcript> transcriptById) {
-        for (String parentId : raw.getParents()) {
-            Transcript t = transcriptById.get(parentId);
-            if (t != null) {
-                return t;
-            }
-        }
-        return null;
+    private List<Transcript> resolveTranscripts(RawFeature raw, Map<String, Transcript> transcriptById) {
+        return raw.getParents().stream().map(transcriptById::get)
+                .filter(java.util.Objects::nonNull).distinct().toList();
     }
 
     /** Locates the gene via the Parent attribute, with graceful fallbacks. */

@@ -1,0 +1,43 @@
+{
+  "timestamp_utc" : "2026-10-16T14:36:39.057227476Z",
+  "java" : "21.0.12.1+1-LTS",
+  "os" : "Linux amd64",
+  "available_processors" : 8,
+  "max_heap_bytes" : 3221225472,
+  "method" : "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
+  "import_ms" : 45017.528045,
+  "genes" : 37898,
+  "features" : 788499,
+  "sequences" : 5,
+  "sources" : [ {
+    "sha256" : "846ac0fcab14444405c12a970b11ee4df428a6775b567d933ffc2cdb74b59d11",
+    "source" : "/data/species/arabidopsis/Chr1.gff3"
+  }, {
+    "sha256" : "be24fa913d7e4f53583502d64a4d6a8f8910ebdab298a4ff9ef272e7f537ca60",
+    "source" : "/data/species/arabidopsis/Chr2.gff3"
+  }, {
+    "sha256" : "323d22b86dd928be4b3ba0ec69a4358bcb2c13486c12428799f5a3fa575e8898",
+    "source" : "/data/species/arabidopsis/Chr3.gff3"
+  }, {
+    "sha256" : "e5b8683b657698ba74d675451338a5c367c578f7f9a3ca83a81b70d592004b93",
+    "source" : "/data/species/arabidopsis/Chr4.gff3"
+  }, {
+    "sha256" : "27b8e00179465b642835d798b77b7964301236b514d4f7668848fe13f37bd11a",
+    "source" : "/data/species/arabidopsis/Chr5.gff3"
+  } ],
+  "select_all_sequences_ms" : 5.903396,
+  "search_repetitions" : 100,
+  "search_median_ms" : 100.18194,
+  "search_p95_ms" : 322.825189,
+  "hierarchy_query_ids" : [ "AT1G01010", "AT1G01020", "AT1G03987", "AT1G01030" ],
+  "hierarchy_query_median_ms" : 0.012196,
+  "hierarchy_query_p95_ms" : 1.09272,
+  "hierarchy_records_visited_over_100_queries" : 15100,
+  "comparison_10_loci_layout_ms" : 904.278793,
+  "comparison_svg_write_ms" : 94.472317,
+  "heap_pool_peaks_bytes" : {
+    "G1 Old Gen" : 932234848,
+    "G1 Survivor Space" : 20971520,
+    "G1 Eden Space" : 297795584
+  }
+}

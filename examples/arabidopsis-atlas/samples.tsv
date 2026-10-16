@@ -1,0 +1,7 @@
+Sample	Atlas_group	Atlas_label	ENA_run	Assays_in_group	Unit
+Root	g7	adult; root; not applicable	ERR3333396	1	TPM
+Rosette_leaf_1	g8	adult; rosette leaf; rosette leaf 1	ERR3333413	1	TPM
+Rosette_leaf_8	g20	adult; rosette leaf; rosette leaf 8	ERR3333420	1	TPM
+Cauline_leaf	g2	adult; cauline leaf; not applicable	ERR3333391	1	TPM
+Dry_seed	g26	dry seed stage; seed; not applicable	ERR3333441	1	TPM
+Pollen	g40	flower stage 15; pollen; not applicable	ERR3333443	1	TPM

@@ -86,6 +86,19 @@ public class GeneTrackRenderer {
         return genes;
     }
 
+    /** Bound detailed tracks to avoid allocating a whole-genome-sized GPU canvas. */
+    public List<Gene> getRenderedGenes() {
+        List<Gene> visible = genes.stream().filter(g -> g.getEnd() >= viewStart && g.getStart() <= viewEnd).toList();
+        if (visible.size() <= 100) return visible;
+        int selected = visible.indexOf(selectedGene);
+        int start = selected < 0 ? 0 : Math.min(Math.max(0, selected - 50), visible.size() - 100);
+        return visible.subList(start, start + 100);
+    }
+    public String renderNotice() {
+        long visible = genes.stream().filter(g -> g.getEnd() >= viewStart && g.getStart() <= viewEnd).count();
+        return visible > 100 ? "Showing 100 of " + visible + " overlapping loci. Zoom in or select a gene for details." : "";
+    }
+
     public void setOnGeneSelected(Consumer<Gene> callback) {
         this.onGeneSelected = callback;
     }
@@ -247,7 +260,7 @@ public class GeneTrackRenderer {
     /** Total content height, for sizing the scroll container. */
     public double contentHeight() {
         double h = AXIS_HEIGHT;
-        for (Gene gene : genes) {
+        for (Gene gene : getRenderedGenes()) {
             h += rowHeightFor(gene);
         }
         return h + 20;
@@ -259,7 +272,7 @@ public class GeneTrackRenderer {
             return null;
         }
         double y = AXIS_HEIGHT;
-        for (Gene gene : genes) {
+        for (Gene gene : getRenderedGenes()) {
             double rowH = rowHeightFor(gene);
             if (pixelY >= y && pixelY < y + rowH) {
                 double gx1 = toPixel(gene.getStart());
@@ -293,19 +306,23 @@ public class GeneTrackRenderer {
         drawCoordinateAxis(width);
 
         double y = AXIS_HEIGHT;
-        for (Gene gene : genes) {
+        for (Gene gene : getRenderedGenes()) {
             double rowH = rowHeightFor(gene);
             drawGeneRow(gene, y, rowH);
             y += rowH;
         }
 
         drawVerticalGridLines(height);
+        if (!renderNotice().isEmpty()) {
+            gc.setFill(LABEL_COLOR); gc.setFont(Font.font("Arial", 12));
+            gc.fillText(renderNotice(), 12, height - 5);
+        }
     }
 
     private void drawTrackBackgrounds() {
         double y = AXIS_HEIGHT;
         int i = 0;
-        for (Gene gene : genes) {
+        for (Gene gene : getRenderedGenes()) {
             double rowH = rowHeightFor(gene);
             if (i % 2 == 1) {
                 gc.setFill(TRACK_ALT);
@@ -442,9 +459,6 @@ public class GeneTrackRenderer {
 
     private void drawTranscriptMini(Transcript transcript, double y, double h) {
         List<Exon> exons = transcript.getExonsByCoordinate();
-        if (exons.isEmpty()) {
-            return;
-        }
         double lineY = y + h / 2;
         gc.setStroke(INTRON_LINE);
         gc.setLineWidth(1.2);
@@ -454,13 +468,11 @@ public class GeneTrackRenderer {
         for (Exon exon : exons) {
             drawExonBlock(exon, y, h, false);
         }
+        drawUnassigned(transcript, y, h);
     }
 
     private void drawTranscript(Transcript transcript, double y) {
         List<Exon> exons = transcript.getExonsByCoordinate();
-        if (exons.isEmpty()) {
-            return;
-        }
         double h = 12;
         double lineY = y + h / 2;
 
@@ -481,6 +493,7 @@ public class GeneTrackRenderer {
         for (Exon exon : exons) {
             drawExonBlock(exon, y, h, true);
         }
+        drawUnassigned(transcript, y, h);
 
         gc.setTextAlign(TextAlignment.LEFT);
         gc.setFont(Font.font("Consolas", 10));
@@ -490,7 +503,17 @@ public class GeneTrackRenderer {
             label += "  \u2605";
         }
         label += String.format("  exons:%d  CDS:%dbp", transcript.getExonCount(), transcript.getCdsLength());
+        if (!transcript.getUnassignedSegments().isEmpty()) label += "  * unassigned CDS/UTR";
         gc.fillText(label, plotLeft() + 2, y - 2);
+    }
+
+    private void drawUnassigned(Transcript transcript, double y, double height) {
+        for (GenomicFeature segment : transcript.getUnassignedSegments()) {
+            double x = toPixel(segment.getStart()), w = Math.max(1.5, toPixel(segment.getEnd()) - x);
+            gc.setFill(segment.getType() == io.gitee.omixcore.phytoscope.model.FeatureType.CDS ? CDS_FILL : UTR_FILL);
+            gc.fillRect(x, y, w, height); gc.setStroke(FEATURE_STROKE); gc.setLineDashes(2,2);
+            gc.strokeRect(x, y, w, height); gc.setLineDashes();
+        }
     }
 
     private void drawExonBlock(Exon exon, double y, double h, boolean detailed) {

@@ -159,12 +159,13 @@ public final class BatchRenderer {
             out.println("dataset  : " + dataset.species() + " (" + dataset.assembly() + ")");
         } else {
             genomes.loadFromFile(options.annotation());
-            if (options.expression() != null) {
-                expression.loadFromFile(options.expression());
-            }
             out.println("dataset  : " + genomes.getMetadata().summary());
         }
 
+        if (options.expression() != null) {
+            expression.loadFromFile(options.expression()); expression.reconcile(genomes);
+            out.println(expression.getImportReport().summary());
+        }
         out.println("format   : " + genomes.getFormat().getLabel());
         out.println("genes    : " + genomes.getGeneCount());
         out.println("features : " + genomes.getRawFeatureCount());
@@ -246,15 +247,18 @@ public final class BatchRenderer {
         List<Gene> resolved = new ArrayList<>();
         Set<String> seen = new LinkedHashSet<>();
         for (String locus : loci) {
+            boolean found = false;
             String key = locus.trim().toLowerCase();
             for (Gene gene : genomes.getGenes()) {
                 boolean match = key.equals(lower(gene.getId()))
                         || key.equals(lower(gene.getName()))
                         || key.equals(lower(gene.getDisplayName()));
-                if (match && seen.add(gene.getDisplayName())) {
+                if (match) found = true;
+                if (match && seen.add(gene.getId())) {
                     resolved.add(gene);
                 }
             }
+            if (!found) throw new IllegalArgumentException("No exact gene match for requested locus: " + locus);
         }
         return resolved;
     }
@@ -265,7 +269,7 @@ public final class BatchRenderer {
 
     /** A filesystem-safe file stem encoding the species-agnostic locus name. */
     private static String fileStem(Gene gene) {
-        String name = gene.getDisplayName().replaceAll("[^A-Za-z0-9._-]", "_");
+        String name = (gene.getChromosome() + "_" + gene.getId()).replaceAll("[^A-Za-z0-9._-]", "_");
         return name + "_" + gene.getStart() + "-" + gene.getEnd();
     }
 

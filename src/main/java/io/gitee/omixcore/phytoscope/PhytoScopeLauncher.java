@@ -18,7 +18,7 @@ import java.util.List;
  *   mvn javafx:run
  *
  *   # headless batch rendering, for reproducible figures
- *   java -jar target/phytoscope-x.y.z.jar --example mint --loci rbcL --out figures
+ *   java -jar target/phytoscope-x.y.z.jar --example maize --loci Zm00001eb000010 --out figures
  * </pre>
  *
  * <p>Batch mode is selected automatically as soon as a rendering option is
@@ -30,6 +30,16 @@ public final class PhytoScopeLauncher {
     }
 
     public static void main(String[] args) {
+        if (java.util.Arrays.asList(args).contains("--compare")) {
+            try { io.gitee.omixcore.phytoscope.cli.ComparisonRunner.run(args); }
+            catch (Exception ex) { System.err.println("error: " + ex.getMessage()); System.exit(3); }
+            return;
+        }
+        if (java.util.Arrays.asList(args).contains("--benchmark")) {
+            try { io.gitee.omixcore.phytoscope.cli.BenchmarkRunner.run(args); }
+            catch (Exception ex) { System.err.println("error: " + ex.getMessage()); System.exit(3); }
+            return;
+        }
         if (isBatchRequest(args)) {
             BatchRenderer.main(args);
             return;

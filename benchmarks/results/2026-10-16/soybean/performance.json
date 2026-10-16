@@ -1,0 +1,31 @@
+{
+  "timestamp_utc" : "2026-10-16T14:45:43.540314261Z",
+  "java" : "21.0.12.1+1-LTS",
+  "os" : "Linux amd64",
+  "available_processors" : 8,
+  "max_heap_bytes" : 3221225472,
+  "method" : "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
+  "import_ms" : 176.697353,
+  "genes" : 40,
+  "features" : 839,
+  "sequences" : 20,
+  "sources" : [ {
+    "sha256" : "34f081abefa1b6a1af4b5312890a4a26d682e6939ef462f1f5a9ee0467fde2e3",
+    "source" : "/data/species/soybean/soybean_chromosomes.gff3"
+  } ],
+  "select_all_sequences_ms" : 1.57219,
+  "search_repetitions" : 100,
+  "search_median_ms" : 0.022756,
+  "search_p95_ms" : 0.195093,
+  "hierarchy_query_ids" : [ "gene:GLYMA_01G000100", "gene:GLYMA_01G000200", "gene:GLYMA_02G000100", "gene:GLYMA_02G000200" ],
+  "hierarchy_query_median_ms" : 0.008471,
+  "hierarchy_query_p95_ms" : 0.011999,
+  "hierarchy_records_visited_over_100_queries" : 13500,
+  "comparison_10_loci_layout_ms" : 219.31278,
+  "comparison_svg_write_ms" : 75.96376,
+  "heap_pool_peaks_bytes" : {
+    "G1 Old Gen" : 1099360,
+    "G1 Survivor Space" : 0,
+    "G1 Eden Space" : 16777216
+  }
+}

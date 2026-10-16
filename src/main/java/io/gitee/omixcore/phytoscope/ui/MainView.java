@@ -1,5 +1,14 @@
 package io.gitee.omixcore.phytoscope.ui;
 
+import io.gitee.omixcore.phytoscope.comparison.ComparisonFigure;
+import io.gitee.omixcore.phytoscope.project.ProjectStore;
+import io.gitee.omixcore.phytoscope.ui.component.ComparisonPane;
+import io.gitee.omixcore.phytoscope.ui.component.LoadingOperation;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import java.nio.file.Path;
+import java.io.IOException;
 import io.gitee.omixcore.phytoscope.model.ExpressionProfile;
 import io.gitee.omixcore.phytoscope.model.Gene;
 import io.gitee.omixcore.phytoscope.model.SequenceRegion;
@@ -77,11 +86,17 @@ public class MainView extends BorderPane {
     private final GenomeDataService dataService;
     private final ExpressionDataService expressionService;
     private final GeneTrackRenderer renderer = new GeneTrackRenderer();
+    private ExampleDataset activeExample;
+    private java.util.concurrent.CompletableFuture<?> pendingLoad = java.util.concurrent.CompletableFuture.completedFuture(null);
+    private ComparisonPane comparisonPane;
+    private ProjectStore.Restored restoredProject;
+    private final TabPane workspaceTabs = new TabPane();
     private final GeneDetailPane detailPane = new GeneDetailPane();
 
     private final ListView<Gene> geneList = new ListView<>();
     private final ObservableList<Gene> geneItems = FXCollections.observableArrayList();
     private final TextField searchField = new TextField();
+    private final Label browserNotice = new Label();
     private final Label statusLabel = new Label();
     private final ComboBox<ExampleDataset> datasetSelector = new ComboBox<>();
     private final ComboBox<String> chromosomeSelector = new ComboBox<>();
@@ -102,11 +117,15 @@ public class MainView extends BorderPane {
         setStyle("-fx-background-color: #EEF2F7;");
 
         renderer.setOnGeneSelected(this::selectGene);
-        detailPane.setExpressionData(expressionService::getProfile, expressionService.globalMaxTpm());
+        detailPane.setExpressionData(expressionService::getProfileForAnnotation, expressionService.globalMaxTpm());
 
         setTop(new VBox(buildMenuBar(), buildToolBar()));
         setLeft(buildGeneListPane());
-        setCenter(buildBrowserPane());
+        comparisonPane = new ComparisonPane(dataService, expressionService);
+        Tab browser = new Tab("Genome browser", buildBrowserPane()); browser.setClosable(false);
+        Tab comparison = new Tab("Gene comparison", comparisonPane); comparison.setClosable(false);
+        workspaceTabs.getTabs().addAll(browser, comparison);
+        setCenter(workspaceTabs);
         setRight(buildDetailPane());
         setBottom(buildStatusBar());
 
@@ -123,6 +142,35 @@ public class MainView extends BorderPane {
         loadExample(ExampleDataset.defaultDataset());
     }
 
+    public void loadExampleData(ExampleDataset dataset) { loadExample(dataset); }
+    public java.util.concurrent.CompletableFuture<?> getPendingLoad() { return pendingLoad; }
+    public void loadInitialDataAsync() { startExampleLoad(ExampleDataset.defaultDataset(), false); }
+    public java.util.concurrent.CompletableFuture<?> startExampleLoad(ExampleDataset dataset, boolean atlas) {
+        pendingLoad = LoadingOperation.run(windowOrNull(), "Loading " + dataset.species(), () -> {
+            GenomeDataService next = new GenomeDataService(); next.loadExample(dataset);
+            ExpressionDataService measurements = new ExpressionDataService(); measurements.loadExample(dataset);
+            if (atlas) {
+                measurements.loadFromResource("/data/case-studies/arabidopsis-atlas/expression.tsv", "Expression Atlas E-MTAB-7978 (single-assay conditions)");
+                measurements.reconcile(next);
+            }
+            return new Loaded(next, measurements);
+        }, next -> {
+            dataService.replaceWith(next.genome()); expressionService.replaceWith(next.expression());
+            activeExample = dataset; datasetSelector.setTooltip(new Tooltip(dataset.label() + "\n" + dataset.attribution())); loading = true;
+            try { datasetSelector.getSelectionModel().select(dataset); } finally { loading = false; }
+            comparisonPane.clear(); afterDatasetChanged();
+            if (atlas) pinAtlasGenes();
+        }, this::loadFailed);
+        return pendingLoad;
+    }
+    private record Loaded(GenomeDataService genome, ExpressionDataService expression) { }
+    private void loadFailed(Throwable ex) {
+        loading = true;
+        try { datasetSelector.getSelectionModel().select(activeExample); } finally { loading = false; }
+        if (ex instanceof java.util.concurrent.CancellationException) statusLabel.setText(ex.getMessage());
+        else showLoadError("load data", ex instanceof Exception error ? error : new IOException(ex));
+    }
+
     /**
      * Loads one of the bundled example datasets and rebuilds every view.
      * This is how the cross-species panel is explored without any download.
@@ -135,6 +183,8 @@ public class MainView extends BorderPane {
             loading = true;
             dataService.loadExample(dataset);
             expressionService.loadExample(dataset);
+            activeExample = dataset;
+            comparisonPane.clear();
             datasetSelector.getSelectionModel().select(dataset);
             datasetSelector.setTooltip(new Tooltip(dataset.label() + "\nAssembly: "
                     + dataset.assembly() + "\n" + dataset.attribution()));
@@ -162,18 +212,13 @@ public class MainView extends BorderPane {
         if (file == null) {
             return;
         }
-        try {
-            loading = true;
-            dataService.loadFromFile(file.toPath());
-            // Expression data from the previous dataset no longer applies.
-            expressionService.clear();
-            datasetSelector.getSelectionModel().clearSelection();
+        pendingLoad = LoadingOperation.run(windowOrNull(), "Importing annotation", () -> {
+            GenomeDataService next = new GenomeDataService(); next.loadFromFile(file.toPath()); return next;
+        }, next -> {
+            dataService.replaceWith(next); expressionService.clear(); comparisonPane.clear(); activeExample = null;
+            loading = true; try { datasetSelector.getSelectionModel().clearSelection(); } finally { loading = false; }
             afterDatasetChanged();
-        } catch (Exception ex) {
-            showLoadError("import annotation", ex);
-        } finally {
-            loading = false;
-        }
+        }, this::loadFailed);
     }
 
     /**
@@ -196,12 +241,114 @@ public class MainView extends BorderPane {
         if (file == null) {
             return;
         }
-        try {
-            expressionService.loadFromFile(file.toPath());
-            afterDatasetChanged();
-        } catch (Exception ex) {
-            showLoadError("import expression matrix", ex);
+        pendingLoad = LoadingOperation.run(windowOrNull(), "Importing expression", () -> {
+            ExpressionDataService next = new ExpressionDataService(); next.loadFromFile(file.toPath()); next.reconcile(dataService); return next;
+        }, next -> { expressionService.replaceWith(next); refreshExpressionViews(); showImportReport(); }, this::loadFailed);
+    }
+
+    /** Non-dialog entry points shared by GUI actions and end-to-end tests. */
+    public void loadAnnotation(Path file) throws IOException {
+        dataService.loadFromFile(file);
+        activeExample = null; expressionService.clear(); comparisonPane.clear();
+        boolean before = loading; loading = true;
+        try { datasetSelector.getSelectionModel().clearSelection(); } finally { loading = before; }
+        afterDatasetChanged();
+    }
+    public void loadExpression(Path file) throws IOException {
+        expressionService.loadFromFile(file); expressionService.reconcile(dataService);
+        refreshExpressionViews();
+    }
+    private void refreshExpressionViews() {
+        // Keep the browser window and selection when only measurements change.
+        detailPane.setExpressionData(expressionService::getProfileForAnnotation, expressionService.globalMaxTpm());
+        detailPane.setValueUnit(expressionService.getValueUnit());
+        detailPane.setSamples(expressionService.getTissues());
+        detailPane.setExpressionLevel(expressionService.getLevel());
+        Gene gene = renderer.getSelectedGene(); if (gene != null) detailPane.showGene(gene);
+        comparisonPane.refresh(); refreshStatus();
+    }
+    private void showImportReport() {
+        Alert report = new Alert(Alert.AlertType.INFORMATION);
+        report.setTitle("Expression import report"); report.setHeaderText("Identifier matching and data quality");
+        TextArea text = new TextArea(expressionService.getImportReport().summary());
+        text.setEditable(false); text.setWrapText(true); text.setPrefSize(720, 400);
+        report.getDialogPane().setContent(text); report.showAndWait();
+    }
+    public void loadAtlasCase() throws IOException {
+        loadExample(ExampleDataset.byId("arabidopsis"));
+        expressionService.loadFromResource("/data/case-studies/arabidopsis-atlas/expression.tsv", "Expression Atlas E-MTAB-7978 (single-assay conditions)");
+        expressionService.reconcile(dataService); afterDatasetChanged();
+        pinAtlasGenes();
+    }
+    private void pinAtlasGenes() {
+        for (String id : List.of("AT1G67090", "AT5G38410", "AT5G38420", "AT5G38430")) {
+            Gene gene = dataService.findGene(id);
+            if (gene == null) throw new IllegalStateException("Case-study gene absent: " + id);
+            comparisonPane.add(gene);
         }
+        workspaceTabs.getSelectionModel().select(1);
+    }
+    public ComparisonPane getComparisonPane() { return comparisonPane; }
+    public void saveProject(Path target) throws IOException {
+        new ProjectStore().save(target, dataService, expressionService, captureViewState());
+    }
+    private ProjectStore.ViewState captureViewState() {
+        Gene selected = renderer.getSelectedGene(); var settings = comparisonPane.settings();
+        return new ProjectStore.ViewState(dataService.getActiveSequence(), selected == null ? null : selected.getId(),
+                        renderer.getViewStart(), renderer.getViewEnd(), comparisonPane.geneIds(), settings.alignment().name(),
+                        settings.compressed(), settings.scale().name(), searchField.getText());
+    }
+    public void openProject(Path source) throws IOException {
+        ProjectStore.Restored next = new ProjectStore().load(source);
+        applyRestoredProject(next);
+    }
+    private void applyRestoredProject(ProjectStore.Restored next) throws IOException {
+        var state = next.view();
+        var settings = new ComparisonFigure.Settings(ComparisonFigure.Alignment.valueOf(state.alignment()), state.compressed(),
+                ComparisonFigure.Scale.valueOf(state.expressionScale()), true);
+        dataService.replaceWith(next.genome()); expressionService.replaceWith(next.expression());
+        var previous = restoredProject; restoredProject = next; activeExample = null;
+        boolean before = loading; loading = true;
+        try { datasetSelector.getSelectionModel().clearSelection(); } finally { loading = before; }
+
+        // ProjectStore restores the saved active sequence on the staged genome.
+        // Rebuild the browser from that sequence before restoring the search box;
+        // otherwise a cross-chromosome search can leave the renderer on its first hit.
+        dataService.setActiveSequence(state.sequence());
+        afterDatasetChanged();
+        if (state.search() != null && !state.search().isBlank()) {
+            // Search text is view state, not a reason to change the restored
+            // sequence or rebuild the renderer. The saved sequence/window must
+            // remain authoritative during project restoration.
+            boolean restoreLoading = loading;
+            loading = true;
+            try { searchField.setText(state.search()); }
+            finally { loading = restoreLoading; }
+        }
+        if (state.selectedGene() != null) selectGene(dataService.findGene(state.selectedGene()));
+        else { geneList.getSelectionModel().clearSelection(); renderer.setSelectedGene(null); detailPane.clear(); }
+        renderer.showWindow(state.start(), state.end());
+        comparisonPane.restore(state.comparisonGenes(), settings); redraw();
+        if (previous != null) try { previous.close(); } catch (IOException ex) { statusLabel.setTooltip(new Tooltip("Previous project cleanup: " + ex.getMessage())); }
+    }
+    public void closeProjectResources() {
+        if (restoredProject != null) try { restoredProject.close(); } catch (IOException ex) { statusLabel.setText(ex.getMessage()); }
+    }
+    private void chooseProject(boolean save) {
+        FileChooser chooser = new FileChooser(); chooser.setTitle(save ? "Save portable project" : "Open project");
+        chooser.setInitialFileName("analysis.phytoscope");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PhytoScope project", "*.phytoscope"));
+        File file = save ? chooser.showSaveDialog(windowOrNull()) : chooser.showOpenDialog(windowOrNull());
+        if (file == null) return;
+        if (save) {
+            var state = captureViewState();
+            pendingLoad = LoadingOperation.run(windowOrNull(), "Saving project", () -> {
+                new ProjectStore().save(file.toPath(), dataService, expressionService, state); return file;
+            }, done -> statusLabel.setText("Saved project: " + done), this::loadFailed);
+        } else pendingLoad = LoadingOperation.run(windowOrNull(), "Restoring project", () -> new ProjectStore().load(file.toPath()), next -> {
+            try { applyRestoredProject(next); statusLabel.setText("Restored project: " + file); }
+            catch (IOException ex) { throw new java.io.UncheckedIOException(ex); }
+        }, this::loadFailed);
     }
 
     /**
@@ -210,12 +357,15 @@ public class MainView extends BorderPane {
      * status bar.
      */
     private void afterDatasetChanged() {
-        detailPane.setExpressionData(expressionService::getProfile,
+        detailPane.setExpressionData(expressionService::getProfileForAnnotation,
                 expressionService.globalMaxTpm());
         detailPane.setValueUnit(expressionService.getValueUnit());
 
+        detailPane.setSamples(expressionService.getTissues());
+        detailPane.setExpressionLevel(expressionService.getLevel());
         refreshChromosomeSelector();
         showActiveChromosome();
+        comparisonPane.refresh();
     }
 
     /**
@@ -367,7 +517,10 @@ public class MainView extends BorderPane {
         quit.setOnAction(e -> Platform.exit());
 
         Menu file = new Menu("File");
-        file.getItems().addAll(importAnnotationItem, importExpressionItem,
+        MenuItem openProject = new MenuItem("Open project…"); openProject.setOnAction(e -> chooseProject(false));
+        MenuItem saveProject = new MenuItem("Save project…"); saveProject.setOnAction(e -> chooseProject(true));
+        MenuItem quality = new MenuItem("Expression import report…"); quality.setOnAction(e -> showImportReport());
+        file.getItems().addAll(openProject, saveProject, new SeparatorMenuItem(), importAnnotationItem, importExpressionItem, quality,
                 new SeparatorMenuItem(), exportPngItem, exportSvgItem,
                 new SeparatorMenuItem(), quit);
 
@@ -375,10 +528,13 @@ public class MainView extends BorderPane {
         Menu examples = new Menu("Example datasets");
         for (ExampleDataset dataset : ExampleDataset.CATALOGUE) {
             MenuItem item = new MenuItem(dataset.fullLabel());
-            item.setOnAction(e -> loadExample(dataset));
+            item.setOnAction(e -> startExampleLoad(dataset, false));
             examples.getItems().add(item);
         }
 
+        MenuItem atlas = new MenuItem("Real expression case: Arabidopsis RBCS atlas…");
+        atlas.setOnAction(e -> startExampleLoad(ExampleDataset.byId("arabidopsis"), true));
+        examples.getItems().addAll(new SeparatorMenuItem(), atlas);
         MenuItem fitAllItem = new MenuItem("Fit all genes");
         fitAllItem.setOnAction(e -> {
             renderer.fitToAll();
@@ -445,7 +601,7 @@ public class MainView extends BorderPane {
     // Toolbar
     // ------------------------------------------------------------------
 
-    private HBox buildToolBar() {
+    private VBox buildToolBar() {
         HBox bar = new HBox(10);
         bar.setPadding(new Insets(10, 14, 10, 14));
         bar.setAlignment(Pos.CENTER_LEFT);
@@ -480,7 +636,7 @@ public class MainView extends BorderPane {
         });
         datasetSelector.getSelectionModel().selectedItemProperty().addListener((obs, old, dataset) -> {
             if (!loading && dataset != null) {
-                loadExample(dataset);
+                startExampleLoad(dataset, false);
             }
         });
 
@@ -512,6 +668,7 @@ public class MainView extends BorderPane {
         HBox.setHgrow(spacer1, Priority.ALWAYS);
 
         searchField.setPromptText("Search gene ID / name / alias");
+        searchField.setId("gene-search");
         searchField.setPrefWidth(220);
         searchField.textProperty().addListener((obs, old, val) -> applySearch(val));
 
@@ -553,10 +710,13 @@ public class MainView extends BorderPane {
         exportMenu.setTooltip(new Tooltip(
                 "Save the current browser view (gene structure tracks)"));
 
-        bar.getChildren().addAll(brandBox, spacer0, datasetSelector, chromosomeLabel,
-                chromosomeSelector, sequenceCountLabel, spacer1, searchField,
-                zoomOut, zoomIn, fitAll, focusSelected, exportMenu);
-        return bar;
+        brandBox.setMinWidth(190);
+        datasetSelector.setMinWidth(240); chromosomeSelector.setMinWidth(150);
+        bar.getChildren().addAll(brandBox, datasetSelector, chromosomeLabel, chromosomeSelector, sequenceCountLabel);
+        HBox actions = new HBox(10, searchField, zoomOut, zoomIn, fitAll, focusSelected, exportMenu);
+        actions.setAlignment(Pos.CENTER_LEFT); actions.setPadding(new Insets(0, 14, 10, 14));
+        actions.setStyle("-fx-background-color: #FFFFFF;");
+        VBox result = new VBox(bar, actions); return result;
     }
 
     // ------------------------------------------------------------------
@@ -643,17 +803,27 @@ public class MainView extends BorderPane {
     }
 
     private void applySearch(String keyword) {
+        applySearch(keyword, true);
+    }
+
+    /** Applies a saved query without allowing it to change the restored chromosome. */
+    private void applySearch(String keyword, boolean revealAcrossChromosomes) {
         List<Gene> hits = dataService.search(keyword);
-        // A hit on another chromosome is only meaningful if we go there.
-        if (!hits.isEmpty()) {
+        // Interactive searches may reveal the first hit on another chromosome;
+        // project restoration deliberately keeps the saved active sequence.
+        if (revealAcrossChromosomes && !hits.isEmpty()) {
             revealGeneAcrossChromosomes(hits.get(0));
         }
-        geneItems.setAll(hits);
-        renderer.setGenes(hits);
+        List<Gene> visible = hits.stream()
+                .filter(g -> java.util.Objects.equals(g.getChromosome(), dataService.getActiveSequence()))
+                .toList();
+        renderer.setSequenceLabel(dataService.getActiveSequence());
+        geneItems.setAll(visible);
+        renderer.setGenes(visible);
         renderer.fitToAll();
         redraw();
-        if (hits.isEmpty()) {
-            detailPane.clear();
+        if (visible.isEmpty()) {
+            geneList.getSelectionModel().clearSelection(); renderer.setSelectedGene(null); detailPane.clear();
         }
     }
 
@@ -680,13 +850,20 @@ public class MainView extends BorderPane {
 
         geneList.getSelectionModel().selectedItemProperty().addListener((obs, old, gene) -> {
             if (gene != null) {
+                if (revealGeneAcrossChromosomes(gene)) {
+                    renderer.setSequenceLabel(gene.getChromosome());
+                    renderer.setGenes(geneItems.stream().filter(g -> java.util.Objects.equals(g.getChromosome(), gene.getChromosome())).toList());
+                    renderer.focusOn(gene, 0.25);
+                }
                 renderer.setSelectedGene(gene);
                 detailPane.showGene(gene);
                 redraw();
             }
         });
 
-        box.getChildren().addAll(title, geneList);
+        Button addComparison = new Button("Add to comparison"); addComparison.setId("add-to-comparison");
+        addComparison.setOnAction(e -> { comparisonPane.add(geneList.getSelectionModel().getSelectedItem()); workspaceTabs.getSelectionModel().select(1); });
+        box.getChildren().addAll(title, geneList, addComparison);
         return box;
     }
 
@@ -740,7 +917,8 @@ public class MainView extends BorderPane {
                 + " -fx-border-color: #E3E9F0; -fx-border-radius: 6;");
         VBox.setVgrow(browserScroll, Priority.ALWAYS);
 
-        box.getChildren().addAll(hint, browserScroll);
+        browserNotice.setWrapText(true); browserNotice.setStyle("-fx-text-fill: #986235; -fx-font-size: 11px;");
+        box.getChildren().addAll(hint, browserNotice, browserScroll);
         return box;
     }
 
@@ -789,7 +967,7 @@ public class MainView extends BorderPane {
             renderer.setHoveredGene(hit);
             canvas.setCursor(hit != null ? javafx.scene.Cursor.HAND : javafx.scene.Cursor.DEFAULT);
             if (hit != null) {
-                ExpressionProfile profile = expressionService.getProfile(hit.getId());
+                ExpressionProfile profile = expressionService.getProfileForAnnotation(hit.getId());
                 String extra = profile == null ? "" : "\n" + expressionService.describe(hit.getId());
                 Tooltip.install(canvas, new Tooltip(String.format(
                         "%s\n%s:%,d\u2013%,d\n%d bp \u00b7 %s%s",
@@ -838,19 +1016,12 @@ public class MainView extends BorderPane {
         String sequence = dataService.getActiveSequence();
         String sequenceCount = metadata.getSequenceCount()
                 + (metadata.getSequenceCount() == 1 ? " sequence" : " sequences");
-        statusLabel.setText(String.format(
-                "%s  |  %s  |  %s  |  %s  |  %d genes  |  %d features  |  %s  | "
-                        + "  %s window %,d\u2013%,d (%s bp)",
-                metadata.getSourceLabel(),
-                metadata.getSpecies(),
-                dataService.getFormat().getLabel() + " / " + metadata.getAssembly(),
-                sequenceCount,
-                dataService.getGeneCount(),
-                dataService.getRawFeatureCount(),
-                expression,
-                sequence == null ? "no chromosome selected" : sequence,
-                renderer.getViewStart(), renderer.getViewEnd(),
-                formatSpan(renderer.getSpan())));
+        browserNotice.setText(renderer.renderNotice());
+        statusLabel.setText(metadata.getSpecies() + " | " + metadata.getAssembly() + " | "
+                + sequenceCount + " | " + dataService.getGeneCount() + " loci | " + expression
+                + " | " + (sequence == null ? "No sequence" : sequence) + ": "
+                + renderer.getViewStart() + "–" + renderer.getViewEnd());
+        statusLabel.setTooltip(new Tooltip(metadata.getSourceLabel()));
     }
 
     private static String formatSpan(int span) {

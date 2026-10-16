@@ -1,0 +1,31 @@
+{
+  "timestamp_utc" : "2026-10-16T14:39:34.601256533Z",
+  "java" : "21.0.12.1+1-LTS",
+  "os" : "Linux amd64",
+  "available_processors" : 8,
+  "max_heap_bytes" : 3221225472,
+  "method" : "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
+  "import_ms" : 13167.91873,
+  "genes" : 32833,
+  "features" : 791564,
+  "sequences" : 7,
+  "sources" : [ {
+    "sha256" : "9f2701d7151b4467941b5dae4171b8955ea4260c4d78f41be4fb3ff44782d2fd",
+    "source" : "/workspace/scratch/bd625012ddd5/phytoscope/target/full-archives/arabidopsis.gff3.gz"
+  } ],
+  "select_all_sequences_ms" : 11.820509,
+  "search_repetitions" : 100,
+  "search_median_ms" : 50.780413,
+  "search_p95_ms" : 104.256984,
+  "hierarchy_query_ids" : [ "gene:AT1G01010", "gene:AT1G01020", "gene:AT1G03987", "gene:AT1G01030" ],
+  "hierarchy_query_median_ms" : 0.010964,
+  "hierarchy_query_p95_ms" : 0.42987,
+  "hierarchy_records_visited_over_100_queries" : 15100,
+  "comparison_10_loci_layout_ms" : 374.281735,
+  "comparison_svg_write_ms" : 96.969048,
+  "heap_pool_peaks_bytes" : {
+    "G1 Old Gen" : 1066831568,
+    "G1 Survivor Space" : 25165824,
+    "G1 Eden Space" : 421527552
+  }
+}

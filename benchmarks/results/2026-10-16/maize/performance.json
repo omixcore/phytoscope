@@ -1,0 +1,31 @@
+{
+  "timestamp_utc" : "2026-10-16T14:41:56.378474678Z",
+  "java" : "21.0.12.1+1-LTS",
+  "os" : "Linux amd64",
+  "available_processors" : 8,
+  "max_heap_bytes" : 3221225472,
+  "method" : "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
+  "import_ms" : 372.267092,
+  "genes" : 20,
+  "features" : 377,
+  "sequences" : 10,
+  "sources" : [ {
+    "sha256" : "975f0ada1eadcca585a67ba60964358b7311d799735399bf075e746debbd3734",
+    "source" : "/data/species/maize/maize_chromosomes.gff3"
+  } ],
+  "select_all_sequences_ms" : 5.232783,
+  "search_repetitions" : 100,
+  "search_median_ms" : 0.017769,
+  "search_p95_ms" : 0.219537,
+  "hierarchy_query_ids" : [ "gene:Zm00001eb000010", "gene:Zm00001eb000020", "gene:Zm00001eb065560", "gene:Zm00001eb065570" ],
+  "hierarchy_query_median_ms" : 0.01368,
+  "hierarchy_query_p95_ms" : 0.137267,
+  "hierarchy_records_visited_over_100_queries" : 16200,
+  "comparison_10_loci_layout_ms" : 491.941797,
+  "comparison_svg_write_ms" : 113.367988,
+  "heap_pool_peaks_bytes" : {
+    "G1 Old Gen" : 1099360,
+    "G1 Survivor Space" : 0,
+    "G1 Eden Space" : 16777216
+  }
+}

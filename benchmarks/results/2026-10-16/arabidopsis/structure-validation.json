@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "expected_records": 811827,
+  "parsed_records": 811827,
+  "missing_records": 0,
+  "extra_records": 0,
+  "missing_examples": [],
+  "extra_examples": [],
+  "unsupported_source_types": {
+    "protein": 48149,
+    "transposable_element": 31189,
+    "transposon_fragment": 34856,
+    "uORF": 111,
+    "miRNA": 427
+  },
+  "scope": "Explicit GFF3 parent edges and exact 1-based inclusive coordinates; unsupported types excluded and reported."
+}

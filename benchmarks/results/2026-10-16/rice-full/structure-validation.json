@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "expected_records": 550921,
+  "parsed_records": 550921,
+  "missing_records": 0,
+  "extra_records": 0,
+  "missing_examples": [],
+  "extra_examples": [],
+  "unsupported_source_types": {
+    "chromosome": 14,
+    "scaffold": 49,
+    "biological_region": 546
+  },
+  "scope": "Explicit GFF3 parent edges and exact 1-based inclusive coordinates; unsupported types excluded and reported."
+}

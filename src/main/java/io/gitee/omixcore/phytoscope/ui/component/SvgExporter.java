@@ -61,7 +61,7 @@ public class SvgExporter {
         appendCoordinateAxis(sb, width);
 
         double y = GeneTrackRenderer.AXIS_HEIGHT;
-        for (Gene gene : renderer.getGenes()) {
+        for (Gene gene : renderer.getRenderedGenes()) {
             double rowH = renderer.rowHeightFor(gene);
             appendGeneRow(sb, gene, y, rowH);
             y += rowH;
@@ -69,6 +69,8 @@ public class SvgExporter {
 
         appendVerticalGridLines(sb, height);
 
+        if (!renderer.renderNotice().isEmpty()) sb.append("<text x=\"12\" y=\"").append(height - 5)
+                .append("\" font-family=\"Arial\" font-size=\"12\">").append(renderer.renderNotice()).append("</text>\n");
         sb.append("</svg>\n");
         out.write(sb.toString());
     }
@@ -80,7 +82,7 @@ public class SvgExporter {
     private void appendTrackBackgrounds(StringBuilder sb) {
         double y = GeneTrackRenderer.AXIS_HEIGHT;
         int i = 0;
-        for (Gene gene : renderer.getGenes()) {
+        for (Gene gene : renderer.getRenderedGenes()) {
             double rowH = renderer.rowHeightFor(gene);
             if (i % 2 == 1) {
                 sb.append(rect(0, y, renderer.getCanvas().getWidth(), rowH,
@@ -194,9 +196,6 @@ public class SvgExporter {
 
     private void appendTranscriptMini(StringBuilder sb, Transcript transcript, double y, double h) {
         List<Exon> exons = transcript.getExonsByCoordinate();
-        if (exons.isEmpty()) {
-            return;
-        }
         double lineY = y + h / 2;
         for (GenomicFeature intron : transcript.computeIntrons()) {
             sb.append(line(renderer.toPixel(intron.getStart()), lineY,
@@ -206,13 +205,11 @@ public class SvgExporter {
         for (Exon exon : exons) {
             appendExonBlock(sb, exon, y, h, false);
         }
+        appendUnassigned(sb, transcript, y, h);
     }
 
     private void appendTranscript(StringBuilder sb, Transcript transcript, double y) {
         List<Exon> exons = transcript.getExonsByCoordinate();
-        if (exons.isEmpty()) {
-            return;
-        }
         double h = 12;
         double lineY = y + h / 2;
 
@@ -233,6 +230,7 @@ public class SvgExporter {
         for (Exon exon : exons) {
             appendExonBlock(sb, exon, y, h, true);
         }
+        appendUnassigned(sb, transcript, y, h);
 
         String label = transcript.getDisplayName();
         if (transcript.isCanonical()) {
@@ -240,8 +238,17 @@ public class SvgExporter {
         }
         label += String.format(Locale.ROOT, "  exons:%d  CDS:%dbp",
                 transcript.getExonCount(), transcript.getCdsLength());
+        if (!transcript.getUnassignedSegments().isEmpty()) label += "  * unassigned CDS/UTR";
         sb.append(text(label, renderer.plotLeft() + 2, y - 2,
                 GeneTrackRenderer.MUTED_LABEL, 10, "mono", "start"));
+    }
+
+    private void appendUnassigned(StringBuilder sb, Transcript transcript, double y, double height) {
+        for (GenomicFeature segment : transcript.getUnassignedSegments()) {
+            double x = renderer.toPixel(segment.getStart()), w = Math.max(1.5, renderer.toPixel(segment.getEnd()) - x);
+            sb.append(rect(x, y, w, height, segment.getType() == io.gitee.omixcore.phytoscope.model.FeatureType.CDS ? GeneTrackRenderer.CDS_FILL : GeneTrackRenderer.UTR_FILL, 1));
+            sb.append(strokeRect(x, y, w, height, GeneTrackRenderer.FEATURE_STROKE, 1).replace("/>", " stroke-dasharray=\"2 2\"/>"));
+        }
     }
 
     private void appendExonBlock(StringBuilder sb, Exon exon, double y, double h, boolean detailed) {

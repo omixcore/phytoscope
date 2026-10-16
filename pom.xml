@@ -13,7 +13,7 @@
 
     <groupId>io.gitee.omixcore</groupId>
     <artifactId>phytoscope</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <name>PhytoScope</name>
     <description>
         Species-agnostic plant genome structure browser (JavaFX desktop, Java 21).
@@ -23,6 +23,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <argLine>-Xmx3g</argLine>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,6 +31,7 @@
     </properties>
 
     <dependencies>
+        <dependency><groupId>com.fasterxml.jackson.core</groupId><artifactId>jackson-databind</artifactId></dependency>
         <!-- Service layer: Spring Boot (dependency injection, extensible data services) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -68,6 +70,11 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration><argLine>${argLine}</argLine></configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

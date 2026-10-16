@@ -28,7 +28,7 @@ class ExpressionDataServiceTest {
             service.loadFromFile(file);
             assertEquals(java.util.List.of("Leaf"), service.getTissues());
             assertEquals("GeneID", service.getIdColumnLabel());
-            assertEquals("TPM", service.getValueUnit());
+            assertEquals("unspecified", service.getValueUnit());
             assertNull(service.getProfile("geneA"));
             assertNotNull(service.getProfile("geneB"));
         } finally {

@@ -1,0 +1,43 @@
+{
+  "accession": "E-MTAB-7978",
+  "title": "Arabidopsis tissue atlas",
+  "publication_doi": "10.1038/s41586-020-2094-2",
+  "assembly": "TAIR10",
+  "annotation_join": "Exact AGI gene IDs to bundled Araport11; no transcript-level inference",
+  "inputs": {
+    "E-MTAB-7978-tpms.tsv": {
+      "url": "https://ftp.ebi.ac.uk/pub/databases/microarray/data/atlas/experiments/E-MTAB-7978/E-MTAB-7978-tpms.tsv",
+      "sha256": "c005f2b3b6469aa6a8b58a66480cc62f9415b22e64a0326dbd46f298f07098d5"
+    },
+    "E-MTAB-7978-configuration.xml": {
+      "url": "https://ftp.ebi.ac.uk/pub/databases/microarray/data/atlas/experiments/E-MTAB-7978/E-MTAB-7978-configuration.xml",
+      "sha256": "2de9a247e568b8c5d49cedb416b87171ac9a263b7ccb6f620f1ec942d3874e3a"
+    }
+  },
+  "genes": [
+    "AT1G67090",
+    "AT5G38410",
+    "AT5G38420",
+    "AT5G38430"
+  ],
+  "groups": [
+    "g7",
+    "g8",
+    "g20",
+    "g2",
+    "g26",
+    "g40"
+  ],
+  "extraction": "Selected single-assay groups; all five source summary components must be identical; retain that value unchanged.",
+  "limitations": "Descriptive gene-level atlas values, one assay per selected condition; no differential-expression statistics or causal inference.",
+  "annotation_sources": {
+    "Chr1": "846ac0fcab14444405c12a970b11ee4df428a6775b567d933ffc2cdb74b59d11",
+    "Chr5": "27b8e00179465b642835d798b77b7964301236b514d4f7668848fe13f37bd11a"
+  },
+  "outputs": {
+    "expression.tsv": "47b29f6d5bc24a2ccdcd5a5da4afc47b1e2343c471f320d3d855c324fdd25799",
+    "samples.tsv": "f36044524bf8449a4a07b2fee27bae798e836449680a60630eefff806a7069fd",
+    "source-values.tsv": "80effd78a7cb1be8db0500d9ac4fe92477ad8c88d4f99e6eed2176e9734b63b7",
+    "annotation.gff3": "6a59a49a2bcf4889cb858075aae0eb89ae1d3a1a3dc379ad1c5c4942a41e8471"
+  }
+}

@@ -43,7 +43,8 @@ class FullAnnotationValidationTest {
                         String[] c = line.split("\t");
                         if (c.length != 9) continue;
                         sequences.add(c[0]);
-                        if (c[2].equals("gene")) {
+                        if (java.util.Set.of("gene", "protein_coding_gene", "pseudogene", "ncRNA_gene", "lncRNA_gene", "miRNA_gene",
+                                "snRNA_gene", "snoRNA_gene", "rRNA_gene", "transposable_element_gene").contains(c[2])) {
                             for (String attribute : c[8].split(";")) {
                                 if (attribute.startsWith("ID=") && geneIds.add(attribute.substring(3))) {
                                     genesPerSequence.merge(c[0], 1, Integer::sum);
@@ -59,7 +60,7 @@ class FullAnnotationValidationTest {
             assertEquals(sequences.size(), service.getMetadata().getSequenceCount());
             var expectedNuclear = new LinkedHashSet<String>();
             for (int i = 1; i <= nuclearCount; i++) {
-                expectedNuclear.add("arabidopsis".equals(species) ? "Chr" + i : Integer.toString(i));
+                expectedNuclear.add(Integer.toString(i));
             }
             assertEquals(expectedNuclear,
                     service.getChromosomes().stream()

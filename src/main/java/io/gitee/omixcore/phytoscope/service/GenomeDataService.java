@@ -38,6 +38,27 @@ public class GenomeDataService {
     /** Sequence currently selected in the chromosome selector; null when empty. */
     private String activeSequence;
 
+    private List<SourceInput> sourceInputs = List.of();
+
+    public record SourceInput(String location, boolean resource, String sha256) {
+        public static SourceInput pin(String location, boolean resource) throws IOException {
+            SourceInput source = new SourceInput(location, resource, "");
+            try {
+                var digest = java.security.MessageDigest.getInstance("SHA-256");
+                try (var input = new java.security.DigestInputStream(source.open(), digest)) {
+                    input.transferTo(java.io.OutputStream.nullOutputStream());
+                }
+                return new SourceInput(location, resource, java.util.HexFormat.of().formatHex(digest.digest()));
+            } catch (java.security.NoSuchAlgorithmException ex) { throw new IllegalStateException(ex); }
+        }
+        public java.io.InputStream open() throws IOException {
+            var in = resource ? GenomeDataService.class.getResourceAsStream(location) : java.nio.file.Files.newInputStream(Path.of(location));
+            if (in == null) throw new IOException("Missing source: " + location);
+            return in;
+        }
+    }
+    public List<SourceInput> getSourceInputs() { return sourceInputs; }
+
     private final Gff3Parser parser = new Gff3Parser();
 
     // ------------------------------------------------------------------
@@ -67,6 +88,9 @@ public class GenomeDataService {
                 ? parser.parseResource(dataset.annotationResource(), dataset.format())
                 : parser.parseResources(dataset.annotationResources(), dataset.format());
         applyResult(result, dataset.publishedSequenceLengths());
+        List<SourceInput> inputs = new ArrayList<>();
+        for (String resource : dataset.annotationResources()) inputs.add(SourceInput.pin(resource, true));
+        sourceInputs = List.copyOf(inputs);
     }
 
     /**
@@ -78,6 +102,7 @@ public class GenomeDataService {
     public void loadFromResource(String resourcePath, AnnotationFormat format) throws IOException {
         Gff3Parser.ParseResult result = parser.parseResource(resourcePath, format);
         applyResult(result);
+        sourceInputs = List.of(SourceInput.pin(resourcePath, true));
     }
 
     /**
@@ -96,6 +121,7 @@ public class GenomeDataService {
     public void loadFromFile(Path file, AnnotationFormat format) throws IOException {
         Gff3Parser.ParseResult result = parser.parseFile(file, format);
         applyResult(result);
+        sourceInputs = List.of(SourceInput.pin(file.toAbsolutePath().toString(), false));
     }
 
     /**
@@ -111,11 +137,37 @@ public class GenomeDataService {
                         content.getBytes(java.nio.charset.StandardCharsets.UTF_8)),
                 null, label);
         applyResult(result);
+        sourceInputs = List.of();
     }
 
     /** Loads annotation text held in memory, using a generic source label. */
     public void loadFromContent(String content) throws IOException {
         loadFromContent(content, "in-memory annotation");
+    }
+
+    /** Load verified project parts as one stream, preserving original coordinates and hierarchy. */
+    public void loadParts(List<Path> parts, AnnotationFormat dialect) throws IOException {
+        List<java.io.InputStream> streams = new ArrayList<>();
+        try {
+            for (Path part : parts) {
+                streams.add(java.nio.file.Files.newInputStream(part));
+                streams.add(new java.io.ByteArrayInputStream(new byte[]{10}));
+            }
+            try (var in = new java.io.SequenceInputStream(java.util.Collections.enumeration(streams))) {
+                applyResult(parser.parse(in, dialect, "Restored project annotation"));
+            }
+            List<SourceInput> inputs = new ArrayList<>();
+            for (Path part : parts) inputs.add(SourceInput.pin(part.toAbsolutePath().toString(), false));
+            sourceInputs = List.copyOf(inputs);
+        } finally {
+            for (var in : streams) in.close();
+        }
+    }
+
+    public void replaceWith(GenomeDataService next) {
+        applyResult(new Gff3Parser.ParseResult(next.getGenes(), next.rawFeatureCount, next.format, next.metadata));
+        sourceInputs = next.sourceInputs;
+        activeSequence = next.activeSequence;
     }
 
     private void applyResult(Gff3Parser.ParseResult result) {

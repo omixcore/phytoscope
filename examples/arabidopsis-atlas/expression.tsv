@@ -1,0 +1,8 @@
+# unit=TPM
+# level=gene
+# source=Expression Atlas E-MTAB-7978; single-assay groups only
+GeneID	Root	Rosette_leaf_1	Rosette_leaf_8	Cauline_leaf	Dry_seed	Pollen
+AT1G67090	229	9981	17494	7580	13	3
+AT5G38410	5	1233	2766	1350	0.3	5
+AT5G38420	0.3	1275	1872	959	0.1	0.5
+AT5G38430	0.8	328	357	192	0	0

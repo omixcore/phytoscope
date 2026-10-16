@@ -201,8 +201,7 @@ class Gff3ParserTest {
         assertNotNull(profile);
         assertEquals(14.27, profile.getTpm("Root"), 0.001);
         assertEquals(6.74, profile.getTpm("Leaf"), 0.001);
-        assertEquals(0.0, profile.getTpm("Nonexistent"), 0.001,
-                "Unknown tissues should read as zero");
+        assertTrue(Double.isNaN(profile.getTpm("Nonexistent")), "Missing samples must not become measured zeros");
     }
 
     @Test

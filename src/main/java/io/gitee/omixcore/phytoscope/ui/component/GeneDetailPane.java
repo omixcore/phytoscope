@@ -38,7 +38,11 @@ public class GeneDetailPane extends ScrollPane {
     private double globalMaxTpm = 1.0;
 
     /** Measurement unit taken from the loaded dataset, e.g. TPM or FPKM. */
-    private String valueUnit = "TPM";
+    private String valueUnit = "unspecified";
+    private List<String> samples = List.of();
+    private String expressionLevel = "gene";
+    public void setSamples(List<String> samples) { this.samples = List.copyOf(samples); }
+    public void setExpressionLevel(String level) { expressionLevel = level; }
 
     public GeneDetailPane() {
         content.setPadding(new Insets(14));
@@ -57,7 +61,7 @@ public class GeneDetailPane extends ScrollPane {
 
     /** Sets the measurement unit shown next to expression values. */
     public void setValueUnit(String valueUnit) {
-        this.valueUnit = valueUnit == null || valueUnit.isBlank() ? "TPM" : valueUnit;
+        this.valueUnit = valueUnit == null || valueUnit.isBlank() ? "unspecified" : valueUnit;
     }
 
     /** Clears the pane back to its empty state, used when no gene is selected. */
@@ -124,7 +128,7 @@ public class GeneDetailPane extends ScrollPane {
         }
 
         // Expression summary; the panel label comes from the loaded dataset
-        ExpressionProfile profile = profileLookup.apply(gene.getId());
+        ExpressionProfile profile = expressionLevel.equals("gene") ? profileLookup.apply(gene.getId()) : null;
         if (profile != null && !profile.isEmpty()) {
             content.getChildren().addAll(new Separator(), sectionTitle("Sample Expression"));
             content.getChildren().add(buildExpressionCard(profile));
@@ -133,6 +137,10 @@ public class GeneDetailPane extends ScrollPane {
         content.getChildren().addAll(new Separator(), sectionTitle("Transcript Structure"));
         for (Transcript transcript : gene.getTranscripts()) {
             content.getChildren().add(buildTranscriptCard(transcript));
+            if (expressionLevel.equals("transcript")) {
+                ExpressionProfile tp = profileLookup.apply(transcript.getId());
+                if (tp != null) content.getChildren().add(buildExpressionCard(tp));
+            }
         }
     }
 
@@ -152,7 +160,9 @@ public class GeneDetailPane extends ScrollPane {
         card.getChildren().add(caption);
 
         double max = Math.max(1e-9, globalMaxTpm);
-        for (TissueExpression value : profile.getValues()) {
+        for (String sample : samples.isEmpty() ? profile.getValues().stream().map(TissueExpression::tissue).toList() : samples) {
+            double measurement = profile.getTpm(sample);
+            TissueExpression value = new TissueExpression(sample, measurement, 0);
             HBox row = new HBox(6);
             row.setAlignment(Pos.CENTER_LEFT);
 
@@ -161,11 +171,11 @@ public class GeneDetailPane extends ScrollPane {
             name.setStyle("-fx-text-fill: #4A5B6B; -fx-font-size: 11px;");
 
             // Bar width proportional to the dataset maximum
-            double fraction = Math.min(1.0, value.tpm() / max);
+            double fraction = Double.isFinite(value.tpm()) ? Math.min(1.0, Math.abs(value.tpm()) / max) : 0;
             Region bar = new Region();
             bar.setPrefHeight(11);
             bar.setPrefWidth(Math.max(1, fraction * 130));
-            bar.setStyle("-fx-background-color: " + toHex(barColour(fraction)) + ";"
+            bar.setStyle("-fx-background-color: " + (!Double.isFinite(value.tpm()) ? "#D7DDE4" : value.tpm() < 0 ? "#B86248" : toHex(barColour(fraction))) + ";"
                     + " -fx-background-radius: 3;");
 
             Region track = new Region();
@@ -176,7 +186,7 @@ public class GeneDetailPane extends ScrollPane {
             barHolder.setMinWidth(130);
             barHolder.setAlignment(Pos.CENTER_LEFT);
 
-            Label val = new Label(String.format("%.1f", value.tpm()));
+            Label val = new Label(Double.isFinite(value.tpm()) ? String.format("%.1f", value.tpm()) : "NA");
             val.setFont(Font.font("Consolas", 10.5));
             val.setStyle("-fx-text-fill: #2C3E50;");
             val.setMinWidth(40);
@@ -233,6 +243,10 @@ public class GeneDetailPane extends ScrollPane {
         }
 
         card.getChildren().addAll(name, stats);
+        if (!transcript.getUnassignedSegments().isEmpty()) {
+            Label warning = new Label(transcript.getUnassignedSegments().size() + " CDS/UTR segments lack an overlapping annotated exon. They are retained, not counted as exons.");
+            warning.setWrapText(true); warning.setStyle("-fx-text-fill: #986235;"); card.getChildren().add(warning);
+        }
 
         List<Exon> exons = transcript.getExonsByCoordinate();
         if (!exons.isEmpty()) {

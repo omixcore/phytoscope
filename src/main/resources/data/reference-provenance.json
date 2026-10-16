@@ -1,6 +1,6 @@
 {
   "audit_date": "2026-10-16",
-  "scope": "Reference structure annotations only; no measured expression data bundled",
+  "scope": "Reference structure annotations; measured E-MTAB-7978 expression case has a separate manifest under data/case-studies/arabidopsis-atlas",
   "datasets": {
     "arabidopsis": {
       "species": "Arabidopsis thaliana",
@@ -78,5 +78,6 @@
       "verified_original_feature_rows": 839,
       "status": "PASS"
     }
-  }
+  },
+  "case_study_manifest": "data/case-studies/arabidopsis-atlas/manifest.json"
 }

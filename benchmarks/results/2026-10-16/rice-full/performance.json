@@ -1,0 +1,31 @@
+{
+  "timestamp_utc" : "2026-10-16T14:41:16.110347855Z",
+  "java" : "21.0.12.1+1-LTS",
+  "os" : "Linux amd64",
+  "available_processors" : 8,
+  "max_heap_bytes" : 3221225472,
+  "method" : "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
+  "import_ms" : 8437.155822,
+  "genes" : 38993,
+  "features" : 551530,
+  "sequences" : 63,
+  "sources" : [ {
+    "source" : "/workspace/scratch/bd625012ddd5/phytoscope/target/full-archives/rice.gff3.gz",
+    "sha256" : "7b30126babf87e65426598e0acf1ec1540f09b0235ebfe8a799ee39dab7e1075"
+  } ],
+  "select_all_sequences_ms" : 10.215809,
+  "search_repetitions" : 100,
+  "search_median_ms" : 25.594263,
+  "search_p95_ms" : 54.247514,
+  "hierarchy_query_ids" : [ "gene:Os01g0100100", "gene:Os01g0100200", "gene:Os01g0100300", "gene:Os01g0100400" ],
+  "hierarchy_query_median_ms" : 0.003596,
+  "hierarchy_query_p95_ms" : 0.022247,
+  "hierarchy_records_visited_over_100_queries" : 5600,
+  "comparison_10_loci_layout_ms" : 302.791607,
+  "comparison_svg_write_ms" : 91.911741,
+  "heap_pool_peaks_bytes" : {
+    "G1 Old Gen" : 753624264,
+    "G1 Survivor Space" : 25165824,
+    "G1 Eden Space" : 234881024
+  }
+}

@@ -49,3 +49,7 @@ _pairs.tmp
 # ---- 批量渲染输出 ----
 phytoscope-exports/
 _shot_fixed.png
+
+# Python validation caches
+__pycache__/
+*.pyc
