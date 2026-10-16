@@ -264,12 +264,10 @@ public class GeneTrackRenderer {
             if (pixelY >= y && pixelY < y + rowH) {
                 double gx1 = toPixel(gene.getStart());
                 double gx2 = toPixel(gene.getEnd());
-                if (pixelX >= gx1 - 4 && pixelX <= gx2 + 4) {
-                    return gene;
-                }
-                return null;
+                return pixelX >= gx1 - 4 && pixelX <= gx2 + 4 ? gene : null;
             }
             y += rowH;
+            if (y > pixelY) return null;
         }
         return null;
     }
@@ -296,8 +294,9 @@ public class GeneTrackRenderer {
 
         double y = AXIS_HEIGHT;
         for (Gene gene : genes) {
-            drawGeneRow(gene, y, rowHeightFor(gene));
-            y += rowHeightFor(gene);
+            double rowH = rowHeightFor(gene);
+            drawGeneRow(gene, y, rowH);
+            y += rowH;
         }
 
         drawVerticalGridLines(height);

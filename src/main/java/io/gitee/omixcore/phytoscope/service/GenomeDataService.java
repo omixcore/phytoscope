@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Genome annotation service: loads and caches gene models and answers queries.
@@ -24,16 +25,6 @@ import java.util.Map;
  */
 @Service
 public class GenomeDataService {
-
-    /**
-     * Classpath path of the default bundled example annotation.
-     *
-     * @deprecated the bundled panel is described by {@link ExampleDataset};
-     *             prefer {@link #loadExample(ExampleDataset)}.
-     */
-    @Deprecated
-    public static final String SAMPLE_RESOURCE =
-            "/data/species/arabidopsis/arabidopsis_chromosomes.gff3";
 
     private final List<Gene> genes = new ArrayList<>();
     private final Map<String, Gene> geneIndex = new LinkedHashMap<>();
@@ -54,8 +45,7 @@ public class GenomeDataService {
     // ------------------------------------------------------------------
 
     /**
-     * Loads the bundled Arabidopsis sample dataset that ships with the
-     * application so it is never empty on first start.
+     * Loads the catalogue's default bundled example dataset.
      */
     public void loadSampleData() throws IOException {
         loadExample(ExampleDataset.defaultDataset());
@@ -72,6 +62,7 @@ public class GenomeDataService {
      * @param dataset catalogue entry to load
      */
     public void loadExample(ExampleDataset dataset) throws IOException {
+        Objects.requireNonNull(dataset, "dataset must not be null");
         Gff3Parser.ParseResult result = dataset.annotationResources().size() == 1
                 ? parser.parseResource(dataset.annotationResource(), dataset.format())
                 : parser.parseResources(dataset.annotationResources(), dataset.format());

@@ -213,12 +213,13 @@ public class Gff3Parser {
                     continue;
                 }
 
-                String[] cols = line.split("\t");
+                String[] cols = line.split("\t", -1);
                 if (cols.length < 9) {
                     continue; // Malformed row, skip
                 }
                 if (detected[0] == null) {
-                    detected[0] = detectFormat(cols[8]);
+                    detected[0] = header.declaredFormat != null
+                            ? header.declaredFormat : detectFormat(cols[8]);
                 }
                 RawFeature raw = RawFeature.fromColumns(cols, dialectOf(detected[0]));
                 if (raw == null) {
@@ -269,8 +270,15 @@ public class Gff3Parser {
             transcript.setName(raw.name);
             transcript.setProteinId(raw.get("protein_id"));
             transcript.setSpecies(header.species);
-            gene.addTranscript(transcript);
-            transcriptById.put(raw.id, transcript);
+            Transcript retained = transcriptById.putIfAbsent(raw.id, transcript);
+            if (retained == null) {
+                gene.addTranscript(transcript);
+            } else {
+                // Duplicate transcript IDs must keep pointing at the retained
+                // hierarchy node; otherwise child exons/CDS/UTRs attach to an
+                // orphan object and silently disappear from the gene model.
+                transcript = retained;
+            }
         }
 
         for (RawFeature raw : rawExons) {
@@ -330,6 +338,7 @@ public class Gff3Parser {
         String species;
         String assembly;
         String description;
+        AnnotationFormat declaredFormat;
         final List<SequenceRegion> regions = new ArrayList<>();
     }
 
@@ -361,6 +370,14 @@ public class Gff3Parser {
         }
         if (header.description == null) {
             header.description = headerValue(line, lower, "description");
+        }
+        if (header.declaredFormat == null && lower.startsWith("##gff-version")) {
+            String version = lower.replace("##gff-version", "").trim();
+            if (version.startsWith("3")) {
+                header.declaredFormat = AnnotationFormat.GFF3;
+            } else if (version.startsWith("2")) {
+                header.declaredFormat = AnnotationFormat.GTF;
+            }
         }
     }
 
@@ -707,21 +724,24 @@ public class Gff3Parser {
             if (value.indexOf('%') < 0) {
                 return value;
             }
-            StringBuilder sb = new StringBuilder(value.length());
+            byte[] bytes = new byte[value.length()];
+            int n = 0;
             for (int i = 0; i < value.length(); i++) {
                 char c = value.charAt(i);
                 if (c == '%' && i + 2 < value.length()) {
                     try {
-                        sb.append((char) Integer.parseInt(value.substring(i + 1, i + 3), 16));
+                        bytes[n++] = (byte) Integer.parseInt(value.substring(i + 1, i + 3), 16);
                         i += 2;
                         continue;
                     } catch (NumberFormatException ignored) {
-                        // Malformed escape, keep as-is
+                        // Preserve malformed escapes literally below.
                     }
                 }
-                sb.append(c);
+                // Keep ordinary UTF-16 code units by encoding them as UTF-8.
+                byte[] encoded = String.valueOf(c).getBytes(StandardCharsets.UTF_8);
+                for (byte b : encoded) bytes[n++] = b;
             }
-            return sb.toString();
+            return new String(bytes, 0, n, StandardCharsets.UTF_8);
         }
 
         String get(String... keys) {
