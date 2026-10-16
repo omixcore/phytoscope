@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Genome annotation service: loads and caches gene models and answers queries.
@@ -72,6 +73,7 @@ public class GenomeDataService {
      * @param dataset catalogue entry to load
      */
     public void loadExample(ExampleDataset dataset) throws IOException {
+        Objects.requireNonNull(dataset, "dataset must not be null");
         Gff3Parser.ParseResult result = dataset.annotationResources().size() == 1
                 ? parser.parseResource(dataset.annotationResource(), dataset.format())
                 : parser.parseResources(dataset.annotationResources(), dataset.format());
