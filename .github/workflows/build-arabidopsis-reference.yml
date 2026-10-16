@@ -2,14 +2,6 @@ name: Build complete Arabidopsis TAIR10 reference
 
 on:
   workflow_dispatch:
-  pull_request:
-    types: [opened]
-  issues:
-    types: [opened]
-  push:
-    paths:
-      - tools/build_arabidopsis_full_reference.py
-      - .github/workflows/build-arabidopsis-reference.yml
 
 permissions:
   contents: write
@@ -85,4 +77,4 @@ jobs:
           git config user.email "fei48548@gmail.com"
           git add src/main/resources/data/species/arabidopsis src/main/resources/data/reference-provenance.json
           git commit -m "Bundle complete Arabidopsis TAIR10 Chr1-Chr5 reference"
-          git push
+          git push origin HEAD:main
