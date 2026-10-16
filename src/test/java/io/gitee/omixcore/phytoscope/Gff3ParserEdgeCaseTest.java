@@ -33,6 +33,33 @@ class Gff3ParserEdgeCaseTest {
         assertEquals(FeatureType.TRANSCRIPT, FeatureType.fromSoTerm("primary_transcript"));
         assertEquals(FeatureType.FIVE_UTR, FeatureType.fromSoTerm("five_prime_UTR_region"));
         assertEquals(FeatureType.THREE_UTR, FeatureType.fromSoTerm("three_prime_UTR_region"));
+        assertEquals(FeatureType.TRANSCRIPT, FeatureType.fromSoTerm("miRNA_primary_transcript"));
+        assertEquals(FeatureType.TRANSCRIPT, FeatureType.fromSoTerm("pseudogenic_transcript"));
+        assertEquals(FeatureType.EXON, FeatureType.fromSoTerm("pseudogenic_exon"));
+    }
+
+    @Test
+    void honorsGff2HeaderAsGtfDialect() throws Exception {
+        String gff2 = "##gff-version 2\n"
+                + "chrA\tsrc\tgene\t1\t100\t.\t+\t.\tgene_id \"g1\"; gene_name \"Alpha\";\n";
+        var result = new Gff3Parser().parse(new ByteArrayInputStream(
+                gff2.getBytes(StandardCharsets.UTF_8)), null, "gff2.gff");
+        assertEquals(AnnotationFormat.GTF, result.format());
+        assertEquals(1, result.genes().size());
+        assertEquals("g1", result.genes().getFirst().getId());
+    }
+
+    @Test
+    void duplicateTranscriptIdKeepsChildrenOnRetainedTranscript() throws Exception {
+        String gff = "##gff-version 3\n"
+                + "chrA\tsrc\tgene\t1\t500\t.\t+\t.\tID=g1;Name=G1\n"
+                + "chrA\tsrc\tmRNA\t1\t500\t.\t+\t.\tID=t1;Parent=g1\n"
+                + "chrA\tsrc\tmRNA\t1\t500\t.\t+\t.\tID=t1;Parent=g1\n"
+                + "chrA\tsrc\texon\t100\t200\t.\t+\t.\tID=e1;Parent=t1\n";
+        var result = new Gff3Parser().parse(new ByteArrayInputStream(
+                gff.getBytes(StandardCharsets.UTF_8)), null, "dup.gff3");
+        assertEquals(1, result.genes().getFirst().getTranscripts().size());
+        assertEquals(1, result.genes().getFirst().getTranscripts().getFirst().getExonCount());
     }
 
     @Test
