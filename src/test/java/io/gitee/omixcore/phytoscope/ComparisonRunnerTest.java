@@ -21,6 +21,8 @@ class ComparisonRunnerTest {
         ComparisonRunner.run(new String[]{"--compare", "--gff3", annotation.toString(),
                 "--loci", "gene-B", "--out", out.toString(), "--no-expression"});
         String table = Files.readString(out.resolve("comparison.tsv"));
-        assertTrue(table.startsWith("\"gene-B\"\t"), table);
+        String[] lines = table.split("\\R");
+        assertTrue(lines.length >= 2, table);
+        assertTrue(lines[1].startsWith("\"gene-B\"\t"), table);
     }
 }
