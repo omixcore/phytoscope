@@ -31,6 +31,18 @@ class ComparisonWorkflowUiTest {
             view.getComparisonPane().export(out.resolve("atlas-comparison.svg"), false);
             view.getComparisonPane().export(out.resolve("atlas-comparison.png"), true);
             ImageIO.write(SwingFXUtils.fromFXImage(scene.snapshot(null), null), "png", out.resolve("atlas-workspace.png").toFile());
+            var search = scene.lookup("#gene-search");
+            assertNotNull(search);
+            var chromosome = (javafx.scene.control.ComboBox<String>) scene.lookup("#chromosome-selector");
+            assertNotNull(chromosome);
+            chromosome.getSelectionModel().select("Chr1");
+            assertEquals("Chr1", view.getRenderer().getSequenceLabel());
+            ((javafx.scene.control.TextField) search).setText("AT5G38410");
+            // Interactive search may reveal Chr5; save an explicit Chr1 state with
+            // the search text still present to exercise project restoration.
+            chromosome.getSelectionModel().select("Chr1");
+            assertEquals("Chr1", view.getRenderer().getSequenceLabel());
+
             var selected = view.getComparisonPane().geneIds();
             var settings = new io.gitee.omixcore.phytoscope.comparison.ComparisonFigure.Settings(
                     io.gitee.omixcore.phytoscope.comparison.ComparisonFigure.Alignment.CDS_START, true,
@@ -41,6 +53,9 @@ class ComparisonWorkflowUiTest {
             view.loadAnnotation(Path.of("src/test/resources/chromosome-validation/rice.gff3"));
             assertTrue(expression.isEmpty()); assertTrue(view.getComparisonPane().geneIds().isEmpty());
             view.openProject(project); assertEquals(selected, view.getComparisonPane().geneIds());
+            assertEquals("Chr1", view.getRenderer().getSequenceLabel());
+            assertFalse(view.getRenderer().getRenderedGenes().isEmpty(), "restored renderer must be rebuilt for saved sequence");
+            assertTrue(view.getRenderer().getRenderedGenes().stream().allMatch(g -> "Chr1".equals(g.getChromosome())));
             assertEquals(3000, view.getRenderer().getViewStart()); assertEquals(9000, view.getRenderer().getViewEnd());
             assertEquals(4, expression.getImportReport().matchedIds());
             assertEquals(settings, view.getComparisonPane().settings());
