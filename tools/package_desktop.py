@@ -13,7 +13,10 @@ for old in staging.iterdir():
     if old.is_file():old.unlink()
 shutil.copy2(a.jar,staging/a.jar.name)
 a.out.mkdir(parents=True,exist_ok=True)
-command=[str(jpackage),'--type','app-image','--name','PhytoScope','--app-version','0.2.0','--vendor','omixcore',
+# macOS rejects bundle versions whose first component is zero, while the
+# Maven application version remains 0.2.0. Use a valid bundle-only version there.
+app_version = '1.0.0' if sys.platform == 'darwin' else '0.2.0'
+command=[str(jpackage),'--type','app-image','--name','PhytoScope','--app-version',app_version,'--vendor','omixcore',
          '--input',str(staging),'--main-jar',a.jar.name,'--dest',str(a.out),
          '--add-modules','java.se,jdk.unsupported,jdk.crypto.ec','--java-options','-Xmx3g',
          '--description','Plant gene structure and expression comparison']
