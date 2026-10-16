@@ -26,16 +26,6 @@ import java.util.Objects;
 @Service
 public class GenomeDataService {
 
-    /**
-     * Classpath path of the default bundled example annotation.
-     *
-     * @deprecated the bundled panel is described by {@link ExampleDataset};
-     *             prefer {@link #loadExample(ExampleDataset)}.
-     */
-    @Deprecated
-    public static final String SAMPLE_RESOURCE =
-            "/data/species/arabidopsis/arabidopsis_chromosomes.gff3";
-
     private final List<Gene> genes = new ArrayList<>();
     private final Map<String, Gene> geneIndex = new LinkedHashMap<>();
     private final Map<String, List<Gene>> genesBySequence = new LinkedHashMap<>();
@@ -55,8 +45,7 @@ public class GenomeDataService {
     // ------------------------------------------------------------------
 
     /**
-     * Loads the bundled Arabidopsis sample dataset that ships with the
-     * application so it is never empty on first start.
+     * Loads the catalogue's default bundled example dataset.
      */
     public void loadSampleData() throws IOException {
         loadExample(ExampleDataset.defaultDataset());
