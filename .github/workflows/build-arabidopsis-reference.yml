@@ -28,14 +28,6 @@ jobs:
           python tools/validate_arabidopsis_reference.py \
             --directory /tmp/phytoscope-arabidopsis/reference
 
-      - name: Install Java build dependencies
-        run: |
-          chmod +x mvnw
-          ./mvnw -q -version
-
-      - name: Run complete Java validation
-        run: ./mvnw -q -Pui-tests test
-
       - name: Install generated reference
         run: |
           rm -f src/main/resources/data/species/arabidopsis/Chr{1,2,3,4,5}.gff3
@@ -64,6 +56,15 @@ jobs:
           })
           p.write_text(json.dumps(d, indent=2) + "\n")
           PY
+
+      - name: Re-run reference validation after installation
+        run: python tools/validate_arabidopsis_reference.py --directory src/main/resources/data/species/arabidopsis
+
+      - name: Run complete Java validation
+        run: |
+          chmod +x mvnw
+          ./mvnw -q -version
+          ./mvnw -q -Pui-tests test
 
       - name: Re-run validation after installation
         run: python tools/validate_arabidopsis_reference.py --directory src/main/resources/data/species/arabidopsis
