@@ -46,8 +46,7 @@ Source archives:
 
 ## Portable fixtures and visible examples
 
-`src/test/resources/chromosome-validation/` contains actual excerpts with two
-complete gene families on each nuclear chromosome of all four plants. Gene
+`src/test/resources/chromosome-validation/` contains the portable validation fixtures for all four plants. Arabidopsis is additionally bundled in the application as complete nuclear Chr1–Chr5 resources; the other three examples remain deliberately small row-verified fixtures. Gene
 coordinates, IDs, hierarchy and sequence lengths are retained from the source.
 The extraction script excludes nonnumeric sequence IDs **only when creating
 these explicitly nuclear-chromosome fixtures**, never when users import data.
@@ -56,9 +55,7 @@ these explicitly nuclear-chromosome fixtures**, never when users import data.
 lengths and SHA-256 hashes of both downloaded archives and extracted fixtures.
 `expected.tsv` records the independently extracted expected coordinate extents.
 
-The bundled catalogue now contains only four reviewed references: Arabidopsis
-(5 nuclear chromosomes), rice (12), maize (10), and soybean v2.1 (20). Every
-bundled GFF3 is byte-for-byte identical to its row-verified test fixture. Sequence
+The bundled catalogue contains four reviewed references: Arabidopsis TAIR10 (complete nuclear Chr1–Chr5), rice (12), maize (10), and soybean v2.1 (20). Arabidopsis is split into five chromosome-sized resources solely to keep each Git object below GitHub's 100 MB file limit; the chromosome feature rows are retained from the pinned source archive. Sequence
 IDs and lengths are retained from the source, without aliases or manual overrides.
 
 The older manually assembled excerpts and their untraceable expression values
@@ -112,8 +109,7 @@ Its machine-readable results are shipped in
 - `FullAnnotationValidationTest`: optional tests against the complete local
   archives; no network downloads occur inside tests.
 
-The current reference-only catalogue passed **97 tests, 0 failures, 0 errors,
-0 skipped**, including all four full annotation imports, the four shipped-data
+The reference-only catalogue passed the complete Java validation suite with 0 failures, 0 errors and 0 skipped, including all four full annotation imports, the four shipped-data
 integrity checks and actual JavaFX control tests. `clean verify` packaged the
 executable JAR from a clean output directory. Archive inspection also confirmed
 that none of the legacy fixtures, removed organelle examples or expression tables
