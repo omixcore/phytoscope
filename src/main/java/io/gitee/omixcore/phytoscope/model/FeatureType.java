@@ -53,12 +53,17 @@ public enum FeatureType {
                  "snrna_gene", "snorna_gene", "rrna_gene",
                  "transposable_element_gene" -> GENE;
             case "mrna", "transcript", "primary_transcript",
-                 "ncrna", "lncrna", "lnc_rna", "mirna",
+                 "ncrna", "lncrna", "lnc_rna",
                  "snrna", "snorna", "rrna" -> TRANSCRIPT;
+            // A mature miRNA product is not a gene-owned transcript in
+            // Araport/TAIR-style GFF3; its primary transcript is the hierarchy node.
+            case "mirna_primary_transcript", "mirna_primary_transcript_region" -> TRANSCRIPT;
+            case "pseudogenic_transcript" -> TRANSCRIPT;
             case "five_prime_utr", "five_prime_utr_region",
                  "5'utr", "5utr", "5_prime_utr" -> FIVE_UTR;
             case "three_prime_utr", "three_prime_utr_region",
                  "3'utr", "3utr", "3_prime_utr" -> THREE_UTR;
+            case "pseudogenic_exon" -> EXON;
             default -> UNKNOWN;
         };
     }
