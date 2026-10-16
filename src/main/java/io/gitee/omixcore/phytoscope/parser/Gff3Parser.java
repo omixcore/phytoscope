@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Format-agnostic parser for gene-structure annotations.
@@ -94,6 +97,43 @@ public class Gff3Parser {
             AnnotationFormat resolved = format != null ? format : AnnotationFormat.fromFileName(label);
             return parse(in, resolved, label);
         }
+    }
+
+    /**
+     * Parses multiple classpath resources as one logical annotation stream.
+     *
+     * <p>This is used for large bundled references that are intentionally split
+     * into chromosome-sized UTF-8 files so no individual Git object exceeds the
+     * GitHub 100 MB file limit. Each part is parsed in order and the GFF3 header
+     * directives are merged by the normal parser.</p>
+     */
+    public ParseResult parseResources(List<String> resourcePaths, AnnotationFormat format) throws IOException {
+        if (resourcePaths == null || resourcePaths.isEmpty()) {
+            return parse(new java.io.ByteArrayInputStream(new byte[0]), format, "empty annotation");
+        }
+        List<InputStream> streams = new ArrayList<>();
+        try {
+            for (String resourcePath : resourcePaths) {
+                InputStream in = getClass().getResourceAsStream(resourcePath);
+                if (in == null) {
+                    throw new IOException("Classpath resource not found: " + resourcePath);
+                }
+                streams.add(in);
+            }
+            Enumeration<InputStream> enumeration = Collections.enumeration(streams);
+            return parse(new java.io.SequenceInputStream(enumeration), format,
+                    String.join(", ", resourcePaths));
+        } catch (IOException | RuntimeException ex) {
+            for (InputStream stream : streams) {
+                try { stream.close(); } catch (IOException ignored) { }
+            }
+            throw ex;
+        }
+    }
+
+    /** Convenience overload for multiple resources with auto-detected format. */
+    public ParseResult parseResources(List<String> resourcePaths) throws IOException {
+        return parseResources(resourcePaths, null);
     }
 
     /**
