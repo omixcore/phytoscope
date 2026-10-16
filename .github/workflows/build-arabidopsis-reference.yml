@@ -24,6 +24,7 @@ on:
       - src/test/java/io/gitee/omixcore/phytoscope/ReferenceDatasetIntegrityTest.java
       - src/test/java/io/gitee/omixcore/phytoscope/Gff3ParserEdgeCaseTest.java
       - src/test/java/io/gitee/omixcore/phytoscope/ExpressionDataServiceTest.java
+      - src/test/java/io/gitee/omixcore/phytoscope/SvgExporterTest.java
 
 permissions:
   contents: write
