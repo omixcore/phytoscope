@@ -73,7 +73,7 @@ public record BatchOptions(Path annotation,
                 case "-h", "--help" -> help = true;
                 default -> {
                     // Tolerate a leading "--" separator from Maven/Spring Boot.
-                    if (arg.startsWith("--") && i == 0) {
+                    if (arg.equals("--") && i == 0) {
                         continue;
                     }
                     throw new IllegalArgumentException("unknown option: " + arg);
@@ -94,6 +94,9 @@ public record BatchOptions(Path annotation,
                 throw new IllegalArgumentException(
                         "--format must be one of png, svg, both (got " + format + ")");
             }
+            if (!Double.isFinite(width) || !Double.isFinite(height) || !Double.isFinite(padding)
+                    || width > 16000 || height > 16000 || width * height > 32_000_000 || padding < 0 || padding > 10)
+                throw new IllegalArgumentException("Dimensions must be finite and at most 16000 px / 32 million pixels; padding must be 0–10");
             if (width < 200 || height < 200) {
                 throw new IllegalArgumentException("--width and --height must be at least 200");
             }

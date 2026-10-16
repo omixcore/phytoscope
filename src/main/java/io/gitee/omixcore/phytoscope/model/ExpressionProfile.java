@@ -6,13 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Expression profile of a single gene across a fixed panel of tissues.
- *
- * <p>Values are TPM (Transcripts Per Million) taken from public Arabidopsis
- * transcriptome resources. The tissue order is stable and defined by the
- * data file header, so that heat-map tracks line up across genes.</p>
- */
+/** A profile in the input measurement unit; missing samples remain absent. */
 public class ExpressionProfile {
 
     /** Gene identifier this profile belongs to (e.g. AT1G01010). */
@@ -40,7 +34,7 @@ public class ExpressionProfile {
 
     public double getTpm(String tissue) {
         TissueExpression e = byTissue.get(tissue);
-        return e == null ? 0.0 : e.tpm();
+        return e == null ? Double.NaN : e.tpm();
     }
 
     public boolean isEmpty() {

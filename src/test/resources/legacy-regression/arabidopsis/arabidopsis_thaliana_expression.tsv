@@ -1,5 +1,6 @@
 # LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
-## Unit: TPM (Transcripts Per Million), mean across aggregated public RNA-seq samples
+# unit=TPM
+## Original description: TPM (Transcripts Per Million), mean across aggregated public RNA-seq samples
 GeneID	Root	Stem	Leaf	Flower	Silique	Seed
 AT1G01010	14.27	5.10	6.74	8.92	4.36	1.85
 AT1G01020	9.63	6.21	7.45	5.98	5.11	3.42

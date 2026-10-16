@@ -1,0 +1,84 @@
+# Validation and benchmarks
+
+## Claims and evidence
+
+PhytoScope is a local gene-structure and expression comparison workflow. Sequence
+adaptation and standard-format parsing are correctness requirements, not evidence
+of a novel biological algorithm. Selected loci are supplied by the user; the
+software does not infer orthology, splicing changes or causal mechanisms.
+
+The validation layers are deliberately distinct:
+
+1. **Source identity:** fixed assembly, annotation release and source checksums.
+2. **Model correctness:** independent Python comparison of explicit GFF3 parent
+   edges, strand and exact exon/CDS/UTR coordinates against the Java inventory.
+   Unsupported feature types are counted separately. CDS/UTR segments without an overlapping exon are retained separately and
+   are not converted into invented exon annotations.
+3. **Application behavior:** real JavaFX controls, species replacement, bounded
+   browser tracks, expression matching and missingness, comparison PNG/SVG/TSV,
+   project save → replace data → restore original state, and tamper rejection.
+4. **Measured performance:** process/environment metadata, import time, peak
+   heap-pool usage, sequence selection, search median/p95, comparison layout and
+   SVG writing. Heap is not RSS, and headless tests do not measure native dialog
+   behavior or hardware-dependent zoom latency.
+
+Run the normal suite with `sh mvnw -Pui-tests verify`. Full annotation tests
+require the explicit `-Dphytoscope.fullAnnotationDir=/path/to/cache` parameter;
+a skipped full-archive test is not a successful full-archive validation.
+
+## Independent coordinate checks and performance
+
+```bash
+python tools/run_validation.py --jar target/phytoscope-0.2.0.jar
+# Optional: add --full-dir /path/to/cache containing arabidopsis/rice/maize/soybean.gff3.gz
+```
+
+The default run covers the complete bundled Araport11 Chr1–Chr5 and the three
+other bundled source excerpts. Every run creates `performance.json`, the complete
+`parsed-structure.tsv`, an SVG and `structure-validation.json`. Use fresh JVMs
+for multiple cold-import measurements. Preserve raw results, versions, input
+hashes, memory limits and machine information; avoid claims based only on the
+fastest run. `benchmarks/results` contains the measurements actually collected
+for this change; it does not substitute for testing additional hardware.
+
+## Same-data extraction baseline
+
+`gffutils==0.13` is an independent disk-backed GFF hierarchy implementation.
+The accompanying baseline extracts the **same source loci and coordinate tuples**:
+
+```bash
+python -m pip install gffutils==0.13
+python tools/compare_gffutils.py --annotation examples/arabidopsis-atlas/annotation.gff3 \
+  --loci AT1G67090 AT5G38410 AT5G38420 AT5G38430 --out target/gffutils
+python tools/validate_structure_inventory.py \
+  --source examples/arabidopsis-atlas/annotation.gff3 \
+  --parsed target/gffutils/parsed-structure.tsv --out target/gffutils/correctness.json
+```
+
+The baseline measures index construction separately from warm queries. Java
+keeps its model in memory; gffutils constructs an SQLite index. Report their
+storage/design differences alongside timings. This comparison establishes
+structure-extraction agreement; it does not establish superiority over genome
+browsers or compare interactive usability. Source documentation:
+https://daler.github.io/gffutils/ and https://github.com/daler/gffutils.
+
+## Browser/user-task study protocol
+
+A publication-level usability comparison still requires actual users or a fully
+recorded repeatable desktop task. Do not fill unmeasured cells with estimates.
+Use identical source files, gene IDs, output requirements and machine conditions.
+Record tool versions, setup separately from task time, prior experience, success,
+errors, and whether external editing was needed. Randomize tool order across
+participants. Assess these tasks separately:
+
+| Task | Required output | Acceptance criterion |
+| --- | --- | --- |
+| Find loci on distinct sequences | Exact selected IDs | All requested loci, correct reference |
+| Inspect isoforms | Exon/CDS/UTR coordinates | Agreement with independent inventory |
+| Associate expression | Values and sample order | Exact ID matches; missing distinct from zero |
+| Prepare comparison figure | Editable structure/expression figure | Correct orientation, units and shared scale |
+| Resume the analysis | Restored project state | Same inputs, IDs, view and parameters |
+
+No human task-time study or native Windows/macOS dialog evaluation is claimed by
+this repository's automated evidence. Those results require access to actual
+participants and target machines.

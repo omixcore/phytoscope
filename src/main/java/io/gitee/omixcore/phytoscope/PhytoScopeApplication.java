@@ -47,13 +47,14 @@ public class PhytoScopeApplication extends Application {
         stage.show();
 
         // Load data after the window is shown so first paint is not blocked
-        mainView.loadInitialData();
+        mainView.loadInitialDataAsync();
         mainView.onViewportResized();
     }
 
     @Override
     public void stop() {
         if (context != null) {
+            context.getBean(MainView.class).closeProjectResources();
             context.close();
         }
     }

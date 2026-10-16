@@ -1,5 +1,6 @@
 # LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
-## Unit: TPM (Transcripts Per Million), mean across aggregated public RNA-seq
+# unit=TPM
+## Original description: TPM (Transcripts Per Million), mean across aggregated public RNA-seq
 GeneID	Root	Shoot	Leaf	Panicle	Anther	Seed
 Os01g0100100	18.40	12.15	9.60	6.30	3.20	2.10
 Os01g0100300	4.50	6.80	11.20	3.10	1.40	0.90

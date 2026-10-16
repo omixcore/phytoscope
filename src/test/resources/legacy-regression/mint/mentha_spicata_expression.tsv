@@ -1,5 +1,6 @@
 # LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
-## Unit: TPM (Transcripts Per Million), mean across aggregated public RNA-seq
+# unit=TPM
+## Original description: TPM (Transcripts Per Million), mean across aggregated public RNA-seq
 GeneID	Leaf	Stem	Root	Flower	Rhizome
 rbcL	8420.50	3150.20	680.40	2860.70	410.30
 atpB	2180.60	940.30	210.50	880.20	145.60

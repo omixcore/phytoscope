@@ -2,29 +2,6 @@ name: Build complete Arabidopsis TAIR10 reference
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - .github/workflows/build-arabidopsis-reference.yml
-      - pom.xml
-      - tools/build_arabidopsis_full_reference.py
-      - tools/validate_arabidopsis_reference.py
-      - src/main/java/io/gitee/omixcore/phytoscope/service/ExampleDataset.java
-      - src/main/java/io/gitee/omixcore/phytoscope/service/GenomeDataService.java
-      - src/main/java/io/gitee/omixcore/phytoscope/model/GenomeMetadata.java
-      - src/main/java/io/gitee/omixcore/phytoscope/model/FeatureType.java
-      - src/main/java/io/gitee/omixcore/phytoscope/model/Gene.java
-      - src/main/java/io/gitee/omixcore/phytoscope/service/ExpressionDataService.java
-      - src/main/java/io/gitee/omixcore/phytoscope/ui/MainView.java
-      - src/main/java/io/gitee/omixcore/phytoscope/ui/component/GeneTrackRenderer.java
-      - src/main/java/io/gitee/omixcore/phytoscope/ui/component/SvgExporter.java
-      - src/main/java/io/gitee/omixcore/phytoscope/parser/Gff3Parser.java
-      - src/test/java/io/gitee/omixcore/phytoscope/AdaptiveChromosomeTest.java
-      - src/test/java/io/gitee/omixcore/phytoscope/AdaptiveChromosomeUiTest.java
-      - src/test/java/io/gitee/omixcore/phytoscope/FullAnnotationValidationTest.java
-      - src/test/java/io/gitee/omixcore/phytoscope/ReferenceDatasetIntegrityTest.java
-      - src/test/java/io/gitee/omixcore/phytoscope/Gff3ParserEdgeCaseTest.java
-      - src/test/java/io/gitee/omixcore/phytoscope/ExpressionDataServiceTest.java
-      - src/test/java/io/gitee/omixcore/phytoscope/SvgExporterTest.java
 
 permissions:
   contents: write

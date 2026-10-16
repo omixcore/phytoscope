@@ -10,6 +10,14 @@ import java.util.List;
 public class Transcript extends GenomicFeature {
 
     private final List<Exon> exons = new ArrayList<>();
+    private final List<GenomicFeature> unassignedSegments = new ArrayList<>();
+    /** Source CDS/UTR segments without an overlapping annotated exon; never fabricate exons. */
+    public List<GenomicFeature> getUnassignedSegments() { return List.copyOf(unassignedSegments); }
+    public void addUnassignedSegment(GenomicFeature segment) { unassignedSegments.add(segment); }
+    public List<GenomicFeature> getAllCdsSegments() {
+        return java.util.stream.Stream.concat(exons.stream().flatMap(e -> e.getCdsSegments().stream()),
+                unassignedSegments.stream().filter(s -> s.getType() == FeatureType.CDS)).toList();
+    }
 
     /** Corresponding protein product ID (protein_id on CDS features), may be null. */
     private String proteinId;
@@ -70,15 +78,12 @@ public class Transcript extends GenomicFeature {
 
     /** Total CDS length in bases, i.e. the coding region length. */
     public int getCdsLength() {
-        return exons.stream()
-                .flatMap(e -> e.getCdsSegments().stream())
-                .mapToInt(GenomicFeature::length)
-                .sum();
+        return getAllCdsSegments().stream().mapToInt(GenomicFeature::length).sum();
     }
 
     /** Total number of introns. */
     public int getIntronCount() {
-        return Math.max(0, exons.size() - 1);
+        return computeIntrons().size();
     }
 
     /** Number of exons. */

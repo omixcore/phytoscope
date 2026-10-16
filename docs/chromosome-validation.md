@@ -26,15 +26,14 @@ streaming inventory supplied expected sequence IDs and gene counts. Tests
 selected every sequence, checked its gene membership and coordinate extent,
 and separately counted the numeric nuclear chromosome IDs.
 
-| Plant | Reference | Nuclear chromosomes | All declared/observed sequences | Parsed genes | Parsed features |
+| Plant | Reference | Nuclear chromosomes | All declared/observed sequences | Supported gene-like loci | Parsed features |
 | --- | --- | ---: | ---: | ---: | ---: |
-| Arabidopsis thaliana | TAIR10 | 5 | 7 | 27,655 | 791,564 |
-| Oryza sativa | IRGSP-1.0 | 12 | 63 | 35,806 | 551,530 |
+| Arabidopsis thaliana | TAIR10 | 5 | 7 | 32,833 | 791,564 |
+| Oryza sativa | IRGSP-1.0 | 12 | 63 | 38,993 | 551,530 |
 | Zea mays | Zm-B73-REFERENCE-NAM-5.0 | 10 | 685 | 44,303 | 1,162,376 |
-| Glycine max | Glycine_max_v2.1 | 20 | 1,190 | 55,897 | 1,328,989 |
+| Glycine max | Glycine_max_v2.1 | 20 | 1,190 | 57,147 | 1,328,989 |
 
-These are parser counts of features with type `gene`, not total biological gene
-catalogue estimates (other annotation feature types may also represent loci).
+These current model counts include supported gene-like source types (including ncRNA genes and pseudogenes), not only rows literally typed `gene`. The earlier literal-gene counts were 27,655 / 35,806 / 44,303 / 55,897 respectively; the independent full-archive test now checks all supported gene-like types explicitly.
 Non-nuclear entries are intentionally retained, not silently discarded.
 
 Source archives:
@@ -62,7 +61,7 @@ The older manually assembled excerpts and their untraceable expression values
 have been removed from the application. Historical numerical and grammar fixtures
 are retained only under `src/test/resources/legacy-regression`, explicitly marked
 as illustrative. They exercise parser behaviour and are **not scientific evidence**.
-They are excluded from the application JAR. No measured expression data are bundled.
+They are excluded from the application JAR. The separate E-MTAB-7978 case now supplies measured expression with its own provenance manifest; historical illustrative matrices remain test-only.
 
 ## Reference acceptance audit (2026-10-15)
 
@@ -112,8 +111,7 @@ Its machine-readable results are shipped in
 The reference-only catalogue passed the complete Java validation suite with 0 failures, 0 errors and 0 skipped, including all four full annotation imports, the four shipped-data
 integrity checks and actual JavaFX control tests. `clean verify` packaged the
 executable JAR from a clean output directory. Archive inspection also confirmed
-that none of the legacy fixtures, removed organelle examples or expression tables
-are included in the application JAR.
+that none of the legacy fixtures or removed organelle examples were included in that application JAR. The new release separately includes the traceable E-MTAB-7978 matrix.
 The UI test uses headless JavaFX,
 so it does not certify platform-specific native file dialogs.
 
@@ -136,3 +134,21 @@ mvn -Pui-tests -Dphytoscope.fullAnnotationDir=/path/to/annotation-cache verify
 The full-archive tests run only when `phytoscope.fullAnnotationDir` is supplied.
 The UI test runs only with `-Pui-tests`; this test dependency is not packaged
 with the application. Windows users can substitute `mvnw.cmd` for `mvn`.
+
+## Current release clarification (2026-10-16)
+
+The table of four complete Ensembl release 62 imports above records the earlier
+parser audit. It must not be confused with the current default Arabidopsis
+example, which is **TAIR10 assembly / Araport11 original June 2016 annotation**
+and contains 788,499 source feature rows and 33,997 gene/pseudogene records.
+The other three bundled datasets remain small excerpts. Nuclear chromosome
+counts, all sequence counts, supported gene counts and total feature rows are
+different quantities and are reported separately.
+
+Current validation also compares explicit source parent edges and exact feature
+coordinates using `tools/validate_structure_inventory.py`. Unsupported source
+feature types are counted in each report. Shared exon/CDS/UTR rows with multiple
+transcript parents are retained under every explicit parent. Measured expression
+has a separate manifest under `data/case-studies/arabidopsis-atlas`.
+
+The complete bundled Araport11 model contains 37,898 supported gene-like loci: 33,997 `gene`/`pseudogene` records plus 3,901 `transposable_element_gene` records. The source manifest field `total_gene_like_features` historically counts only the first two types; it is not the application total.

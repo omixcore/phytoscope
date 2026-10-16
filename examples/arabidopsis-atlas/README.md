@@ -1,0 +1,49 @@
+# Arabidopsis RBCS structure–expression case
+
+This descriptive example links four RBCS-family loci on the bundled TAIR10 /
+Araport11 nuclear annotation to six real conditions in Expression Atlas
+[E-MTAB-7978](https://www.ebi.ac.uk/gxa/experiments/E-MTAB-7978).
+It tests a continuous annotation → ID match → comparison → figure → project
+restoration workflow. It is not presented as a new biological discovery.
+
+Source publication: Mergner et al. (2020), *Mass-spectrometry-based draft of the
+Arabidopsis proteome*, Nature 579, 409–414.
+[DOI: 10.1038/s41586-020-2094-2](https://doi.org/10.1038/s41586-020-2094-2).
+The article's data-availability statement identifies E-MTAB-7978 for RNA-seq.
+
+## Data and interpretation
+
+- `expression.tsv`: untransformed, gene-level TPM; 4 loci × 6 conditions.
+- `samples.tsv`: original Atlas groups, condition labels and ENA run accessions.
+- `source-values.tsv`: exact, unmodified source cells before extraction.
+- `manifest.json`: source URLs, SHA-256 hashes, extraction rule and output hashes.
+
+The source TPM file stores five summary components per cell. We deliberately
+select only groups with **one assay**, and require all five components to be
+identical before retaining that value. The five values are not five biological
+replicates. No averaging, imputation, renaming of gene IDs or normalization is
+performed. Gene IDs are joined exactly to the bundled annotation. Annotation
+structure is visualized as a reference; RNA-seq values do not validate individual
+splice isoforms or imply a structure-driven expression mechanism.
+
+The selected leaf conditions have greater TPM than root, dry seed or pollen for
+these four loci (see exact values in the matrix). This is a descriptive check of
+the measured atlas, without significance tests, tissue-specificity thresholds or
+causal claims. Every selected condition has one assay; there is no independent
+replication in this subset. Other conditions are not represented.
+
+## Reproduce
+
+```bash
+python tools/build_atlas_case_study.py --cache target/atlas-cache
+sh mvnw -Pui-tests verify
+java -Xmx3g -jar target/phytoscope-0.2.0.jar --compare \
+  --example arabidopsis --expression examples/arabidopsis-atlas/expression.tsv \
+  --loci AT1G67090,AT5G38410,AT5G38420,AT5G38430 \
+  --out target/case-study --project target/case-study/atlas.phytoscope
+```
+
+Rebuilding rejects changed source hashes. The desktop menu **Example datasets →
+Real expression case** loads the same measurements and pins all four loci.
+The UI regression exports SVG, PNG and TSV, saves the project, replaces it with
+rice data and verifies restoration of the original expression and view.

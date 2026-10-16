@@ -13,7 +13,7 @@
 
     <groupId>io.gitee.omixcore</groupId>
     <artifactId>phytoscope</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <name>PhytoScope</name>
     <description>
         Species-agnostic plant genome structure browser (JavaFX desktop, Java 21).
@@ -30,6 +30,7 @@
     </properties>
 
     <dependencies>
+        <dependency><groupId>com.fasterxml.jackson.core</groupId><artifactId>jackson-databind</artifactId></dependency>
         <!-- Service layer: Spring Boot (dependency injection, extensible data services) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
