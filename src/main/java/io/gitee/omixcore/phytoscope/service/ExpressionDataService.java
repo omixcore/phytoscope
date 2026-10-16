@@ -215,7 +215,7 @@ public class ExpressionDataService {
                     }
                     continue;
                 }
-                if (!headerSeen) delimiter = line.indexOf('\t') >= 0 ? '\t' : line.indexOf(',') >= 0 ? ',' : ';';
+                if (!headerSeen) delimiter = detectDelimiter(line);
                 List<String> cols = splitRow(line, delimiter);
                 if (!headerSeen) {
                     if (cols.size() < 2) throw new IOException("Expected an identifier and at least one sample column");
@@ -256,6 +256,36 @@ public class ExpressionDataService {
         if (valueUnit.equals("unspecified")) warnings.add("Unit not declared; values are shown as unspecified.");
         warnings.add("Measurement level: " + level + "; no aggregation or ID version conversion applied.");
         report = new ImportReport(rows, profiles.size(), missing, invalid, 0, 0, List.of(), List.copyOf(warnings));
+    }
+
+    /** Detects the matrix delimiter using only characters outside quoted fields. */
+    private static char detectDelimiter(String line) {
+        int tabs = 0, commas = 0, semicolons = 0;
+        boolean quoted = false;
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                if (quoted && i + 1 < line.length() && line.charAt(i + 1) == '"') {
+                    i++;
+                } else {
+                    quoted = !quoted;
+                }
+                continue;
+            }
+            if (!quoted) {
+                switch (c) {
+                    case '\t' -> tabs++;
+                    case ',' -> commas++;
+                    case ';' -> semicolons++;
+                    default -> { }
+                }
+            }
+        }
+        char delimiter = '\t';
+        int best = tabs;
+        if (commas > best) { delimiter = ','; best = commas; }
+        if (semicolons > best) { delimiter = ';'; }
+        return best == 0 ? '\t' : delimiter;
     }
 
     /** Single-line RFC-style quoted fields, fixed delimiter chosen from the header. */
