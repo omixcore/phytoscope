@@ -2,7 +2,7 @@ package io.gitee.omixcore.phytoscope;
 
 import io.gitee.omixcore.phytoscope.model.Gene;
 import io.gitee.omixcore.phytoscope.parser.Gff3Parser;
-import io.gitee.omixcore.phytoscope.service.GenomeDataService;
+import io.gitee.omixcore.phytoscope.service.ExampleDataset;
 import io.gitee.omixcore.phytoscope.ui.component.SvgExporter;
 import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,7 +29,7 @@ class SvgExporterTest {
 
     @BeforeAll
     static void setUp() throws Exception {
-        parseResult = new Gff3Parser().parseResource(GenomeDataService.SAMPLE_RESOURCE);
+        parseResult = new Gff3Parser().parseResources(ExampleDataset.defaultDataset().annotationResources(), ExampleDataset.defaultDataset().format());
         // The exporters touch JavaFX colour classes, which may need the toolkit
         // initialised. Skip quietly when no graphics environment is available.
         try {
