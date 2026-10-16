@@ -673,7 +673,9 @@ public class MainView extends BorderPane {
         searchField.setPromptText("Search gene ID / name / alias");
         searchField.setId("gene-search");
         searchField.setPrefWidth(220);
-        searchField.textProperty().addListener((obs, old, val) -> applySearch(val));
+        searchField.textProperty().addListener((obs, old, val) -> {
+            if (!loading) applySearch(val);
+        });
 
         Button zoomIn = toolButton("Zoom +", "Zoom in about the centre (or scroll up)");
         zoomIn.setOnAction(e -> {
