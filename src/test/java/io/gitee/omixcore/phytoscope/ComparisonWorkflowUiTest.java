@@ -51,8 +51,8 @@ class ComparisonWorkflowUiTest {
             assertTrue(expression.isEmpty()); assertTrue(view.getComparisonPane().geneIds().isEmpty());
             view.openProject(project); assertEquals(selected, view.getComparisonPane().geneIds());
             assertEquals("Chr1", view.getRenderer().getSequenceLabel());
-            assertFalse(view.getRenderer().getRenderedGenes().isEmpty(), "restored renderer must be rebuilt for saved sequence");
-            assertTrue(view.getRenderer().getRenderedGenes().stream().allMatch(g -> "Chr1".equals(g.getChromosome())));
+            assertFalse(view.getRenderer().getGenes().isEmpty(), "restored renderer must be rebuilt for saved sequence");
+            assertTrue(view.getRenderer().getGenes().stream().allMatch(g -> "Chr1".equals(g.getChromosome())));
             assertEquals(3000, view.getRenderer().getViewStart()); assertEquals(9000, view.getRenderer().getViewEnd());
             assertEquals(4, expression.getImportReport().matchedIds());
             assertEquals(settings, view.getComparisonPane().settings());
