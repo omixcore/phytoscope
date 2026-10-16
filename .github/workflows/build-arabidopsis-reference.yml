@@ -2,6 +2,8 @@ name: Build complete Arabidopsis TAIR10 reference
 
 on:
   workflow_dispatch:
+  issues:
+    types: [opened]
   push:
     paths:
       - tools/build_arabidopsis_full_reference.py
