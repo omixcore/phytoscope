@@ -5,10 +5,24 @@ on:
   push:
     paths:
       - .github/workflows/build-arabidopsis-reference.yml
+      - pom.xml
+      - tools/build_arabidopsis_full_reference.py
+      - tools/validate_arabidopsis_reference.py
       - src/main/java/io/gitee/omixcore/phytoscope/service/ExampleDataset.java
+      - src/main/java/io/gitee/omixcore/phytoscope/service/GenomeDataService.java
+      - src/main/java/io/gitee/omixcore/phytoscope/model/GenomeMetadata.java
+      - src/main/java/io/gitee/omixcore/phytoscope/parser/Gff3Parser.java
+      - src/test/java/io/gitee/omixcore/phytoscope/AdaptiveChromosomeTest.java
+      - src/test/java/io/gitee/omixcore/phytoscope/AdaptiveChromosomeUiTest.java
+      - src/test/java/io/gitee/omixcore/phytoscope/FullAnnotationValidationTest.java
+      - src/test/java/io/gitee/omixcore/phytoscope/ReferenceDatasetIntegrityTest.java
 
 permissions:
   contents: write
+
+concurrency:
+  group: phytoscope-arabidopsis-reference-build
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -84,5 +98,9 @@ jobs:
           git config user.name "omixcore"
           git config user.email "fei48548@gmail.com"
           git add src/main/resources/data/species/arabidopsis/Chr*.gff3 src/main/resources/data/species/arabidopsis/manifest.json src/main/resources/data/reference-provenance.json
+          if git diff --cached --quiet; then
+            echo "No generated reference changes; main already matches the reproducible build."
+            exit 0
+          fi
           git commit -m "Bundle complete Arabidopsis TAIR10 Chr1-Chr5 reference"
           git push origin HEAD:main

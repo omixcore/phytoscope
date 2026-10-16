@@ -57,7 +57,14 @@ class FullAnnotationValidationTest {
             service.loadFromFile(annotation);
             assertEquals(sequences, new LinkedHashSet<>(service.getChromosomes()));
             assertEquals(sequences.size(), service.getMetadata().getSequenceCount());
-            assertEquals(nuclearCount, service.getChromosomes().stream().filter(s -> s.matches("[0-9]+")).count());
+            var expectedNuclear = new LinkedHashSet<String>();
+            for (int i = 1; i <= nuclearCount; i++) {
+                expectedNuclear.add("arabidopsis".equals(species) ? "Chr" + i : Integer.toString(i));
+            }
+            assertEquals(expectedNuclear,
+                    service.getChromosomes().stream()
+                            .filter(expectedNuclear::contains)
+                            .collect(java.util.stream.Collectors.toCollection(LinkedHashSet::new)));
             assertEquals(geneIds.size(), service.getGeneCount());
             for (String seq : service.getChromosomes()) {
                 service.setActiveSequence(seq);

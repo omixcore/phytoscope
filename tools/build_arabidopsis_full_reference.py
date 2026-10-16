@@ -11,6 +11,7 @@ from pathlib import Path
 OFFICIAL = "https://www.arabidopsis.org/download_files/Genes/Araport11_genome_release/Araport11_GFF3_genes_transposons.201606.gff.gz"
 MIRROR = "https://plantgarden.jp/en/download/t3702/t3702.G001/Araport11_GFF3_genes_transposons.201606.gff.gz"
 CHRS = {f"Chr{i}": i for i in range(1, 6)}
+EXPECTED_ARCHIVE_SHA256 = "22d8c42ec2ca667fc3f78105f568bf295ee10d2145b2bd76dcd290a469a27b99"
 LENGTHS = {
     "Chr1": 30427671, "Chr2": 19698289, "Chr3": 23459830,
     "Chr4": 18585056, "Chr5": 26975502,
@@ -36,6 +37,11 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     source = download(args.archive)
     archive_sha256 = hashlib.sha256(args.archive.read_bytes()).hexdigest()
+    if archive_sha256 != EXPECTED_ARCHIVE_SHA256:
+        raise RuntimeError(
+            f"Pinned Araport11 archive checksum mismatch: expected {EXPECTED_ARCHIVE_SHA256}, "
+            f"observed {archive_sha256}"
+        )
 
     handles = {}
     feature_counts = {c: 0 for c in CHRS}
@@ -83,6 +89,8 @@ def main():
         "source": OFFICIAL,
         "downloaded_from": source,
         "archive_sha256": archive_sha256,
+        "source_provider": "The Arabidopsis Information Resource (TAIR)",
+        "source_release": "Araport11 original release, June 2016",
         "assembly": "TAIR10",
         "annotation": "Araport11",
         "scope": "complete nuclear Chr1-Chr5",

@@ -3,8 +3,11 @@ import argparse, hashlib, json
 from pathlib import Path
 
 EXPECTED = {
-    "Chr1": 30427671, "Chr2": 19698289, "Chr3": 23459830,
-    "Chr4": 18585056, "Chr5": 26975502,
+    "Chr1": {"length": 30427671, "features": 207497, "gene_like_features": 9019},
+    "Chr2": {"length": 19698289, "features": 125500, "gene_like_features": 5486},
+    "Chr3": {"length": 23459830, "features": 154731, "gene_like_features": 6747},
+    "Chr4": {"length": 18585056, "features": 121971, "gene_like_features": 5131},
+    "Chr5": {"length": 26975502, "features": 178800, "gene_like_features": 7614},
 }
 
 def main():
@@ -16,7 +19,8 @@ def main():
     assert manifest["annotation"] == "Araport11"
     assert manifest["scope"] == "complete nuclear Chr1-Chr5"
     total_features = total_genes = 0
-    for c, length in EXPECTED.items():
+    for c, expected in EXPECTED.items():
+        length = expected["length"]
         p = args.directory / f"{c}.gff3"
         assert p.exists(), p
         raw = p.read_bytes()
@@ -42,14 +46,23 @@ def main():
                 genes += 1
         missing = [p for p in parents if p and p not in ids]
         assert not missing[:10], f"{c}: missing parents, first={missing[:10]}"
-        assert genes > 5000, (c, genes)
-        assert len(rows) > 30000, (c, len(rows))
+        assert genes == expected["gene_like_features"], (
+            c, genes, expected["gene_like_features"]
+        )
+        assert len(rows) == expected["features"], (
+            c, len(rows), expected["features"]
+        )
         digest = hashlib.sha256(raw).hexdigest()
         assert manifest["chromosomes"][c]["sha256"] == digest
+        assert manifest["chromosomes"][c]["length"] == length
+        assert manifest["chromosomes"][c]["features"] == expected["features"]
+        assert manifest["chromosomes"][c]["gene_like_features"] == expected["gene_like_features"]
         total_features += len(rows)
         total_genes += genes
-    assert total_genes > 30000, total_genes
-    assert total_features > 300000, total_features
+    assert total_genes == 33997, total_genes
+    assert total_features == 788499, total_features
+    assert manifest["total_features"] == total_features
+    assert manifest["total_gene_like_features"] == total_genes
     print(f"PASS: complete TAIR10/Araport11 Chr1-Chr5; {total_genes} gene-like features; {total_features} feature rows")
 
 if __name__ == "__main__":

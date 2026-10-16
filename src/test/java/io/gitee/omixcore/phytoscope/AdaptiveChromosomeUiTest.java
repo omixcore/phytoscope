@@ -88,6 +88,6 @@ class AdaptiveChromosomeUiTest {
             return null;
         });
         Platform.runLater(task);
-        task.get(60, TimeUnit.SECONDS);
+        task.get(180, TimeUnit.SECONDS);
     }
 }

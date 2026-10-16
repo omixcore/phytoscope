@@ -1,5 +1,5 @@
 {
-  "audit_date": "2026-10-15",
+  "audit_date": "2026-10-16",
   "scope": "Reference structure annotations only; no measured expression data bundled",
   "datasets": {
     "arabidopsis": {
@@ -8,13 +8,10 @@
       "assembly_accession": "GCA_000001735.1",
       "assembly_record": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001735.1/",
       "source": "https://www.arabidopsis.org/download_files/Genes/Araport11_genome_release/Araport11_GFF3_genes_transposons.201606.gff.gz",
-      "release": 62,
+      "source_provider": "The Arabidopsis Information Resource (TAIR)",
+      "source_release": "Araport11 original release, June 2016",
       "chromosome_count": 5,
-      "provider_checksum_url": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/arabidopsis_thaliana/CHECKSUMS",
-      "provider_checksum": "07787 9339 Arabidopsis_thaliana.TAIR10.62.gff3.gz",
       "archive_sha256": "22d8c42ec2ca667fc3f78105f568bf295ee10d2145b2bd76dcd290a469a27b99",
-      "fixture_sha256": "a21bb6635988a8cfbebde4d7d1804df4a95fea2e7ac2846d71bcc8eab5879711",
-      "verified_original_feature_rows": 571,
       "status": "PASS",
       "annotation_scope": "complete nuclear Chr1-Chr5",
       "annotation": "Araport11",
