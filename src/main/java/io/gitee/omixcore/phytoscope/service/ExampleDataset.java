@@ -4,13 +4,7 @@ import io.gitee.omixcore.phytoscope.parser.AnnotationFormat;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Version-pinned reference annotation excerpts from Ensembl Plants release 62.
- * Nuclear chromosome sets and assemblies are cross-checked against assembly records.
- * Each excerpt includes two real gene families per nuclear chromosome, with original
- * sequence IDs and full lengths. No measured expression values are bundled.
- * See docs/chromosome-validation.md and the committed provenance manifest.
- */
+/** Version-pinned plant reference annotation examples. */
 public record ExampleDataset(String id, String label, String commonName, String clade,
                              String species, String assembly,
                              Map<String, Integer> chromosomeLengths,
@@ -19,32 +13,44 @@ public record ExampleDataset(String id, String label, String commonName, String 
     private static final String BASE = "/data/species/";
 
     public static final List<ExampleDataset> CATALOGUE = List.of(
-            new ExampleDataset("arabidopsis", "Arabidopsis thaliana · 5 chromosomes",
+            new ExampleDataset("arabidopsis", "Arabidopsis thaliana · TAIR10 · Chr1–Chr5",
                     "Thale cress Col-0", "Rosid · Brassicaceae", "Arabidopsis thaliana", "TAIR10", Map.of(),
-                    BASE + "arabidopsis/arabidopsis_chromosomes.gff3", AnnotationFormat.GFF3, null,
-                    "Ensembl Plants release 62: unmodified real gene families; https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/arabidopsis_thaliana/Arabidopsis_thaliana.TAIR10.62.gff3.gz"),
+                    BASE + "arabidopsis/Chr1.gff3", AnnotationFormat.GFF3, null,
+                    "Ensembl Plants release 62, TAIR10: complete nuclear chromosome annotations generated from the pinned source archive"),
             new ExampleDataset("rice", "Oryza sativa Japonica Group · 12 chromosomes",
                     "Rice Nipponbare", "Monocot · Poaceae", "Oryza sativa Japonica Group", "IRGSP-1.0", Map.of(),
                     BASE + "rice/rice_chromosomes.gff3", AnnotationFormat.GFF3, null,
-                    "Ensembl Plants release 62: unmodified real gene families; https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/oryza_sativa/Oryza_sativa.IRGSP-1.0.62.gff3.gz"),
+                    "Ensembl Plants release 62: unmodified real gene families"),
             new ExampleDataset("maize", "Zea mays · 10 chromosomes",
                     "Maize B73", "Monocot · Poaceae", "Zea mays", "Zm-B73-REFERENCE-NAM-5.0", Map.of(),
                     BASE + "maize/maize_chromosomes.gff3", AnnotationFormat.GFF3, null,
-                    "Ensembl Plants release 62: unmodified real gene families; https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/zea_mays/Zea_mays.Zm-B73-REFERENCE-NAM-5.0.62.gff3.gz"),
+                    "Ensembl Plants release 62: unmodified real gene families"),
             new ExampleDataset("soybean", "Glycine max · 20 chromosomes",
                     "Soybean Williams 82", "Rosid · Fabaceae", "Glycine max", "Glycine_max_v2.1", Map.of(),
                     BASE + "soybean/soybean_chromosomes.gff3", AnnotationFormat.GFF3, null,
-                    "Ensembl Plants release 62: unmodified real gene families; https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/glycine_max/Glycine_max.Glycine_max_v2.1.62.gff3.gz")
+                    "Ensembl Plants release 62: unmodified real gene families")
     );
 
     public static ExampleDataset byId(String id) {
-        // Retain the previously published ID for the same verified soybean assembly.
         String canonicalId = "soybean-v2".equals(id) ? "soybean" : id;
         return CATALOGUE.stream().filter(d -> d.id.equals(canonicalId)).findFirst().orElse(null);
     }
 
     public static ExampleDataset defaultDataset() {
         return CATALOGUE.getFirst();
+    }
+
+    /** All classpath parts of a bundled annotation. */
+    public List<String> annotationResources() {
+        if ("arabidopsis".equals(id)) {
+            return List.of(
+                    BASE + "arabidopsis/Chr1.gff3",
+                    BASE + "arabidopsis/Chr2.gff3",
+                    BASE + "arabidopsis/Chr3.gff3",
+                    BASE + "arabidopsis/Chr4.gff3",
+                    BASE + "arabidopsis/Chr5.gff3");
+        }
+        return List.of(annotationResource);
     }
 
     public String fullLabel() {
