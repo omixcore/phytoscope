@@ -270,8 +270,15 @@ public class Gff3Parser {
             transcript.setName(raw.name);
             transcript.setProteinId(raw.get("protein_id"));
             transcript.setSpecies(header.species);
-            gene.addTranscript(transcript);
-            transcriptById.put(raw.id, transcript);
+            Transcript retained = transcriptById.putIfAbsent(raw.id, transcript);
+            if (retained == null) {
+                gene.addTranscript(transcript);
+            } else {
+                // Duplicate transcript IDs must keep pointing at the retained
+                // hierarchy node; otherwise child exons/CDS/UTRs attach to an
+                // orphan object and silently disappear from the gene model.
+                transcript = retained;
+            }
         }
 
         for (RawFeature raw : rawExons) {
@@ -365,7 +372,12 @@ public class Gff3Parser {
             header.description = headerValue(line, lower, "description");
         }
         if (header.declaredFormat == null && lower.startsWith("##gff-version")) {
-            header.declaredFormat = AnnotationFormat.GFF3;
+            String version = lower.replace("##gff-version", "").trim();
+            if (version.startsWith("3")) {
+                header.declaredFormat = AnnotationFormat.GFF3;
+            } else if (version.startsWith("2")) {
+                header.declaredFormat = AnnotationFormat.GTF;
+            }
         }
     }
 
