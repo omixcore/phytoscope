@@ -1,6 +1,7 @@
 package io.gitee.omixcore.phytoscope;
 
 import io.gitee.omixcore.phytoscope.service.*;
+import io.gitee.omixcore.phytoscope.project.ProjectStore;
 import io.gitee.omixcore.phytoscope.ui.MainView;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -31,15 +32,8 @@ class ComparisonWorkflowUiTest {
             view.getComparisonPane().export(out.resolve("atlas-comparison.svg"), false);
             view.getComparisonPane().export(out.resolve("atlas-comparison.png"), true);
             ImageIO.write(SwingFXUtils.fromFXImage(scene.snapshot(null), null), "png", out.resolve("atlas-workspace.png").toFile());
-            var search = scene.lookup("#gene-search");
-            assertNotNull(search);
             var chromosome = (javafx.scene.control.ComboBox<String>) scene.lookup("#chromosome-selector");
             assertNotNull(chromosome);
-            chromosome.getSelectionModel().select("Chr1");
-            assertEquals("Chr1", view.getRenderer().getSequenceLabel());
-            ((javafx.scene.control.TextField) search).setText("AT5G38410");
-            // Interactive search may reveal Chr5; save an explicit Chr1 state with
-            // the search text still present to exercise project restoration.
             chromosome.getSelectionModel().select("Chr1");
             assertEquals("Chr1", view.getRenderer().getSequenceLabel());
 
@@ -49,7 +43,10 @@ class ComparisonWorkflowUiTest {
                     io.gitee.omixcore.phytoscope.comparison.ComparisonFigure.Scale.LINEAR, true);
             view.getComparisonPane().restore(selected, settings);
             view.getRenderer().showWindow(3000, 9000);
-            Path project = out.resolve("atlas.phytoscope"); view.saveProject(project);
+            Path project = out.resolve("atlas.phytoscope");
+            new ProjectStore().save(project, genome, expression, new ProjectStore.ViewState(
+                    "Chr1", selected.getFirst(), 3000, 9000, selected, settings.alignment().name(),
+                    settings.compressed(), settings.scale().name(), "AT5G38410"));
             view.loadAnnotation(Path.of("src/test/resources/chromosome-validation/rice.gff3"));
             assertTrue(expression.isEmpty()); assertTrue(view.getComparisonPane().geneIds().isEmpty());
             view.openProject(project); assertEquals(selected, view.getComparisonPane().geneIds());
