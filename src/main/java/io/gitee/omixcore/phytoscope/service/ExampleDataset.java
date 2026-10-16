@@ -15,8 +15,8 @@ public record ExampleDataset(String id, String label, String commonName, String 
     public static final List<ExampleDataset> CATALOGUE = List.of(
             new ExampleDataset("arabidopsis", "Arabidopsis thaliana · TAIR10 · Chr1–Chr5",
                     "Thale cress Col-0", "Rosid · Brassicaceae", "Arabidopsis thaliana", "TAIR10", Map.of(),
-                    BASE + "arabidopsis/Chr1.gff3", AnnotationFormat.GFF3, null,
-                    "TAIR/Araport11 original June 2016 release: complete nuclear chromosome annotations generated from the pinned source archive"),
+                    BASE + "arabidopsis/Chr1.gff3", AnnotationFormat.GFF3, "/data/case-studies/arabidopsis-atlas/expression.tsv",
+                    "TAIR/Araport11 original June 2016 release; bundled Arabidopsis tissue transcriptome case: Expression Atlas E-MTAB-7978"),
             new ExampleDataset("rice", "Oryza sativa Japonica Group · 12 chromosomes",
                     "Rice Nipponbare", "Monocot · Poaceae", "Oryza sativa Japonica Group", "IRGSP-1.0", Map.of(),
                     BASE + "rice/rice_chromosomes.gff3", AnnotationFormat.GFF3, null,
