@@ -258,9 +258,30 @@ public class ExpressionDataService {
         report = new ImportReport(rows, profiles.size(), missing, invalid, 0, 0, List.of(), List.copyOf(warnings));
     }
 
-    /** Detects the matrix delimiter using only characters outside quoted fields. */
+    /** Detects the matrix delimiter using both quote-aware structure and separator counts. */
     private static char detectDelimiter(String line) {
-        int tabs = 0, commas = 0, semicolons = 0;
+        char[] candidates = {'\\t', ',', ';'};
+        char best = '\\t';
+        int bestColumns = 1;
+        int bestSeparators = -1;
+        for (char candidate : candidates) {
+            try {
+                int columns = splitRow(line, candidate).size();
+                int separators = countOutsideQuotes(line, candidate);
+                if (columns > bestColumns || (columns == bestColumns && separators > bestSeparators)) {
+                    best = candidate;
+                    bestColumns = columns;
+                    bestSeparators = separators;
+                }
+            } catch (IOException ignored) {
+                // This candidate conflicts with quoted-field syntax; try the next one.
+            }
+        }
+        return bestColumns > 1 ? best : '\\t';
+    }
+
+    private static int countOutsideQuotes(String line, char delimiter) {
+        int count = 0;
         boolean quoted = false;
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
@@ -270,22 +291,11 @@ public class ExpressionDataService {
                 } else {
                     quoted = !quoted;
                 }
-                continue;
-            }
-            if (!quoted) {
-                switch (c) {
-                    case '\t' -> tabs++;
-                    case ',' -> commas++;
-                    case ';' -> semicolons++;
-                    default -> { }
-                }
+            } else if (!quoted && c == delimiter) {
+                count++;
             }
         }
-        char delimiter = '\t';
-        int best = tabs;
-        if (commas > best) { delimiter = ','; best = commas; }
-        if (semicolons > best) { delimiter = ';'; }
-        return best == 0 ? '\t' : delimiter;
+        return count;
     }
 
     /** Single-line RFC-style quoted fields, fixed delimiter chosen from the header. */
