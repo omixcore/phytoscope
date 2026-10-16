@@ -5,10 +5,41 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ExpressionDataServiceTest {
+
+    @Test
+    void detectsSemicolonWhenCommaOccursInsideQuotedHeader() throws Exception {
+        Path file = Files.createTempFile("phytoscope-expression-delimiter-", ".csv");
+        try {
+            Files.writeString(file, "Gene;\"Root, stressed\";Leaf\nA;1.5;2.5\n");
+            ExpressionDataService service = new ExpressionDataService();
+            service.loadFromFile(file);
+            assertEquals(java.util.List.of("Root, stressed", "Leaf"), service.getTissues());
+            assertEquals(1.5, service.getProfile("A").getTpm("Root, stressed"), 1e-9);
+            assertEquals(2.5, service.getProfile("A").getTpm("Leaf"), 1e-9);
+        } finally {
+            Files.deleteIfExists(file);
+        }
+    }
+
+    @Test
+    void failedDelimiterAwareImportDoesNotReplaceExistingData() throws Exception {
+        Path file = Files.createTempFile("phytoscope-expression-failure-", ".tsv");
+        try {
+            Files.writeString(file, "Gene\tRoot\nA\t2\n");
+            ExpressionDataService service = new ExpressionDataService();
+            service.loadFromFile(file);
+            Files.writeString(file, "Gene;\"Root, stressed\";Leaf\nA;1.5\n");
+            assertThrows(IOException.class, () -> service.loadFromFile(file));
+            assertEquals(2.0, service.getProfile("A").getTpm("Root"), 1e-9);
+        } finally {
+            Files.deleteIfExists(file);
+        }
+    }
 
     @Test
     void loadsArbitrarySampleNamesAndResetsMetadata() throws Exception {
