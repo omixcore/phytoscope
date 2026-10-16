@@ -1,0 +1,47 @@
+{
+  "source": "https://www.arabidopsis.org/download_files/Genes/Araport11_genome_release/Araport11_GFF3_genes_transposons.201606.gff.gz",
+  "downloaded_from": "https://plantgarden.jp/en/download/t3702/t3702.G001/Araport11_GFF3_genes_transposons.201606.gff.gz",
+  "archive_sha256": "22d8c42ec2ca667fc3f78105f568bf295ee10d2145b2bd76dcd290a469a27b99",
+  "assembly": "TAIR10",
+  "annotation": "Araport11",
+  "scope": "complete nuclear Chr1-Chr5",
+  "chromosomes": {
+    "Chr1": {
+      "length": 30427671,
+      "source_sequence_length": 30427671,
+      "features": 207497,
+      "gene_like_features": 9019,
+      "sha256": "846ac0fcab14444405c12a970b11ee4df428a6775b567d933ffc2cdb74b59d11"
+    },
+    "Chr2": {
+      "length": 19698289,
+      "source_sequence_length": 19698289,
+      "features": 125500,
+      "gene_like_features": 5486,
+      "sha256": "be24fa913d7e4f53583502d64a4d6a8f8910ebdab298a4ff9ef272e7f537ca60"
+    },
+    "Chr3": {
+      "length": 23459830,
+      "source_sequence_length": 23459830,
+      "features": 154731,
+      "gene_like_features": 6747,
+      "sha256": "323d22b86dd928be4b3ba0ec69a4358bcb2c13486c12428799f5a3fa575e8898"
+    },
+    "Chr4": {
+      "length": 18585056,
+      "source_sequence_length": 18585056,
+      "features": 121971,
+      "gene_like_features": 5131,
+      "sha256": "e5b8683b657698ba74d675451338a5c367c578f7f9a3ca83a81b70d592004b93"
+    },
+    "Chr5": {
+      "length": 26975502,
+      "source_sequence_length": 26975502,
+      "features": 178800,
+      "gene_like_features": 7614,
+      "sha256": "27b8e00179465b642835d798b77b7964301236b514d4f7668848fe13f37bd11a"
+    }
+  },
+  "total_features": 788499,
+  "total_gene_like_features": 33997
+}

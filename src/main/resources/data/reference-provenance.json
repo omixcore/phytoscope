@@ -7,17 +7,34 @@
       "assembly": "TAIR10",
       "assembly_accession": "GCA_000001735.1",
       "assembly_record": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_000001735.1/",
-      "source": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/arabidopsis_thaliana/Arabidopsis_thaliana.TAIR10.62.gff3.gz",
+      "source": "https://www.arabidopsis.org/download_files/Genes/Araport11_genome_release/Araport11_GFF3_genes_transposons.201606.gff.gz",
       "release": 62,
       "chromosome_count": 5,
       "provider_checksum_url": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/gff3/arabidopsis_thaliana/CHECKSUMS",
       "provider_checksum": "07787 9339 Arabidopsis_thaliana.TAIR10.62.gff3.gz",
-      "archive_sha256": "9f2701d7151b4467941b5dae4171b8955ea4260c4d78f41be4fb3ff44782d2fd",
+      "archive_sha256": "22d8c42ec2ca667fc3f78105f568bf295ee10d2145b2bd76dcd290a469a27b99",
       "fixture_sha256": "a21bb6635988a8cfbebde4d7d1804df4a95fea2e7ac2846d71bcc8eab5879711",
       "verified_original_feature_rows": 571,
-      "status": "BUILD_PENDING",
-      "annotation_scope": "complete nuclear Chr1-Chr5 (materialization pending manual workflow dispatch)",
-      "annotation": "Araport11"
+      "status": "PASS",
+      "annotation_scope": "complete nuclear Chr1-Chr5",
+      "annotation": "Araport11",
+      "downloaded_from": "https://plantgarden.jp/en/download/t3702/t3702.G001/Araport11_GFF3_genes_transposons.201606.gff.gz",
+      "verified_feature_rows": 788499,
+      "verified_gene_like_features": 33997,
+      "chromosome_lengths": {
+        "Chr1": 30427671,
+        "Chr2": 19698289,
+        "Chr3": 23459830,
+        "Chr4": 18585056,
+        "Chr5": 26975502
+      },
+      "chromosome_sha256": {
+        "Chr1": "846ac0fcab14444405c12a970b11ee4df428a6775b567d933ffc2cdb74b59d11",
+        "Chr2": "be24fa913d7e4f53583502d64a4d6a8f8910ebdab298a4ff9ef272e7f537ca60",
+        "Chr3": "323d22b86dd928be4b3ba0ec69a4358bcb2c13486c12428799f5a3fa575e8898",
+        "Chr4": "e5b8683b657698ba74d675451338a5c367c578f7f9a3ca83a81b70d592004b93",
+        "Chr5": "27b8e00179465b642835d798b77b7964301236b514d4f7668848fe13f37bd11a"
+      }
     },
     "rice": {
       "species": "Oryza sativa Japonica Group",
