@@ -44,11 +44,21 @@ public enum FeatureType {
                 return type;
             }
         }
-        // Fallback for common aliases
+        // Fallback for common Sequence Ontology / plant annotation aliases.
+        // These are semantic aliases, not species-specific rules.
         return switch (normalized) {
-            case "transcript" -> TRANSCRIPT;
-            case "five_prime_utr", "5'utr", "5utr" -> FIVE_UTR;
-            case "three_prime_utr", "3'utr", "3utr" -> THREE_UTR;
+            case "gene",
+                 "protein_coding_gene", "pseudogene",
+                 "ncrna_gene", "lncrna_gene", "mirna_gene",
+                 "snrna_gene", "snorna_gene", "rrna_gene",
+                 "transposable_element_gene" -> GENE;
+            case "mrna", "transcript", "primary_transcript",
+                 "ncrna", "lncrna", "lnc_rna", "mirna",
+                 "snrna", "snorna", "rrna" -> TRANSCRIPT;
+            case "five_prime_utr", "five_prime_utr_region",
+                 "5'utr", "5utr", "5_prime_utr" -> FIVE_UTR;
+            case "three_prime_utr", "three_prime_utr_region",
+                 "3'utr", "3utr", "3_prime_utr" -> THREE_UTR;
             default -> UNKNOWN;
         };
     }
