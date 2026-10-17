@@ -1,0 +1,28 @@
+{
+  "species": "Arabidopsis thaliana",
+  "assembly": "TAIR10",
+  "source": "Ensembl Plants release 62",
+  "url": "https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-62/fasta/arabidopsis_thaliana/dna/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.gz",
+  "filename": "TAIR10_genomic.fna.gz",
+  "sha256": "80a13166003333ba4982b57abdb3d2b62037bc831f4da29ea378c1b776fff8e2",
+  "compressed_bytes": 36462703,
+  "sequence_records": 7,
+  "total_nucleotides": 119667750,
+  "record_lengths": {
+    "1": 30427671,
+    "2": 19698289,
+    "3": 23459830,
+    "4": 18585056,
+    "5": 26975502,
+    "Mt": 366924,
+    "Pt": 154478
+  },
+  "primary_chromosomes": {
+    "1": 30427671,
+    "2": 19698289,
+    "3": 23459830,
+    "4": 18585056,
+    "5": 26975502
+  },
+  "retrieval": "Downloaded from the version-pinned Ensembl Plants FTP source and gzip/FASTA validated; not modified."
+}
