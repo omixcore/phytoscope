@@ -156,6 +156,7 @@ public class GeneDetailPane extends ScrollPane {
      */
     private VBox buildExpressionCard(ExpressionProfile profile) {
         VBox card = new VBox(8);
+        card.setId("tissue-expression-chart");
         card.setPadding(new Insets(10));
         card.setStyle("-fx-background-color: #F7F9FC; -fx-background-radius: 6;"
                 + " -fx-border-color: #E3E9F0; -fx-border-radius: 6;");
@@ -199,6 +200,7 @@ public class GeneDetailPane extends ScrollPane {
             if (Double.isFinite(measurement)) {
                 double fraction = Math.min(1.0, Math.abs(measurement) / max);
                 Region bar = new Region();
+                bar.getStyleClass().add("tissue-expression-bar");
                 bar.setMinWidth(16);
                 bar.setPrefWidth(22);
                 bar.setMaxWidth(22);
