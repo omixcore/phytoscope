@@ -45,18 +45,20 @@ class ComparisonWorkflowUiTest {
             var renderer = view.getRenderer();
             assertEquals(1, renderer.getRenderedGenes().size(), "the browser should render the selected measured locus");
             assertEquals("AT1G67090", renderer.getRenderedGenes().getFirst().getId());
-            double expressionLeft = renderer.plotRight() + 10;
-            double lastCellRight = expressionLeft + 5 * 64 + 59;
-            assertTrue(expressionLeft > renderer.plotLeft(), "expression heatmap must be placed to the right of gene tracks");
-            assertTrue(lastCellRight < renderer.getCanvas().getWidth(), "all six tissue columns must fit inside the canvas");
-            var trackImage = renderer.getCanvas().snapshot(null, null);
-            var pixels = trackImage.getPixelReader();
-            for (int tissue = 0; tissue < expression.getTissues().size(); tissue++) {
-                var cell = pixels.getColor((int) (expressionLeft + tissue * 64 + 20),
-                        (int) (io.gitee.omixcore.phytoscope.ui.component.GeneTrackRenderer.AXIS_HEIGHT + 15));
-                assertTrue(cell.getBlue() > cell.getRed(),
-                        "tissue expression cell " + expression.getTissues().get(tissue) + " should be visibly rendered");
+            // Tissue-expression bars must be rendered in the right-hand gene details,
+            // not squeezed into the genomic coordinate track.
+            var labels = scene.getRoot().lookupAll(".label").stream()
+                    .filter(javafx.scene.control.Label.class::isInstance)
+                    .map(javafx.scene.control.Label.class::cast)
+                    .map(javafx.scene.control.Label::getText).filter(java.util.Objects::nonNull).toList();
+            assertTrue(labels.stream().anyMatch(label -> label.startsWith("Expression (TPM)")),
+                    "selected measured gene must show the expression bar chart in the details pane");
+            for (String tissue : expression.getTissues()) {
+                assertTrue(labels.contains(tissue.replace('_', ' ')),
+                        "right-hand chart should label sample group " + tissue);
             }
+            assertEquals(renderer.getCanvas().getWidth() - 18, renderer.plotRight(), 2.0,
+                    "genome tracks should retain their width now that expression is in the details pane");
             assertTrue(renderer.getRenderedGenes().size() <= 100);
             assertTrue(renderer.contentHeight() < 15000);
             Path out = Path.of("target/validation"); Files.createDirectories(out);
