@@ -5,9 +5,14 @@ import io.gitee.omixcore.phytoscope.model.ExpressionProfile;
 import io.gitee.omixcore.phytoscope.model.Gene;
 import io.gitee.omixcore.phytoscope.model.TissueExpression;
 import io.gitee.omixcore.phytoscope.model.Transcript;
+import io.gitee.omixcore.phytoscope.service.GeneSequenceService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
@@ -42,8 +47,10 @@ public class GeneDetailPane extends ScrollPane {
     private String valueUnit = "unspecified";
     private List<String> samples = List.of();
     private String expressionLevel = "gene";
+    private GeneSequenceService sequenceService;
     public void setSamples(List<String> samples) { this.samples = List.copyOf(samples); }
     public void setExpressionLevel(String level) { expressionLevel = level; }
+    public void setSequenceService(GeneSequenceService service) { this.sequenceService = service; }
 
     public GeneDetailPane() {
         content.setPadding(new Insets(14));
