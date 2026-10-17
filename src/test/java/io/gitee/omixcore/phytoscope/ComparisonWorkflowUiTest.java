@@ -30,7 +30,7 @@ class ComparisonWorkflowUiTest {
                     "Cauline_leaf", "Dry_seed", "Pollen"), expression.getTissues());
 
             // Exercise the real genome-browser tab, not only the comparison view.
-            var browserTabs = scene.lookupAll(".tab-pane").stream()
+            var browserTabs = scene.getRoot().lookupAll(".tab-pane").stream()
                     .filter(javafx.scene.control.TabPane.class::isInstance)
                     .map(javafx.scene.control.TabPane.class::cast)
                     .filter(tabs -> tabs.getTabs().stream().anyMatch(tab -> "Genome browser".equals(tab.getText())))
