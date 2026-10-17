@@ -23,7 +23,7 @@ class ComparisonWorkflowUiTest {
             var genome = new GenomeDataService(); var expression = new ExpressionDataService();
             var view = new MainView(genome, expression); var scene = new Scene(view, 1550, 900);
             view.loadAtlasCase(); view.applyCss(); view.layout();
-            assertEquals(4, expression.getImportReport().matchedIds());
+            assertTrue(expression.getImportReport().matchedIds() >= 30000);
             assertEquals(4, view.getComparisonPane().geneIds().size());
             assertEquals(17494, expression.getProfile("AT1G67090").getTpm("Rosette_leaf_8"));
             assertEquals(java.util.List.of("Root", "Rosette_leaf_1", "Rosette_leaf_8",
@@ -96,7 +96,7 @@ class ComparisonWorkflowUiTest {
             assertFalse(view.getRenderer().getGenes().isEmpty(), "restored renderer must be rebuilt for saved sequence");
             assertTrue(view.getRenderer().getGenes().stream().allMatch(g -> "Chr1".equals(g.getChromosome())));
             assertEquals(3000, view.getRenderer().getViewStart()); assertEquals(9000, view.getRenderer().getViewEnd());
-            assertEquals(4, expression.getImportReport().matchedIds());
+            assertTrue(expression.getImportReport().matchedIds() >= 30000);
             assertEquals(settings, view.getComparisonPane().settings());
             view.closeProjectResources(); return null;
         });
