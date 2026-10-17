@@ -26,8 +26,39 @@ class ComparisonWorkflowUiTest {
             assertEquals(4, expression.getImportReport().matchedIds());
             assertEquals(4, view.getComparisonPane().geneIds().size());
             assertEquals(17494, expression.getProfile("AT1G67090").getTpm("Rosette_leaf_8"));
-            assertTrue(view.getRenderer().getRenderedGenes().size() <= 100);
-            assertTrue(view.getRenderer().contentHeight() < 15000);
+            assertEquals(java.util.List.of("Root", "Rosette_leaf_1", "Rosette_leaf_8",
+                    "Cauline_leaf", "Dry_seed", "Pollen"), expression.getTissues());
+
+            // Exercise the real genome-browser tab, not only the comparison view.
+            var browserTabs = scene.lookupAll(".tab-pane").stream()
+                    .filter(javafx.scene.control.TabPane.class::isInstance)
+                    .map(javafx.scene.control.TabPane.class::cast)
+                    .filter(tabs -> tabs.getTabs().stream().anyMatch(tab -> "Genome browser".equals(tab.getText())))
+                    .findFirst().orElseThrow(() -> new AssertionError("Genome browser tab is missing"));
+            browserTabs.getSelectionModel().select(browserTabs.getTabs().stream()
+                    .filter(tab -> "Genome browser".equals(tab.getText())).findFirst().orElseThrow());
+            var search = (javafx.scene.control.TextField) scene.lookup("#gene-search");
+            assertNotNull(search, "gene search control must be present in the running UI");
+            search.setText("AT1G67090");
+            view.applyCss(); view.layout(); view.onViewportResized();
+
+            var renderer = view.getRenderer();
+            assertEquals(1, renderer.getRenderedGenes().size(), "the browser should render the selected measured locus");
+            assertEquals("AT1G67090", renderer.getRenderedGenes().getFirst().getId());
+            double expressionLeft = renderer.plotRight() + 10;
+            double lastCellRight = expressionLeft + 5 * 64 + 59;
+            assertTrue(expressionLeft > renderer.plotLeft(), "expression heatmap must be placed to the right of gene tracks");
+            assertTrue(lastCellRight < renderer.getCanvas().getWidth(), "all six tissue columns must fit inside the canvas");
+            var trackImage = renderer.getCanvas().snapshot(null, null);
+            var pixels = trackImage.getPixelReader();
+            for (int tissue = 0; tissue < expression.getTissues().size(); tissue++) {
+                var cell = pixels.getColor((int) (expressionLeft + tissue * 64 + 20),
+                        (int) (io.gitee.omixcore.phytoscope.ui.component.GeneTrackRenderer.AXIS_HEIGHT + 15));
+                assertTrue(cell.getBlue() > cell.getRed(),
+                        "tissue expression cell " + expression.getTissues().get(tissue) + " should be visibly rendered");
+            }
+            assertTrue(renderer.getRenderedGenes().size() <= 100);
+            assertTrue(renderer.contentHeight() < 15000);
             Path out = Path.of("target/validation"); Files.createDirectories(out);
             view.getComparisonPane().export(out.resolve("atlas-comparison.svg"), false);
             view.getComparisonPane().export(out.resolve("atlas-comparison.png"), true);
