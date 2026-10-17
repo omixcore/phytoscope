@@ -1,0 +1,32 @@
+name: Bundle pinned TAIR10 genome sequence
+on:
+  push:
+    branches:
+      - feature/gene-sequence-details
+    paths:
+      - tools/fetch_tair10_genome.py
+      - .github/workflows/bundle-tair10-genome.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download official TAIR10 genomic FASTA and verify provenance
+        run: python tools/fetch_tair10_genome.py
+      - name: Run sequence extraction tests
+        run: sh mvnw -B -Dtest=GeneSequenceServiceTest test
+      - name: Commit reference sequence and checksum manifest
+        run: |
+          git config user.name "omixcore"
+          git config user.email "168420108+omixcore@users.noreply.github.com"
+          git add src/main/resources/data/species/arabidopsis/TAIR10_genomic.fna.gz src/main/resources/data/species/arabidopsis/genome-sequence-provenance.json
+          git commit -m "data: bundle checksum-pinned TAIR10 genomic DNA reference"
+          git push origin HEAD:feature/gene-sequence-details
