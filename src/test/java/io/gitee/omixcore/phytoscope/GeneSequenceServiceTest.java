@@ -21,11 +21,11 @@ class GeneSequenceServiceTest {
                 chr1\\ttest\\tCDS\\t3\\t6\\t.\\t+\\t0\\tParent=t1
                 chr1\\ttest\\tCDS\\t10\\t13\\t.\\t+\\t2\\tParent=t1
                 chr1\\ttest\\tthree_prime_UTR\\t14\\t15\\t.\\t+\\t.\\tParent=t1
-                """.replace("\\\\t", "\\t");
+                """.replace("\\t", "\t");
         GenomeDataService genome = new GenomeDataService();
         genome.loadFromContent(annotation, "test annotation");
         GeneSequenceService sequences = new GeneSequenceService();
-        sequences.loadFromContent(">chr1\\nAACCATGGGGTTTAA\\n".replace("\\\\n", "\\n"), "synthetic genome");
+        sequences.loadFromContent(">chr1\\nAACCATGGGGTTTAA\\n".replace("\\n", "\n"), "synthetic genome");
         var result = sequences.extract(genome.findGene("g1"));
         assertEquals("AACCATGGGGTTTAA", result.genomicSpanSequence());
         var transcript = result.transcripts().getFirst();
