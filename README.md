@@ -22,7 +22,7 @@ into five files without changing feature coordinates. Source URLs and checksums
 are in the per-reference manifests and
 [data provenance](src/main/resources/data/reference-provenance.json).
 
-**The default Arabidopsis reference also bundles the measured transcriptome panel** used by the browser expression track: four RBCS genes across six single-assay conditions from Expression Atlas **E-MTAB-7978**. The right-hand expression heatmap is shown beside the genome structure when measurements are available.
+**The default Arabidopsis reference also bundles the measured transcriptome panel** used by the browser expression track: **32,833 genes** across six single-assay conditions from Expression Atlas **E-MTAB-7978**, with SHA-256 pinned inputs and a fully traceable extraction manifest. Select any measured gene to see a **six-column vertical TPM bar chart in the right Gene Details pane**. Genes without measured data show an explicit missing-data message rather than a wall of `NA` cells.
 The [case-study guide](examples/arabidopsis-atlas/README.md) records the source,
 ENA runs, exact extracted values, reproduction commands and interpretation limits.
 Historical illustrative expression fixtures are test-only and are not shipped.
@@ -54,7 +54,7 @@ The first build downloads Maven and dependencies. JavaFX may print an
    and click a gene to inspect its structure.
 4. Use **Fit all** to fit the loaded genes, **Focus selected** for a single locus,
    or **View → Show full chromosome** for the complete declared sequence extent.
-5. When the bundled or imported matrix matches the loaded annotation, sample-level expression appears as a heatmap beside the gene structure and in the gene-details panel. Import a matching matrix when available, then use **Export** to save the current tracks as PNG or SVG.
+5. When the bundled or imported matrix matches the loaded annotation, sample-level expression appears as a per-gene bar chart in the right-hand Gene Details panel. Import a matching matrix when available, then use **Export** to save the current tracks as PNG or SVG.
 
 The toolbar counts **sequences present in the loaded file**, which may include
 scaffolds and organelles. It does not infer missing chromosomes from a species

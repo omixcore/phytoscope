@@ -41,7 +41,7 @@ class ExpressionDataServiceTest {
         ExpressionDataService service = new ExpressionDataService();
         service.loadExample(ExampleDataset.defaultDataset());
         assertFalse(service.isEmpty());
-        assertEquals(4, service.getProfileCount());
+        assertTrue(service.getProfileCount() >= 20000);
         assertEquals("TPM", service.getValueUnit());
         assertEquals("Bundled panel (Arabidopsis thaliana)", service.getSource());
     }
@@ -52,9 +52,11 @@ class ExpressionDataServiceTest {
         service.loadFromResource("/data/case-studies/arabidopsis-atlas/expression.tsv", "Expression Atlas E-MTAB-7978");
         assertEquals(java.util.List.of("Root", "Rosette_leaf_1", "Rosette_leaf_8", "Cauline_leaf", "Dry_seed", "Pollen"), service.getTissues());
         assertEquals("TPM", service.getValueUnit());
-        assertEquals(4, service.getProfileCount());
+        assertEquals(32833, service.getProfileCount());
         assertEquals(17494.0, service.getProfile("AT1G67090").getTpm("Rosette_leaf_8"));
         assertEquals(0.0, service.getProfile("AT5G38430").getTpm("Pollen"));
+        assertNotNull(service.getProfile("AT1G01860"));
+        assertTrue(java.util.Arrays.stream(new double[]{service.getProfile("AT1G01860").getTpm("Root"), service.getProfile("AT1G01860").getTpm("Rosette_leaf_1"), service.getProfile("AT1G01860").getTpm("Rosette_leaf_8"), service.getProfile("AT1G01860").getTpm("Cauline_leaf"), service.getProfile("AT1G01860").getTpm("Dry_seed"), service.getProfile("AT1G01860").getTpm("Pollen")}).allMatch(Double::isFinite));
     }
 
 }

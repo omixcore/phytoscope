@@ -1,0 +1,59 @@
+name: Build pinned full Arabidopsis expression matrix
+on:
+  push:
+    branches:
+      - fix/expression-bars-and-missing-data
+    paths:
+      - tools/build_atlas_case_study.py
+      - .github/workflows/build-arabidopsis-expression.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-expression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download and verify source; create full gene matrix
+        run: python tools/build_atlas_case_study.py --cache target/atlas-cache
+      - name: Validate full matrix, hashes, and ordinary-gene measurements
+        shell: bash
+        run: |
+          python - <<'PY'
+          import csv, hashlib, json
+          from pathlib import Path
+          folder = Path("src/main/resources/data/case-studies/arabidopsis-atlas")
+          manifest = json.loads((folder / "manifest.json").read_text())
+          assert manifest["expression_matrix_gene_count"] >= 20000
+          assert manifest["expression_matrix_sample_count"] == 6
+          for name in ["expression.tsv", "samples.tsv", "source-values.tsv"]:
+              sha = manifest["outputs"][name]
+              assert hashlib.sha256((folder / name).read_bytes()).hexdigest() == sha
+          assert hashlib.sha256(Path("examples/arabidopsis-atlas/annotation.gff3").read_bytes()).hexdigest() == manifest["outputs"]["annotation.gff3"]
+          with (folder / "expression.tsv").open() as source:
+              records = {row["GeneID"]: row for row in csv.DictReader((l for l in source if not l.startswith("#")), delimiter="\t")}
+          assert len(records) == manifest["expression_matrix_gene_count"]
+          assert "AT1G01860" in records
+          ordinary = records["AT1G01860"]
+          for group, value in manifest["ordinary_gene_validation"]["values_tpm"].items():
+              assert ordinary[group] == value and value != "NA"
+          assert records["AT1G67090"]["Rosette_leaf_8"] == "17494"
+          print("PASS", len(records), "genes; AT1G01860 values:", manifest["ordinary_gene_validation"]["values_tpm"])
+          PY
+      - name: Commit generated full matrix to PR branch
+        shell: bash
+        run: |
+          git config user.name "omixcore"
+          git config user.email "168420108+omixcore@users.noreply.github.com"
+          git add examples/arabidopsis-atlas/expression.tsv examples/arabidopsis-atlas/manifest.json \
+            src/main/resources/data/case-studies/arabidopsis-atlas/expression.tsv \
+            src/main/resources/data/case-studies/arabidopsis-atlas/manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: bundle pinned full E-MTAB-7978 six-condition gene matrix"
+            git push origin HEAD:fix/expression-bars-and-missing-data
+          fi

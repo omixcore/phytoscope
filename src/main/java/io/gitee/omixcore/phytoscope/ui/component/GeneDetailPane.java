@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -127,11 +128,16 @@ public class GeneDetailPane extends ScrollPane {
             content.getChildren().addAll(new Separator(), descTitle, flow);
         }
 
-        // Expression summary; the panel label comes from the loaded dataset
+        // Expression summary belongs in the right-hand details pane, not beside every locus.
         ExpressionProfile profile = expressionLevel.equals("gene") ? profileLookup.apply(gene.getId()) : null;
+        content.getChildren().addAll(new Separator(), sectionTitle("Tissue expression"));
         if (profile != null && !profile.isEmpty()) {
-            content.getChildren().addAll(new Separator(), sectionTitle("Sample Expression"));
             content.getChildren().add(buildExpressionCard(profile));
+        } else {
+            Label missing = new Label("No measurements for this gene in the loaded expression matrix. NA means unavailable, not zero expression.");
+            missing.setWrapText(true);
+            missing.setStyle("-fx-text-fill: #778596; -fx-font-size: 11px;");
+            content.getChildren().add(missing);
         }
 
         content.getChildren().addAll(new Separator(), sectionTitle("Transcript Structure"));
@@ -145,64 +151,103 @@ public class GeneDetailPane extends ScrollPane {
     }
 
     /**
-     * Builds the expression summary: one bar per sample group scaled to the
-     * dataset maximum, with the measured value printed alongside.
+     * Vertical column chart for the selected gene. Each sample is scaled against
+     * this gene's maximum so low-abundance profiles remain visible.
      */
     private VBox buildExpressionCard(ExpressionProfile profile) {
-        VBox card = new VBox(5);
+        VBox card = new VBox(8);
+        card.setId("tissue-expression-chart");
         card.setPadding(new Insets(10));
         card.setStyle("-fx-background-color: #F7F9FC; -fx-background-radius: 6;"
                 + " -fx-border-color: #E3E9F0; -fx-border-radius: 6;");
 
-        Label caption = new Label("Expression across samples (" + valueUnit + ")");
-        caption.setStyle("-fx-text-fill: #8899AA; -fx-font-size: 11px;");
-
+        Label caption = new Label("Expression (" + valueUnit + ")");
+        caption.setStyle("-fx-text-fill: #526579; -fx-font-size: 11px; -fx-font-weight: bold;");
         card.getChildren().add(caption);
 
-        double max = Math.max(1e-9, globalMaxTpm);
-        for (String sample : samples.isEmpty() ? profile.getValues().stream().map(TissueExpression::tissue).toList() : samples) {
+        List<String> sampleNames = samples.isEmpty()
+                ? profile.getValues().stream().map(TissueExpression::tissue).toList() : samples;
+        double max = sampleNames.stream().mapToDouble(profile::getTpm)
+                .filter(Double::isFinite).map(Math::abs).max().orElse(0.0);
+        if (max <= 0) max = 1.0;
+
+        HBox chart = new HBox(4);
+        chart.setAlignment(Pos.BOTTOM_CENTER);
+        chart.setMinHeight(150);
+        chart.setPrefHeight(150);
+        chart.setMaxHeight(150);
+
+        for (String sample : sampleNames) {
             double measurement = profile.getTpm(sample);
-            TissueExpression value = new TissueExpression(sample, measurement, 0);
-            HBox row = new HBox(6);
-            row.setAlignment(Pos.CENTER_LEFT);
+            VBox column = new VBox(3);
+            column.setAlignment(Pos.BOTTOM_CENTER);
+            column.setMinWidth(0);
+            column.setPrefWidth(38);
+            column.setMaxWidth(Double.MAX_VALUE);
 
-            Label name = new Label(displaySampleName(value.tissue()));
-            name.setMinWidth(52);
-            name.setStyle("-fx-text-fill: #4A5B6B; -fx-font-size: 11px;");
+            Label value = new Label(Double.isFinite(measurement) ? formatMeasurement(measurement) : "NA");
+            value.setFont(Font.font("Consolas", 9));
+            value.setStyle("-fx-text-fill: #34495E;");
+            value.setTooltip(new javafx.scene.control.Tooltip(sample + ": "
+                    + (Double.isFinite(measurement) ? measurement + " " + valueUnit : "not measured")));
 
-            // Bar width proportional to the dataset maximum
-            double fraction = Double.isFinite(value.tpm()) ? Math.min(1.0, Math.abs(value.tpm()) / max) : 0;
-            Region bar = new Region();
-            bar.setPrefHeight(11);
-            bar.setPrefWidth(Math.max(1, fraction * 130));
-            bar.setStyle("-fx-background-color: " + (!Double.isFinite(value.tpm()) ? "#D7DDE4" : value.tpm() < 0 ? "#B86248" : toHex(barColour(fraction))) + ";"
-                    + " -fx-background-radius: 3;");
+            StackPane barArea = new StackPane();
+            barArea.setMinHeight(90);
+            barArea.setPrefHeight(90);
+            barArea.setMaxHeight(90);
+            barArea.setMinWidth(25);
+            barArea.setAlignment(Pos.BOTTOM_CENTER);
+            if (Double.isFinite(measurement)) {
+                double fraction = Math.min(1.0, Math.abs(measurement) / max);
+                Region bar = new Region();
+                bar.getStyleClass().add("tissue-expression-bar");
+                bar.setMinWidth(16);
+                bar.setPrefWidth(22);
+                bar.setMaxWidth(22);
+                bar.setMinHeight(measurement == 0 ? 2 : 3);
+                bar.setPrefHeight(Math.max(2, fraction * 82));
+                bar.setMaxHeight(Math.max(2, fraction * 82));
+                bar.setStyle("-fx-background-color: " + (measurement < 0 ? "#B86248" : toHex(barColour(fraction))) + ";"
+                        + "-fx-background-radius: 3 3 0 0;");
+                StackPane.setAlignment(bar, Pos.BOTTOM_CENTER);
+                barArea.getChildren().add(bar);
+            } else {
+                Label na = new Label("—");
+                na.setStyle("-fx-text-fill: #A0AAB5;");
+                StackPane.setAlignment(na, Pos.CENTER);
+                barArea.getChildren().add(na);
+            }
 
-            Region track = new Region();
-            track.setMinWidth(130);
-            track.setPrefHeight(11);
-
-            HBox barHolder = new HBox(bar);
-            barHolder.setMinWidth(130);
-            barHolder.setAlignment(Pos.CENTER_LEFT);
-
-            Label val = new Label(Double.isFinite(value.tpm()) ? String.format("%.1f", value.tpm()) : "NA");
-            val.setFont(Font.font("Consolas", 10.5));
-            val.setStyle("-fx-text-fill: #2C3E50;");
-            val.setMinWidth(40);
-
-            row.getChildren().addAll(name, barHolder, val);
-            card.getChildren().add(row);
+            Label name = new Label(displaySampleName(sample));
+            name.setWrapText(true);
+            name.setAlignment(Pos.TOP_CENTER);
+            name.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+            name.setMinHeight(30);
+            name.setPrefWidth(40);
+            name.setMaxWidth(42);
+            name.setStyle("-fx-text-fill: #526579; -fx-font-size: 9px;");
+            name.setTooltip(new javafx.scene.control.Tooltip(sample));
+            column.getChildren().addAll(value, barArea, name);
+            chart.getChildren().add(column);
+            HBox.setHgrow(column, Priority.ALWAYS);
         }
+        card.getChildren().add(chart);
 
         TissueExpression top = profile.topTissue();
         if (top != null) {
-            Label peak = new Label(String.format("Peak: %s (%.1f %s)",
+            Label peak = new Label(String.format("Peak: %s (%.3g %s)",
                     top.tissue(), top.tpm(), valueUnit));
             peak.setStyle("-fx-text-fill: #E8833A; -fx-font-size: 11px;");
             card.getChildren().add(peak);
         }
         return card;
+    }
+
+    private static String formatMeasurement(double value) {
+        double abs = Math.abs(value);
+        if (abs >= 1000) return String.format(java.util.Locale.ROOT, "%.2g", value);
+        if (abs >= 10) return String.format(java.util.Locale.ROOT, "%.1f", value);
+        return String.format(java.util.Locale.ROOT, "%.2f", value);
     }
 
     private static String displaySampleName(String sample) {

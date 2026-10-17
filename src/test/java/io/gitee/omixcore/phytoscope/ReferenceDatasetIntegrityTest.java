@@ -35,7 +35,7 @@ class ReferenceDatasetIntegrityTest {
             assertEquals("/data/case-studies/arabidopsis-atlas/expression.tsv", dataset.expressionResource());
             var expression = new ExpressionDataService();
             expression.loadExample(dataset);
-            assertEquals(4, expression.getProfileCount());
+            assertTrue(expression.getProfileCount() >= 20000);
             assertEquals(6, expression.getTissues().size());
             assertEquals("TPM", expression.getValueUnit());
         } else {
