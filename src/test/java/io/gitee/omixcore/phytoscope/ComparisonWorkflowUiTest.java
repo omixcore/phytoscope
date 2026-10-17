@@ -45,6 +45,15 @@ class ComparisonWorkflowUiTest {
             var renderer = view.getRenderer();
             assertEquals(1, renderer.getRenderedGenes().size(), "the browser should render the selected measured locus");
             assertEquals("AT1G67090", renderer.getRenderedGenes().getFirst().getId());
+            var selectedLocus = renderer.getRenderedGenes().getFirst();
+            var geneList = scene.getRoot().lookupAll(".list-view").stream()
+                    .filter(javafx.scene.control.ListView.class::isInstance)
+                    .map(javafx.scene.control.ListView.class::cast)
+                    .filter(list -> list.getItems().contains(selectedLocus))
+                    .findFirst().orElseThrow(() -> new AssertionError("Genome gene list missing"));
+            geneList.getSelectionModel().select(selectedLocus);
+            view.applyCss(); view.layout();
+
             // Tissue-expression bars must be rendered in the right-hand gene details,
             // not squeezed into the genomic coordinate track.
             var labels = scene.getRoot().lookupAll(".label").stream()
