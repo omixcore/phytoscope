@@ -155,6 +155,115 @@ public class GeneDetailPane extends ScrollPane {
                 if (tp != null) content.getChildren().add(buildExpressionCard(tp));
             }
         }
+        content.getChildren().add(new Separator());
+        content.getChildren().add(sectionTitle("Sequences"));
+        content.getChildren().add(buildSequenceSection(gene));
+    }
+
+    private VBox buildSequenceSection(Gene gene) {
+        VBox section = new VBox(8);
+        if (sequenceService == null || !sequenceService.isLoaded()) {
+            Label hint = new Label("Import a matching genomic DNA FASTA from File → Import genome FASTA to view and copy genomic span, spliced transcript, CDS, 5′/3′ UTR and protein sequences. The genome assembly must match the annotation.");
+            hint.setWrapText(true);
+            hint.setStyle("-fx-text-fill: #778596; -fx-font-size: 11px;");
+            section.getChildren().add(hint);
+            return section;
+        }
+        try {
+            GeneSequenceService.GeneSequences result = sequenceService.extract(gene);
+            Label provenance = new Label("Source: " + result.sourceLabel()
+                    + "\nCoordinates: 1-based inclusive · strand-aware · use the same assembly as the annotation");
+            provenance.setWrapText(true);
+            provenance.setStyle("-fx-text-fill: #778596; -fx-font-size: 10px;");
+            section.getChildren().add(provenance);
+            section.getChildren().add(buildSequenceItem("Genomic span (gene strand orientation)",
+                    result.genomicSpanSequence(), gene.getId() + "|genomic"));
+            if (result.transcripts().isEmpty()) {
+                Label noTranscript = new Label("No transcript models are present in this annotation.");
+                noTranscript.setWrapText(true);
+                section.getChildren().add(noTranscript);
+            }
+            for (GeneSequenceService.TranscriptSequences ts : result.transcripts()) {
+                VBox transcriptBox = new VBox(7);
+                transcriptBox.setPadding(new Insets(9));
+                transcriptBox.setStyle("-fx-background-color: #F7F9FC; -fx-background-radius: 6;"
+                        + " -fx-border-color: #E3E9F0; -fx-border-radius: 6;");
+                Label transcriptTitle = new Label(ts.transcriptName()
+                        + (ts.canonical() ? "  ★ representative" : "")
+                        + " · " + ts.exonCount() + " exons");
+                transcriptTitle.setWrapText(true);
+                transcriptTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+                transcriptBox.getChildren().add(transcriptTitle);
+                if (ts.proteinId() != null && !ts.proteinId().isBlank()) {
+                    transcriptBox.getChildren().add(new Label("Protein ID: " + ts.proteinId()));
+                }
+                transcriptBox.getChildren().addAll(
+                        buildSequenceItem("Spliced transcript · " + ts.transcriptSequence().length() + " nt",
+                                ts.transcriptSequence(), ts.transcriptId() + "|transcript"),
+                        buildSequenceItem("CDS · " + ts.cdsSequence().length() + " nt",
+                                ts.cdsSequence(), ts.transcriptId() + "|CDS"),
+                        buildSequenceItem("5′ UTR · " + ts.fivePrimeUtrSequence().length() + " nt · " + ts.fivePrimeUtrSource(),
+                                ts.fivePrimeUtrSequence(), ts.transcriptId() + "|5UTR"),
+                        buildSequenceItem("3′ UTR · " + ts.threePrimeUtrSequence().length() + " nt · " + ts.threePrimeUtrSource(),
+                                ts.threePrimeUtrSequence(), ts.transcriptId() + "|3UTR"),
+                        buildSequenceItem("Protein · " + ts.proteinSequence().length() + " aa",
+                                ts.proteinSequence(), ts.transcriptId() + "|protein"));
+                Label note = new Label(ts.proteinNote());
+                note.setWrapText(true);
+                note.setStyle("-fx-text-fill: #778596; -fx-font-size: 10px;");
+                transcriptBox.getChildren().add(note);
+                section.getChildren().add(transcriptBox);
+            }
+        } catch (java.io.IOException ex) {
+            Label error = new Label("Sequence extraction unavailable: " + ex.getMessage());
+            error.setWrapText(true);
+            error.setStyle("-fx-text-fill: #B86248; -fx-font-size: 11px;");
+            section.getChildren().add(error);
+        }
+        return section;
+    }
+
+    private VBox buildSequenceItem(String title, String sequence, String fastaId) {
+        VBox item = new VBox(4);
+        Label heading = new Label(title);
+        heading.setWrapText(true);
+        heading.setStyle("-fx-text-fill: #526579; -fx-font-size: 10.5px; -fx-font-weight: bold;");
+        TextArea text = new TextArea(formatSequence(sequence));
+        text.setEditable(false);
+        text.setWrapText(true);
+        text.setPrefRowCount(sequence == null || sequence.isEmpty()
+                ? 1 : Math.min(5, Math.max(1, (sequence.length() + 59) / 60)));
+        text.setMinHeight(42);
+        text.setMaxHeight(110);
+        text.setStyle("-fx-font-family: monospace; -fx-font-size: 10px;");
+        Button copy = new Button("Copy sequence");
+        copy.setDisable(sequence == null || sequence.isEmpty());
+        copy.setOnAction(event -> {
+            ClipboardContent clipboard = new ClipboardContent();
+            clipboard.putString(sequence);
+            Clipboard.getSystemClipboard().setContent(clipboard);
+            copy.setText("Copied");
+        });
+        Button copyFasta = new Button("Copy FASTA");
+        copyFasta.setDisable(sequence == null || sequence.isEmpty());
+        copyFasta.setOnAction(event -> {
+            ClipboardContent clipboard = new ClipboardContent();
+            clipboard.putString(">" + fastaId + "\n" + formatSequence(sequence));
+            Clipboard.getSystemClipboard().setContent(clipboard);
+            copyFasta.setText("Copied FASTA");
+        });
+        item.getChildren().addAll(heading, text, new HBox(6, copy, copyFasta));
+        return item;
+    }
+
+    private static String formatSequence(String sequence) {
+        if (sequence == null || sequence.isEmpty()) return "(not available)";
+        StringBuilder result = new StringBuilder(sequence.length() + sequence.length() / 60);
+        for (int i = 0; i < sequence.length(); i += 60) {
+            if (i > 0) result.append('\n');
+            result.append(sequence, i, Math.min(i + 60, sequence.length()));
+        }
+        return result.toString();
     }
 
     /**
