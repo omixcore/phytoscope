@@ -46,6 +46,22 @@ class GeneSequenceServiceTest {
     }
 
     @Test
+    void bundledTair10ReferenceResolvesChrAliasesAndReturnsRealGenomicBases() throws Exception {
+        GeneSequenceService sequences = new GeneSequenceService();
+        sequences.loadFromResource(GeneSequenceService.ARABIDOPSIS_TAIR10_RESOURCE);
+        assertTrue(sequences.isLoaded());
+        assertEquals(7, sequences.getSequenceCount());
+        var forward = sequences.extract(new io.gitee.omixcore.phytoscope.model.Gene(
+                "test-plus", "test-plus", "Chr1", 1, 60, '+'));
+        var reverse = sequences.extract(new io.gitee.omixcore.phytoscope.model.Gene(
+                "test-minus", "test-minus", "1", 1, 60, '-'));
+        assertEquals(60, forward.genomicSpanSequence().length());
+        assertEquals(GeneSequenceService.reverseComplement(forward.genomicSpanSequence()),
+                reverse.genomicSpanSequence());
+        assertTrue(forward.sourceLabel().contains("TAIR10_genomic.fna.gz"));
+    }
+
+    @Test
     void rejectsDuplicateFastaIdsAndProteinSequences() {
         GeneSequenceService service = new GeneSequenceService();
         assertThrows(java.io.IOException.class,
