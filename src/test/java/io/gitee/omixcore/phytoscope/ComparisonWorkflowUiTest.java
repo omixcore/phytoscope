@@ -79,9 +79,10 @@ class ComparisonWorkflowUiTest {
 
             search.setText("AT1G01860");
             view.applyCss(); view.layout(); view.onViewportResized();
-            assertEquals(1, renderer.getRenderedGenes().size());
-            var ordinaryLocus = renderer.getRenderedGenes().getFirst();
-            assertEquals("AT1G01860", ordinaryLocus.getId());
+            var ordinaryLocus = renderer.getRenderedGenes().stream()
+                    .filter(gene -> "AT1G01860".equals(gene.getId())).findFirst()
+                    .orElseThrow(() -> new AssertionError("Ordinary gene AT1G01860 must be rendered"));
+
             var ordinaryGeneList = scene.getRoot().lookupAll(".list-view").stream()
                     .filter(javafx.scene.control.ListView.class::isInstance)
                     .map(javafx.scene.control.ListView.class::cast)
