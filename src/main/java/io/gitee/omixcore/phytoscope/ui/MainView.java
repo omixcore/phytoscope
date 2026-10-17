@@ -547,6 +547,8 @@ public class MainView extends BorderPane {
 
         MenuItem importExpressionItem = new MenuItem("Import expression matrix\u2026");
         importExpressionItem.setOnAction(e -> importExpression());
+        MenuItem importGenomeFastaItem = new MenuItem("Import genome FASTA\u2026");
+        importGenomeFastaItem.setOnAction(e -> importGenomeFasta());
 
         MenuItem exportPngItem = new MenuItem("Export view as PNG\u2026");
         exportPngItem.setOnAction(e -> exportPng());
