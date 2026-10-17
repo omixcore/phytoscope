@@ -49,9 +49,9 @@ class GeneSequenceServiceTest {
     void rejectsDuplicateFastaIdsAndProteinSequences() {
         GeneSequenceService service = new GeneSequenceService();
         assertThrows(java.io.IOException.class,
-                () -> service.loadFromContent(">chr1\\nATGC\\n>chr1\\nATGC\\n".replace("\\\\n", "\\n"), "duplicate"));
+                () -> service.loadFromContent(">chr1\\nATGC\\n>chr1\\nATGC\\n".replace("\\n", "\n"), "duplicate"));
         assertThrows(java.io.IOException.class,
-                () -> service.loadFromContent(">protein\\nMKWVTF\\n".replace("\\\\n", "\\n"), "protein"));
+                () -> service.loadFromContent(">protein\\nMKWVTF\\n".replace("\\n", "\n"), "protein"));
     }
 
     @Test
@@ -59,11 +59,11 @@ class GeneSequenceServiceTest {
         String annotation = """
                 ##gff-version 3
                 chr1\\ttest\\tgene\\t1\\t3\\t.\\t+\\t.\\tID=g1
-                """.replace("\\\\t", "\\t");
+                """.replace("\\t", "\t");
         GenomeDataService genome = new GenomeDataService();
         genome.loadFromContent(annotation, "test annotation");
         GeneSequenceService sequences = new GeneSequenceService();
-        sequences.loadFromContent(">chr2\\nATG\\n".replace("\\\\n", "\\n"), "mismatched assembly");
+        sequences.loadFromContent(">chr2\\nATG\\n".replace("\\n", "\n"), "mismatched assembly");
         assertTrue(assertThrows(java.io.IOException.class,
                 () -> sequences.extract(genome.findGene("g1"))).getMessage().contains("no sequence matching"));
     }
