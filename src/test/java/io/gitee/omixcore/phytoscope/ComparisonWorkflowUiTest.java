@@ -66,6 +66,49 @@ class ComparisonWorkflowUiTest {
                 assertTrue(labels.contains(tissue.replace('_', ' ')),
                         "right-hand chart should label sample group " + tissue);
             }
+            // Reproduce the user's screenshot target: an ordinary, non-RBCS locus
+            // must resolve to real source TPMs and six visible bars in the right pane.
+            var ordinaryProfile = expression.getProfile("AT1G01860");
+            assertNotNull(ordinaryProfile, "ordinary gene AT1G01860 must be covered by the bundled atlas");
+            assertEquals(8.0, ordinaryProfile.getTpm("Root"), 0.0);
+            assertEquals(17.0, ordinaryProfile.getTpm("Rosette_leaf_1"), 0.0);
+            assertEquals(15.0, ordinaryProfile.getTpm("Rosette_leaf_8"), 0.0);
+            assertEquals(16.0, ordinaryProfile.getTpm("Cauline_leaf"), 0.0);
+            assertEquals(3.0, ordinaryProfile.getTpm("Dry_seed"), 0.0);
+            assertEquals(2.0, ordinaryProfile.getTpm("Pollen"), 0.0);
+
+            search.setText("AT1G01860");
+            view.applyCss(); view.layout(); view.onViewportResized();
+            var ordinaryLocus = renderer.getRenderedGenes().stream()
+                    .filter(gene -> "AT1G01860".equals(gene.getId())).findFirst()
+                    .orElseThrow(() -> new AssertionError("Ordinary gene AT1G01860 must be rendered"));
+
+            var ordinaryGeneList = scene.getRoot().lookupAll(".list-view").stream()
+                    .filter(javafx.scene.control.ListView.class::isInstance)
+                    .map(javafx.scene.control.ListView.class::cast)
+                    .filter(list -> list.getItems().contains(ordinaryLocus))
+                    .findFirst().orElseThrow(() -> new AssertionError("Ordinary-gene result missing from browser list"));
+            ordinaryGeneList.getSelectionModel().select(ordinaryLocus);
+            view.applyCss(); view.layout();
+            var expressionChart = scene.lookup("#tissue-expression-chart");
+            assertNotNull(expressionChart, "ordinary gene should show a chart in the right-hand details pane");
+            var bars = expressionChart.lookupAll(".tissue-expression-bar");
+            assertEquals(6, bars.size(), "all six measured tissue conditions must render as bars");
+            assertTrue(bars.stream().allMatch(node -> node instanceof javafx.scene.layout.Region
+                    && ((javafx.scene.layout.Region) node).getPrefHeight() > 0),
+                    "all six expression bars must have a positive height");
+            var chartLabels = expressionChart.lookupAll(".label").stream()
+                    .filter(javafx.scene.control.Label.class::isInstance)
+                    .map(javafx.scene.control.Label.class::cast)
+                    .map(javafx.scene.control.Label::getText).filter(java.util.Objects::nonNull).toList();
+            for (String expected : java.util.List.of("8.00", "17.0", "15.0", "16.0", "3.00", "2.00")) {
+                assertTrue(chartLabels.contains(expected), "bar chart must show source TPM value " + expected);
+            }
+            var chartBounds = expressionChart.localToScene(expressionChart.getBoundsInLocal());
+            var genomeBounds = renderer.getCanvas().localToScene(renderer.getCanvas().getBoundsInLocal());
+            assertTrue(chartBounds.getMinX() > genomeBounds.getMaxX(),
+                    "tissue-expression chart must sit to the right of the genome browser");
+
             assertEquals(renderer.getCanvas().getWidth() - 18, renderer.plotRight(), 2.0,
                     "genome tracks should retain their width now that expression is in the details pane");
             assertTrue(renderer.getRenderedGenes().size() <= 100);
