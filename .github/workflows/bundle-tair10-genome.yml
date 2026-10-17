@@ -5,6 +5,10 @@ on:
       - feature/gene-sequence-details
     paths:
       - tools/fetch_tair10_genome.py
+      - src/main/java/io/gitee/omixcore/phytoscope/service/GeneSequenceService.java
+      - src/main/java/io/gitee/omixcore/phytoscope/ui/MainView.java
+      - src/main/java/io/gitee/omixcore/phytoscope/ui/component/GeneDetailPane.java
+      - src/test/java/io/gitee/omixcore/phytoscope/GeneSequenceServiceTest.java
       - .github/workflows/bundle-tair10-genome.yml
   workflow_dispatch:
 permissions:
