@@ -29,12 +29,11 @@ class GeneSequenceServiceTest {
         var result = sequences.extract(genome.findGene("g1"));
         assertEquals("AACCATGGGGTTTAA", result.genomicSpanSequence());
         var transcript = result.transcripts().getFirst();
-        assertEquals("AACCAT", transcript.transcriptSequence().substring(0, 6));
-        assertEquals("CCATGGGGTT", transcript.transcriptSequence());
-        assertEquals("CCATGGGG", transcript.cdsSequence());
+        assertEquals("AACCATGTTTAA", transcript.transcriptSequence());
+        assertEquals("CCATGTTT", transcript.cdsSequence());
         assertEquals("AA", transcript.fivePrimeUtrSequence());
         assertEquals("AA", transcript.threePrimeUtrSequence());
-        assertEquals("PW", transcript.proteinSequence());
+        assertEquals("PC", transcript.proteinSequence());
         assertEquals("annotated", transcript.fivePrimeUtrSource());
     }
 
