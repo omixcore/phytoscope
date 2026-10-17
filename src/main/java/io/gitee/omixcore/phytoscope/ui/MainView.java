@@ -114,6 +114,7 @@ public class MainView extends BorderPane {
     public MainView(GenomeDataService dataService, ExpressionDataService expressionService) {
         this.dataService = dataService;
         this.expressionService = expressionService;
+        renderer.setExpressionData(expressionService);
         setStyle("-fx-background-color: #EEF2F7;");
 
         renderer.setOnGeneSelected(this::selectGene);
@@ -149,6 +150,7 @@ public class MainView extends BorderPane {
         pendingLoad = LoadingOperation.run(windowOrNull(), "Loading " + dataset.species(), () -> {
             GenomeDataService next = new GenomeDataService(); next.loadExample(dataset);
             ExpressionDataService measurements = new ExpressionDataService(); measurements.loadExample(dataset);
+            measurements.reconcile(next);
             if (atlas) {
                 measurements.loadFromResource("/data/case-studies/arabidopsis-atlas/expression.tsv", "Expression Atlas E-MTAB-7978 (single-assay conditions)");
                 measurements.reconcile(next);
@@ -183,6 +185,7 @@ public class MainView extends BorderPane {
             loading = true;
             dataService.loadExample(dataset);
             expressionService.loadExample(dataset);
+            expressionService.reconcile(dataService);
             activeExample = dataset;
             comparisonPane.clear();
             datasetSelector.getSelectionModel().select(dataset);
@@ -315,15 +318,21 @@ public class MainView extends BorderPane {
         // Rebuild the browser from that sequence before restoring the search box;
         // otherwise a cross-chromosome search can leave the renderer on its first hit.
         dataService.setActiveSequence(state.sequence());
-        afterDatasetChanged();
+        boolean restoreLoading = loading;
+        loading = true;
+        try {
+            afterDatasetChanged();
+        } finally {
+            loading = restoreLoading;
+        }
         if (state.search() != null && !state.search().isBlank()) {
             // Search text is view state, not a reason to change the restored
             // sequence or rebuild the renderer. The saved sequence/window must
             // remain authoritative during project restoration.
-            boolean restoreLoading = loading;
+            boolean searchLoading = loading;
             loading = true;
             try { searchField.setText(state.search()); }
-            finally { loading = restoreLoading; }
+            finally { loading = searchLoading; }
         }
         if (state.selectedGene() != null) selectGene(dataService.findGene(state.selectedGene()));
         else { geneList.getSelectionModel().clearSelection(); renderer.setSelectedGene(null); detailPane.clear(); }
@@ -670,7 +679,9 @@ public class MainView extends BorderPane {
         searchField.setPromptText("Search gene ID / name / alias");
         searchField.setId("gene-search");
         searchField.setPrefWidth(220);
-        searchField.textProperty().addListener((obs, old, val) -> applySearch(val));
+        searchField.textProperty().addListener((obs, old, val) -> {
+            if (!loading) applySearch(val);
+        });
 
         Button zoomIn = toolButton("Zoom +", "Zoom in about the centre (or scroll up)");
         zoomIn.setOnAction(e -> {

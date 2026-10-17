@@ -4,6 +4,8 @@ import io.gitee.omixcore.phytoscope.model.Exon;
 import io.gitee.omixcore.phytoscope.model.Gene;
 import io.gitee.omixcore.phytoscope.model.GenomicFeature;
 import io.gitee.omixcore.phytoscope.model.Transcript;
+import io.gitee.omixcore.phytoscope.model.ExpressionProfile;
+import io.gitee.omixcore.phytoscope.service.ExpressionDataService;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -63,6 +65,10 @@ public class GeneTrackRenderer {
     private Gene selectedGene;
     private Consumer<Gene> onGeneSelected;
     private Gene hoveredGene;
+
+    private ExpressionDataService expressionData;
+    private static final double EXPRESSION_MIN_WIDTH = 360;
+    private static final double EXPRESSION_CELL_WIDTH = 64;
 
     /** Extent used by the most recent {@link #render} call, in pixels. */
     private double lastRenderWidth = 900;
@@ -240,7 +246,16 @@ public class GeneTrackRenderer {
     }
 
     public double plotRight() {
-        return canvas.getWidth() - RIGHT_PADDING;
+        return canvas.getWidth() - RIGHT_PADDING - expressionPanelWidth();
+    }
+
+    public void setExpressionData(ExpressionDataService expressionData) {
+        this.expressionData = expressionData;
+    }
+
+    private double expressionPanelWidth() {
+        if (expressionData == null || expressionData.isEmpty() || expressionData.getTissues().isEmpty()) return 0;
+        return Math.max(EXPRESSION_MIN_WIDTH, expressionData.getTissues().size() * EXPRESSION_CELL_WIDTH + 18);
     }
 
     double toPixel(int genomicPos) {
@@ -304,6 +319,7 @@ public class GeneTrackRenderer {
 
         drawTrackBackgrounds();
         drawCoordinateAxis(width);
+        drawExpressionHeader(width);
 
         double y = AXIS_HEIGHT;
         for (Gene gene : getRenderedGenes()) {
@@ -448,7 +464,7 @@ public class GeneTrackRenderer {
             }
         }
 
-        // Expression values live in the detail pane, not on the tracks.
+        drawExpressionRow(gene, top, rowHeight);
 
         if (gene == selectedGene) {
             gc.setStroke(SELECTED_GLOW);
@@ -457,6 +473,59 @@ public class GeneTrackRenderer {
         }
     }
 
+    private void drawExpressionHeader(double width) {
+        if (expressionData == null || expressionData.isEmpty()) return;
+        double left = plotRight() + 10;
+        double panelWidth = expressionPanelWidth();
+        gc.setFill(TRACK_ALT);
+        gc.fillRect(plotRight(), 0, panelWidth + RIGHT_PADDING, AXIS_HEIGHT);
+        gc.setFill(LABEL_COLOR);
+        gc.setFont(Font.font("Segoe UI", FontWeight.BOLD, 11));
+        gc.fillText("Expression (" + expressionData.getValueUnit() + ")", left, 13);
+        gc.setFont(Font.font("Segoe UI", 10));
+        double x = left;
+        for (String sample : expressionData.getTissues()) {
+            String label = sample.replace('_', ' ');
+            if (label.length() > 10) label = label.substring(0, 9) + "…";
+            gc.setFill(AXIS_COLOR); gc.fillText(label, x, AXIS_HEIGHT - 9);
+            x += EXPRESSION_CELL_WIDTH;
+        }
+    }
+
+    private void drawExpressionRow(Gene gene, double top, double rowHeight) {
+        if (expressionData == null || expressionData.isEmpty()) return;
+        double left = plotRight() + 10;
+        double maximum = Math.max(1e-12, expressionData.globalMaxTpm());
+        ExpressionProfile profile = expressionData.getProfileForAnnotation(gene.getId());
+        int c = 0;
+        for (String sample : expressionData.getTissues()) {
+            double value = profile == null ? Double.NaN : profile.getTpm(sample);
+            double fraction = Double.isFinite(value) ? Math.min(1.0, Math.log1p(Math.abs(value)) / Math.log1p(maximum)) : 0;
+            String fill = !Double.isFinite(value) ? "#E1E5EA" : expressionColor(fraction, value < 0);
+            double x = left + c * EXPRESSION_CELL_WIDTH;
+            gc.setFill(Color.web(fill)); gc.fillRect(x, top + 10, EXPRESSION_CELL_WIDTH - 5, 27);
+            gc.setFill(fraction > 0.58 && Double.isFinite(value) ? Color.WHITE : LABEL_COLOR);
+            gc.setFont(Font.font("Consolas", 9));
+            String text = Double.isFinite(value) ? formatExpression(value) : "NA";
+            gc.fillText(text, x + 4, top + 28);
+            c++;
+        }
+    }
+
+    private static String formatExpression(double value) {
+        double abs = Math.abs(value);
+        if (abs >= 1000) return String.format(java.util.Locale.ROOT, "%.2e", value);
+        if (abs >= 10) return String.format(java.util.Locale.ROOT, "%.1f", value);
+        return String.format(java.util.Locale.ROOT, "%.2f", value);
+    }
+
+    private static String expressionColor(double fraction, boolean negative) {
+        int[] end = negative ? new int[]{171, 70, 47} : new int[]{35, 105, 149};
+        return String.format(java.util.Locale.ROOT, "#%02x%02x%02x",
+                (int)(239 + fraction * (end[0] - 239)),
+                (int)(247 + fraction * (end[1] - 247)),
+                (int)(251 + fraction * (end[2] - 251)));
+    }
     private void drawTranscriptMini(Transcript transcript, double y, double h) {
         List<Exon> exons = transcript.getExonsByCoordinate();
         double lineY = y + h / 2;

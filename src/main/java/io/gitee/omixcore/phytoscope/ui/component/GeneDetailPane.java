@@ -166,7 +166,7 @@ public class GeneDetailPane extends ScrollPane {
             HBox row = new HBox(6);
             row.setAlignment(Pos.CENTER_LEFT);
 
-            Label name = new Label(value.tissue());
+            Label name = new Label(displaySampleName(value.tissue()));
             name.setMinWidth(52);
             name.setStyle("-fx-text-fill: #4A5B6B; -fx-font-size: 11px;");
 
@@ -203,6 +203,11 @@ public class GeneDetailPane extends ScrollPane {
             card.getChildren().add(peak);
         }
         return card;
+    }
+
+    private static String displaySampleName(String sample) {
+        if (sample == null) return "—";
+        return sample.replace('_', ' ');
     }
 
     private static Color barColour(double fraction) {
