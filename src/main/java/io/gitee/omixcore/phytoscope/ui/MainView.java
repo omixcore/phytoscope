@@ -153,13 +153,15 @@ public class MainView extends BorderPane {
             GenomeDataService next = new GenomeDataService(); next.loadExample(dataset);
             ExpressionDataService measurements = new ExpressionDataService(); measurements.loadExample(dataset);
             measurements.reconcile(next);
+            GeneSequenceService sequences = new GeneSequenceService();
+            sequences.loadBundledForDataset(dataset.id());
             if (atlas) {
                 measurements.loadFromResource("/data/case-studies/arabidopsis-atlas/expression.tsv", "Expression Atlas E-MTAB-7978 (single-assay conditions)");
                 measurements.reconcile(next);
             }
-            return new Loaded(next, measurements);
+            return new Loaded(next, measurements, sequences);
         }, next -> {
-            dataService.replaceWith(next.genome()); expressionService.replaceWith(next.expression());
+            dataService.replaceWith(next.genome()); expressionService.replaceWith(next.expression()); sequenceService.clear(); sequenceService.replaceWith(next.sequences());
             activeExample = dataset; datasetSelector.setTooltip(new Tooltip(dataset.label() + "\n" + dataset.attribution())); loading = true;
             try { datasetSelector.getSelectionModel().select(dataset); } finally { loading = false; }
             comparisonPane.clear(); afterDatasetChanged();
@@ -167,7 +169,7 @@ public class MainView extends BorderPane {
         }, this::loadFailed);
         return pendingLoad;
     }
-    private record Loaded(GenomeDataService genome, ExpressionDataService expression) { }
+    private record Loaded(GenomeDataService genome, ExpressionDataService expression, GeneSequenceService sequences) { }
     private void loadFailed(Throwable ex) {
         loading = true;
         try { datasetSelector.getSelectionModel().select(activeExample); } finally { loading = false; }
@@ -186,6 +188,7 @@ public class MainView extends BorderPane {
         try {
             loading = true;
             dataService.loadExample(dataset);
+            sequenceService.loadBundledForDataset(dataset.id());
             expressionService.loadExample(dataset);
             expressionService.reconcile(dataService);
             activeExample = dataset;
@@ -220,7 +223,7 @@ public class MainView extends BorderPane {
         pendingLoad = LoadingOperation.run(windowOrNull(), "Importing annotation", () -> {
             GenomeDataService next = new GenomeDataService(); next.loadFromFile(file.toPath()); return next;
         }, next -> {
-            dataService.replaceWith(next); expressionService.clear(); comparisonPane.clear(); activeExample = null;
+            dataService.replaceWith(next); expressionService.clear(); sequenceService.clear(); comparisonPane.clear(); activeExample = null;
             loading = true; try { datasetSelector.getSelectionModel().clearSelection(); } finally { loading = false; }
             afterDatasetChanged();
         }, this::loadFailed);
@@ -281,7 +284,7 @@ public class MainView extends BorderPane {
     /** Non-dialog entry points shared by GUI actions and end-to-end tests. */
     public void loadAnnotation(Path file) throws IOException {
         dataService.loadFromFile(file);
-        activeExample = null; expressionService.clear(); comparisonPane.clear();
+        activeExample = null; expressionService.clear(); sequenceService.clear(); comparisonPane.clear();
         boolean before = loading; loading = true;
         try { datasetSelector.getSelectionModel().clearSelection(); } finally { loading = before; }
         afterDatasetChanged();
