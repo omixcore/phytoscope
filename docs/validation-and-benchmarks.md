@@ -124,7 +124,7 @@ observations, not a speed-superiority claim; the report distinguishes
 PhytoScope in-memory import from SQLite index construction.
 
 
-## Independent module-level tool checks (CI run #176)
+## Independent module-level tool checks (CI run #192)
 
 The Ubuntu job runs two additional comparisons, with machine-readable results
 retained in the `validation-ubuntu-latest` artifact under
@@ -144,9 +144,18 @@ retained in the `validation-ubuntu-latest` artifact under
   trivial self-pairs are excluded from the classification denominator. All
   12 non-self within-family pairs and all 8 negative-control pairs agreed
   (20/20 pairwise classifications; no negative-control hits).
+- **Cross-species protein-family check:** the same comparison is repeated for
+  hash-pinned mature RBCS sequences from Arabidopsis, rice, maize and soybean,
+  plus the two unrelated Arabidopsis controls. BLASTP and PhytoScope agree on
+  12/12 non-self RBCS-family pairs and 8/8 negative controls (20/20
+  classifications). One Ubuntu-runner call measured 21.63 ms for PhytoScope and
+  32.4 ms for BLASTP; this tiny single-call result is not a speed claim. See the
+  [four-species homology report](../benchmarks/results/2026-10-18/cross-species-homology.md)
+  and [frozen fixture](../examples/cross-species-homology-gold-set/README.md).
 
-These are small, same-species correctness smoke tests. They do not estimate
-genome-wide sensitivity/specificity, prove orthology, validate all promoter
-coordinates, or replace curated multi-species family/domain gold sets. The
-current evidence still does not include measured researcher task-time savings
+These remain small correctness smoke tests. The cross-species panel covers one
+highly conserved paralog-rich family, uses taxonomically unbalanced negatives,
+and is not an orthology benchmark or a general sensitivity/specificity estimate.
+It does not replace multi-family/domain gold sets, a replicate-based expression
+benchmark, controlled hardware measurements, an actual researcher task study,
 or an independently validated new biological discovery.
