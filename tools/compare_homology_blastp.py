@@ -64,7 +64,7 @@ def main() -> int:
         version = (version_result.stdout or version_result.stderr).splitlines()[0].strip()
         command = [
             blastp, "-query", str(query_fasta), "-subject", str(subject_fasta),
-            "-evalue", "1e-5",
+            "-evalue", "1e-5", "-max_hsps", "1",
             "-outfmt", "6 qseqid sseqid pident length qcovs sstart send slen evalue bitscore",
             "-out", str(raw_output),
         ]
@@ -79,20 +79,34 @@ def main() -> int:
                 if len(fields) != 10:
                     raise SystemExit(f"Unexpected BLASTP output row: {line}")
                 qid, sid = fields[0], fields[1]
+                identity = float(fields[2])
+                aligned_length = int(fields[3])
                 query_coverage = float(fields[4])
                 subject_start, subject_end, subject_length = int(fields[5]), int(fields[6]), int(fields[7])
                 subject_coverage = 100.0 * (abs(subject_end - subject_start) + 1) / subject_length
-                blast_pairs.add((qid, sid))
+                evalue = float(fields[8])
+                # Apply the same acceptance thresholds as PhytoScope after BLASTP
+                # has generated the local alignment; only the alignment algorithm differs.
+                passes_shared_filter = (
+                    identity >= 30.0
+                    and aligned_length >= 20
+                    and query_coverage >= 50.0
+                    and subject_coverage >= 50.0
+                    and evalue <= 1e-5
+                )
+                if passes_shared_filter:
+                    blast_pairs.add((qid, sid))
                 blast_rows.append({
                     "query_gene": qid,
                     "target_gene": sid,
                     "is_self_hit": qid == sid,
-                    "identity_percent": float(fields[2]),
-                    "aligned_length": int(fields[3]),
+                    "identity_percent": identity,
+                    "aligned_length": aligned_length,
                     "query_coverage_percent": query_coverage,
                     "subject_coverage_percent": subject_coverage,
                     "evalue": fields[8],
                     "bit_score": float(fields[9]),
+                    "passes_shared_filter": passes_shared_filter,
                 })
 
     missing_blast_positives = sorted(positive_pairs - blast_pairs)
@@ -107,7 +121,14 @@ def main() -> int:
     result = {
         "external_tool": "NCBI BLASTP",
         "version": version,
-        "evalue_cutoff": "1e-5",
+        "shared_classification_thresholds": {
+            "minimum_identity_percent": 30.0,
+            "minimum_aligned_length_aa": 20,
+            "minimum_query_coverage_percent": 50.0,
+            "minimum_subject_coverage_percent": 50.0,
+            "maximum_evalue": "1e-5",
+            "maximum_hsps_per_pair": 1,
+        },
         "reference_set": "4 annotated Arabidopsis RBCS-family proteins plus NAC001 and histone H3.1 negative controls",
         "self_pairs_excluded_from_classification": self_pairs_excluded,
         "positive_family_pairs_expected": len(positive_pairs),
