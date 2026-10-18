@@ -243,6 +243,25 @@ public final class GeneSequenceService {
                 gene.getStrand(), sourceLabel, geneSequence, transcripts);
     }
 
+    /** Extract a 1-based closed genomic interval in the requested transcription orientation. */
+    public String extractInterval(String chromosome, int start, int end, char strand) throws IOException {
+        if (start < 1 || end < start) throw new IOException("Interval must be 1-based, closed, and non-empty");
+        if (!isLoaded()) throw new IOException("No genome FASTA loaded.");
+        String id = resolveSequenceId(chromosome);
+        return extractInterval(sequences.get(id), start, end, chromosome, strand);
+    }
+
+    /** Promoter window upstream of a gene TSS, clipped to the sequence boundary. */
+    public String extractPromoter(Gene gene, int upstream, int downstream) throws IOException {
+        Objects.requireNonNull(gene, "gene");
+        if (upstream < 0 || downstream < 0 || upstream + downstream == 0)
+            throw new IOException("Promoter lengths must be non-negative and not both zero");
+        int tss = gene.getStrand() == '-' ? gene.getEnd() : gene.getStart();
+        int start = gene.getStrand() == '-' ? tss - downstream : tss - upstream;
+        int end = gene.getStrand() == '-' ? tss + upstream : tss + downstream;
+        return extractInterval(gene.getChromosome(), Math.max(1, start), Math.max(1, end), gene.getStrand());
+    }
+
     private TranscriptSequences extractTranscript(Transcript transcript, String chromosomeSequence) throws IOException {
         List<Exon> exons = new ArrayList<>(transcript.getExons());
         exons.sort(transcript.getStrand() == '-'
