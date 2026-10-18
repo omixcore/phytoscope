@@ -91,6 +91,7 @@ public class MainView extends BorderPane {
     private ExampleDataset activeExample;
     private java.util.concurrent.CompletableFuture<?> pendingLoad = java.util.concurrent.CompletableFuture.completedFuture(null);
     private ComparisonPane comparisonPane;
+    private ResearchAnalysisPane researchPane;
     private ProjectStore.Restored restoredProject;
     private final TabPane workspaceTabs = new TabPane();
     private final GeneDetailPane detailPane = new GeneDetailPane();
@@ -125,9 +126,11 @@ public class MainView extends BorderPane {
         setTop(new VBox(buildMenuBar(), buildToolBar()));
         setLeft(buildGeneListPane());
         comparisonPane = new ComparisonPane(dataService, expressionService);
+        researchPane = new ResearchAnalysisPane(dataService, expressionService, sequenceService);
         Tab browser = new Tab("Genome browser", buildBrowserPane()); browser.setClosable(false);
         Tab comparison = new Tab("Gene comparison", comparisonPane); comparison.setClosable(false);
-        workspaceTabs.getTabs().addAll(browser, comparison);
+        Tab research = new Tab("Research analysis", researchPane); research.setClosable(false);
+        workspaceTabs.getTabs().addAll(browser, comparison, research);
         setCenter(workspaceTabs);
         setRight(buildDetailPane());
         setBottom(buildStatusBar());
@@ -325,7 +328,7 @@ public class MainView extends BorderPane {
     }
     public ComparisonPane getComparisonPane() { return comparisonPane; }
     public void saveProject(Path target) throws IOException {
-        new ProjectStore().save(target, dataService, expressionService, captureViewState());
+        new ProjectStore().save(target, dataService, expressionService, captureViewState(), researchPane.state());
     }
     private ProjectStore.ViewState captureViewState() {
         Gene selected = renderer.getSelectedGene(); var settings = comparisonPane.settings();
@@ -368,6 +371,7 @@ public class MainView extends BorderPane {
         }
         if (state.selectedGene() != null) selectGene(dataService.findGene(state.selectedGene()));
         else { geneList.getSelectionModel().clearSelection(); renderer.setSelectedGene(null); detailPane.clear(); }
+        researchPane.restore(next.manifest().research());
         renderer.showWindow(state.start(), state.end());
         comparisonPane.restore(state.comparisonGenes(), settings); redraw();
         if (previous != null) try { previous.close(); } catch (IOException ex) { statusLabel.setTooltip(new Tooltip("Previous project cleanup: " + ex.getMessage())); }
@@ -407,6 +411,7 @@ public class MainView extends BorderPane {
         refreshChromosomeSelector();
         showActiveChromosome();
         comparisonPane.refresh();
+        researchPane.refresh();
     }
 
     /**

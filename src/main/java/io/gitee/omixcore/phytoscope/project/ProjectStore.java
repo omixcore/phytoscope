@@ -19,9 +19,16 @@ public final class ProjectStore {
                             List<String> comparisonGenes, String alignment, boolean compressed,
                             String expressionScale, String search) { }
     public record Source(String entry, String origin, String sha256) { }
+    public record ResearchState(int upstream, int downstream, String intervalFormat,
+                                Map<String, String> sampleGroups, String homologySpecies,
+                                double homologyIdentity, String domainProtein, String domainName,
+                                int domainStartAa, int domainEndAa, String lastResult) {
+        public ResearchState { sampleGroups = sampleGroups == null ? Map.of() : Map.copyOf(sampleGroups); }
+        public static ResearchState defaults() { return new ResearchState(2000, 200, "BED", Map.of(), "", 30.0, "", "", 1, 1, ""); }
+    }
     public record Manifest(int schemaVersion, String applicationVersion, String annotationFormat,
                            List<Source> annotations, Source expression, ViewState view,
-                           ExpressionDataService.ImportReport importReport) { }
+                           ExpressionDataService.ImportReport importReport, ResearchState research) { }
     public record Restored(GenomeDataService genome, ExpressionDataService expression,
                            ViewState view, Manifest manifest, Path workspace) implements AutoCloseable {
         @Override public void close() throws IOException { deleteTree(workspace); }
@@ -29,6 +36,10 @@ public final class ProjectStore {
 
     public void save(Path target, GenomeDataService genome, ExpressionDataService expression,
                      ViewState view) throws IOException {
+        save(target, genome, expression, view, ResearchState.defaults());
+    }
+    public void save(Path target, GenomeDataService genome, ExpressionDataService expression,
+                     ViewState view, ResearchState research) throws IOException {
         if (genome.getSourceInputs().isEmpty()) throw new IOException("Import a file or bundled reference before saving");
         Path absolute = target.toAbsolutePath();
         Path temp = Files.createTempFile(absolute.getParent(), ".phytoscope-", ".tmp");
@@ -62,7 +73,7 @@ public final class ProjectStore {
                     matrix = write(zip, "expression.tsv", expression.getSource(),
                             new ByteArrayInputStream(tsv.toString().getBytes(StandardCharsets.UTF_8)));
                 }
-                Manifest manifest = new Manifest(1, "0.2.0", genome.getFormat().name(), List.copyOf(sources), matrix, view, expression.getImportReport());
+                Manifest manifest = new Manifest(2, "0.2.0", genome.getFormat().name(), List.copyOf(sources), matrix, view, expression.getImportReport(), research);
                 zip.putNextEntry(new ZipEntry("project.json"));
                 zip.write(JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(manifest));
                 zip.closeEntry();
@@ -80,7 +91,7 @@ public final class ProjectStore {
             if (manifestEntry == null || manifestEntry.getSize() > 4_000_000) throw new IOException("Invalid project manifest");
             Manifest m;
             try (var in = zip.getInputStream(manifestEntry)) { m = JSON.readValue(in.readNBytes(4_000_001), Manifest.class); }
-            if (m.schemaVersion() != 1 || m.annotations() == null || m.annotations().isEmpty() || m.view() == null)
+            if ((m.schemaVersion() != 1 && m.schemaVersion() != 2) || m.annotations() == null || m.annotations().isEmpty() || m.view() == null)
                 throw new IOException("Unsupported or incomplete project schema");
             if (m.view().start() < 1 || m.view().end() < m.view().start()) throw new IOException("Invalid saved coordinate window");
             io.gitee.omixcore.phytoscope.comparison.ComparisonFigure.Alignment.valueOf(m.view().alignment());
@@ -98,6 +109,7 @@ public final class ProjectStore {
             for (String id : m.view().comparisonGenes()) if (genome.findGene(id) == null) throw new IOException("Saved comparison gene is absent: " + id);
             ExpressionDataService expression = new ExpressionDataService();
             if (matrix != null) { expression.loadFromFile(matrix); expression.reconcile(genome); expression.restoreImportAudit(m.importReport(), m.expression().origin()); }
+            if (m.research() == null) m = new Manifest(m.schemaVersion(), m.applicationVersion(), m.annotationFormat(), m.annotations(), m.expression(), m.view(), m.importReport(), ResearchState.defaults());
             return new Restored(genome, expression, m.view(), m, workspace);
         } catch (Exception ex) {
             deleteTree(workspace);
