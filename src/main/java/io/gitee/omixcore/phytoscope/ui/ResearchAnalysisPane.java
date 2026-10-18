@@ -31,6 +31,10 @@ public final class ResearchAnalysisPane extends BorderPane {
     public ResearchAnalysisPane(GenomeDataService genome, ExpressionDataService expression, GeneSequenceService sequences) {
         this.genome = genome; this.expression = expression; this.sequences = sequences;
         setPadding(new javafx.geometry.Insets(12));
+        geneId.setId("research-gene-id"); custom.setId("research-custom-interval");
+        sample.setId("research-sample"); group.setId("research-group");
+        qcSequence.setId("research-qc-sequence"); proteinFasta.setId("research-protein-fasta");
+        domains.setId("research-domain-input"); result.setId("research-result");
         TabPane tabs = new TabPane();
         tabs.getTabs().addAll(tab("Intervals", intervalPane()), tab("Sample groups", groupsPane()),
                 tab("Sequence QC", qcPane()), tab("Homology", homologyPane()), tab("Domains", domainPane()));
@@ -85,6 +89,7 @@ public final class ResearchAnalysisPane extends BorderPane {
     private void refreshSamples() { sample.setItems(FXCollections.observableArrayList(expression.getTissues())); }
     public void refresh() { refreshSamples(); }
     public void selectGene(Gene gene) { if (gene != null) geneId.setText(gene.getId()); }
+    public String selectedGeneId() { return geneId.getText(); }
     private Gene resolveGene() {
         Gene g = genome.findGene(geneId.getText().trim());
         if (g == null) write("Input needed", "Enter a valid gene identifier from the loaded annotation.");

@@ -28,6 +28,10 @@ class ComparisonWorkflowUiTest {
             assertEquals(17494, expression.getProfile("AT1G67090").getTpm("Rosette_leaf_8"));
             assertEquals(java.util.List.of("Root", "Rosette_leaf_1", "Rosette_leaf_8",
                     "Cauline_leaf", "Dry_seed", "Pollen"), expression.getTissues());
+            assertTrue(scene.getRoot().lookupAll(".tab-pane").stream()
+                    .filter(javafx.scene.control.TabPane.class::isInstance)
+                    .map(javafx.scene.control.TabPane.class::cast)
+                    .anyMatch(tabs -> tabs.getTabs().stream().anyMatch(tab -> "Research analysis".equals(tab.getText()))));
 
             // Exercise the real genome-browser tab, not only the comparison view.
             var browserTabs = scene.getRoot().lookupAll(".tab-pane").stream()
@@ -53,6 +57,31 @@ class ComparisonWorkflowUiTest {
                     .findFirst().orElseThrow(() -> new AssertionError("Genome gene list missing"));
             geneList.getSelectionModel().select(selectedLocus);
             view.applyCss(); view.layout();
+            assertEquals("AT1G67090", view.getResearchPane().selectedGeneId(),
+                    "the research workspace should follow the selected genome-browser locus");
+            var researchTabs = scene.getRoot().lookupAll(".tab-pane").stream()
+                    .filter(javafx.scene.control.TabPane.class::isInstance)
+                    .map(javafx.scene.control.TabPane.class::cast)
+                    .filter(tabs -> tabs.getTabs().stream().anyMatch(tab -> "Research analysis".equals(tab.getText())))
+                    .findFirst().orElseThrow();
+            researchTabs.getSelectionModel().select(researchTabs.getTabs().stream()
+                    .filter(tab -> "Research analysis".equals(tab.getText())).findFirst().orElseThrow());
+            var analysisTabs = (javafx.scene.control.TabPane) view.getResearchPane().getCenter();
+            analysisTabs.getSelectionModel().select(analysisTabs.getTabs().stream()
+                    .filter(tab -> "Intervals".equals(tab.getText())).findFirst().orElseThrow());
+            view.applyCss(); view.layout();
+            var promoterButton = scene.getRoot().lookupAll(".button").stream()
+                    .filter(javafx.scene.control.Button.class::isInstance).map(javafx.scene.control.Button.class::cast)
+                    .filter(button -> "Extract promoter".equals(button.getText())).findFirst().orElseThrow();
+            promoterButton.fire();
+            analysisTabs.getSelectionModel().select(analysisTabs.getTabs().stream()
+                    .filter(tab -> "Sequence QC".equals(tab.getText())).findFirst().orElseThrow());
+            view.applyCss(); view.layout();
+            var promoterOutput = (javafx.scene.control.TextArea) scene.lookup("#research-qc-sequence");
+            assertNotNull(promoterOutput);
+            assertTrue(promoterOutput.getText().startsWith(">promoter:"), "promoter action should populate the QC sequence input");
+            assertEquals(2200, promoterOutput.getText().split("\\R")[1].length(),
+                    "the default 2,000 upstream + 200 downstream window should be extracted");
 
             // Tissue-expression bars must be rendered in the right-hand gene details,
             // not squeezed into the genomic coordinate track.
@@ -129,9 +158,11 @@ class ComparisonWorkflowUiTest {
             view.getComparisonPane().restore(selected, settings);
             view.getRenderer().showWindow(3000, 9000);
             Path project = out.resolve("atlas.phytoscope");
-            new ProjectStore().save(project, genome, expression, new ProjectStore.ViewState(
-                    "Chr1", selected.getFirst(), 3000, 9000, selected, settings.alignment().name(),
-                    settings.compressed(), settings.scale().name(), "AT5G38410"));
+            var savedResearch = new ProjectStore.ResearchState(1800, 150, "BED",
+                    java.util.Map.of("Root", "belowground", "Leaf", "aboveground"), "rice", 42.0,
+                    "P1", "kinase", 8, 94, "research-workbench round trip");
+            view.getResearchPane().restore(savedResearch);
+            view.saveProject(project);
             view.loadAnnotation(Path.of("src/test/resources/chromosome-validation/rice.gff3"));
             assertTrue(expression.isEmpty()); assertTrue(view.getComparisonPane().geneIds().isEmpty());
             view.openProject(project); assertEquals(selected, view.getComparisonPane().geneIds());
@@ -141,6 +172,7 @@ class ComparisonWorkflowUiTest {
             assertEquals(3000, view.getRenderer().getViewStart()); assertEquals(9000, view.getRenderer().getViewEnd());
             assertTrue(expression.getImportReport().matchedIds() >= 30000);
             assertEquals(settings, view.getComparisonPane().settings());
+            assertEquals(savedResearch, view.getResearchPane().state(), "research settings, sample groups and last result should survive project restoration");
             view.closeProjectResources(); return null;
         });
         Platform.runLater(task); task.get(240, TimeUnit.SECONDS);

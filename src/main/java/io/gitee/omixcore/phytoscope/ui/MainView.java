@@ -327,6 +327,7 @@ public class MainView extends BorderPane {
         workspaceTabs.getSelectionModel().select(1);
     }
     public ComparisonPane getComparisonPane() { return comparisonPane; }
+    public ResearchAnalysisPane getResearchPane() { return researchPane; }
     public void saveProject(Path target) throws IOException {
         new ProjectStore().save(target, dataService, expressionService, captureViewState(), researchPane.state());
     }
