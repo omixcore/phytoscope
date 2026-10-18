@@ -198,7 +198,7 @@ def main() -> int:
         cross_blast_pairs = set()
         if raw_output.exists():
             for line in raw_output.read_text(encoding="utf-8").splitlines():
-                fields = line.split("\\t")
+                fields = line.split("\t")
                 if len(fields) != 10:
                     raise SystemExit(f"Unexpected cross-species BLASTP output row: {line}")
                 qid, sid = fields[0], fields[1]
