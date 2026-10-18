@@ -122,3 +122,29 @@ are preserved in
 All three operating-system jobs passed. The timings are runner-specific
 observations, not a speed-superiority claim; the report distinguishes
 PhytoScope in-memory import from SQLite index construction.
+
+
+## Independent module-level tool checks (CI run #172)
+
+The Ubuntu job runs two additional comparisons, with machine-readable results
+retained in the `validation-ubuntu-latest` artifact under
+`research-validation/`:
+
+- **Promoter sequence extraction:** PhytoScope's eight pinned TAIR10 promoter
+  intervals are compared with `bedtools getfasta -s` (bedtools v2.31.1).
+  BED conversion is explicit (1-based closed start becomes start minus one;
+  the end coordinate is unchanged). All 8 sequences matched exactly, with
+  zero mismatches. The observed 0.079-second bedtools call is for only eight
+  intervals on one chromosome and is not a comparative performance result.
+- **Protein-similarity candidates:** the four extracted Arabidopsis RBCS
+  proteins and two annotated unrelated-family controls are compared with
+  NCBI BLASTP 2.12.0+ at E-value 1e-5. Four trivial self-pairs are excluded
+  from the classification denominator. All 12 non-self within-family pairs
+  and all 8 negative-control pairs agreed between BLASTP and PhytoScope
+  (20/20 pairwise classifications; no negative-control hits).
+
+These are small, same-species correctness smoke tests. They do not estimate
+genome-wide sensitivity/specificity, prove orthology, validate all promoter
+coordinates, or replace curated multi-species family/domain gold sets. The
+current evidence still does not include measured researcher task-time savings
+or an independently validated new biological discovery.

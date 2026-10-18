@@ -196,7 +196,10 @@ See the audit document for source URLs, checks and interpretation of parser coun
 The scientific focus is a recoverable, locus-centered workflow with traceable
 inputs and outputs. The public RBCS example demonstrates integration and
 reproducibility of a known expression pattern. It does not establish a new
-biological discovery. Curated multi-species homology/domain benchmarks and a
+biological discovery. The latest CI also checks eight strand-aware promoter
+intervals against bedtools and a small same-species protein-similarity set against
+BLASTP. These are narrow correctness smoke tests, not module-wide precision/recall
+or evidence of orthology. Curated multi-species homology/domain gold sets and a
 matched comparison with existing workflows remain necessary for stronger claims.
 
 A separate fixed-rule screen of 48,002 complete Arabidopsis CDS models yielded

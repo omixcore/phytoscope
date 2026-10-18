@@ -18,7 +18,7 @@ reproduce it.
 | Operational workflow | Five tabs in the desktop UI; browser locus synchronization; promoter extraction feeds sequence QC; sample groups, FASTA/domain inputs and results are saved in portable projects; analysis output exports as TSV. The browser accepts IGV-style `sequence:start-end` navigation and preserves the visible range in project view state. Automated JavaFX regressions now fire all five research-tab actions (promoter, QC, grouping, homology and domain mapping), verify visible outputs, and cover project save/replace/restore and coordinate navigation. The three-platform CI passed on 2026-10-18; full annotation-coordinate checks and standalone packaging passed on Ubuntu. | Add a native file-save-dialog interaction test and measure researcher task performance with actual participants. |
 | Annotation correctness and scale | Independent source-to-model checks cover Arabidopsis, rice, maize and soybean. Eight inventories contain 4,641,758 exact gene/transcript/exon/CDS/UTR tuples with zero missing/extra tuples; the full-annotation checks passed in the 2026-10-18 Ubuntu CI run. | Repeat controlled performance runs on documented hardware/memory limits; the recognized-feature scope does not validate unsupported GFF types. |
 | Existing-tool comparison | A matched PhytoScope vs `gffutils==0.13` benchmark passed for Arabidopsis, rice, maize and soybean fixtures, with 10/24/20/40 gene loci respectively, three alternating-order trials per species, and exact source-to-output tuple agreement on Ubuntu, Windows and macOS. Observed medians and limitations are recorded in [the CI benchmark report](../benchmarks/results/2026-10-18/cross-species-extraction.md). | The comparison is still a narrow parser/hierarchy task. Add curated module-level gold standards for homology, domain mapping, promoter extraction and expression summaries; run controlled hardware benchmarks before speed claims. |
-| Research-module correctness | The real-data calculation suite checks eight 2,200-bp promoter windows across both strands against direct TAIR10 FASTA slicing/reverse-complement calculations; four real RBCS CDS QC reports against independently reconstructed metrics; all 16 within-family RBCS protein alignments against a test-side Smith–Waterman reference; E-MTAB-7978 grouping arithmetic including measured zeros; and 16 domain/deletion coordinate records in 13 genes against independent Python calculations. The generated result JSON is retained as a CI artifact. | These checks are still single-species or within-family reference calculations, not a curated multi-species gold standard. Add independently sourced positive/negative homolog pairs and domain mappings, compare promoter extraction against an established tool, and measure module-specific precision/recall and failure boundaries. |
+| Research-module correctness | The real-data calculation suite checks eight 2,200-bp promoter windows across both strands against direct TAIR10 FASTA slicing/reverse-complement calculations; four real RBCS CDS QC reports against independently reconstructed metrics; all 16 within-family RBCS protein alignments against a test-side Smith–Waterman reference; E-MTAB-7978 grouping arithmetic including measured zeros; and 16 domain/deletion coordinate records in 13 genes against independent Python calculations. In CI run #172, bedtools v2.31.1 independently reproduced all 8/8 promoter sequences with zero mismatches; a small BLASTP 2.12.0+ comparison classified 12 non-self RBCS-family pairs and 8 unrelated-family controls with 20/20 pairwise agreement. Reports are retained in CI artifacts. | These are narrow correctness checks, not a curated multi-species gold standard or general precision/recall estimate. Expand independently curated homolog/domain pairs, add a multi-replicate expression gold set, and test more sequence/annotation edge cases before making broad accuracy claims. |
 | Independent biological examples | The RBCS-family expression case reproduces a known pattern from Expression Atlas E-MTAB-7978. A second known-positive context is the PIF6 (`AT3G62090`) alternative-splicing literature: published studies link a shorter PIF6 splice variant to seed dormancy/germination and PTB-regulated splicing. The frozen `DI0006` model overlaps the annotated bHLH region, but its exact equivalence to the historical constructs still requires sequence-level reconciliation. | Both are prior biological knowledge, not new discoveries. The PIF6 case must not be used as validation of the exact `.4` transcript until construct/model equivalence is established. A new finding independently supported by additional evidence remains outstanding. |
 | Researcher value | A real-data calculation report and JavaFX interaction regression now demonstrate linked outputs across the five tabs and portable-project restoration. The PIF6 case note gives a known-positive traceability example from transcript model to domain context and published phenotype. | No human participants or measured task-time savings exist yet. The known PIF6 finding is reproducible with ordinary tools too; it demonstrates integration/provenance, not a unique discovery. Run a counterbalanced, matched task study and continue the search for a new independently validated result. |
 
@@ -70,10 +70,17 @@ compares the exact annotation hierarchy output from PhytoScope with
 `gffutils==0.13` on source-verified Arabidopsis, rice, maize and soybean
 release-62 excerpts, with alternating trial order and source-to-output
 coordinate checks. Its results are retained as CI artifacts. The comparison
-is intentionally limited to parsing/hierarchy extraction: it is not a
-cross-species gold standard for homology, domain mapping, sequence QC,
-promoter extraction or expression summaries, and it does not support a general
-speed ranking.
+is intentionally limited to parsing/hierarchy extraction and does not support
+a general speed ranking.
+
+The latest PR CI run #172 adds two independent external-tool checks on Ubuntu:
+bedtools v2.31.1 returns exact matches for all eight strand-aware 2,200-bp
+promoter intervals (zero mismatches), and BLASTP 2.12.0+ agrees with PhytoScope
+on 12 non-self within-family RBCS pairs and eight unrelated-family negative
+controls (20/20 pairwise classifications; no negative-control hits). The
+homology benchmark excludes the four trivial self-pairs from its accuracy
+denominator. It remains a small same-species smoke test, not an orthology
+benchmark or a general sensitivity/specificity estimate.
 
 A separate researcher-value protocol now defines paired tasks, frozen gold
 outputs, task success/error/time/handoff/provenance metrics, and a blank
@@ -94,8 +101,14 @@ records run #156: all three operating-system jobs passed, all four species
 passed three-trial exact-tuple comparison, and eight source-to-model inventories
 contained 4,641,758 tuples with no missing/extra records. The benchmark reports
 in-memory import and SQLite index construction separately; it is not a speed
-ranking. The remaining module-level gold sets and human task study are still
-open.
+ranking.
+
+The latest [PR validation run #172](https://github.com/omixcore/phytoscope/actions/runs/39112723857)
+also passed on Ubuntu, Windows and macOS. On Ubuntu it completed the full
+annotation-coordinate checks, the bedtools promoter comparison, the BLASTP
+similarity comparison and standalone packaging. The small external-tool
+comparisons improve the evidence base but do not close the curated module-level
+gold-standard gap or the human task study.
 
 
 ## Known-positive PIF6 context and claim boundary

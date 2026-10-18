@@ -39,10 +39,19 @@ def main() -> int:
     if len({record["gene_id"] for record in records}) != len(records):
         raise SystemExit("Duplicate gene IDs in the protein reference set")
 
-    positive_pairs = {(q["gene_id"], t["gene_id"]) for q in queries for t in records if t["family"] == "RBCS"}
+    positive_pairs = {
+        (q["gene_id"], t["gene_id"])
+        for q in queries for t in records
+        if t["family"] == "RBCS" and q["gene_id"] != t["gene_id"]
+    }
     negative_pairs = {(q["gene_id"], t["gene_id"]) for q in queries for t in records if t["family"] != "RBCS"}
     filtered_search = similarity["filtered_search"]
-    phytoscope_pairs = {(hit["query_gene"], hit["target_gene"]) for hit in filtered_search["hits"]}
+    phytoscope_pairs = {
+        (hit["query_gene"], hit["target_gene"])
+        for hit in filtered_search["hits"]
+        if hit["query_gene"] != hit["target_gene"]
+    }
+    self_pairs_excluded = len(queries)
 
     with tempfile.TemporaryDirectory(prefix="phytoscope-blastp-") as temporary:
         temp = Path(temporary)
@@ -77,6 +86,7 @@ def main() -> int:
                 blast_rows.append({
                     "query_gene": qid,
                     "target_gene": sid,
+                    "is_self_hit": qid == sid,
                     "identity_percent": float(fields[2]),
                     "aligned_length": int(fields[3]),
                     "query_coverage_percent": query_coverage,
@@ -99,6 +109,7 @@ def main() -> int:
         "version": version,
         "evalue_cutoff": "1e-5",
         "reference_set": "4 annotated Arabidopsis RBCS-family proteins plus NAC001 and histone H3.1 negative controls",
+        "self_pairs_excluded_from_classification": self_pairs_excluded,
         "positive_family_pairs_expected": len(positive_pairs),
         "positive_pairs_reported_by_blastp": len(positive_pairs & blast_pairs),
         "negative_control_pairs_expected": len(negative_pairs),
@@ -118,8 +129,8 @@ def main() -> int:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: result[k] for k in (
-        "external_tool", "version", "positive_family_pairs_expected",
-        "positive_pairs_reported_by_blastp", "negative_control_pairs_expected",
+        "external_tool", "version", "self_pairs_excluded_from_classification",
+        "positive_family_pairs_expected", "positive_pairs_reported_by_blastp", "negative_control_pairs_expected",
         "negative_pairs_reported_by_blastp", "positive_pairs_reported_by_phytoscope",
         "negative_pairs_reported_by_phytoscope", "pairwise_classification_agreement")}, indent=2))
     if missing_blast_positives or blast_negative_hits or missing_phyto_positives or phyto_negative_hits:
