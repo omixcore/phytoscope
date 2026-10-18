@@ -188,6 +188,9 @@ See the audit document for source URLs, checks and interpretation of parser coun
 - [Validation and source audit](docs/chromosome-validation.md)
 - [Validation, performance and comparison protocols](docs/validation-and-benchmarks.md)
 - [Cross-species extraction results (2026-10-18)](benchmarks/results/2026-10-18/cross-species-extraction.md)
+- [Four-species RBCS family-level homology fixture](examples/cross-species-homology-gold-set/README.md)
+- [Cross-species homology comparison with BLASTP](benchmarks/results/2026-10-18/cross-species-homology.md)
+- [Researcher-value study protocol (planned; no participants yet)](docs/researcher-value-study-protocol.md)
 - [Desktop packaging](docs/desktop-distribution.md)
 - [Real expression case](examples/arabidopsis-atlas/README.md)
 - [RBCS case interpretation and limitations](docs/case-study-arabidopsis-rbcs.md)
@@ -196,12 +199,16 @@ See the audit document for source URLs, checks and interpretation of parser coun
 The scientific focus is a recoverable, locus-centered workflow with traceable
 inputs and outputs. The public RBCS example demonstrates integration and
 reproducibility of a known expression pattern. It does not establish a new
-biological discovery. The latest CI also checks eight strand-aware promoter
-intervals against bedtools and a small same-species protein-similarity set against
-BLASTP. These are narrow correctness smoke tests, not module-wide precision/recall
-or evidence of orthology. Curated multi-species homology/domain gold sets and a
-matched comparison with existing workflows remain necessary for stronger claims.
-
+biological discovery. CI checks eight strand-aware promoter intervals against
+bedtools and compares protein-similarity classifications with BLASTP for both a
+same-species panel and a small four-species mature-RBCS panel (Arabidopsis, rice,
+maize and soybean). Both panels agree on 20/20 non-self positive/negative pair
+classifications. The cross-species panel is a single-family smoke test, not a
+one-to-one orthology benchmark or module-wide precision/recall estimate. Broader
+multi-family/domain gold sets, replicate-based expression validation, controlled
+performance runs and a matched researcher task study remain necessary. The
+[researcher-value protocol](docs/researcher-value-study-protocol.md) is a plan,
+not evidence from participants.
 A separate fixed-rule screen of 48,002 complete Arabidopsis CDS models yielded
 16 domain-deletion records in 13 genes. The published peptide validation supports
 one CIPK15 junction in one original study; **none met the two-study validation
