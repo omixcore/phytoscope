@@ -119,6 +119,17 @@ The genome browser limits detailed tracks to 100 overlapping loci, with a visibl
 notice when more overlap. The gene list retains all loci. Zoom or select a gene
 to inspect it; use batch export for complete collections.
 
+## Research analysis layer
+
+The first analysis layer is available in `io.gitee.omixcore.phytoscope.research`:
+strand-aware promoter/custom interval extraction, explicit sample grouping with
+mean/median summaries, sequence quality flags, local protein similarity with
+reciprocal-best-hit ranking, and amino-acid-domain to genomic-CDS mapping.
+Coordinate conventions, input assumptions and interpretation limits are
+documented in [research analysis](docs/research-analysis.md). These modules are
+currently service-level APIs; interactive panels and project persistence for
+their settings are follow-up work.
+
 ## Batch export
 
 ```bash

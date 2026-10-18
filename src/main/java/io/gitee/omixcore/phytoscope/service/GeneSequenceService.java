@@ -243,6 +243,31 @@ public final class GeneSequenceService {
                 gene.getStrand(), sourceLabel, geneSequence, transcripts);
     }
 
+    /** Extract a 1-based closed genomic interval in the requested transcription orientation. */
+    public String extractInterval(String chromosome, int start, int end, char strand) throws IOException {
+        if (start < 1 || end < start) throw new IOException("Interval must be 1-based, closed, and non-empty");
+        if (!isLoaded()) throw new IOException("No genome FASTA loaded.");
+        String id = resolveSequenceId(chromosome);
+        return extractInterval(sequences.get(id), start, end, chromosome, strand);
+    }
+
+    /** Promoter window upstream of a gene TSS, clipped to the sequence boundary. */
+    public String extractPromoter(Gene gene, int upstream, int downstream) throws IOException {
+        Objects.requireNonNull(gene, "gene");
+        if (gene.getStrand() != '+' && gene.getStrand() != '-')
+            throw new IOException("Promoter direction requires a known gene strand");
+        if (upstream < 0 || downstream < 0 || (long) upstream + downstream == 0)
+            throw new IOException("Promoter lengths must be non-negative and not both zero");
+        int tss = gene.getStrand() == '-' ? gene.getEnd() : gene.getStart();
+        String sequenceId = resolveSequenceId(gene.getChromosome());
+        int sequenceLength = sequences.get(sequenceId).length();
+        long rawStart = gene.getStrand() == '-' ? (long)tss - downstream : (long)tss - upstream;
+        long rawEnd = gene.getStrand() == '-' ? (long)tss + upstream : (long)tss + downstream;
+        int start = (int)Math.max(1, Math.min(sequenceLength, rawStart));
+        int end = (int)Math.max(1, Math.min(sequenceLength, rawEnd));
+        return extractInterval(gene.getChromosome(), start, end, gene.getStrand());
+    }
+
     private TranscriptSequences extractTranscript(Transcript transcript, String chromosomeSequence) throws IOException {
         List<Exon> exons = new ArrayList<>(transcript.getExons());
         exons.sort(transcript.getStrand() == '-'
