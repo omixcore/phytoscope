@@ -126,7 +126,7 @@ class ComparisonWorkflowUiTest {
             view.applyCss(); view.layout();
             var proteinInput = (javafx.scene.control.TextArea) scene.lookup("#research-protein-fasta");
             assertNotNull(proteinInput);
-            proteinInput.setText(">Arabidopsis|testA\nMKWVTF\n>Rice|testB\nMKWVTF\n");
+            proteinInput.setText(">Arabidopsis|testA\nMKWVTFISLLFLFSSAYSAAAAAAAAAAAAAAAAAAAA\n>Rice|testB\nMKWVTFISLLFLFSSAYSAAAAAAAAAAAAAAAAAAAA\n");
             var homologyFields = homologyTab.getContent().lookupAll(".text-field").stream()
                     .filter(javafx.scene.control.TextField.class::isInstance)
                     .map(javafx.scene.control.TextField.class::cast).toList();

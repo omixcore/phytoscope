@@ -80,7 +80,7 @@ public final class ResearchAnalysisPane extends BorderPane {
     private javafx.scene.Node homologyPane() {
         proteinFasta.setPromptText("Paste FASTA proteins from both species; header format: >species|protein_id"); proteinFasta.setPrefRowCount(8);
         Button run = new Button("Compare proteins"); run.setOnAction(e -> homology());
-        return box(new Label("Pairwise protein similarity; provide both species in one FASTA. Results are candidate similarities, not orthology proof."), row(new Label("Query species"), species, new Label("Minimum identity %"), identity), proteinFasta, run);
+        return box(new Label("Pairwise protein similarity. Reported hits require the selected identity cutoff, at least 20 aligned amino acids, and at least 50% coverage of both proteins. RBH is not proof of orthology."), row(new Label("Query species"), species, new Label("Minimum identity %"), identity), proteinFasta, run);
     }
     private javafx.scene.Node domainPane() {
         domains.setPromptText("One domain per line: protein_or_transcript_id<TAB>domain name<TAB>start_aa<TAB>end_aa"); domains.setPrefRowCount(5);
@@ -123,8 +123,10 @@ public final class ResearchAnalysisPane extends BorderPane {
             for(String line:proteinFasta.getText().split("\\R")) { if(line.startsWith(">")) { if(id!=null)addProtein(ps,id,seq); id=line.substring(1).trim(); seq.setLength(0); } else seq.append(line.trim()); }
             if(id!=null)addProtein(ps,id,seq);
             double min=Double.parseDouble(identity.getText().trim());
-            var hits=new ProteinHomologyService().compare(ps.stream().filter(p->p.species().equalsIgnoreCase(species.getText().trim())).toList(), ps.stream().filter(p->!p.species().equalsIgnoreCase(species.getText().trim())).toList(),min);
-            write("Protein similarity hits", hits.toString());
+            var queries=ps.stream().filter(p->p.species().equalsIgnoreCase(species.getText().trim())).toList();
+            var targets=ps.stream().filter(p->!p.species().equalsIgnoreCase(species.getText().trim())).toList();
+            var hits=new ProteinHomologyService().compare(queries, targets, min, 20, 0.5, 0.5);
+            write("Protein similarity hits", "Filters: identity >= "+min+"%; alignment >= 20 aa; query/target coverage >= 50%.\n"+hits);
         } catch(Exception ex) { write("Homology comparison failed", ex.getMessage()); }
     }
     private static void addProtein(List<ProteinHomologyService.Protein> ps,String header,StringBuilder sequence) {

@@ -35,13 +35,17 @@ jobs:
       - name: Java and JavaFX regressions
         shell: bash
         run: sh mvnw -B -Pui-tests verify
-      - name: Install bedtools for independent promoter baseline
+      - name: Install external sequence baselines
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y bedtools
+        run: sudo apt-get update && sudo apt-get install -y bedtools ncbi-blast+
       - name: Compare promoter extraction with bedtools
         if: runner.os == 'Linux'
         shell: bash
         run: python tools/compare_promoters_bedtools.py --report target/research-validation/research-module-gold-set.json --genome src/main/resources/data/species/arabidopsis/TAIR10_genomic.fna.gz --out target/research-validation/bedtools-promoter-comparison.json
+      - name: Compare homology candidates with BLASTP
+        if: runner.os == 'Linux'
+        shell: bash
+        run: python tools/compare_homology_blastp.py --report target/research-validation/research-module-gold-set.json --out target/research-validation/blastp-homology-comparison.json
       - name: Install matched extraction baseline
         run: python -m pip install gffutils==0.13
       - name: Four-species matched extraction benchmark

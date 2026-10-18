@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""Compare coverage-filtered PhytoScope family hits with an independent BLASTP run."""
+from __future__ import annotations
+
+import argparse
+import json
+import shutil
+import subprocess
+import tempfile
+import time
+from pathlib import Path
+
+
+def write_fasta(path: Path, records):
+    with path.open("wt", encoding="ascii") as handle:
+        for record in records:
+            handle.write(f">{record['gene_id']}\n")
+            sequence = record["sequence"].replace("*", "")
+            for offset in range(0, len(sequence), 60):
+                handle.write(sequence[offset:offset + 60] + "\n")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--report", type=Path, required=True,
+                        help="research-module-gold-set.json emitted by ResearchModuleGoldSetTest")
+    parser.add_argument("--out", type=Path, required=True)
+    args = parser.parse_args()
+
+    blastp = shutil.which("blastp")
+    if not blastp:
+        raise SystemExit("blastp is required; install ncbi-blast+ before running this comparison")
+    report = json.loads(args.report.read_text(encoding="utf-8"))
+    similarity = report["protein_similarity"]
+    records = similarity["reference_proteins"]
+    queries = [record for record in records if record["family"] == "RBCS"]
+    if len(queries) != 4 or len(records) != 6:
+        raise SystemExit(f"Expected 4 RBCS queries and 2 unrelated controls; got {len(queries)} and {len(records)}")
+    if len({record["gene_id"] for record in records}) != len(records):
+        raise SystemExit("Duplicate gene IDs in the protein reference set")
+
+    positive_pairs = {(q["gene_id"], t["gene_id"]) for q in queries for t in records if t["family"] == "RBCS"}
+    negative_pairs = {(q["gene_id"], t["gene_id"]) for q in queries for t in records if t["family"] != "RBCS"}
+    filtered_search = similarity["filtered_search"]
+    phytoscope_pairs = {(hit["query_gene"], hit["target_gene"]) for hit in filtered_search["hits"]}
+
+    with tempfile.TemporaryDirectory(prefix="phytoscope-blastp-") as temporary:
+        temp = Path(temporary)
+        query_fasta = temp / "rbcS-query.fa"
+        subject_fasta = temp / "six-protein-subject.fa"
+        raw_output = temp / "blastp.tsv"
+        write_fasta(query_fasta, queries)
+        write_fasta(subject_fasta, records)
+        version_result = subprocess.run([blastp, "-version"], check=True, capture_output=True, text=True)
+        version = (version_result.stdout or version_result.stderr).splitlines()[0].strip()
+        command = [
+            blastp, "-query", str(query_fasta), "-subject", str(subject_fasta),
+            "-evalue", "1e-5",
+            "-outfmt", "6 qseqid sseqid pident length qcovs scovs evalue bitscore",
+            "-out", str(raw_output),
+        ]
+        started = time.perf_counter()
+        subprocess.run(command, check=True, capture_output=True, text=True)
+        elapsed = time.perf_counter() - started
+        blast_rows = []
+        blast_pairs = set()
+        if raw_output.exists():
+            for line in raw_output.read_text(encoding="utf-8").splitlines():
+                fields = line.split("\t")
+                if len(fields) != 8:
+                    raise SystemExit(f"Unexpected BLASTP output row: {line}")
+                qid, sid = fields[0], fields[1]
+                blast_pairs.add((qid, sid))
+                blast_rows.append({
+                    "query_gene": qid,
+                    "target_gene": sid,
+                    "identity_percent": float(fields[2]),
+                    "aligned_length": int(fields[3]),
+                    "query_coverage_percent": float(fields[4]),
+                    "subject_coverage_percent": float(fields[5]),
+                    "evalue": fields[6],
+                    "bit_score": float(fields[7]),
+                })
+
+    missing_blast_positives = sorted(positive_pairs - blast_pairs)
+    blast_negative_hits = sorted(negative_pairs & blast_pairs)
+    missing_phyto_positives = sorted(positive_pairs - phytoscope_pairs)
+    phyto_negative_hits = sorted(negative_pairs & phytoscope_pairs)
+    pairwise_agreement = sum(
+        ((pair in blast_pairs) == (pair in phytoscope_pairs))
+        for pair in positive_pairs | negative_pairs
+    )
+    total_pairs = len(positive_pairs) + len(negative_pairs)
+    result = {
+        "external_tool": "NCBI BLASTP",
+        "version": version,
+        "evalue_cutoff": "1e-5",
+        "reference_set": "4 annotated Arabidopsis RBCS-family proteins plus NAC001 and histone H3.1 negative controls",
+        "positive_family_pairs_expected": len(positive_pairs),
+        "positive_pairs_reported_by_blastp": len(positive_pairs & blast_pairs),
+        "negative_control_pairs_expected": len(negative_pairs),
+        "negative_pairs_reported_by_blastp": len(blast_negative_hits),
+        "positive_pairs_reported_by_phytoscope": len(positive_pairs & phytoscope_pairs),
+        "negative_pairs_reported_by_phytoscope": len(phyto_negative_hits),
+        "pairwise_classification_agreement": pairwise_agreement / total_pairs if total_pairs else 1.0,
+        "pairwise_classification_count": total_pairs,
+        "blastp_elapsed_seconds": round(elapsed, 6),
+        "missing_blastp_positive_pairs": missing_blast_positives,
+        "blastp_negative_control_hits": blast_negative_hits,
+        "missing_phytoscope_positive_pairs": missing_phyto_positives,
+        "phytoscope_negative_control_hits": phyto_negative_hits,
+        "blastp_records": blast_rows,
+        "scope_limit": "Small same-species family discrimination benchmark; this is not an orthology benchmark or a general sensitivity/specificity estimate.",
+    }
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({k: result[k] for k in (
+        "external_tool", "version", "positive_family_pairs_expected",
+        "positive_pairs_reported_by_blastp", "negative_control_pairs_expected",
+        "negative_pairs_reported_by_blastp", "positive_pairs_reported_by_phytoscope",
+        "negative_pairs_reported_by_phytoscope", "pairwise_classification_agreement")}, indent=2))
+    if missing_blast_positives or blast_negative_hits or missing_phyto_positives or phyto_negative_hits:
+        print(json.dumps({
+            "missing_blastp_positive_pairs": missing_blast_positives,
+            "blastp_negative_control_hits": blast_negative_hits,
+            "missing_phytoscope_positive_pairs": missing_phyto_positives,
+            "phytoscope_negative_control_hits": phyto_negative_hits,
+        }, indent=2))
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -77,6 +77,25 @@ class ResearchAnalysisTest {
                 List.of(new ProteinHomologyService.Protein("B", "other", "M".repeat(2_000))), 0));
     }
 
+    @Test void coverageAwareHomologyFilteringRejectsShortExactMotifs() {
+        var service = new ProteinHomologyService();
+        var shortQuery = List.of(new ProteinHomologyService.Protein("Arabidopsis", "shortQ", "MKWVTF"));
+        var shortTarget = List.of(new ProteinHomologyService.Protein("Rice", "shortT", "MKWVTF"));
+        assertEquals(1, service.compare(shortQuery, shortTarget, 30).size(),
+                "The legacy identity-only overload remains backward compatible");
+        assertTrue(service.compare(shortQuery, shortTarget, 30, 20, 0.5, 0.5).isEmpty(),
+                "A six-residue exact motif must not pass full-protein candidate filters");
+
+        String fullLength = "MKWVTFISLLFLFSSAYSAAAAAAAAAAAAAAAAAAAA";
+        var longQuery = List.of(new ProteinHomologyService.Protein("Arabidopsis", "longQ", fullLength));
+        var longTarget = List.of(new ProteinHomologyService.Protein("Rice", "longT", fullLength));
+        var filtered = service.compare(longQuery, longTarget, 30, 20, 0.5, 0.5);
+        assertEquals(1, filtered.size());
+        assertEquals(100.0, filtered.getFirst().identity(), 1e-9);
+        assertEquals(1.0, filtered.getFirst().queryCoverage(), 1e-9);
+        assertEquals(1.0, filtered.getFirst().targetCoverage(), 1e-9);
+    }
+
     @Test void domainAminoAcidsMapAcrossCodingExons() {
         Gene gene = new Gene("g", "g", "chr1", 100, 220, '-');
         Transcript tx = new Transcript("tx", "chr1", 100, 220, '-'); tx.setProteinId("p");

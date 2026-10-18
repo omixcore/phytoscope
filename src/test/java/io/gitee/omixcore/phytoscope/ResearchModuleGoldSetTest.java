@@ -148,8 +148,36 @@ class ResearchModuleGoldSetTest {
             proteins.add(new ProteinHomologyService.Protein("Arabidopsis thaliana", geneId, protein));
         }
 
+        // Two real proteins from unrelated annotated families provide negative controls.
+        List<ProteinHomologyService.Protein> negativeControls = new ArrayList<>();
+        Map<String, String> negativeFamilies = new LinkedHashMap<>();
+        for (Map.Entry<String, String> spec : List.of(
+                Map.entry("AT1G01010", "NAC001"),
+                Map.entry("AT1G09200", "Histone H3.1"))) {
+            Gene negativeGene = chr1.findGene(spec.getKey());
+            assertNotNull(negativeGene, "Pinned negative-control gene " + spec.getKey());
+            Transcript negativeCanonical = negativeGene.getCanonicalTranscript();
+            assertNotNull(negativeCanonical, "Representative transcript " + spec.getKey());
+            var negativeExtracted = sequences.extract(negativeGene);
+            var negativeTranscript = negativeExtracted.transcripts().stream()
+                    .filter(t -> negativeCanonical.getId().equals(t.transcriptId()))
+                    .findFirst().orElseThrow(() -> new AssertionError("Missing negative-control transcript " + negativeCanonical.getId()));
+            assertFalse(negativeTranscript.proteinSequence().isEmpty(), "Negative-control protein must be non-empty");
+            negativeControls.add(new ProteinHomologyService.Protein("Arabidopsis thaliana",
+                    spec.getKey(), negativeTranscript.proteinSequence()));
+            negativeFamilies.put(spec.getKey(), spec.getValue());
+        }
+
         ProteinHomologyService homology = new ProteinHomologyService();
         List<ProteinHomologyService.Hit> observedHits = homology.compare(proteins, proteins, 0);
+        List<ProteinHomologyService.Protein> allReferenceProteins = new ArrayList<>(proteins);
+        allReferenceProteins.addAll(negativeControls);
+        List<ProteinHomologyService.Hit> filteredHits = homology.compare(
+                proteins, allReferenceProteins, 30, 20, 0.5, 0.5);
+        assertEquals(RBCS_IDS.size() * RBCS_IDS.size(), filteredHits.size(),
+                "Coverage-aware filtering should retain all known within-family pairs");
+        assertTrue(filteredHits.stream().noneMatch(h -> negativeFamilies.containsKey(h.targetId())),
+                "Coverage-aware filtering should suppress unrelated-family negative controls");
         Map<String, ProteinHomologyService.Hit> hitsByPair = new HashMap<>();
         for (var hit : observedHits) hitsByPair.put(pairKey(hit.queryId(), hit.targetId()), hit);
         int expectedPairCount = 0;
@@ -262,12 +290,43 @@ class ResearchModuleGoldSetTest {
                 "independent_oracle", "test-side base counts, frame check, start/stop checks and flag reconstruction",
                 "cds_records_checked", qcRows.size(),
                 "records", qcRows));
-        report.put("protein_similarity", Map.of(
-                "independent_oracle", "test-side Smith-Waterman dynamic-programming reference",
-                "protein_records", proteins.size(),
-                "pairwise_hits_checked", observedHits.size(),
-                "records", alignmentRows,
-                "interpretation", "Within-family similarity validation only; reciprocal-best-hit status is not proof of orthology."));
+        List<Map<String, Object>> referenceProteinRows = new ArrayList<>();
+        for (var protein : proteins) {
+            referenceProteinRows.add(Map.of("gene_id", protein.id(), "family", "RBCS", "sequence", protein.sequence()));
+        }
+        for (var protein : negativeControls) {
+            referenceProteinRows.add(Map.of("gene_id", protein.id(), "family", negativeFamilies.get(protein.id()),
+                    "sequence", protein.sequence()));
+        }
+        List<Map<String, Object>> filteredHitRows = filteredHits.stream()
+                .map(hit -> Map.<String, Object>of(
+                        "query_gene", hit.queryId(),
+                        "target_gene", hit.targetId(),
+                        "identity_percent", hit.identity(),
+                        "aligned_length", hit.alignedLength(),
+                        "query_coverage", hit.queryCoverage(),
+                        "target_coverage", hit.targetCoverage()))
+                .toList();
+        Map<String, Object> filteredSearch = new LinkedHashMap<>();
+        filteredSearch.put("minimum_identity_percent", 30);
+        filteredSearch.put("minimum_aligned_length_aa", 20);
+        filteredSearch.put("minimum_query_coverage_fraction", 0.5);
+        filteredSearch.put("minimum_target_coverage_fraction", 0.5);
+        filteredSearch.put("positive_family_pairs_expected", RBCS_IDS.size() * RBCS_IDS.size());
+        filteredSearch.put("positive_family_pairs_reported", filteredHits.size());
+        filteredSearch.put("negative_control_pairs_expected", proteins.size() * negativeControls.size());
+        filteredSearch.put("negative_control_hits_reported", filteredHits.stream()
+                .filter(hit -> negativeFamilies.containsKey(hit.targetId())).count());
+        filteredSearch.put("hits", filteredHitRows);
+        Map<String, Object> similarityReport = new LinkedHashMap<>();
+        similarityReport.put("independent_oracle", "test-side Smith-Waterman dynamic-programming reference");
+        similarityReport.put("rbcS_protein_records", proteins.size());
+        similarityReport.put("pairwise_hits_checked", observedHits.size());
+        similarityReport.put("records", alignmentRows);
+        similarityReport.put("reference_proteins", referenceProteinRows);
+        similarityReport.put("filtered_search", filteredSearch);
+        similarityReport.put("interpretation", "RBCS family similarity classification only; not orthology inference.");
+        report.put("protein_similarity", similarityReport);
         Map<String, Object> expressionSummary = new LinkedHashMap<>();
         expressionSummary.put("source", "Expression Atlas E-MTAB-7978; single-assay condition values");
         expressionSummary.put("ordinary_gene", "AT1G01860");
