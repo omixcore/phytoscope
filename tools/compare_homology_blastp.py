@@ -56,7 +56,7 @@ def main() -> int:
         command = [
             blastp, "-query", str(query_fasta), "-subject", str(subject_fasta),
             "-evalue", "1e-5",
-            "-outfmt", "6 qseqid sseqid pident length qcovs scovs evalue bitscore",
+            "-outfmt", "6 qseqid sseqid pident length qcovs sstart send slen evalue bitscore",
             "-out", str(raw_output),
         ]
         started = time.perf_counter()
@@ -67,19 +67,22 @@ def main() -> int:
         if raw_output.exists():
             for line in raw_output.read_text(encoding="utf-8").splitlines():
                 fields = line.split("\t")
-                if len(fields) != 8:
+                if len(fields) != 10:
                     raise SystemExit(f"Unexpected BLASTP output row: {line}")
                 qid, sid = fields[0], fields[1]
+                query_coverage = float(fields[4])
+                subject_start, subject_end, subject_length = int(fields[5]), int(fields[6]), int(fields[7])
+                subject_coverage = 100.0 * (abs(subject_end - subject_start) + 1) / subject_length
                 blast_pairs.add((qid, sid))
                 blast_rows.append({
                     "query_gene": qid,
                     "target_gene": sid,
                     "identity_percent": float(fields[2]),
                     "aligned_length": int(fields[3]),
-                    "query_coverage_percent": float(fields[4]),
-                    "subject_coverage_percent": float(fields[5]),
-                    "evalue": fields[6],
-                    "bit_score": float(fields[7]),
+                    "query_coverage_percent": query_coverage,
+                    "subject_coverage_percent": subject_coverage,
+                    "evalue": fields[8],
+                    "bit_score": float(fields[9]),
                 })
 
     missing_blast_positives = sorted(positive_pairs - blast_pairs)
