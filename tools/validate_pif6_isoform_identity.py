@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CASE = ROOT / "examples" / "arabidopsis-isoform-validation"
 DEFAULT_BETA_FASTA = DEFAULT_CASE / "published-pif6-beta.fasta"
 DEFAULT_BETA_META = DEFAULT_CASE / "published-pif6-beta.json"
+DEFAULT_ANNOTATION = DEFAULT_CASE / "annotation.gff3"
 DEFAULT_OUT = ROOT / "target" / "independent-isoforms" / "pif6-identity-validation.json"
 
 
@@ -29,11 +30,39 @@ def read_fasta(path: Path) -> str:
     return sequence
 
 
+def transcript_protein_lengths(gff_path: Path, gene_id: str) -> dict[str, dict[str, int]]:
+    """Calculate protein lengths from the CDS coordinates in the frozen GFF3."""
+    cds_lengths: dict[str, int] = {}
+    for line in gff_path.read_text(encoding="utf-8").splitlines():
+        if not line or line.startswith("#"):
+            continue
+        fields = line.split("\\t")
+        if len(fields) != 9 or fields[2] != "CDS":
+            continue
+        attributes = {}
+        for item in fields[8].split(";"):
+            key, sep, value = item.partition("=")
+            if sep:
+                attributes[key] = value
+        start, end = int(fields[3]), int(fields[4])
+        for parent in attributes.get("Parent", "").split(","):
+            if parent.startswith(gene_id + "."):
+                cds_lengths[parent] = cds_lengths.get(parent, 0) + end - start + 1
+
+    result: dict[str, dict[str, int]] = {}
+    for transcript, cds_nt in sorted(cds_lengths.items()):
+        if cds_nt % 3:
+            raise SystemExit(f"CDS length is not divisible by three for {transcript}: {cds_nt}")
+        result[transcript] = {"cds_length_nt_including_stop": cds_nt, "protein_length_aa": cds_nt // 3 - 1}
+    return result
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--case", type=Path, default=DEFAULT_CASE)
     parser.add_argument("--beta-fasta", type=Path, default=DEFAULT_BETA_FASTA)
     parser.add_argument("--beta-metadata", type=Path, default=DEFAULT_BETA_META)
+    parser.add_argument("--annotation", type=Path, default=DEFAULT_ANNOTATION)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = parser.parse_args()
 
@@ -49,6 +78,21 @@ def main() -> int:
     beta = read_fasta(args.beta_fasta)
     beta_meta = json.loads(args.beta_metadata.read_text(encoding="utf-8"))
     beta_sha256 = hashlib.sha256(beta.encode("ascii")).hexdigest()
+    annotated_models = transcript_protein_lengths(args.annotation, "AT3G62090")
+    expected_model_lengths = {
+        "AT3G62090.1": 346,
+        "AT3G62090.2": 363,
+        "AT3G62090.3": 324,
+        "AT3G62090.4": 341,
+    }
+    observed_model_lengths = {tx: item["protein_length_aa"] for tx, item in annotated_models.items()}
+    if observed_model_lengths != expected_model_lengths:
+        raise SystemExit(
+            "The frozen PIF6 transcript inventory/lengths changed; review the identity assessment: "
+            + repr(observed_model_lengths)
+        )
+    if observed_model_lengths["AT3G62090.2"] != len(canonical) or observed_model_lengths["AT3G62090.4"] != len(short):
+        raise SystemExit("GFF3-derived lengths disagree with the frozen canonical/short candidate sequences.")
 
     if len(canonical) != int(candidate["canonical_length_aa"]):
         raise SystemExit("Canonical PIF6 length does not match the frozen candidate metadata.")
@@ -98,6 +142,11 @@ def main() -> int:
             "current_short_exactly_matches_published_pif6_beta": exact_published_beta_match,
             "length_difference_current_short_minus_reference_aa": length_difference,
             "downstream_c_terminal_region_after_internal_deletion_is_retained": downstream_c_terminal_region_retained,
+            "all_annotated_pif6_transcript_protein_lengths": annotated_models,
+            "no_current_model_matches_either_published_beta_length": not any(
+                model["protein_length_aa"] in set(beta_meta["reported_construct_lengths_aa"] + [len(beta)])
+                for model in annotated_models.values()
+            ),
         },
         "decision": "reject_as_isoform_specific_known_positive",
         "interpretation": (
@@ -116,12 +165,16 @@ def main() -> int:
         raise SystemExit("Frozen PIF6 candidate no longer reconstructs from its stated deletion.")
     if exact_published_beta_match or length_difference <= 0 or not downstream_c_terminal_region_retained:
         raise SystemExit("PIF6 identity decision changed; review before making any isoform-specific claim.")
+    published_lengths = set(beta_meta["reported_construct_lengths_aa"] + [len(beta)])
+    if any(model["protein_length_aa"] in published_lengths for model in annotated_models.values()):
+        raise SystemExit("A current Araport11 model has a published-beta length; review sequence identity before concluding.")
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(
-        "PIF6 identity gate passed: the frozen 341-aa AT3G62090.4 model is not "
-        "the 188-aa D0EDQ7 PIF6-beta reference; no phenotype transfer or novelty claim."
+        "PIF6 identity gate passed: current Araport11 protein models are "
+        f"{observed_model_lengths}; none matches the published 182/188-aa beta length. "
+        "No phenotype transfer or novelty claim."
     )
     return 0
 

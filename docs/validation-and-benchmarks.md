@@ -170,7 +170,9 @@ the 1-based inclusive 22-aa deletion from the frozen canonical sequence.
 It then tests exact sequence identity rather than inferring identity from the
 gene symbol or domain overlap. Current `AT3G62090.4` is 341 aa and retains the
 sequence downstream of the internal deletion; the pinned reference is 188 aa,
-while a 182-aa PIF6-beta construct is reported in the literature. The result is
+while a 182-aa PIF6-beta construct is reported in the literature. The script also parses all four PIF6 protein-coding models in the frozen GFF3
+and confirms lengths of 346, 363, 324 and 341 aa; none matches either the
+182-aa literature construct or the 188-aa sequence record. The result is
 therefore a rejection of DI0006 as an isoform-specific positive control.
 
 The script runs on all three CI platforms and its JSON result is retained in

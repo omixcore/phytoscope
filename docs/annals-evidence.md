@@ -124,10 +124,11 @@ gold-standard gap or the human task study.
 
 The [PIF6 case note](case-study-pif6-known-positive.md) and
 `tools/validate_pif6_isoform_identity.py` now compare the frozen
-`AT3G62090.2/.4` pair with the published PIF6-beta sequence record. The current
-341-aa `.4` model reconstructs from an internal 22-aa deletion and retains
-downstream C-terminal sequence; it is not identical to the 188-aa UniProtKB
-D0EDQ7 reference (the literature reports a 182-aa construct). Thus the published
+`AT3G62090.2/.4` pair with the published PIF6-beta sequence record. The four protein-coding models in the frozen Araport11 annotation are 346,
+363, 324 and 341 aa; none matches either the 188-aa UniProtKB D0EDQ7 reference
+or the 182-aa construct reported in the literature. The current 341-aa `.4`
+model reconstructs from an internal 22-aa deletion and retains downstream
+C-terminal sequence. Thus the published
 seed-dormancy phenotype cannot be transferred to DI0006. PIF6 is locus-level
 context only, not a valid isoform-specific positive control. This is a negative
 identity validation; the independent new-discovery requirement remains open.

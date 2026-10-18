@@ -142,7 +142,9 @@ cannot be transferred automatically to every annotated isoform. The frozen
 `AT3G62090.4` candidate is 341 aa with an internal 22-aa deletion; the published
 PIF6-beta sequence record is 188 aa (with a 182-aa construct reported in the
 literature). Exact sequence identity fails, and the candidate retains downstream
-C-terminal sequence. Therefore DI0006 is **not** a validated positive control
+C-terminal sequence. The four protein-coding models in the frozen GFF3 are
+346, 363, 324 and 341 aa; none matches the 182/188-aa published beta lengths.
+Therefore DI0006 is **not** a validated positive control
 for the published dormancy phenotype. Reproduce the independent identity gate
 with `python tools/validate_pif6_isoform_identity.py`; see the
 [PIF6 case note](../../docs/case-study-pif6-known-positive.md) and

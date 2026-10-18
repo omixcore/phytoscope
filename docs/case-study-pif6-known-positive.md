@@ -22,11 +22,14 @@ The fixed-rule screen contains candidate `DI0006` at `AT3G62090`
 
 The published PIF6-beta literature describes a short form of about 182 amino
 acids, while the pinned UniProtKB sequence record `D0EDQ7` is 188 amino acids
-(GenBank protein `ACX35553.1`, transcript `GQ477368`). The 341-aa
-`AT3G62090.4` protein is not an exact match to that sequence and retains a
-long C-terminal region after its internal deletion. A locus name and domain
-overlap are therefore insufficient to transfer the published phenotype to
-this candidate.
+(GenBank protein `ACX35553.1`, transcript `GQ477368`). The four protein-coding models in the frozen Araport11 annotation
+have GFF3-derived lengths of `AT3G62090.1` = 346 aa, `.2` = 363 aa,
+`.3` = 324 aa and `.4` = 341 aa. None matches either the 182-aa construct
+length reported in the literature or the 188-aa pinned UniProtKB sequence
+record. The 341-aa `.4` protein is not an exact match to that sequence and
+retains a long C-terminal region after its internal deletion. A locus name and
+domain overlap are therefore insufficient to transfer the published phenotype
+to any of these current models.
 
 The pinned sequence is stored in
 `examples/arabidopsis-isoform-validation/published-pif6-beta.fasta`, with
