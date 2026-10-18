@@ -58,3 +58,10 @@ TSV (`Analysis`, `Result`); tabs and line breaks inside result text are escaped
 so each analysis remains one row. The modules do not alter the source annotation
 or expression matrix. See [the evidence package](annals-evidence.md) for
 validation coverage and remaining limits.
+
+## Genome-browser navigation
+
+The gene search field also accepts a loaded sequence and a 1-based closed
+coordinate interval, for example `Chr1:1,000-2,000`. Press Enter to jump to the
+interval; the sequence selector and track list follow the selected sequence.
+The visible range is stored with the rest of the portable project view state.

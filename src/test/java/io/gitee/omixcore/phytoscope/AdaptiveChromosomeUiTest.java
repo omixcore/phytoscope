@@ -85,6 +85,14 @@ class AdaptiveChromosomeUiTest {
                 Files.createDirectories(output.getParent());
                 ImageIO.write(SwingFXUtils.fromFXImage(scene.snapshot(null), null), "png", output.toFile());
             }
+            String targetSequence = selector.getItems().get(1);
+            var targetGene = service.getGenesOn(targetSequence).getFirst();
+            String locus = targetSequence + ":" + targetGene.getStart() + "-" + targetGene.getEnd();
+            assertTrue(view.navigateToLocus(locus));
+            assertEquals(targetSequence, service.getActiveSequence());
+            assertEquals(targetGene.getStart(), view.getRenderer().getViewStart());
+            assertEquals(targetGene.getEnd(), view.getRenderer().getViewEnd());
+            assertFalse(view.navigateToLocus(targetSequence + ":9-2"), "Reversed intervals must be rejected");
             return null;
         });
         Platform.runLater(task);
