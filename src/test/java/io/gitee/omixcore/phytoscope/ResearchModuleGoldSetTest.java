@@ -95,11 +95,13 @@ class ResearchModuleGoldSetTest {
                     gene.getId() + " internal promoter window length");
             promoterRows.add(Map.of(
                     "gene_id", gene.getId(),
+                    "chromosome", gene.getChromosome(),
                     "strand", String.valueOf(gene.getStrand()),
                     "start_1based_closed", expectedWindow.start(),
                     "end_1based_closed", expectedWindow.end(),
                     "length_bp", expectedSequence.length(),
-                    "sequence_sha256", sha256(expectedSequence)));
+                    "sequence_sha256", sha256(expectedSequence),
+                    "sequence", expectedSequence));
         }
 
         // 2. Sequence QC and 3. protein similarity: use real RBCS gene models
