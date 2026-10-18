@@ -20,7 +20,7 @@ reproduce it.
 | Existing-tool comparison | A matched PhytoScope vs `gffutils==0.13` benchmark passed for Arabidopsis, rice, maize and soybean fixtures, with 10/24/20/40 gene loci respectively, three alternating-order trials per species, and exact source-to-output tuple agreement on Ubuntu, Windows and macOS. Observed medians and limitations are recorded in [the CI benchmark report](../benchmarks/results/2026-10-18/cross-species-extraction.md). | The comparison is still a narrow parser/hierarchy task. Add curated module-level gold standards for homology, domain mapping, promoter extraction and expression summaries; run controlled hardware benchmarks before speed claims. |
 | Research-module correctness | The real-data calculation suite checks eight 2,200-bp promoter windows across both strands against direct TAIR10 FASTA slicing/reverse-complement calculations; four real RBCS CDS QC reports against independently reconstructed metrics; all 16 within-family Arabidopsis RBCS protein alignments against a test-side Smith–Waterman reference; E-MTAB-7978 grouping arithmetic including measured zeros; and 16 domain/deletion coordinate records in 13 genes against independent Python calculations. In the three-platform CI run #192, bedtools v2.31.1 independently reproduced all 8/8 promoter sequences with zero mismatches. BLASTP 2.12.0+ agreed with PhytoScope on 12/12 non-self RBCS-family pairs and 8/8 unrelated-family controls both in the Arabidopsis-only panel and in a new four-species mature-RBCS panel (20/20 pairwise classifications per panel). On the tiny cross-species panel, one observed call took 21.63 ms in PhytoScope and 32.4 ms in BLASTP; this is startup-dominated and not a speed claim. Reports are retained in CI artifacts. | The new four-species RBCS panel is a single-family smoke test, not a multi-family curated gold standard or general precision/recall estimate; its negatives are not taxonomically balanced and it does not validate orthology. Expand independently curated multi-family homolog/domain pairs, add a multi-replicate expression gold set, and test more sequence/annotation edge cases before making broad accuracy claims. |
 | Independent biological examples | The RBCS-family expression case reproduces a known pattern from Expression Atlas E-MTAB-7978. Published PIF6 work links a short splice variant to seed dormancy/germination, but the sequence-level identity gate now rejects the frozen `AT3G62090.4` candidate as that published beta isoform: the current model is 341 aa with an internal 22-aa deletion, whereas the pinned UniProtKB D0EDQ7 reference is 188 aa (the literature reports a 182-aa construct). | PIF6 remains locus-level context, not an isoform-specific positive control and not a new discovery. No new biological finding independently supported by additional evidence has been established. |
-| Researcher value | A real-data calculation report and JavaFX interaction regression now demonstrate linked outputs across the five tabs and portable-project restoration. The PIF6 case note gives a known-positive traceability example from transcript model to domain context and published phenotype. | No human participants or measured task-time savings exist yet. A [prospective researcher-value study protocol](researcher-value-study.md) now defines the counterbalanced task design, objective endpoints and analysis rules, but it is not participant evidence. The known PIF6 finding is reproducible with ordinary tools too; it demonstrates integration/provenance, not a unique discovery. Run the preregistered task study and continue the search for a new independently validated result. |
+| Researcher value | A real-data calculation report and JavaFX interaction regression demonstrate linked outputs across five tabs and portable-project restoration. The PIF6 sequence-identity gate now shows that the frozen candidate is not the published beta isoform, so PIF6 is only locus-level context. | No human participants or measured task-time savings exist yet. The [researcher-value study protocol](researcher-value-study.md) is a prospective design, not participant evidence. No new biological discovery is established. |
 
 ## Fair comparison protocol
 
@@ -144,3 +144,29 @@ sequence, so the prior seed-dormancy phenotype cannot be assigned to this
 annotation. The script and JSON output are included in the latest CI artifact.
 This strengthens the negative validation boundary; it does not establish a new
 biological discovery.
+
+## CIPK15: only current follow-up lead, not a validated discovery
+
+Candidate `DI0003` (`AT5G01810.3`) is the most actionable follow-up from the
+frozen screen because the 45-aa deletion (canonical residues 284–328) removes
+the complete annotated 25-aa NAF domain (299–323) while leaving the annotated
+kinase domain (12–266) outside the deleted interval. UniProtKB P92937 describes
+the NAF domain as the regulatory CBL-binding element. This supports a
+**testable hypothesis** that the shorter protein may have altered CBL-dependent
+regulation; it does not establish that the isoform is translated or that its
+activity differs.
+
+The only eligible peptide in the audited source table is
+`ESVEEETEEEMR` (short-protein positions 276–287), mapped only to `AT5G01810.3`
+by a FragPipe search and listed in the source group `FL` (source workbook row
+24784). The group label must be resolved against the source metadata before
+choosing tissues. The peptide comes from the Mergner acquisition within the
+Reyes et al. processed resource; it is one peptide from one biological source,
+not an independent second study. No raw-spectrum re-search or isoform-specific
+functional experiment has been completed.
+
+The [CIPK15 follow-up protocol](../examples/arabidopsis-isoform-validation/cipk15-followup-experiment.md)
+sets prospective transcript, targeted-proteomics and CBL-interaction tests with
+go/no-go criteria. It is an experiment plan, not evidence that validation has
+occurred. Until independent data pass those criteria, CIPK15 remains a lead and
+the paper must not claim a new biological discovery.

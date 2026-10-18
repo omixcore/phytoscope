@@ -149,3 +149,12 @@ for the published dormancy phenotype. Reproduce the independent identity gate
 with `python tools/validate_pif6_isoform_identity.py`; see the
 [PIF6 case note](../../docs/case-study-pif6-known-positive.md) and
 [expanded literature audit](literature-audit.md).
+
+## Highest-priority biological follow-up: CIPK15
+
+`AT5G01810.3` is the only current lead with an eligible isoform-junction peptide,
+but it is single-source evidence. Its 45-aa deletion removes the annotated NAF
+region while retaining the kinase domain, which motivates—but does not prove—a
+change in CBL-dependent regulation. See the [CIPK15 independent-validation
+protocol](cipk15-followup-experiment.md). The protocol records proposed tests
+and thresholds; it is not a validation result.
