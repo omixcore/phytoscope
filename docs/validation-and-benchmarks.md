@@ -111,3 +111,14 @@ paired, counterbalanced comparison, task acceptance criteria, provenance scoring
 and reporting rules. They are instruments for a future study, **not user-study
 results**. No human task times or usability scores are claimed until actual
 participants complete the study.
+
+
+## Recorded multi-platform result (2026-10-18)
+
+The exact observed timings, source-inventory counts and test outcomes for
+[CI run #156](https://github.com/omixcore/phytoscope/actions/runs/39109020214)
+are preserved in
+[the cross-species benchmark report](../benchmarks/results/2026-10-18/cross-species-extraction.md).
+All three operating-system jobs passed. The timings are runner-specific
+observations, not a speed-superiority claim; the report distinguishes
+PhytoScope in-memory import from SQLite index construction.

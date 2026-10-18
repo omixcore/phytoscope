@@ -187,6 +187,7 @@ See the audit document for source URLs, checks and interpretation of parser coun
 - [Scientific contribution, evidence status and remaining work](docs/annals-evidence.md)
 - [Validation and source audit](docs/chromosome-validation.md)
 - [Validation, performance and comparison protocols](docs/validation-and-benchmarks.md)
+- [Cross-species extraction results (2026-10-18)](benchmarks/results/2026-10-18/cross-species-extraction.md)
 - [Desktop packaging](docs/desktop-distribution.md)
 - [Real expression case](examples/arabidopsis-atlas/README.md)
 - [RBCS case interpretation and limitations](docs/case-study-arabidopsis-rbcs.md)

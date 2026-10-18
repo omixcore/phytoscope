@@ -16,8 +16,8 @@ reproduce it.
 | Evidence | Current evidence | Remaining work before a strong methods-paper claim |
 | --- | --- | --- |
 | Operational workflow | Five tabs in the desktop UI; browser locus synchronization; promoter extraction feeds sequence QC; sample groups, FASTA/domain inputs and results are saved in portable projects; analysis output exports as TSV. The browser accepts IGV-style `sequence:start-end` navigation and preserves the visible range in project view state. Automated regressions cover promoter extraction, TSV formatting, project save/replace/restore and coordinate navigation. The latest three-platform CI passed on 2026-10-18; full annotation-coordinate checks and standalone packaging passed on Ubuntu. | Add automated interaction coverage for each research tab and a native file-save interaction test. |
-| Annotation correctness and scale | Independent source-to-model coordinate checks cover Arabidopsis, rice, maize and soybean. Eight checks contain 4,641,758 exact gene/transcript/exon/CDS/UTR tuples with no missing or extra tuples. Full-annotation import times are recorded in `benchmarks/results/2026-10-16/`. | Existing timings are shared-container smoke measurements. Repeat controlled runs on documented hardware and memory limits. |
-| Existing-tool comparison | On four Arabidopsis loci, PhytoScope and gffutils 0.13 produced identical 78 source tuples in three fresh-process alternating-order trials. | The baseline is one species and a narrow extraction task. Extend to matched loci in the four plants and compare each research function only to a tool that provides the same output. Do not compare incomparable memory/index designs as a general speed ranking. |
+| Annotation correctness and scale | Independent source-to-model checks cover Arabidopsis, rice, maize and soybean. Eight inventories contain 4,641,758 exact gene/transcript/exon/CDS/UTR tuples with zero missing/extra tuples; the full-annotation checks passed in the 2026-10-18 Ubuntu CI run. | Repeat controlled performance runs on documented hardware/memory limits; the recognized-feature scope does not validate unsupported GFF types. |
+| Existing-tool comparison | A matched PhytoScope vs `gffutils==0.13` benchmark passed for Arabidopsis, rice, maize and soybean fixtures, with 10/24/20/40 gene loci respectively, three alternating-order trials per species, and exact source-to-output tuple agreement on Ubuntu, Windows and macOS. Observed medians and limitations are recorded in [the CI benchmark report](../benchmarks/results/2026-10-18/cross-species-extraction.md). | The comparison is still a narrow parser/hierarchy task. Add curated module-level gold standards for homology, domain mapping, promoter extraction and expression summaries; run controlled hardware benchmarks before speed claims. |
 | Research-module correctness | Unit cases cover strand-aware promoter boundaries, DNA/CDS flags, measured zero versus missing expression, local-alignment identity and coverage, a pairwise-cell limit, and domain coordinates across multi-exon minus-strand CDS. | Build a versioned gold set from curated plant homologs and domain records. Report precision/recall, coordinate agreement, runtimes, and cases that fail or are rejected. |
 | Independent biological example | A reproducible Arabidopsis RBCS-family case is packaged from Expression Atlas E-MTAB-7978. It links four loci to TAIR10/Araport11 gene models and six tissue measurements; the source cells, hashes and project-restoration regression are retained. Independent mutant evidence supplies functional context for RBCS1A/RBCS3B; it does not validate the tissue-expression ranking or establish a new finding. | This is a known biological pattern, not a new discovery. The six selected atlas conditions each have one assay, and the current case does not include a matched multi-tool task study or independent raw-data reanalysis. Use it as an integration and reproducibility case only. A claim that PhytoScope enabled a finding unavailable through ordinary workflows still requires a separate, independently checked case. |
 
@@ -84,3 +84,14 @@ still yields zero candidates meeting its predeclared independent-evidence
 threshold. The CIPK15 junction peptide is from the Mergner source rather than
 the new Reyes experiments; the published transcript annotation predates this
 analysis. No new functional effect or novel biological finding is claimed.
+
+
+## Recorded CI results (2026-10-18)
+
+The [cross-species extraction report](../benchmarks/results/2026-10-18/cross-species-extraction.md)
+records run #156: all three operating-system jobs passed, all four species
+passed three-trial exact-tuple comparison, and eight source-to-model inventories
+contained 4,641,758 tuples with no missing/extra records. The benchmark reports
+in-memory import and SQLite index construction separately; it is not a speed
+ranking. The remaining module-level gold sets and human task study are still
+open.
