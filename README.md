@@ -233,3 +233,14 @@ Windows and macOS; actual native dialog/hardware checks are reported separately.
 The right-hand Gene Details → Sequences section displays the gene genomic span and, for each annotated transcript, the spliced transcript, CDS, 5′ UTR, 3′ UTR and translated protein sequence. Each sequence has Copy sequence and Copy FASTA actions. Transcript IDs, protein IDs, exon counts, lengths, strand orientation, source FASTA and UTR provenance are shown where available.
 
 The Arabidopsis TAIR10 example bundles the version-pinned Ensembl Plants release 62 genomic FASTA (src/main/resources/data/species/arabidopsis/TAIR10_genomic.fna.gz); its checksum and chromosome lengths are recorded in genome-sequence-provenance.json. Other species or assemblies can use File → Import genome FASTA. The genome FASTA must match the annotation assembly and sequence names. The extractor respects 1-based inclusive GFF3 coordinates, reverse-complements minus-strand loci, concatenates exons/CDS in transcription order, and translates CDS with the standard nuclear genetic code. If UTR features are absent, terminal exonic bases outside annotated CDS boundaries are labelled as inferred; missing transcript/CDS models are never fabricated.
+
+
+## Research evidence and evaluation
+
+- [Evidence status and publication claim boundaries](docs/annals-evidence.md)
+- [Validation and cross-species benchmarks](docs/validation-and-benchmarks.md)
+- [Researcher-value study protocol](docs/researcher-value-study.md)
+
+The biological-discovery screen is reported with its negative validation outcome;
+a candidate is not presented as a new discovery unless it passes the stated
+independent-evidence criteria.

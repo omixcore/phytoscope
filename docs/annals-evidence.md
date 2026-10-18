@@ -60,3 +60,27 @@ translated isoforms with independent Python results, checks the CIPK15 junction
 across two CDS blocks, and restores a portable project with the failed-validation
 status retained. This supplies coordinate correctness evidence for these records;
 it does not replace curated multi-species benchmarks or a matched user-task study.
+
+
+## Follow-up evidence work (2026-10-18)
+
+A reproducible four-species extraction comparison has been added to CI. It
+compares the exact annotation hierarchy output from PhytoScope with
+`gffutils==0.13` on source-verified Arabidopsis, rice, maize and soybean
+release-62 excerpts, with alternating trial order and source-to-output
+coordinate checks. Its results are retained as CI artifacts. The comparison
+is intentionally limited to parsing/hierarchy extraction: it is not a
+cross-species gold standard for homology, domain mapping, sequence QC,
+promoter extraction or expression summaries, and it does not support a general
+speed ranking.
+
+A separate researcher-value protocol now defines paired tasks, frozen gold
+outputs, task success/error/time/handoff/provenance metrics, and a blank
+anonymized log template. No human participants have been measured, so
+researcher time savings and usability remain unproven.
+
+The independent biological-discovery gap remains open. The 13-gene screen
+still yields zero candidates meeting its predeclared independent-evidence
+threshold. The CIPK15 junction peptide is from the Mergner source rather than
+the new Reyes experiments; the published transcript annotation predates this
+analysis. No new functional effect or novel biological finding is claimed.

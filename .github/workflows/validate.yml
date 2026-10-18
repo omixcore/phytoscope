@@ -35,6 +35,11 @@ jobs:
       - name: Java and JavaFX regressions
         shell: bash
         run: sh mvnw -B -Pui-tests verify
+      - name: Install matched extraction baseline
+        run: python -m pip install gffutils==0.13
+      - name: Four-species matched extraction benchmark
+        shell: bash
+        run: python tools/run_cross_species_extraction_benchmark.py --jar target/phytoscope-0.2.0.jar --out target/cross-species-extraction --trials 3
       - name: Real case, no display required
         shell: bash
         run: |
@@ -60,6 +65,7 @@ jobs:
             target/case-study/
             target/case-study.phytoscope
             target/benchmark-rice/
+            target/cross-species-extraction/
             target/research-validation/
             target/independent-isoforms/reproduced/
             target/packaged-smoke/

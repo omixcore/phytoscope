@@ -82,3 +82,32 @@ participants. Assess these tasks separately:
 No human task-time study or native Windows/macOS dialog evaluation is claimed by
 this repository's automated evidence. Those results require access to actual
 participants and target machines.
+
+
+## Four-species matched extraction benchmark
+
+The CI workflow also runs `tools/run_cross_species_extraction_benchmark.py`
+against the source-verified release-62 annotation excerpts for Arabidopsis,
+rice, maize and soybean. It uses the same source file and selected loci for
+PhytoScope and `gffutils==0.13`, runs at least three fresh-process trials with
+alternating execution order, compares exact gene/transcript/exon/CDS/UTR tuples,
+and independently checks both outputs against the source inventory. Raw
+per-trial timing and correctness reports are retained in the
+`cross-species-extraction` CI artifact.
+
+The fixtures sample two annotated genes per nuclear chromosome. They are useful
+for multi-species parser/query regression but are **not** whole-genome functional
+gold standards. PhytoScope in-memory import time and SQLite index construction
+time are reported separately; they are not used to assert general speed
+superiority. This benchmark does not validate homology, domain prediction,
+promoter function, or researcher usability.
+
+## Researcher-value study
+
+The protocol and blank data-collection template are in
+[researcher-value evaluation](researcher-value-study.md) and
+`benchmarks/researcher-value/task-log-template.tsv`. These files define a
+paired, counterbalanced comparison, task acceptance criteria, provenance scoring
+and reporting rules. They are instruments for a future study, **not user-study
+results**. No human task times or usability scores are claimed until actual
+participants complete the study.
