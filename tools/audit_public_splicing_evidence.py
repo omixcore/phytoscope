@@ -46,8 +46,8 @@ PMC_SUPPLEMENTS = {
     ],
 }
 MAX_TABLE_BYTES = 180 * 1024 * 1024
-MAX_LIBRARY_FILE_BYTES = 200 * 1024 * 1024
-MAX_LIBRARY_TOTAL_BYTES = 450 * 1024 * 1024
+MAX_LIBRARY_FILE_BYTES = 400 * 1024 * 1024
+MAX_LIBRARY_TOTAL_BYTES = 1100 * 1024 * 1024
 
 
 def sha256(data: bytes) -> str:
@@ -519,6 +519,9 @@ def audit_figshare_spectral_library():
     for item in likely:
         name = item.get("name") or "unnamed"
         size = int(item.get("size") or 0)
+        if not name.lower().endswith((".txt", ".tsv", ".csv", ".msp", ".sptxt", ".splib", ".zip", ".gz")):
+            skipped.append({"name": name, "article_id": item.get("article_id"), "size": size, "reason": "not a directly searchable text/zip spectral-library format"})
+            continue
         if size > MAX_LIBRARY_FILE_BYTES or total_downloaded + size > MAX_LIBRARY_TOTAL_BYTES:
             skipped.append({"name": name, "article_id": item.get("article_id"), "size": size, "reason": "download cap"})
             continue
@@ -530,6 +533,7 @@ def audit_figshare_spectral_library():
             data = fetch_bytes(url, max_bytes=MAX_LIBRARY_FILE_BYTES)
             total_downloaded += len(data)
             hits = []
+            matching_lines = []
             if data[:4] == b"PK\x03\x04":
                 hits = scan_zip_for_peptide(data)
             else:
@@ -539,7 +543,10 @@ def audit_figshare_spectral_library():
                         search_data = gzip.decompress(data)
                     except Exception:
                         search_data = data
-                if PEPTIDE.encode() in search_data:
+                for line in io.BytesIO(search_data):
+                    if PEPTIDE.encode() in line:
+                        matching_lines.append(line.decode("utf-8", errors="replace").strip()[:1200])
+                if matching_lines:
                     hits = [name]
             searched.append({
                 "article_id": item.get("article_id"),
@@ -556,6 +563,7 @@ def audit_figshare_spectral_library():
                     "file": name,
                     "member": hit,
                     "peptide": PEPTIDE,
+                    "matching_lines": matching_lines[:20],
                 })
         except Exception as exc:
             skipped.append({
