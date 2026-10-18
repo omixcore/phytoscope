@@ -140,12 +140,18 @@ public final class ResearchAnalysisPane extends BorderPane {
     }
     private void write(String title,String text) { result.setText(title+"\n"+Objects.toString(text,"")); }
     private void export() {
-        FileChooser chooser=new FileChooser(); chooser.setTitle("Export analysis results"); chooser.setInitialFileName("phytoscope-analysis.txt");
+        FileChooser chooser=new FileChooser(); chooser.setTitle("Export analysis results"); chooser.setInitialFileName("phytoscope-analysis.tsv");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Tab-separated results", "*.tsv"));
         var file=chooser.showSaveDialog(getScene()==null?null:getScene().getWindow()); if(file==null)return;
-        try { Files.writeString(file.toPath(),result.getText()+System.lineSeparator()); } catch(IOException ex) { write("Export failed",ex.getMessage()); }
+        try {
+            String[] lines=result.getText().split("\\R",2);
+            String title=lines.length==0?"":lines[0]; String body=lines.length<2?"":lines[1];
+            String safeBody=body.replace("\\", "\\\\").replace("\t", "\\t").replace("\r", "\\r").replace("\n", "\\n");
+            Files.writeString(file.toPath(), "Analysis\tResult\n"+title.replace("\t"," ")+"\t"+safeBody+"\n");
+        } catch(IOException ex) { write("Export failed",ex.getMessage()); }
     }
-    public ProjectStore.ResearchState state() { return new ProjectStore.ResearchState(parse(upstream.getText(),2000),parse(downstream.getText(),200),"BED",grouping.assignments(),species.getText(),parseDouble(identity.getText(),30),"","",1,1,result.getText()); }
-    public void restore(ProjectStore.ResearchState state) { if(state==null)return; upstream.setText(Integer.toString(state.upstream())); downstream.setText(Integer.toString(state.downstream())); grouping.clear(); grouping.assignAll(state.sampleGroups()); species.setText(state.homologySpecies()); identity.setText(Double.toString(state.homologyIdentity())); result.setText(Objects.toString(state.lastResult(),"")); refreshSamples(); }
+    public ProjectStore.ResearchState state() { return new ProjectStore.ResearchState(parse(upstream.getText(),2000),parse(downstream.getText(),200),"BED",grouping.assignments(),species.getText(),parseDouble(identity.getText(),30),"","",1,1,result.getText(),custom.getText(),qcSequence.getText(),proteinFasta.getText(),domains.getText()); }
+    public void restore(ProjectStore.ResearchState state) { if(state==null)return; upstream.setText(Integer.toString(state.upstream())); downstream.setText(Integer.toString(state.downstream())); grouping.clear(); grouping.assignAll(state.sampleGroups()); species.setText(Objects.toString(state.homologySpecies(),"")); identity.setText(Double.toString(state.homologyIdentity())); result.setText(Objects.toString(state.lastResult(),"")); custom.setText(Objects.toString(state.customInterval(),"")); qcSequence.setText(Objects.toString(state.qcSequence(),"")); proteinFasta.setText(Objects.toString(state.proteinFasta(),"")); domains.setText(Objects.toString(state.domainInput(),"")); refreshSamples(); }
     private static int parse(String s,int d){try{return Integer.parseInt(s);}catch(Exception e){return d;}}
     private static double parseDouble(String s,double d){try{return Double.parseDouble(s);}catch(Exception e){return d;}}
 }

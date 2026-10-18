@@ -22,9 +22,17 @@ public final class ProjectStore {
     public record ResearchState(int upstream, int downstream, String intervalFormat,
                                 Map<String, String> sampleGroups, String homologySpecies,
                                 double homologyIdentity, String domainProtein, String domainName,
-                                int domainStartAa, int domainEndAa, String lastResult) {
+                                int domainStartAa, int domainEndAa, String lastResult,
+                                String customInterval, String qcSequence, String proteinFasta, String domainInput) {
+        public ResearchState(int upstream, int downstream, String intervalFormat,
+                             Map<String, String> sampleGroups, String homologySpecies,
+                             double homologyIdentity, String domainProtein, String domainName,
+                             int domainStartAa, int domainEndAa, String lastResult) {
+            this(upstream, downstream, intervalFormat, sampleGroups, homologySpecies, homologyIdentity,
+                    domainProtein, domainName, domainStartAa, domainEndAa, lastResult, "", "", "", "");
+        }
         public ResearchState { sampleGroups = sampleGroups == null ? Map.of() : Map.copyOf(sampleGroups); }
-        public static ResearchState defaults() { return new ResearchState(2000, 200, "BED", Map.of(), "", 30.0, "", "", 1, 1, ""); }
+        public static ResearchState defaults() { return new ResearchState(2000, 200, "BED", Map.of(), "", 30.0, "", "", 1, 1, "", "", "", "", ""); }
     }
     public record Manifest(int schemaVersion, String applicationVersion, String annotationFormat,
                            List<Source> annotations, Source expression, ViewState view,
@@ -73,7 +81,7 @@ public final class ProjectStore {
                     matrix = write(zip, "expression.tsv", expression.getSource(),
                             new ByteArrayInputStream(tsv.toString().getBytes(StandardCharsets.UTF_8)));
                 }
-                Manifest manifest = new Manifest(2, "0.2.0", genome.getFormat().name(), List.copyOf(sources), matrix, view, expression.getImportReport(), research);
+                Manifest manifest = new Manifest(3, "0.2.0", genome.getFormat().name(), List.copyOf(sources), matrix, view, expression.getImportReport(), research);
                 zip.putNextEntry(new ZipEntry("project.json"));
                 zip.write(JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(manifest));
                 zip.closeEntry();
@@ -91,7 +99,7 @@ public final class ProjectStore {
             if (manifestEntry == null || manifestEntry.getSize() > 4_000_000) throw new IOException("Invalid project manifest");
             Manifest m;
             try (var in = zip.getInputStream(manifestEntry)) { m = JSON.readValue(in.readNBytes(4_000_001), Manifest.class); }
-            if ((m.schemaVersion() != 1 && m.schemaVersion() != 2) || m.annotations() == null || m.annotations().isEmpty() || m.view() == null)
+            if ((m.schemaVersion() < 1 || m.schemaVersion() > 3) || m.annotations() == null || m.annotations().isEmpty() || m.view() == null)
                 throw new IOException("Unsupported or incomplete project schema");
             if (m.view().start() < 1 || m.view().end() < m.view().start()) throw new IOException("Invalid saved coordinate window");
             io.gitee.omixcore.phytoscope.comparison.ComparisonFigure.Alignment.valueOf(m.view().alignment());

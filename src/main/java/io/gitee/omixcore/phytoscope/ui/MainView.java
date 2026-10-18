@@ -908,6 +908,7 @@ public class MainView extends BorderPane {
                 }
                 renderer.setSelectedGene(gene);
                 detailPane.showGene(gene);
+                researchPane.selectGene(gene);
                 redraw();
             }
         });

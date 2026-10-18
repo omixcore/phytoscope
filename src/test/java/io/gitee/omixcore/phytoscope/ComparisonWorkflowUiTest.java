@@ -160,7 +160,8 @@ class ComparisonWorkflowUiTest {
             Path project = out.resolve("atlas.phytoscope");
             var savedResearch = new ProjectStore.ResearchState(1800, 150, "BED",
                     java.util.Map.of("Root", "belowground", "Leaf", "aboveground"), "rice", 42.0,
-                    "", "", 1, 1, "research-workbench round trip");
+                    "", "", 1, 1, "research-workbench round trip",
+                    "Chr1 10 20 test 0 +", ">qc\nATGC", ">rice|p1\nMKWV", "p1\tPF00001\t2\t4");
             view.getResearchPane().restore(savedResearch);
             view.saveProject(project);
             view.loadAnnotation(Path.of("src/test/resources/chromosome-validation/rice.gff3"));
