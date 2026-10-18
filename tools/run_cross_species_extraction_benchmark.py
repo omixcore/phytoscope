@@ -64,7 +64,7 @@ def run_checked(name, command, root):
     )
     if completed.returncode:
         raise RuntimeError(
-            f"{name} failed (exit {completed.returncode):\n"
+            f"{name} failed (exit {completed.returncode}):\n"
             f"COMMAND: {' '.join(map(str, command))}\n"
             f"STDOUT:\n{completed.stdout}\nSTDERR:\n{completed.stderr}"
         )
