@@ -345,6 +345,74 @@ class ResearchModuleGoldSetTest {
                 "genes", 13,
                 "validation", "Separately checked against independent Python coordinates by check_isoform_case.py and DomainCaseValidationTest",
                 "interpretation", "Coordinate mapping validation does not establish isoform function or a new biological discovery."));
+        // Cross-species family-level benchmark: four pinned mature RBCS sequences
+        // plus the two independently extracted Arabidopsis negative controls.
+        List<ProteinHomologyService.Protein> crossSpeciesRbcS = readCrossSpeciesRbcS();
+        assertEquals(4, crossSpeciesRbcS.size());
+        assertEquals(Set.of("Arabidopsis thaliana", "Oryza sativa japonica",
+                "Zea mays B73", "Glycine max"),
+                crossSpeciesRbcS.stream().map(ProteinHomologyService.Protein::species).collect(java.util.stream.Collectors.toSet()));
+        Map<String, Integer> expectedMatureLengths = Map.of(
+                "P10797", 127, "Q0INY7", 128, "O24574", 124, "P12468", 124);
+        for (var protein : crossSpeciesRbcS) {
+            assertEquals(expectedMatureLengths.get(protein.id()), protein.sequence().length(),
+                    "Pinned mature-sequence length " + protein.id());
+        }
+        List<ProteinHomologyService.Protein> crossSpeciesTargets = new ArrayList<>(crossSpeciesRbcS);
+        crossSpeciesTargets.addAll(negativeControls);
+        long crossSpeciesStarted = System.nanoTime();
+        List<ProteinHomologyService.Hit> crossSpeciesHits = homology.compare(
+                crossSpeciesRbcS, crossSpeciesTargets, 30, 20, 0.5, 0.5);
+        double crossSpeciesElapsedMs = (System.nanoTime() - crossSpeciesStarted) / 1_000_000.0;
+        long crossSpeciesPositiveHits = crossSpeciesHits.stream().filter(hit ->
+                crossSpeciesRbcS.stream().anyMatch(p -> p.id().equals(hit.targetId())
+                        && p.species().equals(hit.targetSpecies()))).count();
+        long crossSpeciesNegativeHits = crossSpeciesHits.stream().filter(hit ->
+                negativeFamilies.containsKey(hit.targetId())
+                        && hit.targetSpecies().equals("Arabidopsis thaliana")).count();
+        assertEquals(16, crossSpeciesPositiveHits,
+                "All 4 x 4 RBCS-family comparisons, including self-pairs, should pass shared filters");
+        assertEquals(0, crossSpeciesNegativeHits,
+                "Unrelated Arabidopsis controls should not pass the cross-species RBCS filters");
+        List<Map<String, Object>> crossSpeciesReferenceRows = new ArrayList<>();
+        for (var protein : crossSpeciesRbcS) {
+            crossSpeciesReferenceRows.add(Map.of(
+                    "gene_id", protein.id(), "species", protein.species(),
+                    "family", "RBCS", "sequence", protein.sequence()));
+        }
+        for (var protein : negativeControls) {
+            crossSpeciesReferenceRows.add(Map.of(
+                    "gene_id", protein.id(), "species", protein.species(),
+                    "family", negativeFamilies.get(protein.id()), "sequence", protein.sequence()));
+        }
+        List<Map<String, Object>> crossSpeciesHitRows = crossSpeciesHits.stream()
+                .map(hit -> Map.<String, Object>of(
+                        "query_gene", hit.queryId(), "query_species", hit.querySpecies(),
+                        "target_gene", hit.targetId(), "target_species", hit.targetSpecies(),
+                        "identity_percent", hit.identity(), "aligned_length", hit.alignedLength(),
+                        "query_coverage", hit.queryCoverage(), "target_coverage", hit.targetCoverage()))
+                .toList();
+        Map<String, Object> crossSpeciesReport = new LinkedHashMap<>();
+        crossSpeciesReport.put("reference_set", "Four public mature RBCS sequences across Arabidopsis, rice, maize and soybean; two Arabidopsis unrelated-family controls");
+        crossSpeciesReport.put("positive_species_count", 4);
+        crossSpeciesReport.put("positive_protein_count", crossSpeciesRbcS.size());
+        crossSpeciesReport.put("negative_control_protein_count", negativeControls.size());
+        crossSpeciesReport.put("phytoscope_elapsed_ms", crossSpeciesElapsedMs);
+        crossSpeciesReport.put("thresholds", Map.of(
+                "minimum_identity_percent", 30,
+                "minimum_aligned_length_aa", 20,
+                "minimum_query_coverage_fraction", 0.5,
+                "minimum_target_coverage_fraction", 0.5));
+        crossSpeciesReport.put("reference_proteins", crossSpeciesReferenceRows);
+        crossSpeciesReport.put("filtered_search", Map.of(
+                "positive_family_hits_expected_including_self", 16,
+                "positive_family_hits_reported", crossSpeciesPositiveHits,
+                "nonself_positive_pairs_expected", 12,
+                "negative_control_pairs_expected", crossSpeciesRbcS.size() * negativeControls.size(),
+                "negative_control_hits_reported", crossSpeciesNegativeHits,
+                "hits", crossSpeciesHitRows));
+        crossSpeciesReport.put("interpretation", "Small cross-species RBCS family-similarity benchmark only; the paralog-rich family does not establish one-to-one orthology or proteome-wide accuracy.");
+        report.put("cross_species_rbcS_family", crossSpeciesReport);
         report.put("claim_boundary", "These calculations validate selected implementation outputs on pinned real inputs. They do not establish general cross-species accuracy, orthology, usability or a new biological discovery.");
         JSON.writerWithDefaultPrettyPrinter().writeValue(output.resolve("research-module-gold-set.json").toFile(), report);
     }
@@ -503,6 +571,41 @@ class ResearchModuleGoldSetTest {
             case 'N' -> 'N';
             default -> 'N';
         };
+    }
+
+    private static List<ProteinHomologyService.Protein> readCrossSpeciesRbcS() throws IOException {
+        InputStream resource = ResearchModuleGoldSetTest.class
+                .getResourceAsStream("/research-validation/cross-species-rbcs-mature.faa");
+        if (resource == null) throw new IOException("Missing cross-species mature RBCS fixture");
+        Map<String, FastaRecord> records = new LinkedHashMap<>();
+        try (InputStream raw = resource;
+             BufferedReader reader = new BufferedReader(new InputStreamReader(raw, StandardCharsets.UTF_8))) {
+            String header = null;
+            StringBuilder sequence = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(">")) {
+                    if (header != null) putFastaRecord(records, header, sequence);
+                    header = line.substring(1).trim();
+                    sequence.setLength(0);
+                } else if (!line.isBlank()) {
+                    if (header == null) throw new IOException("RBCS sequence appears before first FASTA header");
+                    sequence.append(line.replaceAll("\\s+", "").toUpperCase(Locale.ROOT));
+                }
+            }
+            if (header != null) putFastaRecord(records, header, sequence);
+        }
+        List<ProteinHomologyService.Protein> proteins = new ArrayList<>();
+        for (FastaRecord record : records.values()) {
+            String[] fields = record.id().split("\\\\|", -1);
+            if (fields.length != 3 || fields[0].isBlank() || fields[1].isBlank() || fields[2].isBlank()) {
+                throw new IOException("Expected accession|species_key|gene_symbol FASTA header, got: " + record.id());
+            }
+            proteins.add(new ProteinHomologyService.Protein(
+                    fields[1].replace('_', ' '), fields[0], record.sequence()));
+        }
+        if (proteins.size() != 4) throw new IOException("Expected four curated cross-species RBCS proteins");
+        return List.copyOf(proteins);
     }
 
     private static Map<String, FastaRecord> readBundledFasta() throws IOException {
