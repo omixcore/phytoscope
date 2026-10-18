@@ -35,14 +35,17 @@ differential-expression test.
 | AT5G38430 / RBCS1B | 0.8 | 328 | 357 | 192 | 0 | 0 |
 
 All four loci have higher TPM in the sampled leaf conditions than in root,
-seed, or pollen. RBCS1A is the most abundant in the rosette-leaf samples;
-RBCS3B is next among the four in those samples. This agrees with the independent
-genetic study by Izumi et al. (2012), which found that mutations in RBCS1A and
-RBCS3B had additive effects on Rubisco accumulation and leaf photosynthetic
-capacity ([doi:10.1093/jxb/err434](https://doi.org/10.1093/jxb/err434)). The
-agreement is a cross-study consistency check, not an independent reanalysis of
-the same biological material and not evidence that the expression pattern is
-new.
+seed, or pollen. RBCS1A is the most abundant in all three sampled leaf conditions.
+RBCS3B ranks second in rosette leaf 8 and cauline leaf; in rosette leaf 1,
+RBCS2B (1,275 TPM) is slightly more abundant than RBCS3B (1,233 TPM). These are
+observed ranks, without a statistical test of the differences.
+
+The independent genetic study by Izumi et al. (2012) found that mutations in
+RBCS1A and RBCS3B had additive effects on Rubisco accumulation and leaf
+photosynthetic capacity ([doi:10.1093/jxb/err434](https://doi.org/10.1093/jxb/err434)).
+That study provides functional context for these two loci; it does not validate
+the tissue-expression rankings in this atlas subset. Neither the atlas
+inspection nor this literature comparison establishes a new biological finding.
 
 ## What PhytoScope demonstrates
 
