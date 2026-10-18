@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+from collections import defaultdict
 import gzip
 import hashlib
 import io
@@ -33,6 +34,7 @@ ENA_API = (
     "read_count,base_count,fastq_ftp,fastq_bytes,submitted_ftp,submitted_bytes&format=tsv"
 )
 FIGSHARE_API = "https://api.figshare.com/v2/articles/9959036"
+FIGSHARE_COLLECTION_API = "https://api.figshare.com/v2/collections/4647293/articles?page=1&page_size=100"
 PMC_SUPPLEMENTS = {
     "pastdb_table_s1": [
         "https://pmc.ncbi.nlm.nih.gov/articles/instance/7807721/bin/13059_2020_2258_MOESM1_ESM.xlsx",
@@ -264,6 +266,129 @@ def scrape_pastdb_tables(outdir: Path, genes):
     return manifest
 
 
+def build_pastdb_candidate_events(outdir: Path, genes):
+    """Join PastDB event IDs to candidate genes, coordinates, metrics and PSI."""
+    map_path = outdir / "pastdb_event_gene_map.gz"
+    info_path = outdir / "pastdb_event_information.gz"
+    metrics_path = outdir / "pastdb_event_metrics.gz"
+    psi_path = outdir / "pastdb_abiotic_psi.gz"
+    if not all(path.exists() for path in (map_path, info_path, metrics_path)):
+        return {"status": "incomplete", "events": [], "exact_cipk15_target_junction_present": None}
+
+    event_to_genes = defaultdict(set)
+    with gzip.open(map_path, "rt", encoding="utf-8", errors="replace") as handle:
+        reader = csv.reader(handle, delimiter="\t")
+        next(reader, None)
+        for row in reader:
+            if len(row) >= 2 and row[1].upper() in genes:
+                event_to_genes[row[0]].add(row[1].upper())
+
+    metrics = {}
+    with gzip.open(metrics_path, "rt", encoding="utf-8", errors="replace") as handle:
+        reader = csv.reader(handle, delimiter="\t")
+        next(reader, None)
+        for row in reader:
+            if len(row) >= 5 and row[0] in event_to_genes:
+                metrics[row[0]] = {
+                    "average_psi": row[1], "min_psi": row[2], "max_psi": row[3], "range_psi": row[4]
+                }
+
+    abiotic_psi = {}
+    if psi_path.exists():
+        with gzip.open(psi_path, "rt", encoding="utf-8", errors="replace") as handle:
+            reader = csv.reader(handle, delimiter="\t")
+            header = next(reader, [])
+            psi_columns = [
+                i for i, name in enumerate(header)
+                if i >= 6 and name and not name.endswith("-Q")
+            ]
+            for row in reader:
+                if len(row) > 1 and row[1] in event_to_genes:
+                    abiotic_psi[row[1]] = {
+                        header[i]: row[i] for i in psi_columns if i < len(row)
+                    }
+
+    events = []
+    with gzip.open(info_path, "rt", encoding="utf-8", errors="replace") as handle:
+        reader = csv.reader(handle, delimiter="\t")
+        next(reader, None)
+        for row in reader:
+            if len(row) < 11 or row[1] not in event_to_genes:
+                continue
+            coordinate_fields = " ".join(row[2:11]).lower()
+            exact = (
+                "chr5:311309-311443" in coordinate_fields
+                or ("311308" in coordinate_fields and "311444" in coordinate_fields)
+            )
+            record = {
+                "genes": sorted(event_to_genes[row[1]]),
+                "gene_symbol": row[0],
+                "event_id": row[1],
+                "coordinate": row[2],
+                "event_length": row[3],
+                "full_coordinate": row[4],
+                "event_type": row[5],
+                "reference_coordinate": row[6],
+                "alternative_region": row[9],
+                "metrics": metrics.get(row[1], {}),
+                "abiotic_psi": abiotic_psi.get(row[1], {}),
+                "exact_cipk15_target_junction_coordinate_match": exact,
+            }
+            events.append(record)
+
+    with (outdir / "pastdb-candidate-event-join.tsv").open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "genes", "gene_symbol", "event_id", "coordinate", "event_length",
+                "full_coordinate", "event_type", "reference_coordinate", "alternative_region",
+                "average_psi", "min_psi", "max_psi", "range_psi",
+                "exact_cipk15_target_junction_coordinate_match", "abiotic_psi_json",
+            ],
+            delimiter="\t",
+        )
+        writer.writeheader()
+        for event in events:
+            metric = event["metrics"]
+            writer.writerow({
+                "genes": ";".join(event["genes"]),
+                "gene_symbol": event["gene_symbol"],
+                "event_id": event["event_id"],
+                "coordinate": event["coordinate"],
+                "event_length": event["event_length"],
+                "full_coordinate": event["full_coordinate"],
+                "event_type": event["event_type"],
+                "reference_coordinate": event["reference_coordinate"],
+                "alternative_region": event["alternative_region"],
+                "average_psi": metric.get("average_psi", ""),
+                "min_psi": metric.get("min_psi", ""),
+                "max_psi": metric.get("max_psi", ""),
+                "range_psi": metric.get("range_psi", ""),
+                "exact_cipk15_target_junction_coordinate_match": event["exact_cipk15_target_junction_coordinate_match"],
+                "abiotic_psi_json": json.dumps(event["abiotic_psi"], ensure_ascii=False),
+            })
+
+    cipk15_events = [event for event in events if "AT5G01810" in event["genes"]]
+    exact_events = [event for event in cipk15_events if event["exact_cipk15_target_junction_coordinate_match"]]
+    return {
+        "status": "joined",
+        "candidate_event_count": len(events),
+        "events_by_candidate_gene": {
+            gene: [event for event in events if gene in event["genes"]]
+            for gene in sorted(genes)
+        },
+        "cipk15_event_count": len(cipk15_events),
+        "cipk15_events": cipk15_events,
+        "exact_cipk15_target_junction_present": bool(exact_events),
+        "exact_cipk15_target_junction_events": exact_events,
+        "interpretation": (
+            "Exact target junction coordinate occurs in the PastDB event catalog; inspect sample-level PSI and source metadata."
+            if exact_events else
+            "The exact candidate junction is not represented among the PastDB events mapped to CIPK15. This is a catalog-limited negative result, not evidence that the isoform is absent."
+        ),
+    }
+
+
 def fetch_ena_metadata():
     info, data = fetch_first("ENA run metadata", [ENA_API], max_bytes=20 * 1024 * 1024)
     if data is None:
@@ -327,39 +452,79 @@ def scan_zip_for_peptide(data: bytes):
 
 
 def audit_figshare_spectral_library():
-    info, raw = fetch_first("Figshare spectral library metadata", [FIGSHARE_API], max_bytes=10 * 1024 * 1024)
-    if raw is None:
-        return info, []
-    try:
-        article = json.loads(raw)
-    except Exception as exc:
-        return {**info, "status": "invalid_json", "error": str(exc)}, []
-    files = article.get("files", [])
-    info["article_title"] = article.get("title")
-    info["article_doi"] = article.get("doi")
-    info["files"] = [
-        {"name": f.get("name"), "size": f.get("size"), "download_url": f.get("download_url"),
-         "computed_md5": f.get("computed_md5")}
-        for f in files
-    ]
+    collection_info, collection_raw = fetch_first(
+        "Figshare collection metadata", [FIGSHARE_COLLECTION_API], max_bytes=20 * 1024 * 1024
+    )
+    article_summaries = []
+    if collection_raw is not None:
+        try:
+            payload = json.loads(collection_raw)
+            if isinstance(payload, list):
+                article_summaries = payload
+            elif isinstance(payload, dict):
+                article_summaries = payload.get("items", payload.get("articles", []))
+        except Exception as exc:
+            collection_info["json_error"] = str(exc)
+
+    details = []
+    article_errors = []
+    for summary in article_summaries[:100]:
+        article_id = summary.get("id")
+        if not article_id:
+            continue
+        try:
+            raw = fetch_bytes(f"https://api.figshare.com/v2/articles/{article_id}", max_bytes=20 * 1024 * 1024)
+            article = json.loads(raw)
+            details.append(article)
+        except Exception as exc:
+            article_errors.append({"id": article_id, "error": f"{type(exc).__name__}: {exc}"})
+
+    # The DOI-linked metadata record is not itself the spectral library. Keep it
+    # as a fallback metadata source, but do not count metadata files as searched spectra.
+    if not details:
+        try:
+            raw = fetch_bytes(FIGSHARE_API, max_bytes=20 * 1024 * 1024)
+            fallback = json.loads(raw)
+            if fallback.get("files"):
+                details.append(fallback)
+        except Exception as exc:
+            article_errors.append({"id": 9959036, "error": f"{type(exc).__name__}: {exc}"})
+
+    file_records = []
+    for article in details:
+        title = article.get("title", "")
+        for file_info in article.get("files", []):
+            file_records.append({
+                "article_id": article.get("id"),
+                "article_title": title,
+                "article_doi": article.get("doi"),
+                "name": file_info.get("name"),
+                "size": file_info.get("size"),
+                "download_url": file_info.get("download_url"),
+                "computed_md5": file_info.get("computed_md5"),
+            })
+
     likely = []
-    for item in files:
+    for item in file_records:
         name = (item.get("name") or "").lower()
+        if name in ("data.json", "metadata summary.csv"):
+            continue
         if any(token in name for token in ("spectral", "library", "assay")) or name.endswith(
             (".tsv", ".txt", ".msp", ".sptxt", ".splib", ".zip", ".gz")
         ):
             likely.append(item)
+
     total_downloaded = 0
     searched, skipped, peptide_hits = [], [], []
     for item in likely:
         name = item.get("name") or "unnamed"
         size = int(item.get("size") or 0)
         if size > MAX_LIBRARY_FILE_BYTES or total_downloaded + size > MAX_LIBRARY_TOTAL_BYTES:
-            skipped.append({"name": name, "size": size, "reason": "download cap"})
+            skipped.append({"name": name, "article_id": item.get("article_id"), "size": size, "reason": "download cap"})
             continue
         url = item.get("download_url")
         if not url:
-            skipped.append({"name": name, "size": size, "reason": "no download URL"})
+            skipped.append({"name": name, "article_id": item.get("article_id"), "size": size, "reason": "no download URL"})
             continue
         try:
             data = fetch_bytes(url, max_bytes=MAX_LIBRARY_FILE_BYTES)
@@ -376,21 +541,60 @@ def audit_figshare_spectral_library():
                         search_data = data
                 if PEPTIDE.encode() in search_data:
                     hits = [name]
-            searched.append({"name": name, "size": len(data), "sha256": sha256(data), "peptide_hit": bool(hits)})
+            searched.append({
+                "article_id": item.get("article_id"),
+                "article_title": item.get("article_title"),
+                "name": name,
+                "size": len(data),
+                "sha256": sha256(data),
+                "peptide_hit": bool(hits),
+            })
             for hit in hits:
-                peptide_hits.append({"file": name, "member": hit, "peptide": PEPTIDE})
+                peptide_hits.append({
+                    "article_id": item.get("article_id"),
+                    "article_title": item.get("article_title"),
+                    "file": name,
+                    "member": hit,
+                    "peptide": PEPTIDE,
+                })
         except Exception as exc:
-            skipped.append({"name": name, "size": size, "reason": f"{type(exc).__name__}: {exc}"})
-    info["files_considered"] = len(likely)
-    info["files_searched"] = searched
-    info["files_skipped"] = skipped
-    info["total_bytes_searched"] = total_downloaded
-    info["peptide_hits"] = peptide_hits
-    info["search_interpretation"] = (
-        "Exact sequence text found in a downloaded public spectral-library file; inspect the source spectrum and source-study metadata before counting it as independent protein evidence."
-        if peptide_hits else
-        "No exact sequence text was found in the eligible downloaded library files. This is not evidence of absence; skipped files and raw spectra remain unresolved."
-    )
+            skipped.append({
+                "name": name, "article_id": item.get("article_id"), "size": size,
+                "reason": f"{type(exc).__name__}: {exc}",
+            })
+
+    info = {
+        "status": "retrieved" if details else "unavailable",
+        "collection_url": FIGSHARE_COLLECTION_API,
+        "collection_metadata": collection_info,
+        "article_errors": article_errors,
+        "articles": [
+            {"id": article.get("id"), "title": article.get("title"), "doi": article.get("doi"),
+             "file_count": len(article.get("files", []))}
+            for article in details
+        ],
+        "available_files": file_records,
+        "files_considered": len(likely),
+        "files_searched": searched,
+        "files_skipped": skipped,
+        "total_bytes_searched": total_downloaded,
+        "peptide_hits": peptide_hits,
+    }
+    if peptide_hits:
+        info["search_status"] = "sequence_text_hit_needs_spectrum_review"
+        info["search_interpretation"] = (
+            "Exact sequence text found in a downloaded public spectral-library file; inspect its spectrum, uniqueness, FDR and original study provenance before counting it as independent protein evidence."
+        )
+    elif searched:
+        info["search_status"] = "not_found_in_searched_files"
+        info["search_interpretation"] = (
+            "No exact sequence text was found in the eligible downloaded library files. This is not evidence of absence; skipped files and raw spectra remain unresolved."
+        )
+    else:
+        info["search_status"] = "not_searched"
+        info["search_interpretation"] = (
+            "No eligible spectral-library data file was downloaded and searched. Independent protein evidence remains unresolved."
+        )
     return info, peptide_hits
 
 
@@ -445,6 +649,7 @@ def main():
             )
 
     report["sources"]["PastDB_downloads"] = scrape_pastdb_tables(args.out, genes)
+    report["sources"]["PastDB_downloads"]["candidate_event_join"] = build_pastdb_candidate_events(args.out, genes)
     ena_info, ena_rows = fetch_ena_metadata()
     report["sources"]["ENA_PRJNA1418670"] = ena_info
     if ena_rows:
@@ -470,7 +675,10 @@ def main():
             "candidate_ids": ";".join(candidate_ids),
             "published_supplementary_AS_rows": len(gene_hits),
             "published_supplementary_rows_json": json.dumps(gene_hits, ensure_ascii=False),
-            "independent_proteomics_library_exact_peptide_hit": bool(peptide_hits),
+            "independent_proteomics_library_exact_peptide_hit": (bool(peptide_hits) if report["sources"]["Zhang2019_Figshare_spectral_libraries"].get("files_searched") else "not_searched"),
+            "pastdb_event_count": len(report["sources"]["PastDB_downloads"].get("candidate_event_join", {}).get("events_by_candidate_gene", {}).get(gene, [])),
+            "pastdb_event_ids": ";".join(event["event_id"] for event in report["sources"]["PastDB_downloads"].get("candidate_event_join", {}).get("events_by_candidate_gene", {}).get(gene, [])),
+            "exact_cipk15_target_junction_in_pastdb_catalog": report["sources"]["PastDB_downloads"].get("candidate_event_join", {}).get("exact_cipk15_target_junction_present"),
             "interpretation": (
                 "Gene occurs in a published differential-AS table; exact isoform support requires coordinate- and sample-level review."
                 if gene_hits else
@@ -480,7 +688,8 @@ def main():
     write_tsv(
         args.out / "candidate-public-splicing-summary.tsv",
         ["gene", "candidate_ids", "published_supplementary_AS_rows",
-         "published_supplementary_rows_json", "independent_proteomics_library_exact_peptide_hit", "interpretation"],
+         "published_supplementary_rows_json", "independent_proteomics_library_exact_peptide_hit",
+         "pastdb_event_count", "pastdb_event_ids", "exact_cipk15_target_junction_in_pastdb_catalog", "interpretation"],
         summary,
     )
 
@@ -494,7 +703,10 @@ def main():
             for hit in report["sources"].get(key, {}).get("hits", [])
             if hit.get("exact_cipk15_boundaries_both_present")
         ],
-        "independent_public_spectral_library_exact_peptide_hit": bool(peptide_hits),
+        "independent_public_spectral_library_exact_peptide_hit": (bool(peptide_hits) if report["sources"]["Zhang2019_Figshare_spectral_libraries"].get("files_searched") else None),
+        "spectral_library_search_status": report["sources"]["Zhang2019_Figshare_spectral_libraries"].get("search_status", "unknown"),
+        "pastdb_cipk15_event_count": report["sources"]["PastDB_downloads"].get("candidate_event_join", {}).get("cipk15_event_count"),
+        "pastdb_cipk15_exact_target_junction_present": report["sources"]["PastDB_downloads"].get("candidate_event_join", {}).get("exact_cipk15_target_junction_present"),
         "raw_iso_seq_alignment_performed": False,
         "novel_biological_discovery_established": False,
     }
@@ -507,7 +719,9 @@ def main():
         f"- Candidate genes screened: {len(genes)}",
         f"- Candidate genes listed in screened differential-AS supplementary tables: {len(report['summary']['candidate_genes_in_screened_supplementary_tables'])}",
         f"- Exact CIPK15 junction boundaries found in supplementary rows: {len(report['summary']['exact_junction_coordinate_match_in_supplementary_rows'])}",
-        f"- Exact CIPK15 peptide text found in eligible public spectral-library files: {bool(peptide_hits)}",
+        f"- Exact CIPK15 peptide search status in public spectral-library files: {report['summary']['spectral_library_search_status']}",
+        f"- CIPK15 events in PastDB event catalog: {report['summary']['pastdb_cipk15_event_count']}",
+        f"- Exact CIPK15 target junction represented in PastDB event catalog: {report['summary']['pastdb_cipk15_exact_target_junction_present']}",
         f"- PRJNA1418670 SRA runs described by metadata: {len(ena_rows)}",
         "- Raw Iso-Seq reads have not been aligned by this audit.",
         "- Missing table or peptide-library hits are not evidence that an isoform is absent.",
