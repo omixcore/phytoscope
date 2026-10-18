@@ -83,6 +83,85 @@ class ComparisonWorkflowUiTest {
             assertEquals(2200, promoterOutput.getText().split("\\R")[1].length(),
                     "the default 2,000 upstream + 200 downstream window should be extracted");
 
+            // Exercise all five research tabs through their visible JavaFX controls.
+            var resultArea = (javafx.scene.control.TextArea) scene.lookup("#research-result");
+            assertNotNull(resultArea);
+            var qcTab = analysisTabs.getTabs().stream()
+                    .filter(tab -> "Sequence QC".equals(tab.getText())).findFirst().orElseThrow();
+            var qcButton = qcTab.getContent().lookupAll(".button").stream()
+                    .filter(javafx.scene.control.Button.class::isInstance)
+                    .map(javafx.scene.control.Button.class::cast)
+                    .filter(button -> "Check DNA / promoter".equals(button.getText())).findFirst().orElseThrow();
+            qcButton.fire();
+            assertTrue(resultArea.getText().startsWith("Sequence QC"),
+                    "sequence QC button should calculate and display real extracted promoter metrics");
+
+            var groupsTab = analysisTabs.getTabs().stream()
+                    .filter(tab -> "Sample groups".equals(tab.getText())).findFirst().orElseThrow();
+            analysisTabs.getSelectionModel().select(groupsTab);
+            view.applyCss(); view.layout();
+            var sampleCombo = (javafx.scene.control.ComboBox<String>) scene.lookup("#research-sample");
+            var groupField = (javafx.scene.control.TextField) scene.lookup("#research-group");
+            assertNotNull(sampleCombo); assertNotNull(groupField);
+            sampleCombo.setValue("Rosette_leaf_1");
+            groupField.setText("leaf");
+            var assignGroup = groupsTab.getContent().lookupAll(".button").stream()
+                    .filter(javafx.scene.control.Button.class::isInstance)
+                    .map(javafx.scene.control.Button.class::cast)
+                    .filter(button -> "Assign group".equals(button.getText())).findFirst().orElseThrow();
+            assignGroup.fire();
+            assertEquals("leaf", view.getResearchPane().state().sampleGroups().get("Rosette_leaf_1"));
+            var summarize = groupsTab.getContent().lookupAll(".button").stream()
+                    .filter(javafx.scene.control.Button.class::isInstance)
+                    .map(javafx.scene.control.Button.class::cast)
+                    .filter(button -> "Summarize selected gene".equals(button.getText())).findFirst().orElseThrow();
+            summarize.fire();
+            assertTrue(resultArea.getText().startsWith("Grouped expression"),
+                    "sample grouping should summarize the selected gene from imported measurements");
+
+            var homologyTab = analysisTabs.getTabs().stream()
+                    .filter(tab -> "Homology".equals(tab.getText())).findFirst().orElseThrow();
+            analysisTabs.getSelectionModel().select(homologyTab);
+            view.applyCss(); view.layout();
+            var proteinInput = (javafx.scene.control.TextArea) scene.lookup("#research-protein-fasta");
+            assertNotNull(proteinInput);
+            proteinInput.setText(">Arabidopsis|testA\nMKWVTF\n>Rice|testB\nMKWVTF\n");
+            var homologyFields = homologyTab.getContent().lookupAll(".text-field").stream()
+                    .filter(javafx.scene.control.TextField.class::isInstance)
+                    .map(javafx.scene.control.TextField.class::cast).toList();
+            var speciesField = homologyFields.stream().filter(field -> "species A".equals(field.getText()))
+                    .findFirst().orElseThrow();
+            var identityField = homologyFields.stream().filter(field -> "30".equals(field.getText()))
+                    .findFirst().orElseThrow();
+            speciesField.setText("Arabidopsis");
+            identityField.setText("30");
+            var compareProteins = homologyTab.getContent().lookupAll(".button").stream()
+                    .filter(javafx.scene.control.Button.class::isInstance)
+                    .map(javafx.scene.control.Button.class::cast)
+                    .filter(button -> "Compare proteins".equals(button.getText())).findFirst().orElseThrow();
+            compareProteins.fire();
+            assertTrue(resultArea.getText().contains("identity=100.0"),
+                    "homology UI should report the known exact protein match");
+
+            var domainsTab = analysisTabs.getTabs().stream()
+                    .filter(tab -> "Domains".equals(tab.getText())).findFirst().orElseThrow();
+            analysisTabs.getSelectionModel().select(domainsTab);
+            view.applyCss(); view.layout();
+            var domainInput = (javafx.scene.control.TextArea) scene.lookup("#research-domain-input");
+            assertNotNull(domainInput);
+            domainInput.setText("AT1G67090.1\tRBCS domain\t1\t10");
+            var mapDomains = domainsTab.getContent().lookupAll(".button").stream()
+                    .filter(javafx.scene.control.Button.class::isInstance)
+                    .map(javafx.scene.control.Button.class::cast)
+                    .filter(button -> "Map domains to gene models".equals(button.getText())).findFirst().orElseThrow();
+            mapDomains.fire();
+            assertTrue(resultArea.getText().startsWith("Domain-to-genome links"));
+            assertTrue(resultArea.getText().contains("AT1G67090.1"),
+                    "domain UI should resolve the exact transcript ID and display its genomic mapping");
+
+            analysisTabs.getSelectionModel().select(qcTab);
+            view.applyCss(); view.layout();
+
             // Tissue-expression bars must be rendered in the right-hand gene details,
             // not squeezed into the genomic coordinate track.
             var labels = scene.getRoot().lookupAll(".label").stream()
