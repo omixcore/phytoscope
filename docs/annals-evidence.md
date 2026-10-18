@@ -20,7 +20,7 @@ reproduce it.
 | Existing-tool comparison | A matched PhytoScope vs `gffutils==0.13` benchmark passed for Arabidopsis, rice, maize and soybean fixtures, with 10/24/20/40 gene loci respectively, three alternating-order trials per species, and exact source-to-output tuple agreement on Ubuntu, Windows and macOS. Observed medians and limitations are recorded in [the CI benchmark report](../benchmarks/results/2026-10-18/cross-species-extraction.md). | The comparison is still a narrow parser/hierarchy task. Add curated module-level gold standards for homology, domain mapping, promoter extraction and expression summaries; run controlled hardware benchmarks before speed claims. |
 | Research-module correctness | The real-data calculation suite checks eight 2,200-bp promoter windows across both strands against direct TAIR10 FASTA slicing/reverse-complement calculations; four real RBCS CDS QC reports against independently reconstructed metrics; all 16 within-family Arabidopsis RBCS protein alignments against a test-side Smith–Waterman reference; E-MTAB-7978 grouping arithmetic including measured zeros; and 16 domain/deletion coordinate records in 13 genes against independent Python calculations. In the three-platform CI run #192, bedtools v2.31.1 independently reproduced all 8/8 promoter sequences with zero mismatches. BLASTP 2.12.0+ agreed with PhytoScope on 12/12 non-self RBCS-family pairs and 8/8 unrelated-family controls both in the Arabidopsis-only panel and in a new four-species mature-RBCS panel (20/20 pairwise classifications per panel). On the tiny cross-species panel, one observed call took 21.63 ms in PhytoScope and 32.4 ms in BLASTP; this is startup-dominated and not a speed claim. Reports are retained in CI artifacts. | The new four-species RBCS panel is a single-family smoke test, not a multi-family curated gold standard or general precision/recall estimate; its negatives are not taxonomically balanced and it does not validate orthology. Expand independently curated multi-family homolog/domain pairs, add a multi-replicate expression gold set, and test more sequence/annotation edge cases before making broad accuracy claims. |
 | Independent biological examples | The RBCS-family expression case reproduces a known pattern from Expression Atlas E-MTAB-7978. Published PIF6 work links a short splice variant to seed dormancy/germination, but the sequence-level identity gate now rejects the frozen `AT3G62090.4` candidate as that published beta isoform: the current model is 341 aa with an internal 22-aa deletion, whereas the pinned UniProtKB D0EDQ7 reference is 188 aa (the literature reports a 182-aa construct). | PIF6 remains locus-level context, not an isoform-specific positive control and not a new discovery. No new biological finding independently supported by additional evidence has been established. |
-| Researcher value | A real-data calculation report and JavaFX interaction regression demonstrate linked outputs across five tabs and portable-project restoration. The PIF6 sequence-identity gate now shows that the frozen candidate is not the published beta isoform, so PIF6 is only locus-level context. | No participant study is planned. The [computational workflow-value protocol](researcher-value-study.md) compares correctness, handoffs, provenance completeness, and project round-trip behavior on frozen public inputs; it cannot establish human time savings or usability. No new biological discovery is established. |
+| Researcher value | A real-data calculation report and JavaFX interaction regression demonstrate linked outputs across five tabs and portable-project restoration. The PastDB follow-up audit now maps exact event coordinates to condition PSI, source-study labels and SRA run accessions in a CI artifact. | The [computational workflow-value protocol](researcher-value-study.md) still lacks an executed matched multi-tool workflow and measured handoffs/provenance completeness. Public PastDB PSI is condition-aggregated and does not establish independent validation. No participant study or human time-saving/usability claim is planned. No new biological discovery is established. |
 
 ## Fair comparison protocol
 
@@ -93,8 +93,10 @@ benchmark or a general sensitivity/specificity estimate.
 
 The workflow-value protocol is now computational-only: it defines frozen public
 inputs, source-derived gold outputs, correctness, handoffs, provenance completeness,
-and project round-trip metrics against a documented multi-tool baseline. No
-participant study or human time-saving claim is planned.
+and project round-trip metrics against a documented multi-tool baseline. The
+PastDB audit now emits source-mapped event/condition/SRA tables, but the matched
+workflow and handoff comparison remains unrun. No participant study or human
+time-saving claim is planned.
 
 The independent biological-discovery gap remains open. The 13-gene screen
 still yields zero candidates meeting its predeclared independent-evidence
@@ -181,8 +183,10 @@ PastDB includes other CIPK15 splicing events but not the candidate's
 CIPK15 identifiers or candidate peptide string; these are not raw-spectrum
 searches and do not establish protein absence. A catalog-level PastDB event
 exactly matches the 66-bp exon in the existing PIF6 candidate `AT3G62090.4`,
-but the event is not source-deduplicated to original studies and the sequence
-does not match the published PIF6-beta protein. The PRJNA1418670 Iso-Seq BAM is
+and is now mapped to GEO source labels and SRA run IDs, but those aggregates
+have not been independently reanalyzed; the sequence also does not match the
+published PIF6-beta protein. The condition aggregates have not been treated as
+replicate-level validations. The PRJNA1418670 Iso-Seq BAM is
 about 887 GB and remains unprocessed. No candidate meets the frozen independent
 validation criterion and no new biological finding is established.
 

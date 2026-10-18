@@ -76,10 +76,20 @@ separate participant study, which is outside the current plan.
 The repository already has cross-species annotation tuple checks, promoter
 sequence checks against bedtools, small homology checks against BLASTP, real-data
 calculation regressions, and project save/restore regressions. These demonstrate
-specific technical properties but do not yet establish broad module-level
-accuracy or general researcher value. The next step is to add a frozen,
-independently checked public biological case and report its source data,
-expected outputs, correctness, handoffs and provenance completeness.
+specific technical properties but do not establish broad module-level accuracy
+or general researcher value. The PastDB follow-up audit now preserves exact
+candidate-event coordinates, condition-level PSI, source-study labels and SRA
+run accessions in a reproducible CI artifact. This adds source traceability for
+a public RNA-seq catalog case, but the values remain catalog aggregates and do
+not constitute independent biological validation or a matched user workflow
+comparison.
+
+The computational handoff/provenance comparison in this protocol remains
+unrun. The current evidence package supports an operational integration claim
+through visible five-tab UI regressions, linked outputs, and project
+save/restore checks; it does not yet quantify tool handoffs against an actually
+executed multi-tool baseline. Human time savings, usability, and discovery-rate
+claims remain outside this computational-only evaluation.
 
 ## Relevant guidance
 

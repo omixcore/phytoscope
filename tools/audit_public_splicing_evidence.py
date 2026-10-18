@@ -13,6 +13,7 @@ import hashlib
 import io
 import json
 import re
+import subprocess
 import sys
 import time
 import urllib.parse
@@ -617,6 +618,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--candidates", type=Path, default=Path("examples/arabidopsis-isoform-validation/validation.tsv"))
+    parser.add_argument("--candidate-models", type=Path, default=Path("examples/arabidopsis-isoform-validation/candidates.tsv"))
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     genes = candidate_genes(args.candidates)
@@ -658,6 +660,30 @@ def main():
 
     report["sources"]["PastDB_downloads"] = scrape_pastdb_tables(args.out, genes)
     report["sources"]["PastDB_downloads"]["candidate_event_join"] = build_pastdb_candidate_events(args.out, genes)
+    psi_paths = [args.out / f"pastdb_{name}.gz" for name in
+                 ("event_information", "event_gene_map", "main_psi", "sample_information")]
+    if all(path.is_file() for path in psi_paths):
+        try:
+            subprocess.run([
+                sys.executable, str(Path(__file__).with_name("summarize_pastdb_candidate_support.py")),
+                "--audit-dir", str(args.out), "--candidates", str(args.candidate_models),
+                "--out", str(args.out / "pastdb-candidate-study-support"),
+            ], check=True, capture_output=True, text=True)
+            study_summary = json.loads((args.out / "pastdb-candidate-study-support" /
+                                        "pastdb-candidate-study-summary.json").read_text(encoding="utf-8"))
+            report["sources"]["PastDB_candidate_study_support"] = {
+                "status": "summarized", "summary": study_summary,
+                "detail_tsv": "pastdb-candidate-study-support/pastdb-candidate-event-condition-study.tsv",
+                "summary_tsv": "pastdb-candidate-study-support/pastdb-candidate-study-summary.tsv",
+            }
+        except (OSError, subprocess.CalledProcessError, json.JSONDecodeError) as exc:
+            report["sources"]["PastDB_candidate_study_support"] = {
+                "status": "unavailable", "error": str(exc),
+            }
+    else:
+        report["sources"]["PastDB_candidate_study_support"] = {
+            "status": "unavailable", "error": "PastDB event IDs, candidate models, main PSI, or sample information download missing.",
+        }
     ena_info, ena_rows = fetch_ena_metadata()
     report["sources"]["ENA_PRJNA1418670"] = ena_info
     if ena_rows:
