@@ -241,6 +241,7 @@ The Arabidopsis TAIR10 example bundles the version-pinned Ensembl Plants release
 - [Evidence status and publication claim boundaries](docs/annals-evidence.md)
 - [Validation and cross-species benchmarks](docs/validation-and-benchmarks.md)
 - [Researcher-value study protocol](docs/researcher-value-study.md)
+- [Research-module validation on real plant data](docs/research-module-validation.md)
 
 The biological-discovery screen is reported with its negative validation outcome;
 a candidate is not presented as a new discovery unless it passes the stated
