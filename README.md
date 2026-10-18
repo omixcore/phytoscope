@@ -25,6 +25,9 @@ are in the per-reference manifests and
 **The default Arabidopsis reference also bundles the measured transcriptome panel** used by the browser expression track: **32,833 genes** across six single-assay conditions from Expression Atlas **E-MTAB-7978**, with SHA-256 pinned inputs and a fully traceable extraction manifest. Select any measured gene to see a **six-column vertical TPM bar chart in the right Gene Details pane**. Genes without measured data show an explicit missing-data message rather than a wall of `NA` cells.
 The [case-study guide](examples/arabidopsis-atlas/README.md) records the source,
 ENA runs, exact extracted values, reproduction commands and interpretation limits.
+The separate [case-study interpretation](docs/case-study-arabidopsis-rbcs.md)
+compares the observed family pattern with published genetic evidence and states
+what this known-pattern example can and cannot support.
 Historical illustrative expression fixtures are test-only and are not shipped.
 
 ## Run
@@ -126,9 +129,9 @@ strand-aware promoter/custom interval extraction, explicit sample grouping with
 mean/median summaries, sequence quality flags, local protein similarity with
 reciprocal-best-hit ranking, and amino-acid-domain to genomic-CDS mapping.
 Coordinate conventions, input assumptions and interpretation limits are
-documented in [research analysis](docs/research-analysis.md). These modules are
-currently service-level APIs; interactive panels and project persistence for
-their settings are follow-up work.
+documented in [research analysis](docs/research-analysis.md). The desktop
+workspace exposes these analyses as interactive panels, exports results as TSV,
+and saves their inputs, parameters and latest outputs in portable projects.
 
 ## Batch export
 
