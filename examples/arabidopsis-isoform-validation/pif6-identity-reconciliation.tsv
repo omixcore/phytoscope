@@ -1,0 +1,2 @@
+candidate_id	gene	current_short_transcript	current_short_length_aa	published_reference	published_reference_length_aa	literature_construct_length_aa	exact_sequence_match	current_c_terminal_region_retained	decision
+DI0006	AT3G62090	AT3G62090.4	341	UniProtKB D0EDQ7 / ACX35553.1 / GQ477368	188	182	false	true	reject_as_isoform_specific_known_positive

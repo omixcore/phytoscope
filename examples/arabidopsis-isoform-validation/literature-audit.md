@@ -43,7 +43,7 @@ independently catalogued transcript variants:
 | `AT5G01810` / CIPK15 | `AT5G01810.3` is an existing TAIR10/Araport transcript model; its one eligible junction peptide in the screen is from the Mergner acquisition. | Neither the transcript nor the peptide is newly discovered by PhytoScope. |
 | `AT1G47290` / 3BETAHSD/D1 | NCBI lists `NM_103623.5` and `NM_179448.4` ([RefSeq](https://www.ncbi.nlm.nih.gov/nuccore/NM_103623)). The gene's enzyme activity and overexpression phenotypes were previously studied ([primary study](https://doi.org/10.1371/journal.pone.0085389)). | Existing gene-level biology does not validate the candidate isoform's specific domain-loss effect. |
 | `AT3G57800` / bHLH family protein | NCBI lists `NM_115642.2` and `NM_180414.3` ([RefSeq](https://www.ncbi.nlm.nih.gov/nuccore/NM_115642.2)). | Alternative transcript existence is already catalogued. |
-| `AT3G62090` / PIL2-PIF6 | NCBI reports four RefSeq mRNA variants ([gene record](https://www.ncbi.nlm.nih.gov/gene/825382)). Published work links PIF6 alternative splicing to seed dormancy/germination ([Penfield et al. 2010](https://doi.org/10.1007/s11103-009-9571-1); [Plant Cell 2012](https://doi.org/10.1105/tpc.112.103622)). | This is a **known-positive locus-level control**, not a new discovery. Exact mapping of the frozen `.2/.4` pair to historical constructs needs sequence-level reconciliation; see the [PIF6 case note](../../docs/case-study-pif6-known-positive.md). |
+| `AT3G62090` / PIL2-PIF6 | NCBI reports four RefSeq mRNA variants ([gene record](https://www.ncbi.nlm.nih.gov/gene/825382)). Published work links a short PIF6-beta construct to seed dormancy/germination ([Penfield et al. 2010](https://doi.org/10.1007/s11103-009-9571-1); [Plant Cell 2012](https://doi.org/10.1105/tpc.112.103622)). A sequence-level check compares the frozen `.2/.4` pair with UniProtKB D0EDQ7 (188 aa); `.4` is 341 aa and retains the downstream C terminus after its 22-aa internal deletion. | **Reject as an isoform-specific positive control.** The published phenotype cannot be assigned to the current `.4` model. PIF6 remains locus-level context, not a PhytoScope discovery; see the [reproducible identity gate](../../docs/case-study-pif6-known-positive.md). |
 | `AT1G69530` / EXPA1 | NCBI lists five RefSeq mRNA splice variants ([RefSeq](https://www.ncbi.nlm.nih.gov/nuccore/NM_001334412.1)). | Alternative transcript existence is already catalogued. |
 | `AT5G12480` / CPK7 | NCBI lists `NM_001085107.1` and `NM_121286.4` ([RefSeq](https://www.ncbi.nlm.nih.gov/nuccore/NM_001085107.1)). | Alternative transcript existence is already catalogued. |
 | `AT1G76650` / CML38 | NCBI reports three RefSeq mRNA variants ([RefSeq](https://www.ncbi.nlm.nih.gov/nuccore/NM_001198484.1)). | Alternative transcript existence is already catalogued. |
@@ -55,13 +55,12 @@ independently catalogued transcript variants:
 
 This is a targeted audit, not an exhaustive systematic review. NCBI transcript
 records establish annotation history, not translation or function of every
-isoform. The PIF6 literature is especially important because it shows that
-isoform-level biology at the locus is already known; it must not be presented
-as a PhytoScope discovery. However, the precise mapping between the current
-Araport11 `AT3G62090.4` model and historical PIF6 constructs must be checked
-at sequence level before treating them as the same molecule.
+isoform. The sequence-level PIF6 check now rejects equivalence between the
+frozen `AT3G62090.4` model and the published short PIF6-beta reference. The
+current candidate is an internal in-frame deletion that retains downstream
+sequence, not the short C-terminally truncated construct linked to dormancy.
 
 **Updated conclusion:** no candidate in the 13-gene screen currently satisfies
 the predeclared independent peptide threshold for a new discovery. CIPK15
-remains a single-study lead; PIF6 provides known biological context, not
-novelty. A new biological finding remains outstanding.
+remains a single-study lead; DI0006 is not an isoform-specific PIF6 positive
+control. A new biological finding remains outstanding.

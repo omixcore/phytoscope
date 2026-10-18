@@ -159,3 +159,20 @@ and is not an orthology benchmark or a general sensitivity/specificity estimate.
 It does not replace multi-family/domain gold sets, a replicate-based expression
 benchmark, controlled hardware measurements, an actual researcher task study,
 or an independently validated new biological discovery.
+
+## Independent PIF6 isoform-identity gate
+
+`tools/validate_pif6_isoform_identity.py` compares the frozen `DI0006`
+sequence pair with the published PIF6-beta protein sequence record
+(UniProtKB D0EDQ7; GenBank ACX35553.1; transcript GQ477368). The fixture is
+pinned by sequence length and SHA-256, and the script independently reconstructs
+the 1-based inclusive 22-aa deletion from the frozen canonical sequence.
+It then tests exact sequence identity rather than inferring identity from the
+gene symbol or domain overlap. Current `AT3G62090.4` is 341 aa and retains the
+sequence downstream of the internal deletion; the pinned reference is 188 aa,
+while a 182-aa PIF6-beta construct is reported in the literature. The result is
+therefore a rejection of DI0006 as an isoform-specific positive control.
+
+The script runs on all three CI platforms and its JSON result is retained in
+the validation artifact. It is a negative biological identity check, not a new
+discovery and not a substitute for an isoform-specific functional experiment.

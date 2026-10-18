@@ -135,11 +135,15 @@ isoform-specific functional experiment. No threshold was relaxed to turn the
 current negative validation result into a positive result.
 
 
-## PIF6 known-positive locus context
+## PIF6 locus context: candidate-specific validation rejected
 
-The candidate `DI0006` at `AT3G62090` has prior literature on PIF6 alternative
-splicing and seed dormancy. This is useful as a known-positive biological
-context, **not a new discovery**. The current `.2/.4` transcript models have
-not yet been sequence-matched conclusively to the historical constructs. See
-[the PIF6 case note](../../docs/case-study-pif6-known-positive.md) and the
+Published PIF6-beta work is a useful example of why locus-level literature
+cannot be transferred automatically to every annotated isoform. The frozen
+`AT3G62090.4` candidate is 341 aa with an internal 22-aa deletion; the published
+PIF6-beta sequence record is 188 aa (with a 182-aa construct reported in the
+literature). Exact sequence identity fails, and the candidate retains downstream
+C-terminal sequence. Therefore DI0006 is **not** a validated positive control
+for the published dormancy phenotype. Reproduce the independent identity gate
+with `python tools/validate_pif6_isoform_identity.py`; see the
+[PIF6 case note](../../docs/case-study-pif6-known-positive.md) and
 [expanded literature audit](literature-audit.md).

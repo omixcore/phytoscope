@@ -19,7 +19,7 @@ reproduce it.
 | Annotation correctness and scale | Independent source-to-model checks cover Arabidopsis, rice, maize and soybean. Eight inventories contain 4,641,758 exact gene/transcript/exon/CDS/UTR tuples with zero missing/extra tuples; the full-annotation checks passed in the 2026-10-18 Ubuntu CI run. | Repeat controlled performance runs on documented hardware/memory limits; the recognized-feature scope does not validate unsupported GFF types. |
 | Existing-tool comparison | A matched PhytoScope vs `gffutils==0.13` benchmark passed for Arabidopsis, rice, maize and soybean fixtures, with 10/24/20/40 gene loci respectively, three alternating-order trials per species, and exact source-to-output tuple agreement on Ubuntu, Windows and macOS. Observed medians and limitations are recorded in [the CI benchmark report](../benchmarks/results/2026-10-18/cross-species-extraction.md). | The comparison is still a narrow parser/hierarchy task. Add curated module-level gold standards for homology, domain mapping, promoter extraction and expression summaries; run controlled hardware benchmarks before speed claims. |
 | Research-module correctness | The real-data calculation suite checks eight 2,200-bp promoter windows across both strands against direct TAIR10 FASTA slicing/reverse-complement calculations; four real RBCS CDS QC reports against independently reconstructed metrics; all 16 within-family Arabidopsis RBCS protein alignments against a test-side Smith–Waterman reference; E-MTAB-7978 grouping arithmetic including measured zeros; and 16 domain/deletion coordinate records in 13 genes against independent Python calculations. In the three-platform CI run #192, bedtools v2.31.1 independently reproduced all 8/8 promoter sequences with zero mismatches. BLASTP 2.12.0+ agreed with PhytoScope on 12/12 non-self RBCS-family pairs and 8/8 unrelated-family controls both in the Arabidopsis-only panel and in a new four-species mature-RBCS panel (20/20 pairwise classifications per panel). On the tiny cross-species panel, one observed call took 21.63 ms in PhytoScope and 32.4 ms in BLASTP; this is startup-dominated and not a speed claim. Reports are retained in CI artifacts. | The new four-species RBCS panel is a single-family smoke test, not a multi-family curated gold standard or general precision/recall estimate; its negatives are not taxonomically balanced and it does not validate orthology. Expand independently curated multi-family homolog/domain pairs, add a multi-replicate expression gold set, and test more sequence/annotation edge cases before making broad accuracy claims. |
-| Independent biological examples | The RBCS-family expression case reproduces a known pattern from Expression Atlas E-MTAB-7978. A second known-positive context is the PIF6 (`AT3G62090`) alternative-splicing literature: published studies link a shorter PIF6 splice variant to seed dormancy/germination and PTB-regulated splicing. The frozen `DI0006` model overlaps the annotated bHLH region, but its exact equivalence to the historical constructs still requires sequence-level reconciliation. | Both are prior biological knowledge, not new discoveries. The PIF6 case must not be used as validation of the exact `.4` transcript until construct/model equivalence is established. A new finding independently supported by additional evidence remains outstanding. |
+| Independent biological examples | The RBCS-family expression case reproduces a known pattern from Expression Atlas E-MTAB-7978. Published PIF6 work links a short splice variant to seed dormancy/germination, but the sequence-level identity gate now rejects the frozen `AT3G62090.4` candidate as that published beta isoform: the current model is 341 aa with an internal 22-aa deletion, whereas the pinned UniProtKB D0EDQ7 reference is 188 aa (the literature reports a 182-aa construct). | PIF6 remains locus-level context, not an isoform-specific positive control and not a new discovery. No new biological finding independently supported by additional evidence has been established. |
 | Researcher value | A real-data calculation report and JavaFX interaction regression now demonstrate linked outputs across the five tabs and portable-project restoration. The PIF6 case note gives a known-positive traceability example from transcript model to domain context and published phenotype. | No human participants or measured task-time savings exist yet. A [prospective researcher-value study protocol](researcher-value-study.md) now defines the counterbalanced task design, objective endpoints and analysis rules, but it is not participant evidence. The known PIF6 finding is reproducible with ordinary tools too; it demonstrates integration/provenance, not a unique discovery. Run the preregistered task study and continue the search for a new independently validated result. |
 
 ## Fair comparison protocol
@@ -120,11 +120,26 @@ comparisons improve the evidence base but do not close the curated module-level
 gold-standard gap or the human task study.
 
 
-## Known-positive PIF6 context and claim boundary
+## PIF6 sequence-identity gate and claim boundary
 
-The [PIF6 case note](case-study-pif6-known-positive.md) documents prior
-literature on alternative splicing and seed dormancy at `AT3G62090`. It is a
-useful positive-control context for checking that a transcript/domain view can
-be linked to external biology, but it is not novel and the exact equivalence of
-the current Araport11 `.2/.4` pair to the historical constructs remains
-unresolved. The independent new-discovery requirement remains open.
+The [PIF6 case note](case-study-pif6-known-positive.md) and
+`tools/validate_pif6_isoform_identity.py` now compare the frozen
+`AT3G62090.2/.4` pair with the published PIF6-beta sequence record. The current
+341-aa `.4` model reconstructs from an internal 22-aa deletion and retains
+downstream C-terminal sequence; it is not identical to the 188-aa UniProtKB
+D0EDQ7 reference (the literature reports a 182-aa construct). Thus the published
+seed-dormancy phenotype cannot be transferred to DI0006. PIF6 is locus-level
+context only, not a valid isoform-specific positive control. This is a negative
+identity validation; the independent new-discovery requirement remains open.
+
+## Independent PIF6 identity check (2026-10-18)
+
+A new standard-library script checks the frozen candidate against a hash-pinned
+published PIF6-beta protein sequence. It confirms the 22-aa deletion reconstructs
+the current `AT3G62090.4` model, but rejects exact identity with published
+PIF6-beta: 341 aa versus 188 aa in UniProtKB D0EDQ7 (a 182-aa construct is
+reported in the literature). The candidate retains downstream C-terminal
+sequence, so the prior seed-dormancy phenotype cannot be assigned to this
+annotation. The script and JSON output are included in the latest CI artifact.
+This strengthens the negative validation boundary; it does not establish a new
+biological discovery.

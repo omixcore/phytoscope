@@ -1,41 +1,54 @@
-# PIF6 alternative splicing: known-positive literature control
+# PIF6 literature context: the frozen candidate is not the validated beta isoform
 
-## Why this case is included
+## Decision
 
-This is a **known-positive control**, not a new biological discovery. It checks
-whether PhytoScope can keep an annotated isoform/domain hypothesis connected to
-published functional evidence without presenting a previously reported result
-as novel.
+**Do not treat candidate DI0006 as a known-positive validation of the published
+PIF6-beta phenotype.** The locus has well-established alternative-splicing
+biology, but exact sequence reconciliation shows that the frozen
+Araport11 `AT3G62090.4` candidate is not the published PIF6-beta construct.
+This is a negative biological identity check, not a new discovery.
 
-## Frozen annotation observation
+## Frozen candidate and reproducible sequence check
 
-The independent isoform screen contains candidate `DI0006` at
-`AT3G62090` (PIL2/PIF6):
+The fixed-rule screen contains candidate `DI0006` at `AT3G62090`
+(PIL2/PIF6):
 
-- Longer model: `AT3G62090.2`, 363 amino acids.
-- Shorter model: `AT3G62090.4`, 341 amino acids.
-- In-frame deletion: amino acids 199–220 (22 aa).
-- Annotated bHLH interval in the longer protein: amino acids 188–237.
-- The deletion overlaps 22 of the 50 annotated domain residues (44%).
-- Genomic deletion block in the frozen model: Chr3:22,989,726–22,989,791
-  (1-based closed; minus strand).
+- Canonical model `AT3G62090.2`: 363 amino acids.
+- Short model `AT3G62090.4`: 341 amino acids.
+- In-frame internal deletion: amino acids 199–220 (22 aa).
+- Annotated bHLH interval: amino acids 188–237; the deletion overlaps 22/50
+  domain residues (44%).
+- The model retains the sequence downstream of this internal deletion.
 
-These are annotation/model observations from the frozen screen, not a direct
-measurement of the protein in planta.
+The published PIF6-beta literature describes a short form of about 182 amino
+acids, while the pinned UniProtKB sequence record `D0EDQ7` is 188 amino acids
+(GenBank protein `ACX35553.1`, transcript `GQ477368`). The 341-aa
+`AT3G62090.4` protein is not an exact match to that sequence and retains a
+long C-terminal region after its internal deletion. A locus name and domain
+overlap are therefore insufficient to transfer the published phenotype to
+this candidate.
 
-## Independent published biological evidence
+The pinned sequence is stored in
+`examples/arabidopsis-isoform-validation/published-pif6-beta.fasta`, with
+source metadata and a SHA-256 digest in the adjacent JSON file. Reproduce the
+identity check with:
 
-Penfield, Josse and Halliday (2010) reported two PIF6 splice variants and found
-that overexpression of the shorter `PIF6-β` form, but not the full-length
-`PIF6-α` form, reduced primary seed dormancy. The short form was described as
-lacking the bHLH DNA-binding function.
+```bash
+python tools/validate_pif6_isoform_identity.py
+```
 
-A later study in *The Plant Cell* (2012) showed that PTB1/PTB2 regulate a PIF6
-cassette-exon splicing event, detected the expected protein products from
-expressed variants, and linked altered PIF6 splicing to ABA-dependent seed
-germination. A later study of light-induced seed germination also summarizes
-the existence of four PIF6 alternative-splicing isoforms and the domain-loss
-variant.
+The script verifies the published-sequence digest, confirms that the frozen
+candidate reconstructs from its stated 22-aa deletion, and records that exact
+sequence equivalence is false. Its machine-readable output is retained by CI
+as `pif6-identity-validation.json`.
+
+## What the independent literature establishes
+
+Penfield, Josse and Halliday (2010) reported that overexpression of their
+short PIF6-beta form, but not full-length PIF6-alpha, reduced primary seed
+dormancy. Later work connected PTB1/PTB2-regulated PIF6 splicing to germination.
+Those results establish biological importance for the **published PIF6 splice
+variant**, not for every shorter model at the same locus.
 
 Sources:
 
@@ -46,41 +59,16 @@ Sources:
   regulators of alternative splicing with implications in fundamental
   developmental processes*. The Plant Cell. 2012;24:4360–4375.
   https://doi.org/10.1105/tpc.112.103622
-- *Alternative Splicing Regulation During Light-Induced Germination of
-  Arabidopsis thaliana Seeds*. Frontiers in Plant Science. 2019.
-  https://doi.org/10.3389/fpls.2019.01076
+- *Structural insight into PIF6-mediated red light signal transduction of plant
+  phytochrome B*. Cell Discovery. https://doi.org/10.1038/s41421-025-00802-3
+- UniProtKB D0EDQ7, PIF6 splice variant:
+  https://www.uniprot.org/uniprotkb/D0EDQ7/entry
 
-## Critical transcript-identity caveat
+## Publication boundary
 
-The frozen `AT3G62090.2/.4` pair is an in-frame 22-aa deletion. The 2010 paper
-describes its `PIF6-β` construct in terms of a cryptic intron/splice event and
-a predicted premature stop, while the 2012 paper describes an in-frame
-cassette-exon event and additional PIF6 transcript variants. These historical
-labels are not automatically interchangeable with current Araport11 transcript
-IDs. The current evidence supports a **locus-level known biological context**;
-it does not yet prove that `AT3G62090.4` is sequence-identical to the exact
-historical construct whose seed-dormancy effect was tested. That equivalence
-must be resolved from transcript/CDS sequence and construct boundaries before
-making an isoform-specific causal claim.
-
-## What this demonstrates—and what it does not
-
-PhytoScope's frozen screen exposes a candidate deletion that overlaps a known
-functional domain, and the locus has published evidence connecting alternative
-splicing with seed germination. This is a useful test of traceability from gene
-model to domain context to literature. It does **not** demonstrate that
-PhytoScope discovered the PIF6 biology, that the exact current transcript model
-has the published phenotype, that the result is unavailable through ordinary
-tools, or that researchers save time using this interface.
-
-## Reproduce the software-side checks
-
-```bash
-python tools/check_isoform_case.py
-sh mvnw -B -Pui-tests -Dtest=DomainCaseValidationTest test
-```
-
-The first command verifies the frozen candidate coordinates and validation
-tables; the second runs the real-annotation domain mapping regression. These
-commands validate the software-side structure, not the historical construct
-identity or biological function.
+PIF6 must be treated as **locus-level literature context**, not as a validated
+positive control for DI0006 and not as a PhytoScope discovery. The candidate
+could still have a distinct biological effect, but this requires direct
+isoform-specific evidence and experiments; the current evidence does not
+establish that effect. No candidate in the current 13-gene screen has met the
+predeclared independent peptide threshold for a new discovery.
