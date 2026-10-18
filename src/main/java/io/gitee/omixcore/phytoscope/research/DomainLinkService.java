@@ -16,6 +16,10 @@ public final class DomainLinkService {
         List<Link> out = new ArrayList<>();
         for (Transcript tx : gene.getTranscripts()) {
             if (!Objects.equals(d.proteinId(), tx.getProteinId())) continue;
+            if (tx.getStrand() != '+' && tx.getStrand() != '-') {
+                out.add(new Link(d, tx.getId(), List.of(), "Cannot map domain coordinates because transcript strand is unknown."));
+                continue;
+            }
             List<GenomicFeature> cds = new ArrayList<>(tx.getAllCdsSegments());
             cds.sort(tx.getStrand() == '-' ? Comparator.comparingInt(GenomicFeature::getStart).reversed() : Comparator.comparingInt(GenomicFeature::getStart));
             int from=(d.startAa()-1)*3+1, to=d.endAa()*3, offset=0;

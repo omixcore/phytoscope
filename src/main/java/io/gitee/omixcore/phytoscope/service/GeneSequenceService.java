@@ -254,12 +254,18 @@ public final class GeneSequenceService {
     /** Promoter window upstream of a gene TSS, clipped to the sequence boundary. */
     public String extractPromoter(Gene gene, int upstream, int downstream) throws IOException {
         Objects.requireNonNull(gene, "gene");
-        if (upstream < 0 || downstream < 0 || upstream + downstream == 0)
+        if (gene.getStrand() != '+' && gene.getStrand() != '-')
+            throw new IOException("Promoter direction requires a known gene strand");
+        if (upstream < 0 || downstream < 0 || (long) upstream + downstream == 0)
             throw new IOException("Promoter lengths must be non-negative and not both zero");
         int tss = gene.getStrand() == '-' ? gene.getEnd() : gene.getStart();
-        int start = gene.getStrand() == '-' ? tss - downstream : tss - upstream;
-        int end = gene.getStrand() == '-' ? tss + upstream : tss + downstream;
-        return extractInterval(gene.getChromosome(), Math.max(1, start), Math.max(1, end), gene.getStrand());
+        String sequenceId = resolveSequenceId(gene.getChromosome());
+        int sequenceLength = sequences.get(sequenceId).length();
+        long rawStart = gene.getStrand() == '-' ? (long)tss - downstream : (long)tss - upstream;
+        long rawEnd = gene.getStrand() == '-' ? (long)tss + upstream : (long)tss + downstream;
+        int start = (int)Math.max(1, Math.min(sequenceLength, rawStart));
+        int end = (int)Math.max(1, Math.min(sequenceLength, rawEnd));
+        return extractInterval(gene.getChromosome(), start, end, gene.getStrand());
     }
 
     private TranscriptSequences extractTranscript(Transcript transcript, String chromosomeSequence) throws IOException {

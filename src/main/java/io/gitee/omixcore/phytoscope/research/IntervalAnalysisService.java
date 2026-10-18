@@ -6,20 +6,26 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
-/** Promoter windows and custom BED/GFF-style interval extraction. */
+/** Promoter windows and custom BED/tabular interval extraction. */
 public final class IntervalAnalysisService {
     public record SequenceResult(GenomicInterval interval, String sequence, String source) {}
-    public GenomicInterval promoterInterval(Gene gene, int upstream, int downstream) {
-        if (upstream < 0 || downstream < 0 || upstream + downstream == 0) throw new IllegalArgumentException("Specify a non-empty promoter window");
+    public GenomicInterval promoterInterval(Gene gene, int upstream, int downstream, int sequenceLength) {
+        if (gene.getStrand() != '+' && gene.getStrand() != '-')
+            throw new IllegalArgumentException("Promoter direction requires a known gene strand");
+        if (upstream < 0 || downstream < 0 || (long) upstream + downstream == 0 || sequenceLength < 1)
+            throw new IllegalArgumentException("Specify a non-empty promoter window and a valid sequence length");
         int tss = gene.getStrand() == '-' ? gene.getEnd() : gene.getStart();
-        int start = gene.getStrand() == '-' ? tss - downstream : tss - upstream;
-        int end = gene.getStrand() == '-' ? tss + upstream : tss + downstream;
-        return new GenomicInterval("promoter:" + gene.getDisplayName(), gene.getSpecies(), null, gene.getChromosome(), Math.max(1,start), Math.max(1,end), gene.getStrand());
+        long rawStart = gene.getStrand() == '-' ? (long)tss - downstream : (long)tss - upstream;
+        long rawEnd = gene.getStrand() == '-' ? (long)tss + upstream : (long)tss + downstream;
+        int start = (int)Math.max(1, Math.min(sequenceLength, rawStart));
+        int end = (int)Math.max(1, Math.min(sequenceLength, rawEnd));
+        return new GenomicInterval("promoter:" + gene.getDisplayName(), gene.getSpecies(), null,
+                gene.getChromosome(), start, end, gene.getStrand());
     }
     public SequenceResult extract(GenomicInterval interval, GeneSequenceService sequenceService) throws IOException {
         return new SequenceResult(interval, sequenceService.extractInterval(interval.sequence(), interval.start(), interval.end(), interval.strand()), sequenceService.getSourceLabel());
     }
-    /** BED is 0-based half-open (converted on import); GFF/custom TSV is 1-based closed. */
+    /** BED is 0-based half-open (converted on import); custom TSV is 1-based closed. */
     public List<GenomicInterval> read(Path path, boolean bed) throws IOException {
         List<GenomicInterval> out = new ArrayList<>(); int lineNo=0;
         for(String raw:Files.readAllLines(path)){lineNo++; String line=raw.trim(); if(line.isEmpty()||line.startsWith("#")||line.startsWith("track ")||line.startsWith("browser ")) continue;

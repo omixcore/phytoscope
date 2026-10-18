@@ -11,13 +11,17 @@ class ResearchAnalysisTest {
     @Test void promoterWindowHonorsStrandAndSequenceEdge() throws Exception {
         var analysis = new IntervalAnalysisService();
         Gene plus = new Gene("g1", "g1", "chr1", 4, 10, '+');
-        var p = analysis.promoterInterval(plus, 5, 2);
+        var p = analysis.promoterInterval(plus, 5, 2, 16);
         assertEquals(1, p.start()); assertEquals(6, p.end());
         Gene minus = new Gene("g2", "g2", "chr1", 4, 10, '-');
-        var m = analysis.promoterInterval(minus, 5, 2);
+        var m = analysis.promoterInterval(minus, 5, 2, 16);
         assertEquals(8, m.start()); assertEquals(15, m.end());
         GeneSequenceService fasta = new GeneSequenceService(); fasta.loadFromContent(">chr1\nAACCGGTTAACCGGTT\n", "test");
         assertEquals(6, analysis.extract(p, fasta).sequence().length());
+        Gene nearEnd = new Gene("g3", "g3", "chr1", 12, 16, '-');
+        var clipped = analysis.promoterInterval(nearEnd, 5, 2, 16);
+        assertEquals(14, clipped.start()); assertEquals(16, clipped.end());
+        assertEquals(3, fasta.extractPromoter(nearEnd, 5, 2).length());
     }
 
     @Test void sequenceChecksAndProteinHitsRemainDescriptive() {
@@ -27,6 +31,22 @@ class ResearchAnalysisTest {
                 List.of(new ProteinHomologyService.Protein("A","a","MKWVTF")),
                 List.of(new ProteinHomologyService.Protein("B","b","MKWVTF")), 50);
         assertEquals(1, hs.size()); assertEquals(100.0, hs.getFirst().identity()); assertTrue(hs.getFirst().reciprocalBestHit());
+    }
+
+    @Test void proteinComparisonUsesSpeciesQualifiedIdsAndCleanedCoverage() {
+        var service = new ProteinHomologyService();
+        var hits = service.compare(List.of(
+                        new ProteinHomologyService.Protein("A", "same", "AAAA"),
+                        new ProteinHomologyService.Protein("B", "same", "M-K")),
+                List.of(new ProteinHomologyService.Protein("T", "t", "MK")), 50);
+        assertEquals(1, hits.size());
+        assertEquals("B", hits.getFirst().querySpecies());
+        assertEquals(1.0, hits.getFirst().queryCoverage());
+        assertEquals(1.0, hits.getFirst().targetCoverage());
+        assertTrue(hits.getFirst().reciprocalBestHit());
+        assertThrows(IllegalArgumentException.class, () -> service.compare(
+                List.of(new ProteinHomologyService.Protein("A", "long", "M".repeat(2_000))),
+                List.of(new ProteinHomologyService.Protein("B", "other", "M".repeat(2_000))), 0));
     }
 
     @Test void domainAminoAcidsMapAcrossCodingExons() {
@@ -39,5 +59,10 @@ class ResearchAnalysisTest {
         var link = new DomainLinkService().link(domain, gene).getFirst();
         assertEquals(List.of(new DomainLinkService.GenomicBlock("chr1", 200, 205, '-'),
                 new DomainLinkService.GenomicBlock("chr1", 106, 108, '-')), link.blocks());
+
+        tx.setStrand('.');
+        var unknown = new DomainLinkService().link(domain, gene).getFirst();
+        assertTrue(unknown.blocks().isEmpty());
+        assertTrue(unknown.note().contains("strand is unknown"));
     }
 }
