@@ -201,7 +201,7 @@ prioritizes PRJNA1418670 PacBio Iso-Seq roots under salinity for exact exon-chai
 support; the multi-study public Arabidopsis alternative-splicing compendium for
 short-read junction counts; and the Zhang et al. 2019 public proteomics source
 group (PXD012708, PXD012710, PXD014032) for a sequence-specific peptide audit.
-The first PastDB catalog and PXD014032 processed-table screens are complete and
+The first PastDB catalog, PXD014032 processed-table screens, and exact-peptide text search across three Zhang 2019 supplementary spectral-library files (950 MB total; no exact hit) are complete. These are one source-study group, not independent confirmations. All screens are complete and
 their limitations are recorded in the linked audit. Original-study attribution
 for the PastDB event, the large Iso-Seq read analysis, and raw-spectrum searches
 remain open. The [accession inventory](../examples/arabidopsis-isoform-validation/public-data-source-inventory.tsv)

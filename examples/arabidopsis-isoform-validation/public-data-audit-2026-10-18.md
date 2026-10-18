@@ -50,10 +50,24 @@ study group were downloaded and searched across all columns:
 | `20190525_ABA_treated_Candidates.tsv` | 128,917 | `AT5G01810`, `CIPK15`, `ESVEEETEEEMR` | 0 matching rows | `8086f5ba3611dd8e7d7e11cfb2f26824ba3be2c08b1d864163affaa9b0f7e09a` |
 
 These are processed quantification candidate tables, not raw spectra. Their
-non-detection is not proof of protein absence. PXD012708, PXD012710 and
-PXD014032 are one publication/source-study group; the DDA search outputs and
-raw spectra were not searched here. The single eligible CIPK15 junction peptide
-previously attributed to the Mergner source remains one-source evidence.
+non-detection is not proof of protein absence. In addition, the CI audit searched
+three publicly downloadable Zhang et al. 2019 supplementary spectral-library
+text files (950,117,352 bytes total) for the exact junction peptide
+`ESVEEETEEEMR`:
+
+| Supplementary file | Bytes | Exact peptide text | SHA-256 |
+| --- | ---: | --- | --- |
+| `Supplementary_File_3a_Fusion_peakview_01.txt` | 328,683,517 | not found | `9b3a53078a2fa28be89110b2d0c580d07e2e618fcf33b298af08a9528c39707e` |
+| `Supplementary_File_3b_Fusion_peakview_02.txt` | 333,080,420 | not found | `35e41b9794e9484bd39c49947c876c7a9d2f7b62e860695f21018decd4c1226a` |
+| `Supplementary_File_6_5600_Peakview.txt` | 288,353,415 | not found | `08364396f3d331a0697e0d32c078c1924a7c26b1355a2555e0c9ca52be28ae92` |
+
+The supplementary-file text search is a screen of those exported library files,
+not a raw-spectrum reanalysis; not finding the peptide string does not establish
+protein absence. PXD012708, PXD012710 and PXD014032 are one publication/source-
+study group, and these three files are not independent studies. The DDA search
+outputs and raw spectra were not searched here. The single eligible CIPK15
+junction peptide previously attributed to the Mergner source remains one-source
+evidence.
 
 ## Long-read Iso-Seq feasibility
 
