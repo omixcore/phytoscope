@@ -174,11 +174,17 @@ functional experiment has been completed.
 
 The [CIPK15 public-data-only protocol](../examples/arabidopsis-isoform-validation/cipk15-public-data-validation.md)
 sets source-deduplicated transcript-junction and public-proteomics checks with
-predeclared criteria. The accession inventory includes PRJNA1418670 Iso-Seq
-data and the independent Zhang et al. 2019 proteomics source group
-(PXD012708/PXD012710/PXD014032). These datasets have been identified but the
-candidate-specific reanalysis is not yet complete; their existence is not
-evidence that the candidate passed. No wet-lab work is planned.
+predeclared criteria. The first processed-data screen is now recorded in the
+[public-data audit](../examples/arabidopsis-isoform-validation/public-data-audit-2026-10-18.md).
+PastDB includes other CIPK15 splicing events but not the candidate's
+311308-to-311444 coding junction. Two processed PXD014032 tables contained no
+CIPK15 identifiers or candidate peptide string; these are not raw-spectrum
+searches and do not establish protein absence. A catalog-level PastDB event
+exactly matches the 66-bp exon in the existing PIF6 candidate `AT3G62090.4`,
+but the event is not source-deduplicated to original studies and the sequence
+does not match the published PIF6-beta protein. The PRJNA1418670 Iso-Seq BAM is
+about 887 GB and remains unprocessed. No candidate meets the frozen independent
+validation criterion and no new biological finding is established.
 
 ## Public-data-only biological evidence plan (2026-10-18)
 
@@ -194,9 +200,12 @@ The [public-data-only protocol](../examples/arabidopsis-isoform-validation/cipk1
 prioritizes PRJNA1418670 PacBio Iso-Seq roots under salinity for exact exon-chain
 support; the multi-study public Arabidopsis alternative-splicing compendium for
 short-read junction counts; and the Zhang et al. 2019 public proteomics source
-group (PXD012708, PXD012710, PXD014032) for an independent sequence-specific
-peptide audit. The [accession inventory](../examples/arabidopsis-isoform-validation/public-data-source-inventory.tsv)
+group (PXD012708, PXD012710, PXD014032) for a sequence-specific peptide audit.
+The first PastDB catalog and PXD014032 processed-table screens are complete and
+their limitations are recorded in the linked audit. Original-study attribution
+for the PastDB event, the large Iso-Seq read analysis, and raw-spectrum searches
+remain open. The [accession inventory](../examples/arabidopsis-isoform-validation/public-data-source-inventory.tsv)
 marks what has been identified versus what has actually been analyzed. No
-candidate-specific independent RNA/protein result is claimed yet. The protocol
-requires exact source accession tracking, sample/study deduplication, frozen
-thresholds and honest inconclusive outcomes.
+candidate-specific independent protein result or novel biological discovery
+is claimed. The protocol requires exact source accession tracking,
+sample/study deduplication, frozen thresholds and honest inconclusive outcomes.
