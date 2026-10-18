@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @EnabledIfSystemProperty(named="phytoscope.ui.tests", matches="true")
 class ComparisonWorkflowUiTest {
+    @SuppressWarnings("unchecked")
     @Test void realAtlasComparisonProjectRoundTripAndVectorRasterExports() throws Exception {
         CountDownLatch ready = new CountDownLatch(1);
         try { Platform.startup(ready::countDown); } catch (IllegalStateException started) { Platform.runLater(ready::countDown); }
@@ -158,6 +159,8 @@ class ComparisonWorkflowUiTest {
             assertTrue(resultArea.getText().startsWith("Domain-to-genome links"));
             assertTrue(resultArea.getText().contains("AT1G67090.1"),
                     "domain UI should resolve the exact transcript ID and display its genomic mapping");
+            assertTrue(resultArea.getText().contains("GenomicBlock"),
+                    "domain UI should display genomic coordinates, not only echo the submitted transcript ID");
 
             analysisTabs.getSelectionModel().select(qcTab);
             view.applyCss(); view.layout();

@@ -133,3 +133,13 @@ terminal truncations, ambiguous repeat-mediated deletions and noncanonical CDSs.
 The next biological test would require independent junction evidence and an
 isoform-specific functional experiment. No threshold was relaxed to turn the
 current negative validation result into a positive result.
+
+
+## PIF6 known-positive locus context
+
+The candidate `DI0006` at `AT3G62090` has prior literature on PIF6 alternative
+splicing and seed dormancy. This is useful as a known-positive biological
+context, **not a new discovery**. The current `.2/.4` transcript models have
+not yet been sequence-matched conclusively to the historical constructs. See
+[the PIF6 case note](../../docs/case-study-pif6-known-positive.md) and the
+[expanded literature audit](literature-audit.md).

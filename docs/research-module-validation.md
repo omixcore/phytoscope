@@ -55,3 +55,29 @@ replicate-based differential-expression analysis. The domain example checks
 coordinates and retained provenance, not an isoform's function. None of these
 tests is a new biological discovery, a user study, or a substitute for curated
 cross-species positive/negative gold sets and a matched multi-tool task study.
+
+
+## Observed results from CI
+
+The [2026-10-18 three-platform validation run](https://github.com/omixcore/phytoscope/actions/runs/39110969072)
+passed on Ubuntu, Windows and macOS. The real-data module report recorded:
+
+| Check | Observed result |
+|---|---|
+| Promoter extraction | 8 loci, 4 on each strand; all 2,200-bp intervals matched direct FASTA slice/reverse-complement reference calculations |
+| Sequence QC | 4 real RBCS CDS records; lengths 411, 561, 546 and 546 nt; all in frame, zero ambiguous bases, no QC flags |
+| Protein similarity metrics | 4 RBCS proteins, 16 pairwise hits; identity, alignment length, query/target coverage and reciprocal-best-hit flags matched the test-side reference implementation |
+| Expression grouping | AT1G01860 leaf-labelled conditions: mean = median = 16.0 TPM (n = 3); its low group mean = 2.5 (n = 2); AT5G38430's two measured zero values remain zero (n = 2) |
+| Domain mapping | 16 real domain/deletion records across 13 genes were separately checked against independent Python coordinates |
+
+The full JSON, including per-locus coordinates, sequence hashes and all alignment
+metrics, is retained in the workflow artifact at
+`research-validation/research-module-gold-set.json`.
+
+## Known-positive biological context: PIF6
+
+The [PIF6 case note](case-study-pif6-known-positive.md) connects the candidate
+`AT3G62090` transcript models to published work on alternative splicing and
+seed dormancy. This is a known-positive context only. The current annotation's
+`.2/.4` model pair is not yet conclusively matched to the historical constructs,
+and this case does not satisfy the independent-new-discovery requirement.
