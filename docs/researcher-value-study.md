@@ -10,10 +10,13 @@ locus-centered analysis with fewer handoffs and more complete provenance than a
 documented conventional workflow, without reducing output correctness?
 
 This is a workflow-value question, not a claim that PhytoScope has more biological
-features than IGV or JBrowse. The comparator must be a task-matched workflow:
-for example, an annotation parser/query tool, a sequence-analysis script, a
-table tool for expression grouping, and a figure editor where those steps are
-needed. Do not compare functions that the baseline does not implement.
+features than IGV or JBrowse. For browser-only locus navigation and track inspection,
+use IGV or JBrowse as the comparator. For an end-to-end locus-centered task, freeze
+a documented multi-tool baseline that uses IGV/JBrowse for genome browsing plus
+the appropriate annotation parser/query tool, sequence-analysis script, table
+tool for expression grouping, and figure editor. Keep each task's baseline limited
+to functions those tools actually implement; record setup time separately from
+task time and do not treat a multi-tool workflow as a single application.
 
 ## Design
 

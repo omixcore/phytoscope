@@ -1,7 +1,7 @@
 # Research-module validation results — 2026-10-18
 
 **Repository:** `omixcore/phytoscope`  
-**Latest validation run:** [GitHub Actions #172](https://github.com/omixcore/phytoscope/actions/runs/39112723857)  
+**Latest validation run:** [GitHub Actions #176](https://github.com/omixcore/phytoscope/actions/runs/39115541048)  
 **Earlier calculation baseline:** [GitHub Actions #39110969072](https://github.com/omixcore/phytoscope/actions/runs/39110969072)  
 **Platforms:** Ubuntu, Windows and macOS; all jobs passed.
 
@@ -14,8 +14,8 @@
 | Protein similarity | Four extracted RBCS proteins; test-side Smith–Waterman reference | All 16 positive within-family pairs matched identity, alignment length, query/target coverage and reciprocal-best-hit flags |
 | Expression grouping | Expression Atlas E-MTAB-7978 source values | AT1G01860 leaf-labelled conditions: mean and median 16.0 TPM across 3 observations; low group mean 2.5 across 2 observations; AT5G38430 retained two measured zero values with mean 0 |
 | Domain mapping | 16 real domain/deletion records in 13 genes | Coordinates separately checked by the independent Python validator and Java real-data regression |
-| Independent promoter baseline | Eight TAIR10 strand-aware 2,200-bp intervals; bedtools v2.31.1 `getfasta -s` | 8/8 exact sequence matches; 0 mismatches; observed tool call 0.079 s for this tiny set only |
-| Independent protein-similarity baseline | Four Arabidopsis RBCS proteins and two unrelated-family controls; BLASTP 2.12.0+, E-value 1e-5 | Excluding 4 self-pairs: 12/12 non-self family pairs and 8/8 negative-control pairs agree with PhytoScope (20/20 classifications); no negative-control hits |
+| Independent promoter baseline | Eight TAIR10 strand-aware 2,200-bp intervals; bedtools v2.31.1 `getfasta -s` | 8/8 exact sequence matches; 0 mismatches; observed tool call 0.107 s for this tiny set only |
+| Independent protein-similarity baseline | Four Arabidopsis RBCS proteins and two unrelated-family controls; BLASTP 2.12.0+, one HSP per pair and shared thresholds (identity ≥30%, alignment ≥20 aa, query/subject coverage ≥50%, E-value ≤1e-5) | Excluding 4 self-pairs: 12/12 non-self family pairs and 8/8 negative-control pairs agree with PhytoScope (20/20 classifications); no negative-control hits |
 
 The detailed machine-readable report, including per-locus coordinates, sequence
 hashes and all pairwise alignment metrics, is retained in the CI artifact at
