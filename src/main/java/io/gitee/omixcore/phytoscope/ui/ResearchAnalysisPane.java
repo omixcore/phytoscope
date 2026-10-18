@@ -61,12 +61,16 @@ public final class ResearchAnalysisPane extends BorderPane {
     }
     private javafx.scene.Node qcPane() {
         qcSequence.setPromptText("Paste DNA sequence in FASTA or raw format"); qcSequence.setPrefRowCount(5);
-        Button check = new Button("Check sequence"); check.setOnAction(e -> {
+        Button check = new Button("Check DNA / promoter"); check.setOnAction(e -> assess(false));
+        Button checkCds = new Button("Check CDS"); checkCds.setOnAction(e -> assess(true));
+        return box(new Label("Paste DNA or CDS, or extract a promoter first. QC reports length, GC, ambiguous bases and coding flags."), qcSequence, row(check, checkCds));
+    }
+    private void assess(boolean coding) {
+        try {
             String s = qcSequence.getText().replaceAll("(?m)^>.*$", "").replaceAll("\\s", "");
-            var r = new SequenceQualityService().assess(geneId.getText().isBlank()?"sequence":geneId.getText(), s, false);
-            write("Sequence QC (flags are checks, not diagnoses)", "length="+r.length()+"; GC="+r.gcPercent()+"%; ambiguous="+r.ambiguousBases()+"; flags="+r.flags());
-        });
-        return box(new Label("Paste a sequence or extract a promoter first. QC reports length, GC, ambiguous bases and flags."), qcSequence, check);
+            var r = new SequenceQualityService().assess(geneId.getText().isBlank()?"sequence":geneId.getText(), s, coding);
+            write(coding ? "CDS QC (flags are checks, not diagnoses)" : "Sequence QC (flags are checks, not diagnoses)", "length="+r.length()+"; GC="+r.gcPercent()+"%; ambiguous="+r.ambiguousBases()+"; length_multiple_of_3="+r.lengthMultipleOfThree()+"; flags="+r.flags());
+        } catch(Exception ex) { write("Sequence QC failed", ex.getMessage()); }
     }
     private javafx.scene.Node homologyPane() {
         proteinFasta.setPromptText("Paste FASTA proteins from both species; header format: >species|protein_id"); proteinFasta.setPrefRowCount(8);
@@ -80,6 +84,7 @@ public final class ResearchAnalysisPane extends BorderPane {
     }
     private void refreshSamples() { sample.setItems(FXCollections.observableArrayList(expression.getTissues())); }
     public void refresh() { refreshSamples(); }
+    public void selectGene(Gene gene) { if (gene != null) geneId.setText(gene.getId()); }
     private Gene resolveGene() {
         Gene g = genome.findGene(geneId.getText().trim());
         if (g == null) write("Input needed", "Enter a valid gene identifier from the loaded annotation.");
