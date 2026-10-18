@@ -36,7 +36,7 @@ def transcript_protein_lengths(gff_path: Path, gene_id: str) -> dict[str, dict[s
     for line in gff_path.read_text(encoding="utf-8").splitlines():
         if not line or line.startswith("#"):
             continue
-        fields = line.split("\\t")
+        fields = line.split("\t")
         if len(fields) != 9 or fields[2] != "CDS":
             continue
         attributes = {}
