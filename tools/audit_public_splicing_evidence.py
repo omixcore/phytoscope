@@ -275,9 +275,22 @@ def fetch_ena_metadata():
 
 
 def fetch_supplement(name: str, urls: list[str], outdir: Path, genes):
-    info, data = fetch_first(name, urls)
+    failures = []
+    data = None
+    info = {"name": name}
+    for url in urls:
+        try:
+            candidate = fetch_bytes(url)
+            if not candidate.startswith(b"PK\\x03\\x04"):
+                preview = candidate[:120].decode("utf-8", errors="replace").replace("\\n", " ")
+                raise ValueError(f"response is not an XLSX ZIP payload; preview={preview!r}")
+            data = candidate
+            info = {"name": name, "url": url, "sha256": sha256(data), "bytes": len(data)}
+            break
+        except Exception as exc:
+            failures.append(f"{url}: {type(exc).__name__}: {exc}")
     if data is None:
-        return info, []
+        return {"name": name, "status": "unavailable", "errors": failures}, []
     dest = outdir / f"{name}.xlsx"
     dest.write_bytes(data)
     sheets, hits = parse_xlsx_hits(data, genes)
