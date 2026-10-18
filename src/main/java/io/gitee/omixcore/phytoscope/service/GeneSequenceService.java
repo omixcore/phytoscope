@@ -261,8 +261,10 @@ public final class GeneSequenceService {
         int tss = gene.getStrand() == '-' ? gene.getEnd() : gene.getStart();
         String sequenceId = resolveSequenceId(gene.getChromosome());
         int sequenceLength = sequences.get(sequenceId).length();
-        long rawStart = gene.getStrand() == '-' ? (long)tss - downstream : (long)tss - upstream;
-        long rawEnd = gene.getStrand() == '-' ? (long)tss + upstream : (long)tss + downstream;
+        // Match the research interval convention: downstream includes the TSS,
+        // so an interior window has exactly upstream + downstream bases.
+        long rawStart = gene.getStrand() == '-' ? (long)tss - downstream + 1 : (long)tss - upstream;
+        long rawEnd = gene.getStrand() == '-' ? (long)tss + upstream : (long)tss + downstream - 1;
         int start = (int)Math.max(1, Math.min(sequenceLength, rawStart));
         int end = (int)Math.max(1, Math.min(sequenceLength, rawEnd));
         return extractInterval(gene.getChromosome(), start, end, gene.getStrand());

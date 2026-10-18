@@ -20,18 +20,19 @@ public final class ResearchAnalysisPane extends BorderPane {
     private final GeneSequenceService sequences;
     private final TextField geneId = new TextField();
     private final TextField upstream = new TextField("2000"), downstream = new TextField("200");
-    private final TextField custom = new TextField("Paste a custom interval: chr1  start  end  label  score  strand");
+    private final TextField custom = new TextField();
     private final TextField group = new TextField("group");
     private final TextArea qcSequence = new TextArea(), proteinFasta = new TextArea(), domains = new TextArea();
     private final TextArea result = new TextArea();
     private final ComboBox<String> sample = new ComboBox<>();
     private final SampleGroupingService grouping = new SampleGroupingService();
-    private final TextField species = new TextField("species B"), identity = new TextField("30");
+    private final TextField species = new TextField("species A"), identity = new TextField("30");
 
     public ResearchAnalysisPane(GenomeDataService genome, ExpressionDataService expression, GeneSequenceService sequences) {
         this.genome = genome; this.expression = expression; this.sequences = sequences;
         setPadding(new javafx.geometry.Insets(12));
         geneId.setId("research-gene-id"); custom.setId("research-custom-interval");
+        custom.setPromptText("sequence  start  end  label  score  strand");
         sample.setId("research-sample"); group.setId("research-group");
         qcSequence.setId("research-qc-sequence"); proteinFasta.setId("research-protein-fasta");
         domains.setId("research-domain-input"); result.setId("research-result");
@@ -79,7 +80,7 @@ public final class ResearchAnalysisPane extends BorderPane {
     private javafx.scene.Node homologyPane() {
         proteinFasta.setPromptText("Paste FASTA proteins from both species; header format: >species|protein_id"); proteinFasta.setPrefRowCount(8);
         Button run = new Button("Compare proteins"); run.setOnAction(e -> homology());
-        return box(new Label("Pairwise protein similarity; provide both species in one FASTA. Results are candidate similarities, not orthology proof."), row(species, new Label("Minimum identity %"), identity), proteinFasta, run);
+        return box(new Label("Pairwise protein similarity; provide both species in one FASTA. Results are candidate similarities, not orthology proof."), row(new Label("Query species"), species, new Label("Minimum identity %"), identity), proteinFasta, run);
     }
     private javafx.scene.Node domainPane() {
         domains.setPromptText("One domain per line: protein_id<TAB>domain name<TAB>start_aa<TAB>end_aa"); domains.setPrefRowCount(5);
@@ -144,11 +145,14 @@ public final class ResearchAnalysisPane extends BorderPane {
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Tab-separated results", "*.tsv"));
         var file=chooser.showSaveDialog(getScene()==null?null:getScene().getWindow()); if(file==null)return;
         try {
-            String[] lines=result.getText().split("\\R",2);
-            String title=lines.length==0?"":lines[0]; String body=lines.length<2?"":lines[1];
-            String safeBody=body.replace("\\", "\\\\").replace("\t", "\\t").replace("\r", "\\r").replace("\n", "\\n");
-            Files.writeString(file.toPath(), "Analysis\tResult\n"+title.replace("\t"," ")+"\t"+safeBody+"\n");
+            Files.writeString(file.toPath(), formatTsv(result.getText()));
         } catch(IOException ex) { write("Export failed",ex.getMessage()); }
+    }
+    public static String formatTsv(String text) {
+        String[] lines=Objects.toString(text,"").split("\\R",2);
+        String title=lines.length==0?"":lines[0]; String body=lines.length<2?"":lines[1];
+        String safeBody=body.replace("\\", "\\\\").replace("\t", "\\t").replace("\r", "\\r").replace("\n", "\\n");
+        return "Analysis\tResult\n"+title.replace("\t"," ")+"\t"+safeBody+"\n";
     }
     public ProjectStore.ResearchState state() { return new ProjectStore.ResearchState(parse(upstream.getText(),2000),parse(downstream.getText(),200),"BED",grouping.assignments(),species.getText(),parseDouble(identity.getText(),30),"","",1,1,result.getText(),custom.getText(),qcSequence.getText(),proteinFasta.getText(),domains.getText()); }
     public void restore(ProjectStore.ResearchState state) { if(state==null)return; upstream.setText(Integer.toString(state.upstream())); downstream.setText(Integer.toString(state.downstream())); grouping.clear(); grouping.assignAll(state.sampleGroups()); species.setText(Objects.toString(state.homologySpecies(),"")); identity.setText(Double.toString(state.homologyIdentity())); result.setText(Objects.toString(state.lastResult(),"")); custom.setText(Objects.toString(state.customInterval(),"")); qcSequence.setText(Objects.toString(state.qcSequence(),"")); proteinFasta.setText(Objects.toString(state.proteinFasta(),"")); domains.setText(Objects.toString(state.domainInput(),"")); refreshSamples(); }

@@ -4,24 +4,30 @@ import io.gitee.omixcore.phytoscope.model.*;
 import io.gitee.omixcore.phytoscope.research.*;
 import io.gitee.omixcore.phytoscope.service.GeneSequenceService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResearchAnalysisTest {
+    @TempDir Path temp;
     @Test void promoterWindowHonorsStrandAndSequenceEdge() throws Exception {
         var analysis = new IntervalAnalysisService();
         Gene plus = new Gene("g1", "g1", "chr1", 4, 10, '+');
         var p = analysis.promoterInterval(plus, 5, 2, 16);
-        assertEquals(1, p.start()); assertEquals(6, p.end());
+        assertEquals(1, p.start()); assertEquals(5, p.end());
+        var interior = analysis.promoterInterval(new Gene("g1b", "g1b", "chr1", 8, 12, '+'), 5, 2, 30);
+        assertEquals(7, interior.end() - interior.start() + 1);
         Gene minus = new Gene("g2", "g2", "chr1", 4, 10, '-');
         var m = analysis.promoterInterval(minus, 5, 2, 16);
-        assertEquals(8, m.start()); assertEquals(15, m.end());
+        assertEquals(9, m.start()); assertEquals(15, m.end());
         GeneSequenceService fasta = new GeneSequenceService(); fasta.loadFromContent(">chr1\nAACCGGTTAACCGGTT\n", "test");
-        assertEquals(6, analysis.extract(p, fasta).sequence().length());
+        assertEquals(5, analysis.extract(p, fasta).sequence().length());
         Gene nearEnd = new Gene("g3", "g3", "chr1", 12, 16, '-');
         var clipped = analysis.promoterInterval(nearEnd, 5, 2, 16);
-        assertEquals(14, clipped.start()); assertEquals(16, clipped.end());
-        assertEquals(3, fasta.extractPromoter(nearEnd, 5, 2).length());
+        assertEquals(15, clipped.start()); assertEquals(16, clipped.end());
+        assertEquals(2, fasta.extractPromoter(nearEnd, 5, 2).length());
     }
 
     @Test void sequenceChecksAndProteinHitsRemainDescriptive() {
@@ -31,6 +37,28 @@ class ResearchAnalysisTest {
                 List.of(new ProteinHomologyService.Protein("A","a","MKWVTF")),
                 List.of(new ProteinHomologyService.Protein("B","b","MKWVTF")), 50);
         assertEquals(1, hs.size()); assertEquals(100.0, hs.getFirst().identity()); assertTrue(hs.getFirst().reciprocalBestHit());
+    }
+
+    @Test void sampleGroupingKeepsMeasuredZeroAndExcludesMissing() throws Exception {
+        Path annotation = temp.resolve("annotation.gff3");
+        Files.writeString(annotation, "c\ts\tgene\t1\t20\t.\t+\t.\tID=A\n");
+        Path matrix = temp.resolve("expression.tsv");
+        Files.writeString(matrix, "Gene\tRoot\tLeaf\tSeed\nA\t0\tNA\t9\n");
+        var genome = new io.gitee.omixcore.phytoscope.service.GenomeDataService(); genome.loadFromFile(annotation);
+        var expression = new io.gitee.omixcore.phytoscope.service.ExpressionDataService();
+        expression.loadFromFile(matrix); expression.reconcile(genome);
+        var groups = new SampleGroupingService(); groups.assign("Root", "vegetative"); groups.assign("Leaf", "vegetative");
+        var summary = groups.summarize(expression, "A", SampleGroupingService.Statistic.MEAN);
+        assertEquals(2, summary.size());
+        assertEquals(1, summary.getFirst().n());
+        assertEquals(0.0, summary.getFirst().value());
+        assertEquals("Seed", summary.getLast().group());
+        assertEquals(9.0, summary.getLast().value());
+    }
+
+    @Test void analysisExportIsAValidSingleRecordTsv() {
+        assertEquals("Analysis\tResult\nQC output\tlength=4;\\nGC=50%\\tflag\n",
+                io.gitee.omixcore.phytoscope.ui.ResearchAnalysisPane.formatTsv("QC\toutput\nlength=4;\nGC=50%\tflag"));
     }
 
     @Test void proteinComparisonUsesSpeciesQualifiedIdsAndCleanedCoverage() {
