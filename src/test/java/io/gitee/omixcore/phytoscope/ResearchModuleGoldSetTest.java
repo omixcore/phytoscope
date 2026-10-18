@@ -266,18 +266,19 @@ class ResearchModuleGoldSetTest {
                 "pairwise_hits_checked", observedHits.size(),
                 "records", alignmentRows,
                 "interpretation", "Within-family similarity validation only; reciprocal-best-hit status is not proof of orthology."));
-        report.put("expression_grouping", Map.of(
-                "source", "Expression Atlas E-MTAB-7978; single-assay condition values",
-                "ordinary_gene", "AT1G01860",
-                "leaf_mean", leafMean.value(),
-                "leaf_median", leafMedian.value(),
-                "leaf_observations", leafMean.n(),
-                "ordinary_low_mean", ordinaryLow.value(),
-                "ordinary_low_observations", ordinaryLow.n(),
-                "zero_gene", "AT5G38430",
-                "zero_group_mean", zeroSummary.value(),
-                "zero_group_observations", zeroSummary.n(),
-                "interpretation", "Descriptive aggregation across labelled conditions, not replicate-based differential expression."));
+        Map<String, Object> expressionSummary = new LinkedHashMap<>();
+        expressionSummary.put("source", "Expression Atlas E-MTAB-7978; single-assay condition values");
+        expressionSummary.put("ordinary_gene", "AT1G01860");
+        expressionSummary.put("leaf_mean", leafMean.value());
+        expressionSummary.put("leaf_median", leafMedian.value());
+        expressionSummary.put("leaf_observations", leafMean.n());
+        expressionSummary.put("ordinary_low_mean", ordinaryLow.value());
+        expressionSummary.put("ordinary_low_observations", ordinaryLow.n());
+        expressionSummary.put("zero_gene", "AT5G38430");
+        expressionSummary.put("zero_group_mean", zeroSummary.value());
+        expressionSummary.put("zero_group_observations", zeroSummary.n());
+        expressionSummary.put("interpretation", "Descriptive aggregation across labelled conditions, not replicate-based differential expression.");
+        report.put("expression_grouping", expressionSummary);
         report.put("domain_mapping", Map.of(
                 "real_records", 16,
                 "genes", 13,
