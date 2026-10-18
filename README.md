@@ -190,7 +190,7 @@ See the audit document for source URLs, checks and interpretation of parser coun
 - [Cross-species extraction results (2026-10-18)](benchmarks/results/2026-10-18/cross-species-extraction.md)
 - [Four-species RBCS family-level homology fixture](examples/cross-species-homology-gold-set/README.md)
 - [Cross-species homology comparison with BLASTP](benchmarks/results/2026-10-18/cross-species-homology.md)
-- [Researcher-value study protocol (planned; no participants yet)](docs/researcher-value-study-protocol.md)
+- [Researcher-value study protocol (planned; no participants yet)](docs/researcher-value-study.md)
 - [Desktop packaging](docs/desktop-distribution.md)
 - [Real expression case](examples/arabidopsis-atlas/README.md)
 - [RBCS case interpretation and limitations](docs/case-study-arabidopsis-rbcs.md)
@@ -207,7 +207,7 @@ classifications. The cross-species panel is a single-family smoke test, not a
 one-to-one orthology benchmark or module-wide precision/recall estimate. Broader
 multi-family/domain gold sets, replicate-based expression validation, controlled
 performance runs and a matched researcher task study remain necessary. The
-[researcher-value protocol](docs/researcher-value-study-protocol.md) is a plan,
+[researcher-value protocol](docs/researcher-value-study.md) is a plan,
 not evidence from participants.
 A separate fixed-rule screen of 48,002 complete Arabidopsis CDS models yielded
 16 domain-deletion records in 13 genes. The published peptide validation supports
