@@ -1,0 +1,17 @@
+candidate_id	gene	symbol	short_transcript	domain	eligible_distinct_peptides	atlas_peptides	new_experiment_peptides	independent_support	discussed_in_source_article	status
+DI0001	AT1G21240	WAK3	AT1G21240.2	EGF-like 1	0	[]	[]	False	False	insufficient_independent_evidence
+DI0002	AT1G21240	WAK3	AT1G21240.2	EGF-like 2; calcium-binding	0	[]	[]	False	False	insufficient_independent_evidence
+DI0003	AT5G01810	CIPK15	AT5G01810.3	NAF	1	"[""ESVEEETEEEMR""]"	[]	False	False	insufficient_independent_evidence
+DI0004	AT1G47290	3BETAHSD/D1	AT1G47290.1	Reticulon; atypical	0	[]	[]	False	False	insufficient_independent_evidence
+DI0005	AT3G57800		AT3G57800.2	bHLH	0	[]	[]	False	False	insufficient_independent_evidence
+DI0006	AT3G62090	PIL2	AT3G62090.4	bHLH	0	[]	[]	False	False	insufficient_independent_evidence
+DI0007	AT1G69530	EXPA1	AT1G69530.4	Expansin-like CBD	0	[]	[]	False	False	insufficient_independent_evidence
+DI0008	AT5G12480	CPK7	AT5G12480.2	Protein kinase	0	[]	[]	False	False	insufficient_independent_evidence
+DI0009	AT1G76650	CML38	AT1G76650.2	EF-hand 2	0	[]	[]	False	False	insufficient_independent_evidence
+DI0010	AT5G56610		AT5G56610.2	Tyrosine-protein phosphatase	0	[]	[]	False	False	insufficient_independent_evidence
+DI0011	AT1G78320	GSTU23	AT1G78320.2	GST N-terminal	0	[]	[]	False	False	insufficient_independent_evidence
+DI0012	AT5G62480	GSTU9	AT5G62480.2	GST N-terminal	0	[]	[]	False	False	insufficient_independent_evidence
+DI0013	AT5G62480	GSTU9	AT5G62480.3	GST N-terminal	0	[]	[]	False	False	insufficient_independent_evidence
+DI0014	AT1G48590		AT1G48590.3	C2	0	[]	[]	False	False	insufficient_independent_evidence
+DI0015	AT3G18750	WNK6	AT3G18750.2	Protein kinase	0	[]	[]	False	False	insufficient_independent_evidence
+DI0016	AT3G18750	WNK6	AT3G18750.6	Protein kinase	0	[]	[]	False	False	insufficient_independent_evidence

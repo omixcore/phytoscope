@@ -82,3 +82,99 @@ participants. Assess these tasks separately:
 No human task-time study or native Windows/macOS dialog evaluation is claimed by
 this repository's automated evidence. Those results require access to actual
 participants and target machines.
+
+
+## Four-species matched extraction benchmark
+
+The CI workflow also runs `tools/run_cross_species_extraction_benchmark.py`
+against the source-verified release-62 annotation excerpts for Arabidopsis,
+rice, maize and soybean. It uses the same source file and selected loci for
+PhytoScope and `gffutils==0.13`, runs at least three fresh-process trials with
+alternating execution order, compares exact gene/transcript/exon/CDS/UTR tuples,
+and independently checks both outputs against the source inventory. Raw
+per-trial timing and correctness reports are retained in the
+`cross-species-extraction` CI artifact.
+
+The fixtures sample two annotated genes per nuclear chromosome. They are useful
+for multi-species parser/query regression but are **not** whole-genome functional
+gold standards. PhytoScope in-memory import time and SQLite index construction
+time are reported separately; they are not used to assert general speed
+superiority. This benchmark does not validate homology, domain prediction,
+promoter function, or researcher usability.
+
+## Researcher-value study
+
+The protocol and blank data-collection template are in
+[researcher-value evaluation](researcher-value-study.md) and
+`benchmarks/researcher-value/task-log-template.tsv`. These files define a
+paired, counterbalanced comparison, task acceptance criteria, provenance scoring
+and reporting rules. They are instruments for a future study, **not user-study
+results**. No human task times or usability scores are claimed until actual
+participants complete the study.
+
+
+## Recorded multi-platform result (2026-10-18)
+
+The exact observed timings, source-inventory counts and test outcomes for
+[CI run #156](https://github.com/omixcore/phytoscope/actions/runs/39109020214)
+are preserved in
+[the cross-species benchmark report](../benchmarks/results/2026-10-18/cross-species-extraction.md).
+All three operating-system jobs passed. The timings are runner-specific
+observations, not a speed-superiority claim; the report distinguishes
+PhytoScope in-memory import from SQLite index construction.
+
+
+## Independent module-level tool checks (CI run #192)
+
+The Ubuntu job runs two additional comparisons, with machine-readable results
+retained in the `validation-ubuntu-latest` artifact under
+`research-validation/`:
+
+- **Promoter sequence extraction:** PhytoScope's eight pinned TAIR10 promoter
+  intervals are compared with `bedtools getfasta -s` (bedtools v2.31.1).
+  BED conversion is explicit (1-based closed start becomes start minus one;
+  the end coordinate is unchanged). All 8 sequences matched exactly, with
+  zero mismatches. The observed 0.107-second bedtools call is for only eight
+  intervals on one chromosome and is not a comparative performance result.
+- **Protein-similarity candidates:** the four extracted Arabidopsis RBCS
+  proteins and two annotated unrelated-family controls are compared with
+  NCBI BLASTP 2.12.0+ using one HSP per pair and the same acceptance thresholds
+  as PhytoScope: identity at least 30%, alignment at least 20 amino acids,
+  query and subject coverage at least 50%, and E-value at most 1e-5. Four
+  trivial self-pairs are excluded from the classification denominator. All
+  12 non-self within-family pairs and all 8 negative-control pairs agreed
+  (20/20 pairwise classifications; no negative-control hits).
+- **Cross-species protein-family check:** the same comparison is repeated for
+  hash-pinned mature RBCS sequences from Arabidopsis, rice, maize and soybean,
+  plus the two unrelated Arabidopsis controls. BLASTP and PhytoScope agree on
+  12/12 non-self RBCS-family pairs and 8/8 negative controls (20/20
+  classifications). One Ubuntu-runner call measured 21.63 ms for PhytoScope and
+  32.4 ms for BLASTP; this tiny single-call result is not a speed claim. See the
+  [four-species homology report](../benchmarks/results/2026-10-18/cross-species-homology.md)
+  and [frozen fixture](../examples/cross-species-homology-gold-set/README.md).
+
+These remain small correctness smoke tests. The cross-species panel covers one
+highly conserved paralog-rich family, uses taxonomically unbalanced negatives,
+and is not an orthology benchmark or a general sensitivity/specificity estimate.
+It does not replace multi-family/domain gold sets, a replicate-based expression
+benchmark, controlled hardware measurements, an actual researcher task study,
+or an independently validated new biological discovery.
+
+## Independent PIF6 isoform-identity gate
+
+`tools/validate_pif6_isoform_identity.py` compares the frozen `DI0006`
+sequence pair with the published PIF6-beta protein sequence record
+(UniProtKB D0EDQ7; GenBank ACX35553.1; transcript GQ477368). The fixture is
+pinned by sequence length and SHA-256, and the script independently reconstructs
+the 1-based inclusive 22-aa deletion from the frozen canonical sequence.
+It then tests exact sequence identity rather than inferring identity from the
+gene symbol or domain overlap. Current `AT3G62090.4` is 341 aa and retains the
+sequence downstream of the internal deletion; the pinned reference is 188 aa,
+while a 182-aa PIF6-beta construct is reported in the literature. The script also parses all four PIF6 protein-coding models in the frozen GFF3
+and confirms lengths of 346, 363, 324 and 341 aa; none matches either the
+182-aa literature construct or the 188-aa sequence record. The result is
+therefore a rejection of DI0006 as an isoform-specific positive control.
+
+The script runs on all three CI platforms and its JSON result is retained in
+the validation artifact. It is a negative biological identity check, not a new
+discovery and not a substitute for an isoform-specific functional experiment.

@@ -1,0 +1,32 @@
+{
+  "record_name": "PIF6-beta historical alternative-splice protein sequence",
+  "protein_accession": "D0EDQ7",
+  "genbank_protein_accession": "ACX35553.1",
+  "genbank_transcript_accession": "GQ477368",
+  "sequence_length_aa": 188,
+  "sequence_sha256": "eb4371c90d42d5cea01b656943b3c7c3e68ece5a13b0c23b6e6200c094f5d3c2",
+  "reported_construct_lengths_aa": [
+    182,
+    188
+  ],
+  "sources": [
+    {
+      "type": "sequence_record",
+      "name": "UniProtKB D0EDQ7",
+      "url": "https://www.uniprot.org/uniprotkb/D0EDQ7/entry"
+    },
+    {
+      "type": "primary_literature",
+      "name": "Penfield et al. 2010",
+      "doi": "10.1007/s11103-009-9571-1",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19911288/"
+    },
+    {
+      "type": "independent_literature",
+      "name": "Structural insight into PIF6-mediated red light signal transduction of plant phytochrome B",
+      "doi": "10.1038/s41421-025-00802-3",
+      "url": "https://www.nature.com/articles/s41421-025-00802-3"
+    }
+  ],
+  "interpretation_boundary": "This sequence is a published PIF6-beta reference, not proof that any current Araport11 transcript has the same sequence or phenotype."
+}

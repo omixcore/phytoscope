@@ -29,7 +29,8 @@ class ProjectStoreTest {
         var genome = new GenomeDataService(); genome.loadFromFile(annotation);
         var expression = new ExpressionDataService(); expression.loadFromFile(matrix); expression.reconcile(genome);
         var state = new ProjectStore.ViewState("scaffold_X", "A", 1, 200, List.of("A"), "TRANSCRIPTION_START", true, "LOG1P", "A");
-        Path project = temp.resolve("saved.phytoscope"); var store = new ProjectStore(); store.save(project, genome, expression, state);
+        var research = new ProjectStore.ResearchState(1500, 250, "BED", Map.of("Root", "belowground", "Leaf", "aboveground"), "rice", 35.0, "P1", "kinase", 12, 88, "QC passed");
+        Path project = temp.resolve("saved.phytoscope"); var store = new ProjectStore(); store.save(project, genome, expression, state, research);
         Files.delete(annotation); Files.delete(matrix);
         try (var restored = store.load(project)) {
             assertEquals(state, restored.view()); assertEquals('-', restored.genome().findGene("A").getStrand());
@@ -37,6 +38,7 @@ class ProjectStoreTest {
             assertEquals(0, restored.expression().getProfile("A").getTpm("Root"));
             assertTrue(Double.isNaN(restored.expression().getProfile("A").getTpm("Leaf")));
             assertEquals(1, restored.manifest().importReport().matchedIds());
+            assertEquals(research, restored.manifest().research());
             Path again = temp.resolve("again.phytoscope"); store.save(again, restored.genome(), restored.expression(), restored.view());
             try (var second = store.load(again)) { assertEquals(1, second.genome().getGeneCount()); }
         }

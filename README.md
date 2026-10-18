@@ -2,8 +2,9 @@
 
 A local JavaFX desktop browser for plant gene structures. Import GFF3/GTF
 annotations, switch between sequences, inspect transcripts/exons/CDS/UTRs,
-attach a traceable expression matrix, compare multiple loci, save portable projects,
-and export PNG or editable SVG figures.
+attach a traceable expression matrix, compare multiple loci, and connect selected
+genes to promoter extraction, sample groups, sequence checks, protein similarity
+and domain mapping. Save portable projects and export TSV, PNG or editable SVG.
 Requires JDK 21. No external service is required while browsing local files.
 
 ![Real Arabidopsis RBCS structure and expression case](examples/arabidopsis-atlas/comparison.svg)
@@ -25,6 +26,9 @@ are in the per-reference manifests and
 **The default Arabidopsis reference also bundles the measured transcriptome panel** used by the browser expression track: **32,833 genes** across six single-assay conditions from Expression Atlas **E-MTAB-7978**, with SHA-256 pinned inputs and a fully traceable extraction manifest. Select any measured gene to see a **six-column vertical TPM bar chart in the right Gene Details pane**. Genes without measured data show an explicit missing-data message rather than a wall of `NA` cells.
 The [case-study guide](examples/arabidopsis-atlas/README.md) records the source,
 ENA runs, exact extracted values, reproduction commands and interpretation limits.
+The separate [case-study interpretation](docs/case-study-arabidopsis-rbcs.md)
+compares the observed family pattern with published genetic evidence and states
+what this known-pattern example can and cannot support.
 Historical illustrative expression fixtures are test-only and are not shipped.
 
 ## Run
@@ -50,8 +54,9 @@ The first build downloads Maven and dependencies. JavaFX may print an
    to open your GFF3, GFF, GTF or GFF2 file.
 2. Select a sequence using the toolbar or Chromosome menu. Names and counts are
    rebuilt from the imported annotation, without a species-specific limit.
-3. Search by gene ID, name, alias or description. Scroll to zoom, drag to pan,
-   and click a gene to inspect its structure.
+3. Search by gene ID, name, alias or description, or enter an IGV-style interval
+   such as `Chr1:1,000-2,000` and press Enter (1-based, inclusive coordinates).
+   Scroll to zoom, drag to pan, and click a gene to inspect its structure.
 4. Use **Fit all** to fit the loaded genes, **Focus selected** for a single locus,
    or **View → Show full chromosome** for the complete declared sequence extent.
 5. When the bundled or imported matrix matches the loaded annotation, sample-level expression appears as a per-gene bar chart in the right-hand Gene Details panel. Import a matching matrix when available, then use **Export** to save the current tracks as PNG or SVG.
@@ -107,8 +112,10 @@ alignment does not establish homology or causation.
 **File → Save project / Open project** preserves source annotation bytes,
 expression values, checksums, selected loci, coordinate window, search and
 comparison settings in one `.phytoscope` ZIP. The project is portable and does not
-need the original annotation file. All recorded sources are verified before the
-live dataset is replaced. Schema version 1; maximum 2 GB expanded input.
+need the original annotation file. Research inputs, parameters, sample-group
+assignments and the latest analysis output are included. All recorded sources
+are verified before the live dataset is replaced. New projects use schema
+version 3; versions 1 and 2 remain readable. Maximum 2 GB expanded input.
 
 User-triggered imports and project restoration run in background workers with
 progress and cancellation. Failed or cancelled loads keep the previous analysis.
@@ -119,16 +126,28 @@ The genome browser limits detailed tracks to 100 overlapping loci, with a visibl
 notice when more overlap. The gene list retains all loci. Zoom or select a gene
 to inspect it; use batch export for complete collections.
 
-## Research analysis layer
+## Research analysis
 
-The first analysis layer is available in `io.gitee.omixcore.phytoscope.research`:
-strand-aware promoter/custom interval extraction, explicit sample grouping with
-mean/median summaries, sequence quality flags, local protein similarity with
-reciprocal-best-hit ranking, and amino-acid-domain to genomic-CDS mapping.
-Coordinate conventions, input assumptions and interpretation limits are
-documented in [research analysis](docs/research-analysis.md). These modules are
-currently service-level APIs; interactive panels and project persistence for
-their settings are follow-up work.
+Select a gene in the browser, then open **Research analysis**. The selected locus
+is shared with the workspace. These five tabs are available:
+
+| Tab | Input and action | Output |
+| --- | --- | --- |
+| Intervals | Matching genome FASTA; upstream/downstream lengths or a custom 1-based interval | Strand-aware sequence, also passed to Sequence QC |
+| Sample groups | Assign expression samples to named groups; summarize the selected gene | Group means and observed-value counts; missing values excluded, measured zeros retained |
+| Sequence QC | Paste DNA/CDS or use an extracted sequence | Length, GC, ambiguous bases and coding-frame/start/stop flags |
+| Homology | Proteins from both species in FASTA with `>species\|protein_id` headers | Local-alignment identity, coverage and reciprocal-best-hit candidates |
+| Domains | Exact protein or transcript ID, domain name and 1-based amino-acid start/end in tab-delimited rows | Genomic CDS blocks for the matching annotated isoform |
+
+**Export results…** saves the latest output as a two-column `Analysis`/`Result`
+TSV with escaped tabs and line breaks. **Save project / Open project** restores
+the workspace inputs, settings and latest output. A new analysis replaces the
+displayed output; export it before running another analysis if both are needed.
+
+See [research analysis](docs/research-analysis.md) for coordinate conventions,
+FASTA requirements and limits. Similarity candidates are not established
+orthologs, domain records must be supplied, and sample summaries are not
+differential-expression tests.
 
 ## Batch export
 
@@ -165,10 +184,37 @@ See the audit document for source URLs, checks and interpretation of parser coun
 
 ## Reproducibility and distribution
 
+- [Scientific contribution, evidence status and remaining work](docs/annals-evidence.md)
 - [Validation and source audit](docs/chromosome-validation.md)
 - [Validation, performance and comparison protocols](docs/validation-and-benchmarks.md)
+- [Cross-species extraction results (2026-10-18)](benchmarks/results/2026-10-18/cross-species-extraction.md)
+- [Four-species RBCS family-level homology fixture](examples/cross-species-homology-gold-set/README.md)
+- [Cross-species homology comparison with BLASTP](benchmarks/results/2026-10-18/cross-species-homology.md)
+- [Researcher-value study protocol (planned; no participants yet)](docs/researcher-value-study.md)
 - [Desktop packaging](docs/desktop-distribution.md)
 - [Real expression case](examples/arabidopsis-atlas/README.md)
+- [RBCS case interpretation and limitations](docs/case-study-arabidopsis-rbcs.md)
+- [Genome-wide isoform screen and independent peptide validation](examples/arabidopsis-isoform-validation/README.md)
+
+The scientific focus is a recoverable, locus-centered workflow with traceable
+inputs and outputs. The public RBCS example demonstrates integration and
+reproducibility of a known expression pattern. It does not establish a new
+biological discovery. CI checks eight strand-aware promoter intervals against
+bedtools and compares protein-similarity classifications with BLASTP for both a
+same-species panel and a small four-species mature-RBCS panel (Arabidopsis, rice,
+maize and soybean). Both panels agree on 20/20 non-self positive/negative pair
+classifications. The cross-species panel is a single-family smoke test, not a
+one-to-one orthology benchmark or module-wide precision/recall estimate. Broader
+multi-family/domain gold sets, replicate-based expression validation, controlled
+performance runs and a matched researcher task study remain necessary. The
+[researcher-value protocol](docs/researcher-value-study.md) is a plan,
+not evidence from participants.
+A separate fixed-rule screen of 48,002 complete Arabidopsis CDS models yielded
+16 domain-deletion records in 13 genes. The published peptide validation supports
+one CIPK15 junction in one original study; **none met the two-study validation
+threshold**. The case retains all failures and does not establish a novel
+biological discovery. Its 16 domain coordinate mappings are checked against
+independent Python calculations, with project restoration and TSV export tested.
 
 Display-free comparison (does not initialize the JavaFX toolkit):
 
@@ -198,3 +244,17 @@ Windows and macOS; actual native dialog/hardware checks are reported separately.
 The right-hand Gene Details → Sequences section displays the gene genomic span and, for each annotated transcript, the spliced transcript, CDS, 5′ UTR, 3′ UTR and translated protein sequence. Each sequence has Copy sequence and Copy FASTA actions. Transcript IDs, protein IDs, exon counts, lengths, strand orientation, source FASTA and UTR provenance are shown where available.
 
 The Arabidopsis TAIR10 example bundles the version-pinned Ensembl Plants release 62 genomic FASTA (src/main/resources/data/species/arabidopsis/TAIR10_genomic.fna.gz); its checksum and chromosome lengths are recorded in genome-sequence-provenance.json. Other species or assemblies can use File → Import genome FASTA. The genome FASTA must match the annotation assembly and sequence names. The extractor respects 1-based inclusive GFF3 coordinates, reverse-complements minus-strand loci, concatenates exons/CDS in transcription order, and translates CDS with the standard nuclear genetic code. If UTR features are absent, terminal exonic bases outside annotated CDS boundaries are labelled as inferred; missing transcript/CDS models are never fabricated.
+
+
+## Research evidence and evaluation
+
+- [Evidence status and publication claim boundaries](docs/annals-evidence.md)
+- [Validation and cross-species benchmarks](docs/validation-and-benchmarks.md)
+- [Researcher-value study protocol](docs/researcher-value-study.md)
+- [Research-module validation on real plant data](docs/research-module-validation.md)
+- [PIF6 known-positive literature control](docs/case-study-pif6-known-positive.md)
+- [Research-module validation results (2026-10-18)](benchmarks/results/2026-10-18/research-module-validation.md)
+
+The biological-discovery screen is reported with its negative validation outcome;
+a candidate is not presented as a new discovery unless it passes the stated
+independent-evidence criteria.

@@ -14,9 +14,23 @@ public final class ProteinHomologyService {
                       double identity, int alignedLength, double queryCoverage, double targetCoverage,
                       boolean reciprocalBestHit) {}
 
-    /** Local alignment (Smith-Waterman); identities/coverage are descriptive, not an orthology proof. */
+    /** Backwards-compatible identity-only filtering. Prefer the coverage-aware overload for full-protein candidate searches. */
     public List<Hit> compare(List<Protein> queries, List<Protein> targets, double minimumIdentity) {
-        if (minimumIdentity < 0 || minimumIdentity > 100) throw new IllegalArgumentException("Identity cutoff must be 0–100");
+        return compare(queries, targets, minimumIdentity, 1, 0.0, 0.0);
+    }
+
+    /**
+     * Local alignment (Smith-Waterman). Coverage and length filters suppress
+     * short high-identity motifs that are not meaningful full-protein matches.
+     * Reciprocal-best-hit status remains a ranking flag, not an orthology proof.
+     */
+    public List<Hit> compare(List<Protein> queries, List<Protein> targets, double minimumIdentity,
+                             int minimumAlignedLength, double minimumQueryCoverage, double minimumTargetCoverage) {
+        if (!Double.isFinite(minimumIdentity) || minimumIdentity < 0 || minimumIdentity > 100)
+            throw new IllegalArgumentException("Identity cutoff must be 0–100");
+        if (minimumAlignedLength < 1) throw new IllegalArgumentException("Minimum alignment length must be at least one amino acid");
+        requireCoverageThreshold(minimumQueryCoverage, "Query");
+        requireCoverageThreshold(minimumTargetCoverage, "Target");
         requireUniqueKeys(queries); requireUniqueKeys(targets);
         Map<String, Protein> qBest = new HashMap<>(), tBest = new HashMap<>();
         Map<String, Integer> qScores = new HashMap<>(), tScores = new HashMap<>();
@@ -36,7 +50,9 @@ public final class ProteinHomologyService {
         for (Protein q : queries) for (Protein t : targets) {
             String queryKey = key(q), targetKey = key(t);
             double[] x = score.get(pairKey(queryKey, targetKey));
-            if (x[0] >= minimumIdentity && x[1] > 0) hits.add(new Hit(q.species(),q.id(),t.species(),t.id(),x[0],(int)x[1],x[2],x[3],
+            if (x[0] >= minimumIdentity && x[1] >= minimumAlignedLength
+                    && x[2] >= minimumQueryCoverage && x[3] >= minimumTargetCoverage && x[1] > 0)
+                hits.add(new Hit(q.species(),q.id(),t.species(),t.id(),x[0],(int)x[1],x[2],x[3],
                     Objects.equals(qBest.get(queryKey) == null ? null : key(qBest.get(queryKey)), targetKey)
                     && Objects.equals(tBest.get(targetKey) == null ? null : key(tBest.get(targetKey)), queryKey)));
         }
@@ -44,6 +60,11 @@ public final class ProteinHomologyService {
         return List.copyOf(hits);
     }
     private record Alignment(int matches, int length, int qSpan, int tSpan, int score) {}
+    private static void requireCoverageThreshold(double value, String label) {
+        if (!Double.isFinite(value) || value < 0 || value > 1)
+            throw new IllegalArgumentException(label + " coverage cutoff must be between 0 and 1");
+    }
+
     private static String clean(String s) { return s == null ? "" : s.toUpperCase(Locale.ROOT).replaceAll("[^A-Z*]", ""); }
     private static String key(Protein p) { return p.species() + "\0" + p.id(); }
     private static String pairKey(String q, String t) { return q + "\1" + t; }

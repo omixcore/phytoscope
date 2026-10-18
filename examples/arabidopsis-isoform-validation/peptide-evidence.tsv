@@ -1,0 +1,2 @@
+candidate_id	gene	peptide	source_excel_row	source_groups	search	source_mapped_isoforms	short_start_aa	short_end_aa	canonical_match	length_pass	matching_genes	atlas_groups	new_groups	unresolved_groups	eligible
+DI0003	AT5G01810	ESVEEETEEEMR	24784	FL	FragPipe	AT5G01810.3	276	287	False	True	"[""AT5G01810""]"	"[""FL""]"	[]	[]	True

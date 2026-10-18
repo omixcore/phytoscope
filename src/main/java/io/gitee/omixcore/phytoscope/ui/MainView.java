@@ -60,6 +60,8 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Main window: a three-pane layout with dataset and chromosome selectors.
@@ -84,6 +86,9 @@ import java.util.List;
 @Component
 public class MainView extends BorderPane {
 
+    private static final Pattern LOCUS_QUERY = Pattern.compile("^([^:]+):([0-9][0-9,]*)-([0-9][0-9,]*)$");
+    private static final Pattern LOCUS_PREFIX = Pattern.compile("^[^:]+:.*$");
+
     private final GenomeDataService dataService;
     private final ExpressionDataService expressionService;
     private final GeneSequenceService sequenceService = new GeneSequenceService();
@@ -91,6 +96,7 @@ public class MainView extends BorderPane {
     private ExampleDataset activeExample;
     private java.util.concurrent.CompletableFuture<?> pendingLoad = java.util.concurrent.CompletableFuture.completedFuture(null);
     private ComparisonPane comparisonPane;
+    private ResearchAnalysisPane researchPane;
     private ProjectStore.Restored restoredProject;
     private final TabPane workspaceTabs = new TabPane();
     private final GeneDetailPane detailPane = new GeneDetailPane();
@@ -125,9 +131,11 @@ public class MainView extends BorderPane {
         setTop(new VBox(buildMenuBar(), buildToolBar()));
         setLeft(buildGeneListPane());
         comparisonPane = new ComparisonPane(dataService, expressionService);
+        researchPane = new ResearchAnalysisPane(dataService, expressionService, sequenceService);
         Tab browser = new Tab("Genome browser", buildBrowserPane()); browser.setClosable(false);
         Tab comparison = new Tab("Gene comparison", comparisonPane); comparison.setClosable(false);
-        workspaceTabs.getTabs().addAll(browser, comparison);
+        Tab research = new Tab("Research analysis", researchPane); research.setClosable(false);
+        workspaceTabs.getTabs().addAll(browser, comparison, research);
         setCenter(workspaceTabs);
         setRight(buildDetailPane());
         setBottom(buildStatusBar());
@@ -324,8 +332,9 @@ public class MainView extends BorderPane {
         workspaceTabs.getSelectionModel().select(1);
     }
     public ComparisonPane getComparisonPane() { return comparisonPane; }
+    public ResearchAnalysisPane getResearchPane() { return researchPane; }
     public void saveProject(Path target) throws IOException {
-        new ProjectStore().save(target, dataService, expressionService, captureViewState());
+        new ProjectStore().save(target, dataService, expressionService, captureViewState(), researchPane.state());
     }
     private ProjectStore.ViewState captureViewState() {
         Gene selected = renderer.getSelectedGene(); var settings = comparisonPane.settings();
@@ -368,6 +377,7 @@ public class MainView extends BorderPane {
         }
         if (state.selectedGene() != null) selectGene(dataService.findGene(state.selectedGene()));
         else { geneList.getSelectionModel().clearSelection(); renderer.setSelectedGene(null); detailPane.clear(); }
+        researchPane.restore(next.manifest().research());
         renderer.showWindow(state.start(), state.end());
         comparisonPane.restore(state.comparisonGenes(), settings); redraw();
         if (previous != null) try { previous.close(); } catch (IOException ex) { statusLabel.setTooltip(new Tooltip("Previous project cleanup: " + ex.getMessage())); }
@@ -407,6 +417,7 @@ public class MainView extends BorderPane {
         refreshChromosomeSelector();
         showActiveChromosome();
         comparisonPane.refresh();
+        researchPane.refresh();
     }
 
     /**
@@ -710,11 +721,15 @@ public class MainView extends BorderPane {
         Region spacer1 = new Region();
         HBox.setHgrow(spacer1, Priority.ALWAYS);
 
-        searchField.setPromptText("Search gene ID / name / alias");
+        searchField.setPromptText("Gene ID / name or chr:start-end");
         searchField.setId("gene-search");
         searchField.setPrefWidth(220);
         searchField.textProperty().addListener((obs, old, val) -> {
-            if (!loading) applySearch(val);
+            if (!loading && !LOCUS_PREFIX.matcher(val == null ? "" : val.trim()).matches()) applySearch(val);
+        });
+        searchField.setOnAction(e -> {
+            String query = searchField.getText() == null ? "" : searchField.getText().trim();
+            if (LOCUS_PREFIX.matcher(query).matches()) navigateToLocus(query);
         });
 
         Button zoomIn = toolButton("Zoom +", "Zoom in about the centre (or scroll up)");
@@ -872,6 +887,41 @@ public class MainView extends BorderPane {
         }
     }
 
+    /** Navigate directly to a 1-based inclusive genomic interval. */
+    public boolean navigateToLocus(String query) {
+        Matcher matcher = LOCUS_QUERY.matcher(query == null ? "" : query.trim());
+        if (!matcher.matches()) {
+            statusLabel.setText("Use sequence:start-end, for example Chr1:1,000-2,000");
+            return false;
+        }
+        final int start;
+        final int end;
+        try {
+            start = Integer.parseInt(matcher.group(2).replace(",", ""));
+            end = Integer.parseInt(matcher.group(3).replace(",", ""));
+        } catch (NumberFormatException ex) {
+            statusLabel.setText("Coordinates exceed the supported integer range");
+            return false;
+        }
+        String sequence = matcher.group(1).trim();
+        if (start < 1 || end <= start || !dataService.getChromosomes().contains(sequence)) {
+            statusLabel.setText("Invalid interval or unknown sequence: " + sequence);
+            return false;
+        }
+        dataService.setActiveSequence(sequence);
+        loading = true;
+        try { chromosomeSelector.getSelectionModel().select(sequence); }
+        finally { loading = false; }
+        List<Gene> genes = dataService.getGenesOn(sequence);
+        geneItems.setAll(genes);
+        renderer.setSequenceLabel(sequence);
+        renderer.setGenes(genes);
+        renderer.focusRange(start, end);
+        redraw();
+        statusLabel.setText(sequence + ":" + String.format("%,d-%,d", start, end));
+        return true;
+    }
+
     // ------------------------------------------------------------------
     // Gene list
     // ------------------------------------------------------------------
@@ -902,6 +952,7 @@ public class MainView extends BorderPane {
                 }
                 renderer.setSelectedGene(gene);
                 detailPane.showGene(gene);
+                researchPane.selectGene(gene);
                 redraw();
             }
         });
@@ -1096,6 +1147,7 @@ public class MainView extends BorderPane {
         }
         renderer.setSelectedGene(gene);
         detailPane.showGene(gene);
+        researchPane.selectGene(gene);
         redraw();
     }
 

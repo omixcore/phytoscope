@@ -15,8 +15,10 @@ public final class IntervalAnalysisService {
         if (upstream < 0 || downstream < 0 || (long) upstream + downstream == 0 || sequenceLength < 1)
             throw new IllegalArgumentException("Specify a non-empty promoter window and a valid sequence length");
         int tss = gene.getStrand() == '-' ? gene.getEnd() : gene.getStart();
-        long rawStart = gene.getStrand() == '-' ? (long)tss - downstream : (long)tss - upstream;
-        long rawEnd = gene.getStrand() == '-' ? (long)tss + upstream : (long)tss + downstream;
+        // The downstream window includes the TSS base; exact interior length is
+        // upstream + downstream, including on either strand.
+        long rawStart = gene.getStrand() == '-' ? (long)tss - downstream + 1 : (long)tss - upstream;
+        long rawEnd = gene.getStrand() == '-' ? (long)tss + upstream : (long)tss + downstream - 1;
         int start = (int)Math.max(1, Math.min(sequenceLength, rawStart));
         int end = (int)Math.max(1, Math.min(sequenceLength, rawEnd));
         return new GenomicInterval("promoter:" + gene.getDisplayName(), gene.getSpecies(), null,
