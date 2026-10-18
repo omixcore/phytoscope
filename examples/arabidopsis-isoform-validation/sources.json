@@ -1,0 +1,40 @@
+{
+  "retrieved_on": "2026-10-18",
+  "uniprot": {
+    "url": "https://rest.uniprot.org/uniprotkb/stream?query=%28organism_id%3A3702%29+AND+%28reviewed%3Atrue%29&format=tsv&fields=accession%2Cgene_names%2Csequence%2Cft_domain",
+    "raw_sha256": "a1368dfe279148cecb339e2ee066b14f1c8c1f83a68e32ade7b42707e77a051c",
+    "raw_records": 16421,
+    "snapshot": "uniprot-domains.tsv",
+    "snapshot_sha256": "ddb2b9abde5b77802dc808656457ffac807b9b3744f89a3bb1604b374d9732f5",
+    "transformation": "Retain all records and DOMAIN features; replace canonical protein sequence with its SHA-256 and length. Screening requires an exact digest match to a translated reference isoform."
+  },
+  "peptides": {
+    "doi": "10.1093/nar/gkag400",
+    "article_url": "https://academic.oup.com/nar/article/54/8/gkag400/8666740",
+    "download_page": "https://oup.silverchair-cdn.com/article-minimal/8666740",
+    "archive_name": "gkag400_supplemental_files.zip",
+    "archive_sha256": "90602ad7119fc9a516d7032240bc55b1ee5a37c921a5ad24ed9b690eb4205fee",
+    "workbook": "Supplemental Table 2 - Isoforms_v6.xlsx",
+    "sheet": "2 Isoform specific peptides",
+    "published_peptide_rows": 32110,
+    "subset": "source-peptides.tsv",
+    "subset_sha256": "1b70d1a7a949083ff025fd9c31a17aa95d43de26bd7d72a9c514889b09262631",
+    "extraction": "All rows whose Gene exactly matches any frozen candidate gene; unmodified cell values and 1-based Excel row numbers retained."
+  },
+  "source_article": {
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13136898/",
+    "downloaded_html_sha256": "e44a7236396db5c63cc298de8ff329da041845edb2c9918a0a5354c554f1f725",
+    "gene_ids": "source-article-gene-ids.txt",
+    "gene_ids_sha256": "15f9f2782b80af6a9d4a4a9a7940b4586ad2b28d5e84c88b145613f586ac9465"
+  },
+  "candidate_function": {
+    "url": "https://rest.uniprot.org/uniprotkb/P92937.json",
+    "snapshot": "P92937.json",
+    "sha256": "bd4019d11824987eb4d21b163e617bc3ac3601429d6a1ddb71d67044521094cc"
+  },
+  "independence": "Mergner 2020 draft proteome and Reyes 2026 new experiments are separate biological acquisitions. All peptide identifications used here were processed together by Reyes et al.; independence of computational processing is not claimed.",
+  "specificity_background": {
+    "sha256": "7b595f0490252b8020bf6958f353e326b1c0d3b5bc57f79a4438c9bdc4a9c930",
+    "reconstruction": "tools/screen_domain_isoforms.py with pinned full reference and protocol; includes partial CDS translations"
+  }
+}

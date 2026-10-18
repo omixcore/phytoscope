@@ -1,0 +1,35 @@
+{
+  "protocol_version": 1,
+  "question": "Do annotated internal protein deletions remove at least one quarter of a UniProt domain and have locus-specific junction-peptide support from independent proteomics projects?",
+  "recorded_on": "2026-10-18",
+  "status": "Analyst-defined before candidate screening and peptide-level inspection; not a registered preregistration",
+  "discovery_inputs": ["bundled TAIR10 genomic FASTA", "bundled Araport11 Chr1-Chr5 annotation", "UniProt reviewed Arabidopsis canonical sequences and DOMAIN features"],
+  "discovery_rules": {
+    "complete_cds": "Length divisible by three; begins ATG; ends with a stop; no internal stop or ambiguous codon",
+    "canonical_match": "Translated annotated isoform must exactly match the UniProt canonical sequence",
+    "event": "A shorter annotated isoform differs solely by one contiguous internal amino-acid deletion",
+    "minimum_canonical_length_aa": 100,
+    "minimum_short_length_aa": 50,
+    "minimum_identical_flank_aa": 10,
+    "minimum_deleted_aa": 10,
+    "minimum_domain_overlap_aa": 10,
+    "minimum_domain_fraction_removed": 0.25,
+    "ambiguous_deletion_placement": "Exclude when repeated sequence permits more than one exact deletion position",
+    "ranking": "Domain fraction removed descending, overlap length descending, gene and transcript identifiers ascending; retain all passing candidates"
+  },
+  "validation_inputs": ["Reyes et al. 2026, DOI 10.1093/nar/gkag400, Supplemental Table 2"],
+  "validation_rules": {
+    "minimum_peptide_length_aa": 7,
+    "junction": "Peptide must span the newly joined boundary with at least two residues on each side",
+    "specificity": "Peptide absent from canonical sequence and every translated annotated protein from another gene; isoleucine and leucine treated as indistinguishable",
+    "independent_projects": "Require at least one eligible junction peptide in the external Arabidopsis draft-proteome study and at least one in the new Reyes proteomics experiments; combined or unresolvable source labels do not qualify",
+    "minimum_distinct_junction_peptides_total": 2,
+    "negative_result": "Report all failed and unassessable candidates without relaxing thresholds"
+  },
+  "novelty_rules": {
+    "known_examples": "Flag genes explicitly discussed in the Reyes article or matching previous reports as previously reported, even when validation succeeds",
+    "literature_check": "Search gene ID, aliases and alternative splicing/domain terms for every independently supported candidate",
+    "allowed_claim": "Independent support for translation of an annotated domain-altering isoform; functional consequences remain predictions",
+    "not_established": ["novelty from absence of search hits", "causal domain function", "stress-induced isoform regulation", "superiority over existing tools without matched task comparison"]
+  }
+}

@@ -137,7 +137,7 @@ is shared with the workspace. These five tabs are available:
 | Sample groups | Assign expression samples to named groups; summarize the selected gene | Group means and observed-value counts; missing values excluded, measured zeros retained |
 | Sequence QC | Paste DNA/CDS or use an extracted sequence | Length, GC, ambiguous bases and coding-frame/start/stop flags |
 | Homology | Proteins from both species in FASTA with `>species\|protein_id` headers | Local-alignment identity, coverage and reciprocal-best-hit candidates |
-| Domains | Protein ID, domain name and 1-based amino-acid start/end in tab-delimited rows | Genomic CDS blocks for matching annotated protein IDs |
+| Domains | Exact protein or transcript ID, domain name and 1-based amino-acid start/end in tab-delimited rows | Genomic CDS blocks for the matching annotated isoform |
 
 **Export results…** saves the latest output as a two-column `Analysis`/`Result`
 TSV with escaped tabs and line breaks. **Save project / Open project** restores
@@ -190,12 +190,20 @@ See the audit document for source URLs, checks and interpretation of parser coun
 - [Desktop packaging](docs/desktop-distribution.md)
 - [Real expression case](examples/arabidopsis-atlas/README.md)
 - [RBCS case interpretation and limitations](docs/case-study-arabidopsis-rbcs.md)
+- [Genome-wide isoform screen and independent peptide validation](examples/arabidopsis-isoform-validation/README.md)
 
 The scientific focus is a recoverable, locus-centered workflow with traceable
 inputs and outputs. The public RBCS example demonstrates integration and
 reproducibility of a known expression pattern. It does not establish a new
 biological discovery. Curated multi-species homology/domain benchmarks and a
 matched comparison with existing workflows remain necessary for stronger claims.
+
+A separate fixed-rule screen of 48,002 complete Arabidopsis CDS models yielded
+16 domain-deletion records in 13 genes. The published peptide validation supports
+one CIPK15 junction in one original study; **none met the two-study validation
+threshold**. The case retains all failures and does not establish a novel
+biological discovery. Its 16 domain coordinate mappings are checked against
+independent Python calculations, with project restoration and TSV export tested.
 
 Display-free comparison (does not initialize the JavaFX toolkit):
 

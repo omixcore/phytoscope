@@ -83,7 +83,7 @@ public final class ResearchAnalysisPane extends BorderPane {
         return box(new Label("Pairwise protein similarity; provide both species in one FASTA. Results are candidate similarities, not orthology proof."), row(new Label("Query species"), species, new Label("Minimum identity %"), identity), proteinFasta, run);
     }
     private javafx.scene.Node domainPane() {
-        domains.setPromptText("One domain per line: protein_id<TAB>domain name<TAB>start_aa<TAB>end_aa"); domains.setPrefRowCount(5);
+        domains.setPromptText("One domain per line: protein_or_transcript_id<TAB>domain name<TAB>start_aa<TAB>end_aa"); domains.setPrefRowCount(5);
         Button map = new Button("Map domains to gene models"); map.setOnAction(e -> mapDomains());
         return box(new Label("Map amino-acid coordinates through annotated CDS exons onto genomic blocks."), domains, map);
     }
@@ -134,8 +134,10 @@ public final class ResearchAnalysisPane extends BorderPane {
     private void mapDomains() {
         try { Gene gene=resolveGene(); if(gene==null)return; List<String> out=new ArrayList<>();
             for(String line:domains.getText().split("\\R")) { if(line.isBlank()||line.startsWith("#"))continue; String[] c=line.split("\\t");
+                if(c.length!=4)throw new IllegalArgumentException("Each domain row needs four tab-separated columns: protein/transcript ID, name, start and end.");
                 var d=new DomainLinkService.Domain(c[0],c[1],Integer.parseInt(c[2]),Integer.parseInt(c[3]),"user supplied");
-                out.add(new DomainLinkService().link(d,gene).toString()); }
+                var links=new DomainLinkService().link(d,gene);
+                out.add(links.isEmpty()?"No exact protein or transcript ID match for "+c[0]+" in "+gene.getId():links.toString()); }
             write("Domain-to-genome links", String.join("\n",out));
         } catch(Exception ex) { write("Domain mapping failed", ex.getMessage()); }
     }

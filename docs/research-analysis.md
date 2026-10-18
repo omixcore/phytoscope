@@ -44,8 +44,9 @@ should use a dedicated search/index workflow and a documented parameter set.
 ## Domain links
 
 `DomainLinkService` maps imported 1-based amino-acid intervals to one or more
-genomic CDS blocks in transcription order. It requires an exact protein ID
-match between the domain record and transcript. It preserves exon boundaries
+genomic CDS blocks in transcription order. It requires an exact annotated protein ID or transcript ID
+match. Transcript IDs support annotations such as Araport11 without `protein_id`;
+isoform/version suffixes are not removed and gene-level IDs are not expanded. It preserves exon boundaries
 and flags coordinates extending beyond the annotated CDS. Protein isoform,
 translation phase and domain database release should be checked before
 interpreting a mapped region.

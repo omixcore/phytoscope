@@ -42,3 +42,21 @@ or demonstrate that researchers make a discovery unavailable through other
 workflows. A methods-paper claim should be limited to the operational workflow
 until curated module-level benchmarks and an independent, reproducible plant
 case have been completed.
+
+## Independent isoform validation attempt (2026-10-18)
+
+The [frozen case](../examples/arabidopsis-isoform-validation/README.md) screens
+48,002 complete CDS models using exact UniProt canonical matches and fixed
+deletion/domain-overlap rules. It retains 16 records in 13 genes, all 26 source
+peptide rows for those genes, and every failed validation outcome. One CIPK15
+junction peptide is eligible, but comes only from the Mergner original study.
+No candidate meets the required two-study/two-peptide standard. This is a
+reproducible negative validation result, not completion of the new-discovery
+requirement. Missing detection does not establish absence of an isoform.
+
+The software correction accepts exact transcript IDs for domain mapping when
+annotations lack protein IDs. A real-data regression compares 16 mappings and
+translated isoforms with independent Python results, checks the CIPK15 junction
+across two CDS blocks, and restores a portable project with the failed-validation
+status retained. This supplies coordinate correctness evidence for these records;
+it does not replace curated multi-species benchmarks or a matched user-task study.

@@ -1,0 +1,22 @@
+{
+  "candidate_rows": 16,
+  "candidate_genes": 13,
+  "source_rows_for_candidate_genes": 26,
+  "junction_evidence_rows": 1,
+  "independently_supported_rows": 0,
+  "independently_supported_genes": [],
+  "source_archive_sha256": "90602ad7119fc9a516d7032240bc55b1ee5a37c921a5ad24ed9b690eb4205fee",
+  "source_archive_verified_this_run": true,
+  "source_article_gene_ids_sha256": "15f9f2782b80af6a9d4a4a9a7940b4586ad2b28d5e84c88b145613f586ac9465",
+  "candidate_sha256": "8356dcf4eea2b8a0a234a3abd9c85303b7b3176eb4566dbc7be098b2b263c6be",
+  "background_sha256": "7b595f0490252b8020bf6958f353e326b1c0d3b5bc57f79a4438c9bdc4a9c930",
+  "background_models": 52060,
+  "novel_biological_discovery_established": false,
+  "limitations": [
+    "Published processed peptide identifications, not a new raw-spectrum search",
+    "Original biological datasets are independent; reprocessing is shared",
+    "Missing peptide detection is not evidence of absent isoform",
+    "A peptide supports a sequence fragment, not the entire intact isoform",
+    "Domain overlap predicts a structural change, not loss of measured function"
+  ]
+}

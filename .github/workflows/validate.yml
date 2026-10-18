@@ -27,6 +27,11 @@ jobs:
           python-version: '3.12'
       - name: Validate bundled full annotation
         run: python tools/validate_arabidopsis_reference.py --directory src/main/resources/data/species/arabidopsis
+      - name: Isoform analysis boundary cases
+        run: python tools/test_isoform_case.py
+      - name: Reproduce frozen isoform screen and independent validation
+        if: runner.os == 'Linux'
+        run: python tools/check_isoform_case.py
       - name: Java and JavaFX regressions
         shell: bash
         run: sh mvnw -B -Pui-tests verify
@@ -56,6 +61,7 @@ jobs:
             target/case-study.phytoscope
             target/benchmark-rice/
             target/research-validation/
+            target/independent-isoforms/reproduced/
             target/packaged-smoke/
       - uses: actions/upload-artifact@v4
         with:

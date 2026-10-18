@@ -15,7 +15,11 @@ public final class DomainLinkService {
     public List<Link> link(Domain d, Gene gene) {
         List<Link> out = new ArrayList<>();
         for (Transcript tx : gene.getTranscripts()) {
-            if (!Objects.equals(d.proteinId(), tx.getProteinId())) continue;
+            // Araport11 mRNAs have stable transcript IDs but often no protein_id.
+            // Accept an explicitly supplied exact transcript ID, without guessing
+            // a protein accession or stripping isoform/version suffixes.
+            if (!Objects.equals(d.proteinId(), tx.getProteinId())
+                    && !Objects.equals(d.proteinId(), tx.getId())) continue;
             if (tx.getStrand() != '+' && tx.getStrand() != '-') {
                 out.add(new Link(d, tx.getId(), List.of(), "Cannot map domain coordinates because transcript strand is unknown."));
                 continue;

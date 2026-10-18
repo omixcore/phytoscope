@@ -1,0 +1,789 @@
+[
+  {
+    "gene": "AT1G21240",
+    "symbol": "WAK3",
+    "description": "wall associated kinase 3",
+    "accession": "Q9LMN8",
+    "canonical_transcript": "AT1G21240.1",
+    "equivalent_canonical_transcripts": [
+      "AT1G21240.1"
+    ],
+    "short_transcript": "AT1G21240.2",
+    "chromosome": "Chr1",
+    "strand": "+",
+    "canonical_length_aa": 741,
+    "short_length_aa": 480,
+    "deletion_start_aa": 163,
+    "deletion_end_aa": 423,
+    "deletion_length_aa": 261,
+    "domain": "EGF-like 1",
+    "domain_start_aa": 245,
+    "domain_end_aa": 292,
+    "domain_overlap_aa": 48,
+    "domain_fraction_removed": 1.0,
+    "deletion_genomic_blocks": [
+      [
+        7434789,
+        7435179
+      ],
+      [
+        7435281,
+        7435439
+      ],
+      [
+        7435513,
+        7435745
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        7435035,
+        7435178
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 245..292; /note=\"EGF-like 1\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00076\"; DOMAIN 293..334; /note=\"EGF-like 2; calcium-binding\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00076\"; DOMAIN 415..698; /note=\"Protein kinase\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00159\"",
+    "canonical_sequence": "MKFQEGVFLVVIFFLAYTQLVKGQHQPREDCKLKCGNVTIEYPFGISTGCYYPGDDNFNLTCVVEEKLLLFGIIQVTNISHSGHVSVLFERFSECYEQKNETNGTALGYQLGSSFSLSSNNKFTLVGCNALSLLSTFGKQNYSTGCLSLCNSQPEANGRCNGVGCCTTEDFSVPFDSDTFQFGSVRLRNQVNNSLDLFNTSVYQFNPCTYAFLVEDGKFNFDSSKDLKNLRNVTRFPVALDWSIGNQTCEQAGSTRICGKNSSCYNSTTRNGYICKCNEGYDGNPYRSEGCKDIDECISDTHNCSDPKTCRNRDGGFDCKCPSGYDLNSSMSCTRPEYKRTRIFLVIIIGVLVLLLAAICIQHATKQRKYTKLRRQFFEQNGGGMLIQRLSGAGLSNIDFKIFTEEGMKEATNGYDESRILGQGGQGTVYKGILPDNTIVAIKKARLADSRQVDQFIHEVLVLSQINHRNVVKILGCCLETEVPLLVYEFITNGTLFDHLHGSIFDSSLTWEHRLRIAIEVAGTLAYLHSSASIPIIHRDIKTANILLDENLTAKVADFGASKLIPMDKEQLTTMVQGTLGYLDPEYYTTGLLNEKSDVYSFGVVLMELLSGQKALCFERPQASKHLVSYFVSATEENRLHEIIDDQVLNEDNLKEIQEAARIAAECTRLMGEERPRMKEVAAKLEALRVEKTKHKWSDQYPEENEHLIGGHILSAQGETSSSIGYDSIKNVAILDIETGR",
+    "short_sequence": "MKFQEGVFLVVIFFLAYTQLVKGQHQPREDCKLKCGNVTIEYPFGISTGCYYPGDDNFNLTCVVEEKLLLFGIIQVTNISHSGHVSVLFERFSECYEQKNETNGTALGYQLGSSFSLSSNNKFTLVGCNALSLLSTFGKQNYSTGCLSLCNSQPEANGRCNGGGQGTVYKGILPDNTIVAIKKARLADSRQVDQFIHEVLVLSQINHRNVVKILGCCLETEVPLLVYEFITNGTLFDHLHGSIFDSSLTWEHRLRIAIEVAGTLAYLHSSASIPIIHRDIKTANILLDENLTAKVADFGASKLIPMDKEQLTTMVQGTLGYLDPEYYTTGLLNEKSDVYSFGVVLMELLSGQKALCFERPQASKHLVSYFVSATEENRLHEIIDDQVLNEDNLKEIQEAARIAAECTRLMGEERPRMKEVAAKLEALRVEKTKHKWSDQYPEENEHLIGGHILSAQGETSSSIGYDSIKNVAILDIETGR",
+    "candidate_id": "DI0001"
+  },
+  {
+    "gene": "AT1G21240",
+    "symbol": "WAK3",
+    "description": "wall associated kinase 3",
+    "accession": "Q9LMN8",
+    "canonical_transcript": "AT1G21240.1",
+    "equivalent_canonical_transcripts": [
+      "AT1G21240.1"
+    ],
+    "short_transcript": "AT1G21240.2",
+    "chromosome": "Chr1",
+    "strand": "+",
+    "canonical_length_aa": 741,
+    "short_length_aa": 480,
+    "deletion_start_aa": 163,
+    "deletion_end_aa": 423,
+    "deletion_length_aa": 261,
+    "domain": "EGF-like 2; calcium-binding",
+    "domain_start_aa": 293,
+    "domain_end_aa": 334,
+    "domain_overlap_aa": 42,
+    "domain_fraction_removed": 1.0,
+    "deletion_genomic_blocks": [
+      [
+        7434789,
+        7435179
+      ],
+      [
+        7435281,
+        7435439
+      ],
+      [
+        7435513,
+        7435745
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        7435179,
+        7435179
+      ],
+      [
+        7435281,
+        7435405
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 245..292; /note=\"EGF-like 1\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00076\"; DOMAIN 293..334; /note=\"EGF-like 2; calcium-binding\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00076\"; DOMAIN 415..698; /note=\"Protein kinase\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00159\"",
+    "canonical_sequence": "MKFQEGVFLVVIFFLAYTQLVKGQHQPREDCKLKCGNVTIEYPFGISTGCYYPGDDNFNLTCVVEEKLLLFGIIQVTNISHSGHVSVLFERFSECYEQKNETNGTALGYQLGSSFSLSSNNKFTLVGCNALSLLSTFGKQNYSTGCLSLCNSQPEANGRCNGVGCCTTEDFSVPFDSDTFQFGSVRLRNQVNNSLDLFNTSVYQFNPCTYAFLVEDGKFNFDSSKDLKNLRNVTRFPVALDWSIGNQTCEQAGSTRICGKNSSCYNSTTRNGYICKCNEGYDGNPYRSEGCKDIDECISDTHNCSDPKTCRNRDGGFDCKCPSGYDLNSSMSCTRPEYKRTRIFLVIIIGVLVLLLAAICIQHATKQRKYTKLRRQFFEQNGGGMLIQRLSGAGLSNIDFKIFTEEGMKEATNGYDESRILGQGGQGTVYKGILPDNTIVAIKKARLADSRQVDQFIHEVLVLSQINHRNVVKILGCCLETEVPLLVYEFITNGTLFDHLHGSIFDSSLTWEHRLRIAIEVAGTLAYLHSSASIPIIHRDIKTANILLDENLTAKVADFGASKLIPMDKEQLTTMVQGTLGYLDPEYYTTGLLNEKSDVYSFGVVLMELLSGQKALCFERPQASKHLVSYFVSATEENRLHEIIDDQVLNEDNLKEIQEAARIAAECTRLMGEERPRMKEVAAKLEALRVEKTKHKWSDQYPEENEHLIGGHILSAQGETSSSIGYDSIKNVAILDIETGR",
+    "short_sequence": "MKFQEGVFLVVIFFLAYTQLVKGQHQPREDCKLKCGNVTIEYPFGISTGCYYPGDDNFNLTCVVEEKLLLFGIIQVTNISHSGHVSVLFERFSECYEQKNETNGTALGYQLGSSFSLSSNNKFTLVGCNALSLLSTFGKQNYSTGCLSLCNSQPEANGRCNGGGQGTVYKGILPDNTIVAIKKARLADSRQVDQFIHEVLVLSQINHRNVVKILGCCLETEVPLLVYEFITNGTLFDHLHGSIFDSSLTWEHRLRIAIEVAGTLAYLHSSASIPIIHRDIKTANILLDENLTAKVADFGASKLIPMDKEQLTTMVQGTLGYLDPEYYTTGLLNEKSDVYSFGVVLMELLSGQKALCFERPQASKHLVSYFVSATEENRLHEIIDDQVLNEDNLKEIQEAARIAAECTRLMGEERPRMKEVAAKLEALRVEKTKHKWSDQYPEENEHLIGGHILSAQGETSSSIGYDSIKNVAILDIETGR",
+    "candidate_id": "DI0002"
+  },
+  {
+    "gene": "AT5G01810",
+    "symbol": "CIPK15",
+    "description": "CBL-interacting protein kinase 15",
+    "accession": "P92937",
+    "canonical_transcript": "AT5G01810.1",
+    "equivalent_canonical_transcripts": [
+      "AT5G01810.1",
+      "AT5G01810.2"
+    ],
+    "short_transcript": "AT5G01810.3",
+    "chromosome": "Chr5",
+    "strand": "+",
+    "canonical_length_aa": 421,
+    "short_length_aa": 376,
+    "deletion_start_aa": 284,
+    "deletion_end_aa": 328,
+    "deletion_length_aa": 45,
+    "domain": "NAF",
+    "domain_start_aa": 299,
+    "domain_end_aa": 323,
+    "domain_overlap_aa": 25,
+    "domain_fraction_removed": 1.0,
+    "deletion_genomic_blocks": [
+      [
+        311309,
+        311443
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        311354,
+        311428
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 12..266; /note=\"Protein kinase\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00159\"; DOMAIN 299..323; /note=\"NAF\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00256\"",
+    "canonical_sequence": "MEKKGSVLMLRYEVGKFLGQGTFAKVYHARHLKTGDSVAIKVIDKERILKVGMTEQIKREISAMRLLRHPNIVELHEVMATKSKIYFVMEHVKGGELFNKVSTGKLREDVARKYFQQLVRAVDFCHSRGVCHRDLKPENLLLDEHGNLKISDFGLSALSDSRRQDGLLHTTCGTPAYVAPEVISRNGYDGFKADVWSCGVILFVLLAGYLPFRDSNLMELYKKIGKAEVKFPNWLAPGAKRLLKRILDPNPNTRVSTEKIMKSSWFRKGLQEEVKESVEEETEVDAEAEGNASAEKEKKRCINLNAFEIISLSTGFDLSGLFEKGEEKEEMRFTSNREASEITEKLVEIGKDLKMKVRKKEHEWRVKMSAEATVVEAEVFEIAPSYHMVVLKKSGGDTAEYKRVMKESIRPALIDFVLAWH",
+    "short_sequence": "MEKKGSVLMLRYEVGKFLGQGTFAKVYHARHLKTGDSVAIKVIDKERILKVGMTEQIKREISAMRLLRHPNIVELHEVMATKSKIYFVMEHVKGGELFNKVSTGKLREDVARKYFQQLVRAVDFCHSRGVCHRDLKPENLLLDEHGNLKISDFGLSALSDSRRQDGLLHTTCGTPAYVAPEVISRNGYDGFKADVWSCGVILFVLLAGYLPFRDSNLMELYKKIGKAEVKFPNWLAPGAKRLLKRILDPNPNTRVSTEKIMKSSWFRKGLQEEVKESVEEETEEEMRFTSNREASEITEKLVEIGKDLKMKVRKKEHEWRVKMSAEATVVEAEVFEIAPSYHMVVLKKSGGDTAEYKRVMKESIRPALIDFVLAWH",
+    "candidate_id": "DI0003"
+  },
+  {
+    "gene": "AT1G47290",
+    "symbol": "3BETAHSD/D1",
+    "description": "3beta-hydroxysteroid-dehydrogenase/decarboxylase isoform 1",
+    "accession": "Q9FX01",
+    "canonical_transcript": "AT1G47290.2",
+    "equivalent_canonical_transcripts": [
+      "AT1G47290.2"
+    ],
+    "short_transcript": "AT1G47290.1",
+    "chromosome": "Chr1",
+    "strand": "+",
+    "canonical_length_aa": 439,
+    "short_length_aa": 382,
+    "deletion_start_aa": 371,
+    "deletion_end_aa": 427,
+    "deletion_length_aa": 57,
+    "domain": "Reticulon; atypical",
+    "domain_start_aa": 371,
+    "domain_end_aa": 439,
+    "domain_overlap_aa": 57,
+    "domain_fraction_removed": 0.8260869565217391,
+    "deletion_genomic_blocks": [
+      [
+        17338522,
+        17338522
+      ],
+      [
+        17338822,
+        17338991
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        17338522,
+        17338522
+      ],
+      [
+        17338822,
+        17339027
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 371..439; /note=\"Reticulon; atypical\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00170\"",
+    "canonical_sequence": "MVMEVTETERWCVVTGGRGFAARHLVEMLVRYQMFHVRIADLAPAIVLNPHEETGILGEAIRSGRVQYVSADLRNKTQVVKGFQGAEVVFHMAAPDSSINNHQLQYSVNVQGTTNVIDACIEVGVKRLIYTSSPSVVFDGVHGTLNADESLPYPPKHNDSYSATKAEGEALILKANGRSGLLTCCIRPSSIFGPGDKLMVPSLVTAARAGKSKFIIGDGSNFYDFTYVENVVHAHVCAERALASGGEVCAKAAGQAYFITNMEPIKFWEFMSQLLEGLGYERPSIKIPASLMMPIAYLVELAYKLLGPYGMKVPVLTPSRVRLLSCNRTFDSSKAKDRLGYSPVVPLQEGIKRTIDSFSHLKAQNQPKTEVTETIQWKKQTLIAIVILITLYHNFVATTGSSSVIITAVSKVLLVSSIFMFINGILPEKMKVFGSKKID",
+    "short_sequence": "MVMEVTETERWCVVTGGRGFAARHLVEMLVRYQMFHVRIADLAPAIVLNPHEETGILGEAIRSGRVQYVSADLRNKTQVVKGFQGAEVVFHMAAPDSSINNHQLQYSVNVQGTTNVIDACIEVGVKRLIYTSSPSVVFDGVHGTLNADESLPYPPKHNDSYSATKAEGEALILKANGRSGLLTCCIRPSSIFGPGDKLMVPSLVTAARAGKSKFIIGDGSNFYDFTYVENVVHAHVCAERALASGGEVCAKAAGQAYFITNMEPIKFWEFMSQLLEGLGYERPSIKIPASLMMPIAYLVELAYKLLGPYGMKVPVLTPSRVRLLSCNRTFDSSKAKDRLGYSPVVPLQEGIKRTIDSFSHLKAQNQPKTEEKMKVFGSKKID",
+    "candidate_id": "DI0004"
+  },
+  {
+    "gene": "AT3G57800",
+    "symbol": "",
+    "description": "basic helix-loop-helix (bHLH) DNA-binding superfamily protein",
+    "accession": "Q3EAI1",
+    "canonical_transcript": "AT3G57800.1",
+    "equivalent_canonical_transcripts": [
+      "AT3G57800.1"
+    ],
+    "short_transcript": "AT3G57800.2",
+    "chromosome": "Chr3",
+    "strand": "-",
+    "canonical_length_aa": 426,
+    "short_length_aa": 379,
+    "deletion_start_aa": 243,
+    "deletion_end_aa": 289,
+    "deletion_length_aa": 47,
+    "domain": "bHLH",
+    "domain_start_aa": 210,
+    "domain_end_aa": 307,
+    "domain_overlap_aa": 47,
+    "domain_fraction_removed": 0.47959183673469385,
+    "deletion_genomic_blocks": [
+      [
+        21409841,
+        21409936
+      ],
+      [
+        21409526,
+        21409570
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        21410590,
+        21410622
+      ],
+      [
+        21410433,
+        21410498
+      ],
+      [
+        21409841,
+        21409936
+      ],
+      [
+        21409526,
+        21409570
+      ],
+      [
+        21409242,
+        21409295
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 210..307; /note=\"bHLH\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00981\"",
+    "canonical_sequence": "MDLTGGFGARSGGVGPCREPIGLESLHLGDEFRQLVTTLPPENPGGSFTALLELPPTQAVELLHFTDSSSSQQAAVTGIGGEIPPPLHSFGGTLAFPSNSVLMERAARFSVIATEQQNGNISGETPTSSVPSNSSANLDRVKTEPAETDSSQRLISDSAIENQIPCPNQNNRNGKRKDFEKKGKSSTKKNKSSEENEKLPYVHVRARRGQATDSHSLAERARREKINARMKLLQELVPGCDKGTDFGGKIKIKVCFGVHLLMISGKKVAIFLWKVSCEDLIDCSFSPPRIQGTALVLDEIINHVQSLQRQVEMLSMRLAAVNPRIDFNLDTILASENGSLMDGSFNAAPMQLAWPQQAIETEQSFHHRQLQQPPTQQWPFDGLNQPVWGREEDQAHGNDNSNLMAVSENVMVASANLHPNQVKMEL",
+    "short_sequence": "MDLTGGFGARSGGVGPCREPIGLESLHLGDEFRQLVTTLPPENPGGSFTALLELPPTQAVELLHFTDSSSSQQAAVTGIGGEIPPPLHSFGGTLAFPSNSVLMERAARFSVIATEQQNGNISGETPTSSVPSNSSANLDRVKTEPAETDSSQRLISDSAIENQIPCPNQNNRNGKRKDFEKKGKSSTKKNKSSEENEKLPYVHVRARRGQATDSHSLAERARREKINARMKLLQELVPGCDKIQGTALVLDEIINHVQSLQRQVEMLSMRLAAVNPRIDFNLDTILASENGSLMDGSFNAAPMQLAWPQQAIETEQSFHHRQLQQPPTQQWPFDGLNQPVWGREEDQAHGNDNSNLMAVSENVMVASANLHPNQVKMEL",
+    "candidate_id": "DI0005"
+  },
+  {
+    "gene": "AT3G62090",
+    "symbol": "PIL2",
+    "description": "phytochrome interacting factor 3-like 2",
+    "accession": "Q8L5W7",
+    "canonical_transcript": "AT3G62090.2",
+    "equivalent_canonical_transcripts": [
+      "AT3G62090.2"
+    ],
+    "short_transcript": "AT3G62090.4",
+    "chromosome": "Chr3",
+    "strand": "-",
+    "canonical_length_aa": 363,
+    "short_length_aa": 341,
+    "deletion_start_aa": 199,
+    "deletion_end_aa": 220,
+    "deletion_length_aa": 22,
+    "domain": "bHLH",
+    "domain_start_aa": 188,
+    "domain_end_aa": 237,
+    "domain_overlap_aa": 22,
+    "domain_fraction_removed": 0.44,
+    "deletion_genomic_blocks": [
+      [
+        22989726,
+        22989791
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        22989870,
+        22989902
+      ],
+      [
+        22989726,
+        22989791
+      ],
+      [
+        22989573,
+        22989623
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 188..237; /note=\"bHLH\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00981\"",
+    "canonical_sequence": "MMFLPTDYCCRLSDQEYMELVFENGQILAKGQRSNVSLHNQRTKSIMDLYEAEYNEDFMKSIIHGGGGAITNLGDTQVVPQSHVAAAHETNMLESNKHVDDSETLKASSSKRMMVDYHNRKKIKFIPPDEQSVVADRSFKLGFDTSSVGFTEDSEGSMYLSSSLDDESDDARPQVPARTRKALVKRKRNAEAYNSPERNQRNDINKKMRTLQNLLPNSHKDDNESMLDEAINYMTNLQLQVQMMTMGNRFVTPSMMMPLGPNYSQMGLAMGVGMQMGEQQFLPAHVLGAGLPGINDSADMLRFLNHPGLMPMQNSAPFIPTENCSPQSVPPSCAAFPNQIPNPNSLSNLDGATLHKKSRKTNR",
+    "short_sequence": "MMFLPTDYCCRLSDQEYMELVFENGQILAKGQRSNVSLHNQRTKSIMDLYEAEYNEDFMKSIIHGGGGAITNLGDTQVVPQSHVAAAHETNMLESNKHVDDSETLKASSSKRMMVDYHNRKKIKFIPPDEQSVVADRSFKLGFDTSSVGFTEDSEGSMYLSSSLDDESDDARPQVPARTRKALVKRKRNAEAYNSPERDDNESMLDEAINYMTNLQLQVQMMTMGNRFVTPSMMMPLGPNYSQMGLAMGVGMQMGEQQFLPAHVLGAGLPGINDSADMLRFLNHPGLMPMQNSAPFIPTENCSPQSVPPSCAAFPNQIPNPNSLSNLDGATLHKKSRKTNR",
+    "candidate_id": "DI0006"
+  },
+  {
+    "gene": "AT1G69530",
+    "symbol": "EXPA1",
+    "description": "expansin A1",
+    "accession": "Q9C554",
+    "canonical_transcript": "AT1G69530.1",
+    "equivalent_canonical_transcripts": [
+      "AT1G69530.1",
+      "AT1G69530.2"
+    ],
+    "short_transcript": "AT1G69530.4",
+    "chromosome": "Chr1",
+    "strand": "+",
+    "canonical_length_aa": 250,
+    "short_length_aa": 220,
+    "deletion_start_aa": 208,
+    "deletion_end_aa": 237,
+    "deletion_length_aa": 30,
+    "domain": "Expansin-like CBD",
+    "domain_start_aa": 167,
+    "domain_end_aa": 246,
+    "domain_overlap_aa": 30,
+    "domain_fraction_removed": 0.375,
+    "deletion_genomic_blocks": [
+      [
+        26142920,
+        26143009
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        26142797,
+        26143036
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 45..157; /note=\"Expansin-like EG45\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00079\"; DOMAIN 167..246; /note=\"Expansin-like CBD\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00078\"",
+    "canonical_sequence": "MALVTFLFIATLGAMTSHVNGYAGGGWVNAHATFYGGGDASGTMGGACGYGNLYSQGYGTNTAALSTALFNNGLSCGACFEIRCQNDGKWCLPGSIVVTATNFCPPNNALPNNAGGWCNPPQQHFDLSQPVFQRIAQYRAGIVPVAYRRVPCVRRGGIRFTINGHSYFNLVLITNVGGAGDVHSAMVKGSRTGWQAMSRNWGQNWQSNSYLNGQSLSFKVTTSDGQTIVSNNVANAGWSFGQTFTGAQLR",
+    "short_sequence": "MALVTFLFIATLGAMTSHVNGYAGGGWVNAHATFYGGGDASGTMGGACGYGNLYSQGYGTNTAALSTALFNNGLSCGACFEIRCQNDGKWCLPGSIVVTATNFCPPNNALPNNAGGWCNPPQQHFDLSQPVFQRIAQYRAGIVPVAYRRVPCVRRGGIRFTINGHSYFNLVLITNVGGAGDVHSAMVKGSRTGWQAMSRNWGQNWQSWSFGQTFTGAQLR",
+    "candidate_id": "DI0007"
+  },
+  {
+    "gene": "AT5G12480",
+    "symbol": "CPK7",
+    "description": "calmodulin-domain protein kinase 7",
+    "accession": "Q38873",
+    "canonical_transcript": "AT5G12480.1",
+    "equivalent_canonical_transcripts": [
+      "AT5G12480.1"
+    ],
+    "short_transcript": "AT5G12480.2",
+    "chromosome": "Chr5",
+    "strand": "-",
+    "canonical_length_aa": 535,
+    "short_length_aa": 441,
+    "deletion_start_aa": 59,
+    "deletion_end_aa": 152,
+    "deletion_length_aa": 94,
+    "domain": "Protein kinase",
+    "domain_start_aa": 59,
+    "domain_end_aa": 317,
+    "domain_overlap_aa": 94,
+    "domain_fraction_removed": 0.36293436293436293,
+    "deletion_genomic_blocks": [
+      [
+        4049580,
+        4049861
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        4049520,
+        4049861
+      ],
+      [
+        4049305,
+        4049428
+      ],
+      [
+        4049070,
+        4049213
+      ],
+      [
+        4048824,
+        4048976
+      ],
+      [
+        4048739,
+        4048752
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 59..317; /note=\"Protein kinase\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00159\"; DOMAIN 360..395; /note=\"EF-hand 1\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00448\"; DOMAIN 396..431; /note=\"EF-hand 2\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00448\"; DOMAIN 432..467; /note=\"EF-hand 3\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00448\"; DOMAIN 468..504; /note=\"EF-hand 4\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00448\"",
+    "canonical_sequence": "MGNCCGNPSSATNQSKQGKPKNKNNPFYSNEYATTDRSGAGFKLSVLKDPTGHDISLQYDLGREVGRGEFGITYLCTDKETGEKYACKSISKKKLRTAVDIEDVRREVEIMKHMPKHPNVVSLKDSFEDDDAVHIVMELCEGGELFDRIVARGHYTERAAAAVMKTIVEVVQICHKQGVMHRDLKPENFLFANKKETSALKAIDFGLSVFFKPGEQFNEIVGSPYYMAPEVLRRNYGPEIDVWSAGVILYILLCGVPPFWAETEQGVAQAIIRSVIDFKRDPWPRVSDSAKDLVRKMLEPDPKKRLTAAQVLEHTWILNAKKAPNVSLGETVKARLKQFSVMNKLKKRALRVIAEHLSVEEAAGIKEAFEMMDVNKRGKINLEELKYGLQKAGQQIADTDLQILMEATDVDGDGTLNYSEFVAVSVHLKKMANDEHLHKAFNFFDQNQSGYIEIDELREALNDELDNTSSEEVIAAIMQDVDTDKDGRISYEEFVAMMKAGTDWRKASRQYSRERFNSLSLKLMRDGSLQLEGET",
+    "short_sequence": "MGNCCGNPSSATNQSKQGKPKNKNNPFYSNEYATTDRSGAGFKLSVLKDPTGHDISLQGHYTERAAAAVMKTIVEVVQICHKQGVMHRDLKPENFLFANKKETSALKAIDFGLSVFFKPGEQFNEIVGSPYYMAPEVLRRNYGPEIDVWSAGVILYILLCGVPPFWAETEQGVAQAIIRSVIDFKRDPWPRVSDSAKDLVRKMLEPDPKKRLTAAQVLEHTWILNAKKAPNVSLGETVKARLKQFSVMNKLKKRALRVIAEHLSVEEAAGIKEAFEMMDVNKRGKINLEELKYGLQKAGQQIADTDLQILMEATDVDGDGTLNYSEFVAVSVHLKKMANDEHLHKAFNFFDQNQSGYIEIDELREALNDELDNTSSEEVIAAIMQDVDTDKDGRISYEEFVAMMKAGTDWRKASRQYSRERFNSLSLKLMRDGSLQLEGET",
+    "candidate_id": "DI0008"
+  },
+  {
+    "gene": "AT1G76650",
+    "symbol": "CML38",
+    "description": "calmodulin-like 38",
+    "accession": "Q9SRE6",
+    "canonical_transcript": "AT1G76650.1",
+    "equivalent_canonical_transcripts": [
+      "AT1G76650.1",
+      "AT1G76650.3"
+    ],
+    "short_transcript": "AT1G76650.2",
+    "chromosome": "Chr1",
+    "strand": "-",
+    "canonical_length_aa": 177,
+    "short_length_aa": 167,
+    "deletion_start_aa": 76,
+    "deletion_end_aa": 85,
+    "deletion_length_aa": 10,
+    "domain": "EF-hand 2",
+    "domain_start_aa": 75,
+    "domain_end_aa": 110,
+    "domain_overlap_aa": 10,
+    "domain_fraction_removed": 0.2777777777777778,
+    "deletion_genomic_blocks": [
+      [
+        28767188,
+        28767217
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        28767113,
+        28767220
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 39..74; /note=\"EF-hand 1\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00448\"; DOMAIN 75..110; /note=\"EF-hand 2\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00448\"; DOMAIN 111..146; /note=\"EF-hand 3\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00448\"; DOMAIN 147..177; /note=\"EF-hand 4\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00448\"",
+    "canonical_sequence": "MKNNTQPQSSFKKLCRKLSPKREDSAGEIQQHNSSNGEDKNRELEAVFSYMDANRDGRISPEELQKSFMTLGEQLSDEEAVAAVRLSDTDGDGMLDFEEFSQLIKVDDEEEKKMELKGAFRLYIAEGEDCITPRSLKMMLKKLGESRTTDDCRVMISAFDLNADGVLSFDEFALMMR",
+    "short_sequence": "MKNNTQPQSSFKKLCRKLSPKREDSAGEIQQHNSSNGEDKNRELEAVFSYMDANRDGRISPEELQKSFMTLGEQLLSDTDGDGMLDFEEFSQLIKVDDEEEKKMELKGAFRLYIAEGEDCITPRSLKMMLKKLGESRTTDDCRVMISAFDLNADGVLSFDEFALMMR",
+    "candidate_id": "DI0009"
+  },
+  {
+    "gene": "AT5G56610",
+    "symbol": "",
+    "description": "Phosphotyrosine protein phosphatases superfamily protein",
+    "accession": "Q6NKR2",
+    "canonical_transcript": "AT5G56610.1",
+    "equivalent_canonical_transcripts": [
+      "AT5G56610.1"
+    ],
+    "short_transcript": "AT5G56610.2",
+    "chromosome": "Chr5",
+    "strand": "+",
+    "canonical_length_aa": 228,
+    "short_length_aa": 187,
+    "deletion_start_aa": 73,
+    "deletion_end_aa": 113,
+    "deletion_length_aa": 41,
+    "domain": "Tyrosine-protein phosphatase",
+    "domain_start_aa": 66,
+    "domain_end_aa": 213,
+    "domain_overlap_aa": 41,
+    "domain_fraction_removed": 0.27702702702702703,
+    "deletion_genomic_blocks": [
+      [
+        22917255,
+        22917377
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        22916933,
+        22916953
+      ],
+      [
+        22917255,
+        22917377
+      ],
+      [
+        22917460,
+        22917553
+      ],
+      [
+        22917636,
+        22917718
+      ],
+      [
+        22917819,
+        22917908
+      ],
+      [
+        22918057,
+        22918089
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 66..213; /note=\"Tyrosine-protein phosphatase\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00160\"",
+    "canonical_sequence": "MTDETEEDDTTQQRSSRNDGVSKNKGKGFKGDKAKRALIGAGGRILFYPTLLYNLVRFKLQSQFRWWDQIDEYLLMGAVPFRKDVPRLKKLGVGGVITLNEPYETLVPSSLYSAYEMEHLVIPTRDYLFAPSIVDITLAVNFIHKNALLGKTTYVHCKAGRGRSTTVVLCYLIEHKSMTVAAAFEHVRSIRPRVLLHPSQRKVVEEFSRLQSPLSESTFIATSGDIVS",
+    "short_sequence": "MTDETEEDDTTQQRSSRNDGVSKNKGKGFKGDKAKRALIGAGGRILFYPTLLYNLVRFKLQSQFRWWDQIDEAYEMEHLVIPTRDYLFAPSIVDITLAVNFIHKNALLGKTTYVHCKAGRGRSTTVVLCYLIEHKSMTVAAAFEHVRSIRPRVLLHPSQRKVVEEFSRLQSPLSESTFIATSGDIVS",
+    "candidate_id": "DI0010"
+  },
+  {
+    "gene": "AT1G78320",
+    "symbol": "GSTU23",
+    "description": "glutathione S-transferase TAU 23",
+    "accession": "Q9M9F1",
+    "canonical_transcript": "AT1G78320.1",
+    "equivalent_canonical_transcripts": [
+      "AT1G78320.1"
+    ],
+    "short_transcript": "AT1G78320.2",
+    "chromosome": "Chr1",
+    "strand": "-",
+    "canonical_length_aa": 220,
+    "short_length_aa": 193,
+    "deletion_start_aa": 61,
+    "deletion_end_aa": 87,
+    "deletion_length_aa": 27,
+    "domain": "GST N-terminal",
+    "domain_start_aa": 3,
+    "domain_end_aa": 82,
+    "domain_overlap_aa": 22,
+    "domain_fraction_removed": 0.275,
+    "deletion_genomic_blocks": [
+      [
+        29468098,
+        29468178
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        29468113,
+        29468352
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 3..82; /note=\"GST N-terminal\"; DOMAIN 88..208; /note=\"GST C-terminal\"",
+    "canonical_sequence": "MEEEIILLDYWASMYGMRTRIALEEKKVKYEYREEDLSNKSPLLLQMNPIHKKIPVLIHEGKPICESIIQVQYIDELWPDTNPILPSDPYQRAQARFWADYIDKKTYVPCKALWSESGEKQEAAKIEFIEVLKTLDSELGDKYYFGGNEFGLVDIAFIGFYSWFRTYEEVANLSIVLEFPKLMAWAQRCLKRESVAKALPDSDKVLKSVSDHRKIILGID",
+    "short_sequence": "MEEEIILLDYWASMYGMRTRIALEEKKVKYEYREEDLSNKSPLLLQMNPIHKKIPVLIHEDPYQRAQARFWADYIDKKTYVPCKALWSESGEKQEAAKIEFIEVLKTLDSELGDKYYFGGNEFGLVDIAFIGFYSWFRTYEEVANLSIVLEFPKLMAWAQRCLKRESVAKALPDSDKVLKSVSDHRKIILGID",
+    "candidate_id": "DI0011"
+  },
+  {
+    "gene": "AT5G62480",
+    "symbol": "GSTU9",
+    "description": "glutathione S-transferase tau 9",
+    "accession": "Q9FUT0",
+    "canonical_transcript": "AT5G62480.1",
+    "equivalent_canonical_transcripts": [
+      "AT5G62480.1"
+    ],
+    "short_transcript": "AT5G62480.2",
+    "chromosome": "Chr5",
+    "strand": "-",
+    "canonical_length_aa": 240,
+    "short_length_aa": 214,
+    "deletion_start_aa": 65,
+    "deletion_end_aa": 90,
+    "deletion_length_aa": 26,
+    "domain": "GST N-terminal",
+    "domain_start_aa": 7,
+    "domain_end_aa": 86,
+    "domain_overlap_aa": 22,
+    "domain_fraction_removed": 0.275,
+    "deletion_genomic_blocks": [
+      [
+        25089297,
+        25089374
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        25089309,
+        25089548
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 7..86; /note=\"GST N-terminal\"; DOMAIN 92..226; /note=\"GST C-terminal\"",
+    "canonical_sequence": "MDEEVENKVILHGSFASPYSKRIELALRLKSIPYQFVQEDLQNKSQTLLRYNPVHKKIPVLVHNGKPISESLFIIEYIDETWSNGPHILPEDPYRRSKVRFWANYIQLHLYDLVIKVVKSEGEEQKKALTEVKEKLSVIEKEGLKEIFSDTDGEPTVTNETMSLVDIVMCTLLSPYKAHEEVLGLKIIDPEIVPGVYGWINAINETSVVKDLSPPYEQILEILRAFRQMSLSPVLETYQS",
+    "short_sequence": "MDEEVENKVILHGSFASPYSKRIELALRLKSIPYQFVQEDLQNKSQTLLRYNPVHKKIPVLVHNEDPYRRSKVRFWANYIQLHLYDLVIKVVKSEGEEQKKALTEVKEKLSVIEKEGLKEIFSDTDGEPTVTNETMSLVDIVMCTLLSPYKAHEEVLGLKIIDPEIVPGVYGWINAINETSVVKDLSPPYEQILEILRAFRQMSLSPVLETYQS",
+    "candidate_id": "DI0012"
+  },
+  {
+    "gene": "AT5G62480",
+    "symbol": "GSTU9",
+    "description": "glutathione S-transferase tau 9",
+    "accession": "Q9FUT0",
+    "canonical_transcript": "AT5G62480.1",
+    "equivalent_canonical_transcripts": [
+      "AT5G62480.1"
+    ],
+    "short_transcript": "AT5G62480.3",
+    "chromosome": "Chr5",
+    "strand": "-",
+    "canonical_length_aa": 240,
+    "short_length_aa": 213,
+    "deletion_start_aa": 65,
+    "deletion_end_aa": 91,
+    "deletion_length_aa": 27,
+    "domain": "GST N-terminal",
+    "domain_start_aa": 7,
+    "domain_end_aa": 86,
+    "domain_overlap_aa": 22,
+    "domain_fraction_removed": 0.275,
+    "deletion_genomic_blocks": [
+      [
+        25089294,
+        25089374
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        25089309,
+        25089548
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 7..86; /note=\"GST N-terminal\"; DOMAIN 92..226; /note=\"GST C-terminal\"",
+    "canonical_sequence": "MDEEVENKVILHGSFASPYSKRIELALRLKSIPYQFVQEDLQNKSQTLLRYNPVHKKIPVLVHNGKPISESLFIIEYIDETWSNGPHILPEDPYRRSKVRFWANYIQLHLYDLVIKVVKSEGEEQKKALTEVKEKLSVIEKEGLKEIFSDTDGEPTVTNETMSLVDIVMCTLLSPYKAHEEVLGLKIIDPEIVPGVYGWINAINETSVVKDLSPPYEQILEILRAFRQMSLSPVLETYQS",
+    "short_sequence": "MDEEVENKVILHGSFASPYSKRIELALRLKSIPYQFVQEDLQNKSQTLLRYNPVHKKIPVLVHNDPYRRSKVRFWANYIQLHLYDLVIKVVKSEGEEQKKALTEVKEKLSVIEKEGLKEIFSDTDGEPTVTNETMSLVDIVMCTLLSPYKAHEEVLGLKIIDPEIVPGVYGWINAINETSVVKDLSPPYEQILEILRAFRQMSLSPVLETYQS",
+    "candidate_id": "DI0013"
+  },
+  {
+    "gene": "AT1G48590",
+    "symbol": "",
+    "description": "Calcium-dependent lipid-binding (CaLB domain) family protein",
+    "accession": "Q9LP65",
+    "canonical_transcript": "AT1G48590.2",
+    "equivalent_canonical_transcripts": [
+      "AT1G48590.2"
+    ],
+    "short_transcript": "AT1G48590.3",
+    "chromosome": "Chr1",
+    "strand": "+",
+    "canonical_length_aa": 200,
+    "short_length_aa": 168,
+    "deletion_start_aa": 74,
+    "deletion_end_aa": 105,
+    "deletion_length_aa": 32,
+    "domain": "C2",
+    "domain_start_aa": 22,
+    "domain_end_aa": 142,
+    "domain_overlap_aa": 32,
+    "domain_fraction_removed": 0.2644628099173554,
+    "deletion_genomic_blocks": [
+      [
+        17963788,
+        17963883
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        17962949,
+        17963104
+      ],
+      [
+        17963788,
+        17963883
+      ],
+      [
+        17963987,
+        17964097
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 22..142; /note=\"C2\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00041\"",
+    "canonical_sequence": "MIVSFLYFSSLFPTSLRKINLVAGEKHKDRRMKPSLMDSLLGLLRIRIKRGVNLAVRDLNSSDPYVVVKMAKQKLKTRVIYKNVNPEWNEDLTLSVSDPNLTVLLTVYDYDTFTKDDKMGDAEFGIKPFVNALKMHLHDLPSGTIVTTVQPSRDNCLAEESRVIWSDGKLVQDIVLRLRHVECGEVEAQLQWIDLPGKGL",
+    "short_sequence": "MIVSFLYFSSLFPTSLRKINLVAGEKHKDRRMKPSLMDSLLGLLRIRIKRGVNLAVRDLNSSDPYVVVKMAKQTVYDYDTFTKDDKMGDAEFGIKPFVNALKMHLHDLPSGTIVTTVQPSRDNCLAEESRVIWSDGKLVQDIVLRLRHVECGEVEAQLQWIDLPGKGL",
+    "candidate_id": "DI0014"
+  },
+  {
+    "gene": "AT3G18750",
+    "symbol": "WNK6",
+    "description": "with no lysine (K) kinase 6",
+    "accession": "Q8S8Y8",
+    "canonical_transcript": "AT3G18750.1",
+    "equivalent_canonical_transcripts": [
+      "AT3G18750.1",
+      "AT3G18750.3",
+      "AT3G18750.5"
+    ],
+    "short_transcript": "AT3G18750.2",
+    "chromosome": "Chr3",
+    "strand": "-",
+    "canonical_length_aa": 567,
+    "short_length_aa": 500,
+    "deletion_start_aa": 192,
+    "deletion_end_aa": 258,
+    "deletion_length_aa": 67,
+    "domain": "Protein kinase",
+    "domain_start_aa": 28,
+    "domain_end_aa": 285,
+    "domain_overlap_aa": 67,
+    "domain_fraction_removed": 0.2596899224806202,
+    "deletion_genomic_blocks": [
+      [
+        6455778,
+        6455778
+      ],
+      [
+        6455464,
+        6455621
+      ],
+      [
+        6455329,
+        6455370
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        6456744,
+        6456749
+      ],
+      [
+        6456506,
+        6456543
+      ],
+      [
+        6456087,
+        6456314
+      ],
+      [
+        6455778,
+        6455998
+      ],
+      [
+        6455464,
+        6455621
+      ],
+      [
+        6455248,
+        6455370
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 28..285; /note=\"Protein kinase\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00159\"",
+    "canonical_sequence": "MEGTDDASALQEPPDPEVLEVDPTFRYIRYKEVIGKGAFKTVYKAFDEVDGIEVAWNQVRIDDVLQSPNCLERLYSEVRLLKSLKHNNIIRFYNSWIDDKNKTVNIITELFTSGSLRHYRKKHRKVNMKAVKNWARQILMGLRYLHGQEPPIIHRDLKCDNIFINGNHGEVKIGDLGLATVMEQANAKSVIGTPEFMAPELYDENYNELADIYSFGMCMLEMVTFDYPYCECKNSAQIYKKVSSGIKPASLSRVKDPEVKQFIEKCLLPASERLSAKELLLDPFLQLNGLTMNNPLPLPDIVMPKEGAFGDRCLMSEGPPTTRPSKTLSIDLDEDSNLPIVTFSDNSGSRCIEVRRAKRGNFFVLKGEENDEQSVSLILRIVDENGRVRNIHFLFYQEGDTASKVSSEMVEQLELTDQNVTFIAELIDILLVNMIPTWKTDVTVDHLIHSQLNQNSRSHHNEAKPQKQEETVFHDTCELVSHSCNSDCPRSDEEDKQCVDATKGEDKSSIQEVEEATEPVSLEEEERLRQELEEIEAKYQEDMKEIATKREEAIMETKKKLSLMKLK",
+    "short_sequence": "MEGTDDASALQEPPDPEVLEVDPTFRYIRYKEVIGKGAFKTVYKAFDEVDGIEVAWNQVRIDDVLQSPNCLERLYSEVRLLKSLKHNNIIRFYNSWIDDKNKTVNIITELFTSGSLRHYRKKHRKVNMKAVKNWARQILMGLRYLHGQEPPIIHRDLKCDNIFINGNHGEVKIGDLGLATVMEQANAKSVIVKQFIEKCLLPASERLSAKELLLDPFLQLNGLTMNNPLPLPDIVMPKEGAFGDRCLMSEGPPTTRPSKTLSIDLDEDSNLPIVTFSDNSGSRCIEVRRAKRGNFFVLKGEENDEQSVSLILRIVDENGRVRNIHFLFYQEGDTASKVSSEMVEQLELTDQNVTFIAELIDILLVNMIPTWKTDVTVDHLIHSQLNQNSRSHHNEAKPQKQEETVFHDTCELVSHSCNSDCPRSDEEDKQCVDATKGEDKSSIQEVEEATEPVSLEEEERLRQELEEIEAKYQEDMKEIATKREEAIMETKKKLSLMKLK",
+    "candidate_id": "DI0015"
+  },
+  {
+    "gene": "AT3G18750",
+    "symbol": "WNK6",
+    "description": "with no lysine (K) kinase 6",
+    "accession": "Q8S8Y8",
+    "canonical_transcript": "AT3G18750.1",
+    "equivalent_canonical_transcripts": [
+      "AT3G18750.1",
+      "AT3G18750.3",
+      "AT3G18750.5"
+    ],
+    "short_transcript": "AT3G18750.6",
+    "chromosome": "Chr3",
+    "strand": "-",
+    "canonical_length_aa": 567,
+    "short_length_aa": 500,
+    "deletion_start_aa": 192,
+    "deletion_end_aa": 258,
+    "deletion_length_aa": 67,
+    "domain": "Protein kinase",
+    "domain_start_aa": 28,
+    "domain_end_aa": 285,
+    "domain_overlap_aa": 67,
+    "domain_fraction_removed": 0.2596899224806202,
+    "deletion_genomic_blocks": [
+      [
+        6455778,
+        6455778
+      ],
+      [
+        6455464,
+        6455621
+      ],
+      [
+        6455329,
+        6455370
+      ]
+    ],
+    "domain_genomic_blocks": [
+      [
+        6456744,
+        6456749
+      ],
+      [
+        6456506,
+        6456543
+      ],
+      [
+        6456087,
+        6456314
+      ],
+      [
+        6455778,
+        6455998
+      ],
+      [
+        6455464,
+        6455621
+      ],
+      [
+        6455248,
+        6455370
+      ]
+    ],
+    "uniprot_domain_features": "DOMAIN 28..285; /note=\"Protein kinase\"; /evidence=\"ECO:0000255|PROSITE-ProRule:PRU00159\"",
+    "canonical_sequence": "MEGTDDASALQEPPDPEVLEVDPTFRYIRYKEVIGKGAFKTVYKAFDEVDGIEVAWNQVRIDDVLQSPNCLERLYSEVRLLKSLKHNNIIRFYNSWIDDKNKTVNIITELFTSGSLRHYRKKHRKVNMKAVKNWARQILMGLRYLHGQEPPIIHRDLKCDNIFINGNHGEVKIGDLGLATVMEQANAKSVIGTPEFMAPELYDENYNELADIYSFGMCMLEMVTFDYPYCECKNSAQIYKKVSSGIKPASLSRVKDPEVKQFIEKCLLPASERLSAKELLLDPFLQLNGLTMNNPLPLPDIVMPKEGAFGDRCLMSEGPPTTRPSKTLSIDLDEDSNLPIVTFSDNSGSRCIEVRRAKRGNFFVLKGEENDEQSVSLILRIVDENGRVRNIHFLFYQEGDTASKVSSEMVEQLELTDQNVTFIAELIDILLVNMIPTWKTDVTVDHLIHSQLNQNSRSHHNEAKPQKQEETVFHDTCELVSHSCNSDCPRSDEEDKQCVDATKGEDKSSIQEVEEATEPVSLEEEERLRQELEEIEAKYQEDMKEIATKREEAIMETKKKLSLMKLK",
+    "short_sequence": "MEGTDDASALQEPPDPEVLEVDPTFRYIRYKEVIGKGAFKTVYKAFDEVDGIEVAWNQVRIDDVLQSPNCLERLYSEVRLLKSLKHNNIIRFYNSWIDDKNKTVNIITELFTSGSLRHYRKKHRKVNMKAVKNWARQILMGLRYLHGQEPPIIHRDLKCDNIFINGNHGEVKIGDLGLATVMEQANAKSVIVKQFIEKCLLPASERLSAKELLLDPFLQLNGLTMNNPLPLPDIVMPKEGAFGDRCLMSEGPPTTRPSKTLSIDLDEDSNLPIVTFSDNSGSRCIEVRRAKRGNFFVLKGEENDEQSVSLILRIVDENGRVRNIHFLFYQEGDTASKVSSEMVEQLELTDQNVTFIAELIDILLVNMIPTWKTDVTVDHLIHSQLNQNSRSHHNEAKPQKQEETVFHDTCELVSHSCNSDCPRSDEEDKQCVDATKGEDKSSIQEVEEATEPVSLEEEERLRQELEEIEAKYQEDMKEIATKREEAIMETKKKLSLMKLK",
+    "candidate_id": "DI0016"
+  }
+]

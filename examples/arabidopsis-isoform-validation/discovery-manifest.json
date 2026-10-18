@@ -1,0 +1,27 @@
+{
+  "protocol_version": 1,
+  "complete_cds_models": 48002,
+  "rejected_cds": {
+    "incomplete_or_noncanonical_cds": 4058
+  },
+  "specificity_background_models": 52060,
+  "screen_counts": {
+    "uniprot_records": 16421,
+    "canonical_matched_genes": 6538,
+    "ambiguous_deletion_pairs_rejected": 285
+  },
+  "candidate_rows": 16,
+  "candidate_genes": 13,
+  "input_sha256": {
+    "protocol.json": "920c94ef7f8e6026f575db3d0352335576149f0fb066f060ca2f46f6c114607f",
+    "uniprot-domains.tsv": "ddb2b9abde5b77802dc808656457ffac807b9b3744f89a3bb1604b374d9732f5",
+    "TAIR10_genomic.fna.gz": "80a13166003333ba4982b57abdb3d2b62037bc831f4da29ea378c1b776fff8e2",
+    "Chr1.gff3": "846ac0fcab14444405c12a970b11ee4df428a6775b567d933ffc2cdb74b59d11",
+    "Chr2.gff3": "be24fa913d7e4f53583502d64a4d6a8f8910ebdab298a4ff9ef272e7f537ca60",
+    "Chr3.gff3": "323d22b86dd928be4b3ba0ec69a4358bcb2c13486c12428799f5a3fa575e8898",
+    "Chr4.gff3": "e5b8683b657698ba74d675451338a5c367c578f7f9a3ca83a81b70d592004b93",
+    "Chr5.gff3": "27b8e00179465b642835d798b77b7964301236b514d4f7668848fe13f37bd11a"
+  },
+  "candidate_sha256": "8356dcf4eea2b8a0a234a3abd9c85303b7b3176eb4566dbc7be098b2b263c6be",
+  "validation_peptides_used_for_screening": false
+}
