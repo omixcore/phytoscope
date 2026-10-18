@@ -1,97 +1,87 @@
-# Researcher-value evaluation protocol
+# Computational workflow-value evaluation protocol
 
-**Status: protocol and blank instrument only. No human participants, task-time
-results, usability scores or user-study conclusions have been collected.**
+## Status and claim boundary
+
+**Computational-only protocol. No human participants, wet-lab experiments, or
+new biological samples are required or planned.** This protocol measures
+objective workflow properties on frozen public data. It cannot establish
+human usability, researcher time savings, or increased discovery rates.
 
 ## Research question
 
-Does a single, portable PhytoScope project let plant researchers complete a
-locus-centered analysis with fewer handoffs and more complete provenance than a
-documented conventional workflow, without reducing output correctness?
+For a fixed locus-centered plant analysis, does PhytoScope produce the required
+correct outputs with complete provenance and fewer manual handoffs than a
+documented conventional multi-tool workflow?
 
-This is a workflow-value question, not a claim that PhytoScope has more biological
-features than IGV or JBrowse. For browser-only locus navigation and track inspection,
-use IGV or JBrowse as the comparator. For an end-to-end locus-centered task, freeze
-a documented multi-tool baseline that uses IGV/JBrowse for genome browsing plus
-the appropriate annotation parser/query tool, sequence-analysis script, table
-tool for expression grouping, and figure editor. Keep each task's baseline limited
-to functions those tools actually implement; record setup time separately from
-task time and do not treat a multi-tool workflow as a single application.
+This is a workflow-integration question, not a claim that PhytoScope replaces
+IGV/JBrowse for all genome-browsing tasks or improves a domain/homology algorithm.
 
-## Design
+## Frozen case and comparator
 
-Use a paired, counterbalanced task study. Each participant completes equivalent
-tasks in both workflows. Use two matched locus/data sets (A and B), and rotate
-the workflow/data-set pairing across participants so that the second attempt is
-not always easier. Give the same written task instructions and acceptance rules
-for both workflows. Provide a short practice task that is excluded from analysis.
+Use one fixed public case package and freeze its checksums before comparison:
+the same genome assembly, annotation release, transcript/protein sequences,
+sample metadata, expression inputs, locus list and expected outputs must be
+used in both workflows.
 
-Recruit plant researchers who routinely inspect gene models or expression data.
-Include a range of computational experience and record experience using genome
-browsers, command-line tools and scripting. Run a small pilot first; determine the
-confirmatory sample size from pilot variability and a prespecified meaningful
-paired effect, rather than choosing a sample size after seeing the results.
-Obtain the relevant institutional ethics/consent review before recruiting people
-or retaining participant-level logs.
+The conventional baseline should use tools only for functions they implement:
+IGV or JBrowse for genome navigation, a documented annotation parser/query tool
+for gene models, a sequence script for promoter/custom intervals, a standard
+expression table workflow for grouping/summaries, and an independent alignment
+or domain-coordinate script where needed. Record each tool and version. Do not
+pretend the multi-tool workflow is one application.
 
-## Tasks and objective acceptance criteria
+## Objective tasks and gold-standard criteria
 
-| Task | Required output | Gold-standard acceptance criterion |
+| Task | Required output | Acceptance criterion |
 | --- | --- | --- |
-| Find and compare loci | Selected gene IDs, sequences and coordinate windows | Every requested locus resolves to the correct sequence and coordinates |
-| Inspect transcript structure | Transcript, exon, CDS and UTR intervals | Exact agreement with a frozen source-derived feature inventory |
-| Summarize expression | Sample-to-group mapping, group summaries and missingness | Values match an independent calculation; measured zero remains distinct from missing |
-| Extract and inspect a sequence interval | Promoter/custom interval, sequence QC flags | Exact sequence and strand-aware boundary match against an independent script |
-| Link a protein domain to a genomic isoform | Amino-acid interval and genomic CDS blocks | Exact transcript/protein mapping, exon boundaries and strand match the frozen coordinate map |
-| Export and resume | Figure, TSV and restored project | Output is readable/editable; after close/reopen, inputs, selections, parameters and results match the saved state |
+| Locus navigation | Selected locus and coordinate window | Correct sequence, strand and coordinates |
+| Transcript structure | Transcript, exon, CDS and UTR intervals | Exact agreement with frozen source-derived inventory |
+| Expression summary | Sample-to-group mapping, group summaries and missingness | Values match independent calculation; measured zero differs from missing |
+| Promoter/custom interval | Sequence and QC flags | Exact strand-aware sequence/boundary match against an independent script |
+| Domain-to-genome mapping | Amino-acid interval and genomic CDS blocks | Exact transcript/protein mapping and exon-boundary agreement |
+| Save/reopen | Restored project and exports | Inputs, selections, parameters and results survive round-trip unchanged |
 
-Use the same input files, assembly/annotation release, gene IDs, coordinate
-convention and expected outputs in both workflows. Freeze the expected outputs
-before collecting participant results. An independent assessor should score
-exported results against the gold files without knowing which workflow produced
-them, where feasible.
+Freeze gold outputs before running the comparison. Validate them with a separate
+implementation or authoritative source, not by comparing PhytoScope with itself.
 
-## Outcomes
+## Metrics
 
-**Primary endpoint:** proportion of tasks completed correctly without a critical
-error, reported by task and workflow.
+Report per task and per workflow:
 
-**Secondary endpoints:**
+- Correctness: pass/fail for each expected output, plus critical errors.
+- Manual handoffs: number of distinct tools/apps invoked and intermediate files
+  needed to complete the task.
+- Provenance completeness: source/accession and version, input checksum,
+  parameters, output path and restoration state present and consistent.
+- Reproducibility: exact output agreement across repeated runs and project
+  save/close/reopen round-trip.
+- Runtime and peak memory where measurable, with hardware, OS, cache state,
+  trial order and setup time recorded separately.
 
-- Task completion time, including a separately reported setup time.
-- Number and type of errors, recoveries and manual corrections.
-- Number of application/tool handoffs and intermediate files required.
-- Provenance completeness: source/release, input checksum, parameters, output
-  and restoration state all present and internally consistent.
-- Exact project round-trip success and exact output agreement.
-- Perceived usability (System Usability Scale) and workload (NASA-TLX or a
-  prespecified shorter validated instrument), reported separately from objective
-  performance.
+Run at least three alternating-order trials per workflow on the same machine.
+Report raw per-trial values and medians/ranges; do not treat a small smoke test
+as a general speed benchmark. Use the same acceptance rules and do not repair
+one workflow's outputs manually without recording the intervention.
 
-A workflow with fewer clicks is not automatically better: task success and
-scientific correctness take priority over speed. Record timeouts, crashes,
-unsupported input formats, missing-data states and any task that cannot be
-completed. Never replace a failed task with an unreported manual workaround.
+## How this supports researcher value
 
-## Analysis and reporting
+A successful result can support a bounded claim that the integrated workflow
+reduces tool handoffs, preserves provenance, and reproduces correct outputs for
+the tested task. It does **not** establish that human researchers finish faster,
+find more discoveries, or prefer the interface. Those claims would require a
+separate participant study, which is outside the current plan.
 
-Predefine the primary comparison, exclusion rules, and treatment of incomplete
-tasks. Report paired differences with confidence intervals and raw task-level
-summaries. Use a paired test suitable for each outcome and the sample size; do
-not pool unlike tasks into one unqualified speed score. Publish anonymized
-task logs, task instructions, frozen gold outputs, tool versions, machine
-specifications and analysis code when consent permits.
+## Current evidence status
 
-## Claim boundary
+The repository already has cross-species annotation tuple checks, promoter
+sequence checks against bedtools, small homology checks against BLASTP, real-data
+calculation regressions, and project save/restore regressions. These demonstrate
+specific technical properties but do not yet establish broad module-level
+accuracy or general researcher value. The next step is to add a frozen,
+independently checked public biological case and report its source data,
+expected outputs, correctness, handoffs and provenance completeness.
 
-Until the study is actually run, the repository may claim only that it provides
-a reproducible workflow and that its software tests demonstrate specified
-technical behaviors. It may not claim reduced researcher time, better usability,
-fewer human errors, or increased discovery rates. A task study can demonstrate
-workflow value; a new biological discovery still requires a separate case with
-independent biological evidence.
-
-## Rationale and relevant literature
+## Relevant guidance
 
 - Weber LM et al. (2019). Essential guidelines for computational method
   benchmarking. *Genome Biology* 20, 125.
@@ -99,7 +89,3 @@ independent biological evidence.
 - Diesh C et al. (2023). JBrowse 2: a modular genome browser with views of
   synteny and structural variation. *Genome Biology* 24, 74.
   https://doi.org/10.1186/s13059-023-02914-z
-- Sargent L et al. (2020). G-OnRamp: Generating genome browsers to facilitate
-  undergraduate-driven collaborative genome annotation. *PLoS Computational
-  Biology* 16, e1007863.
-  https://doi.org/10.1371/journal.pcbi.1007863

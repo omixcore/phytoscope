@@ -15,12 +15,12 @@ reproduce it.
 
 | Evidence | Current evidence | Remaining work before a strong methods-paper claim |
 | --- | --- | --- |
-| Operational workflow | Five tabs in the desktop UI; browser locus synchronization; promoter extraction feeds sequence QC; sample groups, FASTA/domain inputs and results are saved in portable projects; analysis output exports as TSV. The browser accepts IGV-style `sequence:start-end` navigation and preserves the visible range in project view state. Automated JavaFX regressions now fire all five research-tab actions (promoter, QC, grouping, homology and domain mapping), verify visible outputs, and cover project save/replace/restore and coordinate navigation. The three-platform CI passed on 2026-10-18; full annotation-coordinate checks and standalone packaging passed on Ubuntu. | Add a native file-save-dialog interaction test and measure researcher task performance with actual participants. |
+| Operational workflow | Five tabs in the desktop UI; browser locus synchronization; promoter extraction feeds sequence QC; sample groups, FASTA/domain inputs and results are saved in portable projects; analysis output exports as TSV. The browser accepts IGV-style `sequence:start-end` navigation and preserves the visible range in project view state. Automated JavaFX regressions now fire all five research-tab actions (promoter, QC, grouping, homology and domain mapping), verify visible outputs, and cover project save/replace/restore and coordinate navigation. The three-platform CI passed on 2026-10-18; full annotation-coordinate checks and standalone packaging passed on Ubuntu. | Add a native file-save-dialog interaction test and a matched, reproducible public-data case benchmark against a documented multi-tool baseline. Do not claim human time savings or usability without participant evidence. |
 | Annotation correctness and scale | Independent source-to-model checks cover Arabidopsis, rice, maize and soybean. Eight inventories contain 4,641,758 exact gene/transcript/exon/CDS/UTR tuples with zero missing/extra tuples; the full-annotation checks passed in the 2026-10-18 Ubuntu CI run. | Repeat controlled performance runs on documented hardware/memory limits; the recognized-feature scope does not validate unsupported GFF types. |
 | Existing-tool comparison | A matched PhytoScope vs `gffutils==0.13` benchmark passed for Arabidopsis, rice, maize and soybean fixtures, with 10/24/20/40 gene loci respectively, three alternating-order trials per species, and exact source-to-output tuple agreement on Ubuntu, Windows and macOS. Observed medians and limitations are recorded in [the CI benchmark report](../benchmarks/results/2026-10-18/cross-species-extraction.md). | The comparison is still a narrow parser/hierarchy task. Add curated module-level gold standards for homology, domain mapping, promoter extraction and expression summaries; run controlled hardware benchmarks before speed claims. |
 | Research-module correctness | The real-data calculation suite checks eight 2,200-bp promoter windows across both strands against direct TAIR10 FASTA slicing/reverse-complement calculations; four real RBCS CDS QC reports against independently reconstructed metrics; all 16 within-family Arabidopsis RBCS protein alignments against a test-side Smith–Waterman reference; E-MTAB-7978 grouping arithmetic including measured zeros; and 16 domain/deletion coordinate records in 13 genes against independent Python calculations. In the three-platform CI run #192, bedtools v2.31.1 independently reproduced all 8/8 promoter sequences with zero mismatches. BLASTP 2.12.0+ agreed with PhytoScope on 12/12 non-self RBCS-family pairs and 8/8 unrelated-family controls both in the Arabidopsis-only panel and in a new four-species mature-RBCS panel (20/20 pairwise classifications per panel). On the tiny cross-species panel, one observed call took 21.63 ms in PhytoScope and 32.4 ms in BLASTP; this is startup-dominated and not a speed claim. Reports are retained in CI artifacts. | The new four-species RBCS panel is a single-family smoke test, not a multi-family curated gold standard or general precision/recall estimate; its negatives are not taxonomically balanced and it does not validate orthology. Expand independently curated multi-family homolog/domain pairs, add a multi-replicate expression gold set, and test more sequence/annotation edge cases before making broad accuracy claims. |
 | Independent biological examples | The RBCS-family expression case reproduces a known pattern from Expression Atlas E-MTAB-7978. Published PIF6 work links a short splice variant to seed dormancy/germination, but the sequence-level identity gate now rejects the frozen `AT3G62090.4` candidate as that published beta isoform: the current model is 341 aa with an internal 22-aa deletion, whereas the pinned UniProtKB D0EDQ7 reference is 188 aa (the literature reports a 182-aa construct). | PIF6 remains locus-level context, not an isoform-specific positive control and not a new discovery. No new biological finding independently supported by additional evidence has been established. |
-| Researcher value | A real-data calculation report and JavaFX interaction regression demonstrate linked outputs across five tabs and portable-project restoration. The PIF6 sequence-identity gate now shows that the frozen candidate is not the published beta isoform, so PIF6 is only locus-level context. | No human participants or measured task-time savings exist yet. The [researcher-value study protocol](researcher-value-study.md) is a prospective design, not participant evidence. No new biological discovery is established. |
+| Researcher value | A real-data calculation report and JavaFX interaction regression demonstrate linked outputs across five tabs and portable-project restoration. The PIF6 sequence-identity gate now shows that the frozen candidate is not the published beta isoform, so PIF6 is only locus-level context. | No participant study is planned. The [computational workflow-value protocol](researcher-value-study.md) compares correctness, handoffs, provenance completeness, and project round-trip behavior on frozen public inputs; it cannot establish human time savings or usability. No new biological discovery is established. |
 
 ## Fair comparison protocol
 
@@ -91,16 +91,19 @@ homology benchmark excludes the four trivial self-pairs from its accuracy
 denominator. It remains a small same-species smoke test, not an orthology
 benchmark or a general sensitivity/specificity estimate.
 
-A separate researcher-value protocol now defines paired tasks, frozen gold
-outputs, task success/error/time/handoff/provenance metrics, and a blank
-anonymized log template. No human participants have been measured, so
-researcher time savings and usability remain unproven.
+The workflow-value protocol is now computational-only: it defines frozen public
+inputs, source-derived gold outputs, correctness, handoffs, provenance completeness,
+and project round-trip metrics against a documented multi-tool baseline. No
+participant study or human time-saving claim is planned.
 
 The independent biological-discovery gap remains open. The 13-gene screen
 still yields zero candidates meeting its predeclared independent-evidence
-threshold. The CIPK15 junction peptide is from the Mergner source rather than
-the new Reyes experiments; the published transcript annotation predates this
-analysis. No new functional effect or novel biological finding is claimed.
+threshold. The CIPK15 junction peptide is from the Mergner source rather than the new Reyes
+experiments. UniProtKB already lists a computationally mapped 376-aa potential
+isoform (F4KAV7), and NCBI lists three RefSeq mRNA variants; this is not a new
+transcript discovery. The next step is source-deduplicated analysis of public
+Iso-Seq/short-read and independent proteomics data, not wet-lab work. No new
+functional effect or novel biological finding is claimed.
 
 
 ## Recorded CI results (2026-10-18)
@@ -117,7 +120,7 @@ also passed on Ubuntu, Windows and macOS. On Ubuntu it completed the full
 annotation-coordinate checks, the bedtools promoter comparison, the BLASTP
 similarity comparison and standalone packaging. The small external-tool
 comparisons improve the evidence base but do not close the curated module-level
-gold-standard gap or the human task study.
+gold-standard gap or the computational workflow-value comparison on a frozen biological case.
 
 
 ## PIF6 sequence-identity gate and claim boundary
@@ -145,12 +148,16 @@ annotation. The script and JSON output are included in the latest CI artifact.
 This strengthens the negative validation boundary; it does not establish a new
 biological discovery.
 
-## CIPK15: only current follow-up lead, not a validated discovery
+## CIPK15: public-data reanalysis candidate, not a validated discovery
 
-Candidate `DI0003` (`AT5G01810.3`) is the most actionable follow-up from the
-frozen screen because the 45-aa deletion (canonical residues 284–328) removes
-the complete annotated 25-aa NAF domain (299–323) while leaving the annotated
-kinase domain (12–266) outside the deleted interval. UniProtKB P92937 describes
+Candidate `DI0003` (`AT5G01810.3`) is the most actionable public-data reanalysis
+candidate from the frozen screen. The 45-aa deletion (canonical residues
+284–328) removes the complete annotated 25-aa NAF domain (299–323) while
+leaving the annotated kinase domain (12–266) outside the deleted interval.
+However, this is an existing annotated isoform: UniProtKB P92937 already lists
+the computationally mapped potential 376-aa isoform F4KAV7, and NCBI Gene
+830556 lists three RefSeq mRNA splice variants. This candidate cannot be
+presented as a newly discovered transcript. UniProtKB P92937 describes
 the NAF domain as the regulatory CBL-binding element. This supports a
 **testable hypothesis** that the shorter protein may have altered CBL-dependent
 regulation; it does not establish that the isoform is translated or that its
@@ -165,8 +172,31 @@ Reyes et al. processed resource; it is one peptide from one biological source,
 not an independent second study. No raw-spectrum re-search or isoform-specific
 functional experiment has been completed.
 
-The [CIPK15 follow-up protocol](../examples/arabidopsis-isoform-validation/cipk15-followup-experiment.md)
-sets prospective transcript, targeted-proteomics and CBL-interaction tests with
-go/no-go criteria. It is an experiment plan, not evidence that validation has
-occurred. Until independent data pass those criteria, CIPK15 remains a lead and
-the paper must not claim a new biological discovery.
+The [CIPK15 public-data-only protocol](../examples/arabidopsis-isoform-validation/cipk15-public-data-validation.md)
+sets source-deduplicated transcript-junction and public-proteomics checks with
+predeclared criteria. The accession inventory includes PRJNA1418670 Iso-Seq
+data and the independent Zhang et al. 2019 proteomics source group
+(PXD012708/PXD012710/PXD014032). These datasets have been identified but the
+candidate-specific reanalysis is not yet complete; their existence is not
+evidence that the candidate passed. No wet-lab work is planned.
+
+## Public-data-only biological evidence plan (2026-10-18)
+
+No wet-lab experiments are required or planned. The next biological-evidence
+step is to test the frozen candidate models against source-deduplicated public
+RNA and proteomics acquisitions. The CIPK15 376-aa model is already represented
+by UniProtKB's computationally mapped potential isoform F4KAV7 and NCBI's three
+RefSeq mRNA variants, so it is not a new transcript discovery. Its only eligible
+junction peptide in the current audit comes from the Mergner source and does not
+meet the independent evidence threshold.
+
+The [public-data-only protocol](../examples/arabidopsis-isoform-validation/cipk15-public-data-validation.md)
+prioritizes PRJNA1418670 PacBio Iso-Seq roots under salinity for exact exon-chain
+support; the multi-study public Arabidopsis alternative-splicing compendium for
+short-read junction counts; and the Zhang et al. 2019 public proteomics source
+group (PXD012708, PXD012710, PXD014032) for an independent sequence-specific
+peptide audit. The [accession inventory](../examples/arabidopsis-isoform-validation/public-data-source-inventory.tsv)
+marks what has been identified versus what has actually been analyzed. No
+candidate-specific independent RNA/protein result is claimed yet. The protocol
+requires exact source accession tracking, sample/study deduplication, frozen
+thresholds and honest inconclusive outcomes.

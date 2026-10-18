@@ -66,11 +66,12 @@ other gene in the reconstructed annotation background. It does **not** have
 support from the new Reyes experiments and is only one distinct peptide.
 
 NAF-mediated CBL interaction is annotated in the pinned `P92937.json`; loss of
-that sequence suggests a testable interaction hypothesis. No CBL-binding assay,
-kinase assay, stress-response experiment, intact-protein validation or causal
-functional effect was performed here. The annotated isoform and the peptide
-identification predate this analysis. Neither is a newly discovered sequence.
-See [literature audit](literature-audit.md) for the limits of novelty checks.
+that sequence suggests a hypothesis only. UniProtKB already lists a
+computationally mapped potential 376-aa CIPK15 isoform (F4KAV7), and NCBI lists
+three RefSeq mRNA splice variants, so this is not a newly discovered transcript.
+No isoform-specific function is established. See the [public-data-only validation
+plan](cipk15-public-data-validation.md) and [accession inventory](public-data-source-inventory.tsv).
+No wet-lab experiments are required or planned. See [literature audit](literature-audit.md) for the limits of novelty checks.
 
 ## Reproduce and inspect
 
@@ -130,9 +131,10 @@ The source identifications were not re-searched against raw spectra here.
 Peptide-level evidence does not establish an intact isoform; lack of detection
 does not establish absence. The fixed rules intentionally miss substitutions,
 terminal truncations, ambiguous repeat-mediated deletions and noncanonical CDSs.
-The next biological test would require independent junction evidence and an
-isoform-specific functional experiment. No threshold was relaxed to turn the
-current negative validation result into a positive result.
+The next step is a source-deduplicated computational audit of independent public
+long-read/short-read transcript data and independent public proteomics acquisitions.
+No wet-lab experiments are required or planned. No threshold was relaxed to turn
+the current negative validation result into a positive result.
 
 
 ## PIF6 locus context: candidate-specific validation rejected
@@ -150,11 +152,13 @@ with `python tools/validate_pif6_isoform_identity.py`; see the
 [PIF6 case note](../../docs/case-study-pif6-known-positive.md) and
 [expanded literature audit](literature-audit.md).
 
-## Highest-priority biological follow-up: CIPK15
+## Highest-priority public-data reanalysis candidate: CIPK15
 
 `AT5G01810.3` is the only current lead with an eligible isoform-junction peptide,
-but it is single-source evidence. Its 45-aa deletion removes the annotated NAF
-region while retaining the kinase domain, which motivates—but does not prove—a
-change in CBL-dependent regulation. See the [CIPK15 independent-validation
-protocol](cipk15-followup-experiment.md). The protocol records proposed tests
-and thresholds; it is not a validation result.
+but it is single-source evidence. The 376-aa isoform is already represented by
+public annotation (UniProtKB F4KAV7/NCBI RefSeq variants). Its 45-aa deletion
+removes the annotated NAF region while retaining the kinase domain, which
+motivates—but does not prove—a change in CBL-dependent regulation. See the [CIPK15 public-data-only validation protocol](cipk15-public-data-validation.md)
+and [public dataset/accession inventory](public-data-source-inventory.tsv).
+The accessions are identified, but the candidate-specific independent RNA/protein
+reanalysis has not yet been completed; no new discovery is claimed.
