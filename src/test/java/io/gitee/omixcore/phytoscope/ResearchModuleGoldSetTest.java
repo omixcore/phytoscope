@@ -597,7 +597,7 @@ class ResearchModuleGoldSetTest {
         }
         List<ProteinHomologyService.Protein> proteins = new ArrayList<>();
         for (FastaRecord record : records.values()) {
-            String[] fields = record.id().split("\\\\|", -1);
+            String[] fields = record.id().split("\\|", -1);
             if (fields.length != 3 || fields[0].isBlank() || fields[1].isBlank() || fields[2].isBlank()) {
                 throw new IOException("Expected accession|species_key|gene_symbol FASTA header, got: " + record.id());
             }
