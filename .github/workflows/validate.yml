@@ -59,6 +59,12 @@ jobs:
       - name: Compare same rice bean task with gffutils
         if: runner.os == 'Linux'
         run: python tools/compare_public_case.py --jar target/phytoscope-0.2.0.jar --annotation target/non-model/vigna-umbellata/GCF_029865625.1_genomic.gff.gz --gene-ids gene-LOC124833352 --out target/non-model-comparison --trials 3
+      - name: Fetch additional RefSeq annotations with NCBI checksum verification
+        if: runner.os == 'Linux'
+        run: python tools/fetch_additional_nonmodel_refs.py --directory target/additional-nonmodel
+      - name: Validate additional medicinal and ornamental plant imports
+        if: runner.os == 'Linux'
+        run: sh mvnw -B -Dtest=AdditionalNonModelReferenceTest -Dphytoscope.additionalReferenceDir=target/additional-nonmodel test
       - name: Four-species matched extraction benchmark
         shell: bash
         run: python tools/run_cross_species_extraction_benchmark.py --jar target/phytoscope-0.2.0.jar --out target/cross-species-extraction --trials 3
@@ -90,6 +96,7 @@ jobs:
             target/cross-species-extraction/
             target/research-validation/
             target/non-model-comparison/
+            target/additional-nonmodel/
             target/independent-isoforms/reproduced/
             target/independent-isoforms/pif6-identity-validation.json
             target/packaged-smoke/

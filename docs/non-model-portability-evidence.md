@@ -77,6 +77,21 @@ any kind exists.
 | Sequence products | NC_142174.1 plus RefSeq CDS/protein records | Genomic span, transcript, CDS, UTR inference and translation compared with frozen gold |
 | Expression | No compatible matrix validated | Not part of this case; RNA-seq evidence cited by the annotation report is not an expression matrix |
 
+Two additional RefSeq cases broaden the import/search cohort to unrelated
+medicinal and ornamental plants: *Andrographis paniculata*
+(GCF_009805555.1, Annotation Release 100; target LOC127243311 on an unplaced
+scaffold) and *Hibiscus syriacus* (GCF_006381635.1, Annotation Release 100;
+target LOC120212642 on an unplaced scaffold). Their complete GFF3 files are
+fetched during CI and checked against the corresponding NCBI
+`md5checksums.txt`; the generated runtime manifest records MD5, SHA-256, size
+and source URL. Tests compare full gene/sequence inventories to NCBI release
+counts and verify exact target coordinates and searchable IDs. These two cases
+validate annotation import, sequence recognition, locus search and structure
+presence; only the rice-bean case currently has matched DNA sequence and frozen
+sequence gold. A targeted search located general NCBI assembly/Gene records,
+not dedicated species-specific query portals; phrase this as a scoped search
+result rather than proof that no such resource exists.
+
 The paper's older rice-bean expression data were mapped against a different
 cultivar/assembly. A 2026 lncRNA study also reports expression values for
 transcripts from a different draft assembly and uses StringTie model IDs. Neither
