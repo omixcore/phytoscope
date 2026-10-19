@@ -95,7 +95,7 @@
   "matrix": {
     "file": "public-expression.tsv",
     "genes": 34914,
-    "sha256": "090e5211a30a73c280bad36700aa4c3bf0e9b4417c7ad63de7387e2314783a42",
+    "sha256": "10b986678dd9643ac4d8c1f33c263c9922b8f091f607b76291d4a9d6551b2c94",
     "matched_annotation_gene_ids": 34914,
     "unmatched_gene_ids": 0,
     "missing_cells": 0,
@@ -104,7 +104,8 @@
       1000000.000034,
       999999.999897,
       999999.999951
-    ]
+    ],
+    "annotation_gene_ids": 41713
   },
   "limitation": "Source genotype IC426787 differs from reference cultivar VRB3; this validates data import and exact-ID reconciliation, not genotype-matched biology or differential expression."
 }

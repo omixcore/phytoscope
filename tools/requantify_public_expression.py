@@ -12,6 +12,7 @@ import json
 import os
 import subprocess
 import urllib.request
+from urllib.parse import unquote
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -124,7 +125,7 @@ def transcript_gene_map(fasta, gff, output):
                     key, value = item.split("=", 1)
                     attrs[key] = value
             tx = attrs.get("transcript_id", attrs.get("ID", "").removeprefix("rna-"))
-            parent = attrs.get("Parent")
+            parent = unquote(attrs.get("Parent", ""))
             if tx in transcripts and parent:
                 if tx in mapping and mapping[tx] != parent:
                     raise ValueError(f"ambiguous transcript-to-gene mapping for {tx}")
@@ -145,7 +146,9 @@ def load_gene_tpm(path):
         if not {"Name", "TPM"}.issubset(reader.fieldnames or []):
             raise ValueError(f"unexpected Salmon gene quantification header in {path}")
         for row in reader:
-            result[row["Name"]] = float(row["TPM"])
+            # PhytoScope's GFF3 parser percent-decodes attribute values before
+            # exposing gene IDs, so matrix keys must use the same semantics.
+            result[unquote(row["Name"])] = float(row["TPM"])
     return result
 
 
