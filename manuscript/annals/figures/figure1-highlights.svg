@@ -1,591 +1,266 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
-  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="964.8pt" height="540pt" viewBox="0 0 964.8 540" xmlns="http://www.w3.org/2000/svg" version="1.1">
- <metadata>
-  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-   <cc:Work>
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-10-19T06:01:28.829243</dc:date>
-    <dc:format>image/svg+xml</dc:format>
-    <dc:creator>
-     <cc:Agent>
-      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
-     </cc:Agent>
-    </dc:creator>
-   </cc:Work>
-  </rdf:RDF>
- </metadata>
- <defs>
-  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
- </defs>
- <g id="figure_1">
-  <g id="patch_1">
-   <path d="M 0 540 
-L 964.8 540 
-L 964.8 0 
-L 0 0 
-z
-" style="fill: #ffffff"/>
-  </g>
-  <g id="axes_1">
-   <g id="patch_2">
-    <path d="M 53.64 419.4 
-L 295.56 419.4 
-Q 304.2 419.4 304.2 410.76 
-L 304.2 116.28 
-Q 304.2 107.64 295.56 107.64 
-L 53.64 107.64 
-Q 45 107.64 45 116.28 
-L 45 410.76 
-Q 45 419.4 53.64 419.4 
-z
-" clip-path="url(#p26518801ae)" style="fill: #ffffff; stroke: #d7e1e6; stroke-width: 1.15; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_3">
-    <path d="M 329.4 419.4 
-L 628.92 419.4 
-Q 637.56 419.4 637.56 410.76 
-L 637.56 116.28 
-Q 637.56 107.64 628.92 107.64 
-L 329.4 107.64 
-Q 320.76 107.64 320.76 116.28 
-L 320.76 410.76 
-Q 320.76 419.4 329.4 419.4 
-z
-" clip-path="url(#p26518801ae)" style="fill: #ffffff; stroke: #d7e1e6; stroke-width: 1.15; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_4">
-    <path d="M 662.04 419.4 
-L 911.16 419.4 
-Q 919.8 419.4 919.8 410.76 
-L 919.8 116.28 
-Q 919.8 107.64 911.16 107.64 
-L 662.04 107.64 
-Q 653.4 107.64 653.4 116.28 
-L 653.4 410.76 
-Q 653.4 419.4 662.04 419.4 
-z
-" clip-path="url(#p26518801ae)" style="fill: #ffffff; stroke: #d7e1e6; stroke-width: 1.15; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_5">
-    <path d="M 67.32 187.56 
-L 168.84 187.56 
-Q 174.6 187.56 174.6 181.8 
-L 174.6 147.96 
-Q 174.6 142.2 168.84 142.2 
-L 67.32 142.2 
-Q 61.56 142.2 61.56 147.96 
-L 61.56 181.8 
-Q 61.56 187.56 67.32 187.56 
-z
-" clip-path="url(#p26518801ae)" style="fill: #f7f9fa; stroke: #3976a5; stroke-width: 1.1; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_6">
-    <path d="M 175.346763 166.843564 
-Q 184.320079 212.400401 193.023311 256.586041 
-" clip-path="url(#p26518801ae)" style="fill: none; stroke: #3976a5; stroke-width: 1.25; stroke-linecap: round"/>
-    <path d="M 194.569363 250.981603 
-L 193.023311 256.586041 
-L 189.467392 251.986536 
-z
-" clip-path="url(#p26518801ae)" style="fill: #3976a5; stroke: #3976a5; stroke-width: 1.25; stroke-linecap: round"/>
-   </g>
-   <g id="patch_7">
-    <path d="M 67.32 245.16 
-L 168.84 245.16 
-Q 174.6 245.16 174.6 239.4 
-L 174.6 205.56 
-Q 174.6 199.8 168.84 199.8 
-L 67.32 199.8 
-Q 61.56 199.8 61.56 205.56 
-L 61.56 239.4 
-Q 61.56 245.16 67.32 245.16 
-z
-" clip-path="url(#p26518801ae)" style="fill: #f7f9fa; stroke: #2f8a78; stroke-width: 1.1; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_8">
-    <path d="M 175.854639 224.269277 
-Q 184.320162 241.200324 192.160686 256.881371 
-" clip-path="url(#p26518801ae)" style="fill: none; stroke: #2f8a78; stroke-width: 1.25; stroke-linecap: round"/>
-    <path d="M 192.160686 251.067594 
-L 192.160686 256.881371 
-L 187.509664 253.393105 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-width: 1.25; stroke-linecap: round"/>
-   </g>
-   <g id="patch_9">
-    <path d="M 67.32 302.76 
-L 168.84 302.76 
-Q 174.6 302.76 174.6 297 
-L 174.6 263.16 
-Q 174.6 257.4 168.84 257.4 
-L 67.32 257.4 
-Q 61.56 257.4 61.56 263.16 
-L 61.56 297 
-Q 61.56 302.76 67.32 302.76 
-z
-" clip-path="url(#p26518801ae)" style="fill: #f7f9fa; stroke: #d49a32; stroke-width: 1.1; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_10">
-    <path d="M 176.319668 278.615742 
-Q 184.318517 270.001597 191.366407 262.411561 
-" clip-path="url(#p26518801ae)" style="fill: none; stroke: #d49a32; stroke-width: 1.25; stroke-linecap: round"/>
-    <path d="M 185.922798 264.452915 
-L 191.366407 262.411561 
-L 189.733325 267.99126 
-z
-" clip-path="url(#p26518801ae)" style="fill: #d49a32; stroke: #d49a32; stroke-width: 1.25; stroke-linecap: round"/>
-   </g>
-   <g id="patch_11">
-    <path d="M 203.4 315.72 
-L 276.12 315.72 
-Q 284.76 315.72 284.76 307.08 
-L 284.76 214.2 
-Q 284.76 205.56 276.12 205.56 
-L 203.4 205.56 
-Q 194.76 205.56 194.76 214.2 
-L 194.76 307.08 
-Q 194.76 315.72 203.4 315.72 
-z
-" clip-path="url(#p26518801ae)" style="fill: #eaf2f7; stroke: #17324d; stroke-width: 1.4; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_12">
-    <path d="M 218.16 298.8 
-L 225.36 298.8 
-L 225.36 288.72 
-L 218.16 288.72 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_13">
-    <path d="M 236.88 298.8 
-L 244.08 298.8 
-L 244.08 288.72 
-L 236.88 288.72 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_14">
-    <path d="M 257.76 298.8 
-L 264.96 298.8 
-L 264.96 288.72 
-L 257.76 288.72 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_15">
-    <path d="M 343.8 212.76 
-L 614.52 212.76 
-Q 621.72 212.76 621.72 205.56 
-L 621.72 157.32 
-Q 621.72 150.12 614.52 150.12 
-L 343.8 150.12 
-Q 336.6 150.12 336.6 157.32 
-L 336.6 205.56 
-Q 336.6 212.76 343.8 212.76 
-z
-" clip-path="url(#p26518801ae)" style="fill: #eaf4f1; stroke: #2f8a78; stroke-width: 1.2; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_16">
-    <path d="M 343.8 287.64 
-L 614.52 287.64 
-Q 621.72 287.64 621.72 280.44 
-L 621.72 235.08 
-Q 621.72 227.88 614.52 227.88 
-L 343.8 227.88 
-Q 336.6 227.88 336.6 235.08 
-L 336.6 280.44 
-Q 336.6 287.64 343.8 287.64 
-z
-" clip-path="url(#p26518801ae)" style="fill: #f7f9fa; stroke: #d7e1e6; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_17">
-    <path d="M 351.36 268.704 
-C 351.971028 268.704 352.557112 268.461236 352.989174 268.029174 
-C 353.421236 267.597112 353.664 267.011028 353.664 266.4 
-C 353.664 265.788972 353.421236 265.202888 352.989174 264.770826 
-C 352.557112 264.338764 351.971028 264.096 351.36 264.096 
-C 350.748972 264.096 350.162888 264.338764 349.730826 264.770826 
-C 349.298764 265.202888 349.056 265.788972 349.056 266.4 
-C 349.056 267.011028 349.298764 267.597112 349.730826 268.029174 
-C 350.162888 268.461236 350.748972 268.704 351.36 268.704 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_18">
-    <path d="M 420.48 268.704 
-C 421.091028 268.704 421.677112 268.461236 422.109174 268.029174 
-C 422.541236 267.597112 422.784 267.011028 422.784 266.4 
-C 422.784 265.788972 422.541236 265.202888 422.109174 264.770826 
-C 421.677112 264.338764 421.091028 264.096 420.48 264.096 
-C 419.868972 264.096 419.282888 264.338764 418.850826 264.770826 
-C 418.418764 265.202888 418.176 265.788972 418.176 266.4 
-C 418.176 267.011028 418.418764 267.597112 418.850826 268.029174 
-C 419.282888 268.461236 419.868972 268.704 420.48 268.704 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_19">
-    <path d="M 478.8 268.704 
-C 479.411028 268.704 479.997112 268.461236 480.429174 268.029174 
-C 480.861236 267.597112 481.104 267.011028 481.104 266.4 
-C 481.104 265.788972 480.861236 265.202888 480.429174 264.770826 
-C 479.997112 264.338764 479.411028 264.096 478.8 264.096 
-C 478.188972 264.096 477.602888 264.338764 477.170826 264.770826 
-C 476.738764 265.202888 476.496 265.788972 476.496 266.4 
-C 476.496 267.011028 476.738764 267.597112 477.170826 268.029174 
-C 477.602888 268.461236 478.188972 268.704 478.8 268.704 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_20">
-    <path d="M 535.68 268.704 
-C 536.291028 268.704 536.877112 268.461236 537.309174 268.029174 
-C 537.741236 267.597112 537.984 267.011028 537.984 266.4 
-C 537.984 265.788972 537.741236 265.202888 537.309174 264.770826 
-C 536.877112 264.338764 536.291028 264.096 535.68 264.096 
-C 535.068972 264.096 534.482888 264.338764 534.050826 264.770826 
-C 533.618764 265.202888 533.376 265.788972 533.376 266.4 
-C 533.376 267.011028 533.618764 267.597112 534.050826 268.029174 
-C 534.482888 268.461236 535.068972 268.704 535.68 268.704 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_21">
-    <path d="M 351.36 283.104 
-C 351.971028 283.104 352.557112 282.861236 352.989174 282.429174 
-C 353.421236 281.997112 353.664 281.411028 353.664 280.8 
-C 353.664 280.188972 353.421236 279.602888 352.989174 279.170826 
-C 352.557112 278.738764 351.971028 278.496 351.36 278.496 
-C 350.748972 278.496 350.162888 278.738764 349.730826 279.170826 
-C 349.298764 279.602888 349.056 280.188972 349.056 280.8 
-C 349.056 281.411028 349.298764 281.997112 349.730826 282.429174 
-C 350.162888 282.861236 350.748972 283.104 351.36 283.104 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_22">
-    <path d="M 434.88 283.104 
-C 435.491028 283.104 436.077112 282.861236 436.509174 282.429174 
-C 436.941236 281.997112 437.184 281.411028 437.184 280.8 
-C 437.184 280.188972 436.941236 279.602888 436.509174 279.170826 
-C 436.077112 278.738764 435.491028 278.496 434.88 278.496 
-C 434.268972 278.496 433.682888 278.738764 433.250826 279.170826 
-C 432.818764 279.602888 432.576 280.188972 432.576 280.8 
-C 432.576 281.411028 432.818764 281.997112 433.250826 282.429174 
-C 433.682888 282.861236 434.268972 283.104 434.88 283.104 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_23">
-    <path d="M 524.16 283.104 
-C 524.771028 283.104 525.357112 282.861236 525.789174 282.429174 
-C 526.221236 281.997112 526.464 281.411028 526.464 280.8 
-C 526.464 280.188972 526.221236 279.602888 525.789174 279.170826 
-C 525.357112 278.738764 524.771028 278.496 524.16 278.496 
-C 523.548972 278.496 522.962888 278.738764 522.530826 279.170826 
-C 522.098764 279.602888 521.856 280.188972 521.856 280.8 
-C 521.856 281.411028 522.098764 281.997112 522.530826 282.429174 
-C 522.962888 282.861236 523.548972 283.104 524.16 283.104 
-z
-" clip-path="url(#p26518801ae)" style="fill: #2f8a78; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_24">
-    <path d="M 343.8 358.2 
-L 478.44 358.2 
-Q 485.64 358.2 485.64 351 
-L 485.64 307.8 
-Q 485.64 300.6 478.44 300.6 
-L 343.8 300.6 
-Q 336.6 300.6 336.6 307.8 
-L 336.6 351 
-Q 336.6 358.2 343.8 358.2 
-z
-" clip-path="url(#p26518801ae)" style="fill: #f4f7fa; stroke: #3976a5; stroke-width: 1.1; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_25">
-    <path d="M 502.2 358.2 
-L 613.8 358.2 
-Q 621 358.2 621 351 
-L 621 307.8 
-Q 621 300.6 613.8 300.6 
-L 502.2 300.6 
-Q 495 300.6 495 307.8 
-L 495 351 
-Q 495 358.2 502.2 358.2 
-z
-" clip-path="url(#p26518801ae)" style="fill: #fbf6ea; stroke: #d49a32; stroke-width: 1.1; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_26">
-    <path d="M 676.44 220.68 
-L 896.76 220.68 
-Q 903.96 220.68 903.96 213.48 
-L 903.96 158.76 
-Q 903.96 151.56 896.76 151.56 
-L 676.44 151.56 
-Q 669.24 151.56 669.24 158.76 
-L 669.24 213.48 
-Q 669.24 220.68 676.44 220.68 
-z
-" clip-path="url(#p26518801ae)" style="fill: #fbf6ea; stroke: #d49a32; stroke-width: 1.15; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_27">
-    <path d="M 675.72 274.68 
-L 897.48 274.68 
-Q 903.24 274.68 903.24 268.92 
-L 903.24 235.08 
-Q 903.24 229.32 897.48 229.32 
-L 675.72 229.32 
-Q 669.96 229.32 669.96 235.08 
-L 669.96 268.92 
-Q 669.96 274.68 675.72 274.68 
-z
-" clip-path="url(#p26518801ae)" style="fill: #f7f9fa; stroke: #d7e1e6; stroke-width: 0.9; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_28">
-    <path d="M 686.88 261.36 
-C 688.789462 261.36 690.620975 260.601363 691.971169 259.251169 
-C 693.321363 257.900975 694.08 256.069462 694.08 254.16 
-C 694.08 252.250538 693.321363 250.419025 691.971169 249.068831 
-C 690.620975 247.718637 688.789462 246.96 686.88 246.96 
-C 684.970538 246.96 683.139025 247.718637 681.788831 249.068831 
-C 680.438637 250.419025 679.68 252.250538 679.68 254.16 
-C 679.68 256.069462 680.438637 257.900975 681.788831 259.251169 
-C 683.139025 260.601363 684.970538 261.36 686.88 261.36 
-z
-" clip-path="url(#p26518801ae)" style="fill: #e7f1ef; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_29">
-    <path d="M 675.72 328.68 
-L 897.48 328.68 
-Q 903.24 328.68 903.24 322.92 
-L 903.24 289.08 
-Q 903.24 283.32 897.48 283.32 
-L 675.72 283.32 
-Q 669.96 283.32 669.96 289.08 
-L 669.96 322.92 
-Q 669.96 328.68 675.72 328.68 
-z
-" clip-path="url(#p26518801ae)" style="fill: #f7f9fa; stroke: #d7e1e6; stroke-width: 0.9; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_30">
-    <path d="M 686.88 315.36 
-C 688.789462 315.36 690.620975 314.601363 691.971169 313.251169 
-C 693.321363 311.900975 694.08 310.069462 694.08 308.16 
-C 694.08 306.250538 693.321363 304.419025 691.971169 303.068831 
-C 690.620975 301.718637 688.789462 300.96 686.88 300.96 
-C 684.970538 300.96 683.139025 301.718637 681.788831 303.068831 
-C 680.438637 304.419025 679.68 306.250538 679.68 308.16 
-C 679.68 310.069462 680.438637 311.900975 681.788831 313.251169 
-C 683.139025 314.601363 684.970538 315.36 686.88 315.36 
-z
-" clip-path="url(#p26518801ae)" style="fill: #e7f1ef; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_31">
-    <path d="M 675.72 382.68 
-L 897.48 382.68 
-Q 903.24 382.68 903.24 376.92 
-L 903.24 343.08 
-Q 903.24 337.32 897.48 337.32 
-L 675.72 337.32 
-Q 669.96 337.32 669.96 343.08 
-L 669.96 376.92 
-Q 669.96 382.68 675.72 382.68 
-z
-" clip-path="url(#p26518801ae)" style="fill: #f7f9fa; stroke: #d7e1e6; stroke-width: 0.9; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_32">
-    <path d="M 686.88 369.36 
-C 688.789462 369.36 690.620975 368.601363 691.971169 367.251169 
-C 693.321363 365.900975 694.08 364.069462 694.08 362.16 
-C 694.08 360.250538 693.321363 358.419025 691.971169 357.068831 
-C 690.620975 355.718637 688.789462 354.96 686.88 354.96 
-C 684.970538 354.96 683.139025 355.718637 681.788831 357.068831 
-C 680.438637 358.419025 679.68 360.250538 679.68 362.16 
-C 679.68 364.069462 680.438637 365.900975 681.788831 367.251169 
-C 683.139025 368.601363 684.970538 369.36 686.88 369.36 
-z
-" clip-path="url(#p26518801ae)" style="fill: #e7f1ef; stroke: #2f8a78; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_33">
-    <path d="M 53.64 492.84 
-L 911.16 492.84 
-Q 919.8 492.84 919.8 484.2 
-L 919.8 448.2 
-Q 919.8 439.56 911.16 439.56 
-L 53.64 439.56 
-Q 45 439.56 45 448.2 
-L 45 484.2 
-Q 45 492.84 53.64 492.84 
-z
-" clip-path="url(#p26518801ae)" style="fill: #17324d; stroke: #17324d; stroke-linejoin: miter"/>
-   </g>
-   <g id="line2d_1">
-    <path d="M 46.8 84.96 
-L 918 84.96 
-" clip-path="url(#p26518801ae)" style="fill: none; stroke: #d7e1e6; stroke-linecap: square"/>
-   </g>
-   <g id="line2d_2">
-    <path d="M 212.4 293.76 
-L 265.68 293.76 
-" clip-path="url(#p26518801ae)" style="fill: none; stroke: #3976a5; stroke-width: 2; stroke-linecap: square"/>
-   </g>
-   <g id="text_1">
-    <text style="font-weight: 700; font-size: 25px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="46.8" y="44.240781" transform="rotate(-0 46.8 44.240781)">PhytoScope</text>
-   </g>
-   <g id="text_2">
-    <text style="font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="260.64" y="41.855" transform="rotate(-0 260.64 41.855)">A portable local query framework for plant genomes</text>
-   </g>
-   <g id="text_3">
-    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #64747e" x="48.24" y="69.137344" transform="rotate(-0 48.24 69.137344)">Connect public files to traceable locus-level queries—without requiring a species-specific web database</text>
-   </g>
-   <g id="text_4">
-    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="62.64" y="135.650625" transform="rotate(-0 62.64 135.650625)">1  |  Bring local data</text>
-   </g>
-   <g id="text_5">
-    <text style="font-weight: 700; font-size: 8.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="72.72" y="161.410281" transform="rotate(-0 72.72 161.410281)">Genome annotation</text>
-   </g>
-   <g id="text_6">
-    <text style="font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #64747e" x="72.72" y="176.392312" transform="rotate(-0 72.72 176.392312)">GFF3 / GTF</text>
-   </g>
-   <g id="text_7">
-    <text style="font-weight: 700; font-size: 8.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="72.72" y="218.977859" transform="rotate(-0 72.72 218.977859)">Matching sequence</text>
-   </g>
-   <g id="text_8">
-    <text style="font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #64747e" x="72.72" y="233.992312" transform="rotate(-0 72.72 233.992312)">FASTA</text>
-   </g>
-   <g id="text_9">
-    <text style="font-weight: 700; font-size: 8.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="72.72" y="276.610281" transform="rotate(-0 72.72 276.610281)">Expression + samples</text>
-   </g>
-   <g id="text_10">
-    <text style="font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #64747e" x="72.72" y="291.592312" transform="rotate(-0 72.72 291.592312)">Matrix + metadata</text>
-   </g>
-   <g id="text_11">
-    <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #17324d" x="239.76" y="234.599375" transform="rotate(-0 239.76 234.599375)">Local</text>
-   </g>
-   <g id="text_12">
-    <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #17324d" x="239.76" y="254.039375" transform="rotate(-0 239.76 254.039375)">locus</text>
-   </g>
-   <g id="text_13">
-    <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #17324d" x="239.76" y="273.479375" transform="rotate(-0 239.76 273.479375)">workspace</text>
-   </g>
-   <g id="text_14">
-    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="64.8" y="368.105469" transform="rotate(-0 64.8 368.105469)">Search genes · inspect transcript structures</text>
-   </g>
-   <g id="text_15">
-    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="64.8" y="388.265469" transform="rotate(-0 64.8 388.265469)">Export sequences · display expression</text>
-   </g>
-   <g id="text_16">
-    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="64.8" y="407.705469" transform="rotate(-0 64.8 407.705469)">Save and reopen a portable project</text>
-   </g>
-   <g id="text_17">
-    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="339.84" y="135.650625" transform="rotate(-0 339.84 135.650625)">2  |  Test portability and fidelity</text>
-   </g>
-   <g id="text_18">
-    <text style="font-weight: 700; font-size: 21px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #2f8a78" x="353.52" y="178.594687" transform="rotate(-0 353.52 178.594687)">4,641,758</text>
-   </g>
-   <g id="text_19">
-    <text style="font-weight: 700; font-size: 9.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="477.36" y="174.637094" transform="rotate(-0 477.36 174.637094)">recognized structural tuples</text>
-   </g>
-   <g id="text_20">
-    <text style="font-size: 8.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #64747e" x="477.36" y="194.502687" transform="rotate(-0 477.36 194.502687)">8 independent source inventories</text>
-   </g>
-   <g id="text_21">
-    <text style="font-weight: 700; font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #2f8a78" x="354.24" y="203.993875" transform="rotate(-0 354.24 203.993875)">0 missing  ·  0 extra</text>
-   </g>
-   <g id="text_22">
-    <text style="font-weight: 700; font-size: 10.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="351.36" y="249.054562" transform="rotate(-0 351.36 249.054562)">7 plant species evaluated</text>
-   </g>
-   <g id="text_23">
-    <text style="font-size: 7.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="357.12" y="268.38675" transform="rotate(-0 357.12 268.38675)">Arabidopsis</text>
-   </g>
-   <g id="text_24">
-    <text style="font-size: 7.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="426.24" y="268.38675" transform="rotate(-0 426.24 268.38675)">Rice</text>
-   </g>
-   <g id="text_25">
-    <text style="font-size: 7.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="484.56" y="268.38675" transform="rotate(-0 484.56 268.38675)">Maize</text>
-   </g>
-   <g id="text_26">
-    <text style="font-size: 7.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="541.44" y="268.38675" transform="rotate(-0 541.44 268.38675)">Soybean</text>
-   </g>
-   <g id="text_27">
-    <text style="font-size: 7.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="357.12" y="282.78675" transform="rotate(-0 357.12 282.78675)">Rice bean</text>
-   </g>
-   <g id="text_28">
-    <text style="font-size: 7.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="440.64" y="282.78675" transform="rotate(-0 440.64 282.78675)">Andrographis</text>
-   </g>
-   <g id="text_29">
-    <text style="font-size: 7.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="529.92" y="282.78675" transform="rotate(-0 529.92 282.78675)">Hibiscus</text>
-   </g>
-   <g id="text_30">
-    <text style="font-weight: 700; font-size: 8.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="349.92" y="321.942687" transform="rotate(-0 349.92 321.942687)">Independent sequence checks</text>
-   </g>
-   <g id="text_31">
-    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="349.92" y="342.0475" transform="rotate(-0 349.92 342.0475)">5 coding loci × 3 additional plants</text>
-   </g>
-   <g id="text_32">
-    <text style="font-weight: 700; font-size: 8.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="506.88" y="321.910656" transform="rotate(-0 506.88 321.910656)">Expression ID join</text>
-   </g>
-   <g id="text_33">
-    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="506.88" y="342.0475" transform="rotate(-0 506.88 342.0475)">34,914 / 34,914 IDs</text>
-   </g>
-   <g id="text_34">
-    <text style="font-size: 8.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #64747e" x="340.56" y="395.382687" transform="rotate(-0 340.56 395.382687)">Evidence supports tested releases and formats—not universal compatibility.</text>
-   </g>
-   <g id="text_35">
-    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="671.04" y="135.650625" transform="rotate(-0 671.04 135.650625)">3  |  Interpret within evidence</text>
-   </g>
-   <g id="text_36">
-    <text style="font-weight: 700; font-size: 9.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="684" y="173.953812" transform="rotate(-0 684 173.953812)">Rice-bean expression case</text>
-   </g>
-   <g id="text_37">
-    <text style="font-size: 8.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #253746" x="684" y="194.433016" transform="rotate(-0 684 194.433016)">Reads: IC426787  |  reference: VRB3</text>
-   </g>
-   <g id="text_38">
-    <text style="font-weight: 700; font-size: 8.3px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #d49a32" x="684" y="210.337859" transform="rotate(-0 684 210.337859)">Import / identifier reconciliation only</text>
-   </g>
-   <g id="text_39">
-    <text style="font-weight: 700; font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #2f8a78" x="686.88" y="256.3675" transform="rotate(-0 686.88 256.3675)">✓</text>
-   </g>
-   <g id="text_40">
-    <text style="font-weight: 700; font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="701.28" y="249.277875" transform="rotate(-0 701.28 249.277875)">Inputs remain authoritative</text>
-   </g>
-   <g id="text_41">
-    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #64747e" x="701.28" y="264.869531" transform="rotate(-0 701.28 264.869531)">No function or orthology inferred</text>
-   </g>
-   <g id="text_42">
-    <text style="font-weight: 700; font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #2f8a78" x="686.88" y="310.3675" transform="rotate(-0 686.88 310.3675)">✓</text>
-   </g>
-   <g id="text_43">
-    <text style="font-weight: 700; font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="701.28" y="303.245062" transform="rotate(-0 701.28 303.245062)">Missing values stay missing</text>
-   </g>
-   <g id="text_44">
-    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #64747e" x="701.28" y="318.869531" transform="rotate(-0 701.28 318.869531)">Annotation completeness bounds outputs</text>
-   </g>
-   <g id="text_45">
-    <text style="font-weight: 700; font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #2f8a78" x="686.88" y="364.3675" transform="rotate(-0 686.88 364.3675)">✓</text>
-   </g>
-   <g id="text_46">
-    <text style="font-weight: 700; font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #17324d" x="701.28" y="357.245062" transform="rotate(-0 701.28 357.245062)">Claims stay technical</text>
-   </g>
-   <g id="text_47">
-    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #64747e" x="701.28" y="372.869531" transform="rotate(-0 701.28 372.869531)">No usability, time-saving, or discovery claim</text>
-   </g>
-   <g id="text_48">
-    <text style="font-weight: 700; font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #b9d8e7" x="66.24" y="468.545469" transform="rotate(-0 66.24 468.545469)">TAKE-HOME</text>
-   </g>
-   <g id="text_49">
-    <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #ffffff" x="152.64" y="469.192344" transform="rotate(-0 152.64 469.192344)">A reusable query layer for researchers working with plant species that lack dedicated online gene portals.</text>
-   </g>
-   <g id="text_50">
-    <text style="font-size: 8.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #64747e" x="51.84" y="513.545469" transform="rotate(-0 51.84 513.545469)">PhytoScope organizes user-supplied data locally; provenance, reference matching, and annotation completeness define what can be concluded.</text>
-   </g>
-  </g>
- </g>
- <defs>
-  <clipPath id="p26518801ae">
-   <rect x="7.2" y="7.2" width="950.4" height="525.6"/>
-  </clipPath>
- </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="180mm" height="136.25mm" viewBox="0 0 1440 1090">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="context-stroke"/></marker></defs>
+<style>text{font-family:Arial,"Nimbus Sans",sans-serif} path,line{stroke-linecap:round;stroke-linejoin:round}</style>
+<rect x="0" y="0" width="1440" height="1090" rx="0" fill="white" stroke="none" stroke-width="1.5" />
+<text x="34" y="43" font-size="34" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >PhytoScope</text>
+<text x="246" y="43" font-size="27" fill="#20354D" font-weight="400" text-anchor="start" font-style="normal" >One local framework for diverse plant genomes</text>
+<text x="34" y="77" font-size="20" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Public files → a shared locus model → inspectable, exportable and recoverable results</text>
+<rect x="34" y="108" width="292" height="486" rx="14" fill="#F3F7FA" stroke="#B7CBDC" stroke-width="1.5" />
+<text x="50" y="139" font-size="25" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >a</text>
+<text x="79" y="139" font-size="22" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Species as data</text>
+<path d="M89,254 Q92,224 89,188" fill="none" stroke="#358B83" stroke-width="2.4" />
+<path d="M89,234 Q63,237 63,220 Q84,218 89,234" fill="#DFEFE6" stroke="#358B83" stroke-width="1.5" />
+<path d="M89,217 Q115,220 115,203 Q94,201 89,217" fill="#DFEFE6" stroke="#358B83" stroke-width="1.5" />
+<path d="M89,201 Q63,204 63,187 Q84,185 89,201" fill="#DFEFE6" stroke="#358B83" stroke-width="1.5" />
+<path d="M89,189 Q106,175 98,163" fill="none" stroke="#358B83" stroke-width="1.7" />
+<text x="89" y="280" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >Crop</text>
+<path d="M180,254 Q183,224 180,188" fill="none" stroke="#358B83" stroke-width="2.4" />
+<path d="M180,234 Q154,237 154,220 Q175,218 180,234" fill="#DFEFE6" stroke="#358B83" stroke-width="1.5" />
+<path d="M180,217 Q206,220 206,203 Q185,201 180,217" fill="#DFEFE6" stroke="#358B83" stroke-width="1.5" />
+<path d="M180,201 Q154,204 154,187 Q175,185 180,201" fill="#DFEFE6" stroke="#358B83" stroke-width="1.5" />
+<circle cx="183" cy="189" r="3" fill="#CBBBD9" stroke="none" stroke-width="1.5"/>
+<circle cx="183" cy="180" r="3" fill="#CBBBD9" stroke="none" stroke-width="1.5"/>
+<circle cx="183" cy="171" r="3" fill="#CBBBD9" stroke="none" stroke-width="1.5"/>
+<text x="180" y="280" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >Medicinal</text>
+<path d="M270,254 Q273,224 270,188" fill="none" stroke="#358B83" stroke-width="2.4" />
+<path d="M270,234 Q244,237 244,220 Q265,218 270,234" fill="#DFEFE6" stroke="#358B83" stroke-width="1.5" />
+<path d="M270,217 Q296,220 296,203 Q275,201 270,217" fill="#DFEFE6" stroke="#358B83" stroke-width="1.5" />
+<path d="M270,201 Q244,204 244,187 Q265,185 270,201" fill="#DFEFE6" stroke="#358B83" stroke-width="1.5" />
+<circle cx="278.0" cy="185.0" r="6" fill="#EBCFD8" stroke="none" stroke-width="1.5"/>
+<circle cx="272.4721359549996" cy="192.60845213036123" r="6" fill="#EBCFD8" stroke="none" stroke-width="1.5"/>
+<circle cx="263.5278640450004" cy="189.7022820183398" r="6" fill="#EBCFD8" stroke="none" stroke-width="1.5"/>
+<circle cx="263.5278640450004" cy="180.2977179816602" r="6" fill="#EBCFD8" stroke="none" stroke-width="1.5"/>
+<circle cx="272.4721359549996" cy="177.39154786963877" r="6" fill="#EBCFD8" stroke="none" stroke-width="1.5"/>
+<circle cx="270" cy="185" r="4" fill="#CC8D47" stroke="none" stroke-width="1.5"/>
+<text x="270" y="280" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >Ornamental</text>
+<text x="50" y="309" font-size="19" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Compatible public inputs</text>
+<rect x="50" y="327" width="260" height="73" rx="8" fill="white" stroke="#D6E0E8" stroke-width="1.5" />
+<path d="M64,333 h36 l13,13 v48 h-49 z" fill="white" stroke="#426DA5" stroke-width="1.8" />
+<path d="M100,333 v13 h13" fill="none" stroke="#426DA5" stroke-width="1.5" />
+<path d="M72,359 L104,359" fill="none" stroke="#426DA5" stroke-width="1.3"/>
+<rect x="81" y="356" width="10" height="6" rx="0" fill="#426DA5" stroke="#426DA5" stroke-width="0.6" />
+<path d="M72,371 L104,371" fill="none" stroke="#426DA5" stroke-width="1.3"/>
+<rect x="81" y="368" width="10" height="6" rx="0" fill="#426DA5" stroke="#426DA5" stroke-width="0.6" />
+<path d="M72,383 L104,383" fill="none" stroke="#426DA5" stroke-width="1.3"/>
+<rect x="81" y="380" width="10" height="6" rx="0" fill="#426DA5" stroke="#426DA5" stroke-width="0.6" />
+<text x="125" y="356" font-size="20" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Annotation</text>
+<text x="125" y="381" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >GFF3 / GTF</text>
+<rect x="50" y="409" width="260" height="73" rx="8" fill="white" stroke="#D6E0E8" stroke-width="1.5" />
+<path d="M64,415 h36 l13,13 v48 h-49 z" fill="white" stroke="#358B83" stroke-width="1.8" />
+<path d="M100,415 v13 h13" fill="none" stroke="#358B83" stroke-width="1.5" />
+<text x="71" y="446" font-size="10" fill="#358B83" font-weight="700" text-anchor="start" font-style="normal" >ATGC</text>
+<text x="71" y="460" font-size="10" fill="#358B83" font-weight="700" text-anchor="start" font-style="normal" >TCGA</text>
+<text x="125" y="438" font-size="20" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Genome sequence</text>
+<text x="125" y="463" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Matching FASTA</text>
+<rect x="50" y="491" width="260" height="73" rx="8" fill="white" stroke="#D6E0E8" stroke-width="1.5" />
+<path d="M64,497 h36 l13,13 v48 h-49 z" fill="white" stroke="#8875B1" stroke-width="1.8" />
+<path d="M100,497 v13 h13" fill="none" stroke="#8875B1" stroke-width="1.5" />
+<rect x="72" y="521" width="7" height="6" rx="0" fill="#D8C8EB" stroke="#8875B1" stroke-width="0.4" />
+<rect x="82" y="521" width="7" height="6" rx="0" fill="#B9D8E5" stroke="#8875B1" stroke-width="0.4" />
+<rect x="92" y="521" width="7" height="6" rx="0" fill="#D7E8D9" stroke="#8875B1" stroke-width="0.4" />
+<rect x="72" y="530" width="7" height="6" rx="0" fill="#B9D8E5" stroke="#8875B1" stroke-width="0.4" />
+<rect x="82" y="530" width="7" height="6" rx="0" fill="#D7E8D9" stroke="#8875B1" stroke-width="0.4" />
+<rect x="92" y="530" width="7" height="6" rx="0" fill="#D8C8EB" stroke="#8875B1" stroke-width="0.4" />
+<rect x="72" y="539" width="7" height="6" rx="0" fill="#D7E8D9" stroke="#8875B1" stroke-width="0.4" />
+<rect x="82" y="539" width="7" height="6" rx="0" fill="#D8C8EB" stroke="#8875B1" stroke-width="0.4" />
+<rect x="92" y="539" width="7" height="6" rx="0" fill="#B9D8E5" stroke="#8875B1" stroke-width="0.4" />
+<text x="125" y="520" font-size="20" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Expression</text>
+<text x="125" y="545" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Matrix + sample labels</text>
+<path d="M330,350 L359,350" fill="none" stroke="#426DA5" stroke-width="2.8" marker-end="url(#arrow)"/>
+<rect x="370" y="108" width="354" height="486" rx="14" fill="#F1F7F4" stroke="#B7D3C3" stroke-width="1.5" />
+<text x="386" y="139" font-size="25" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >b</text>
+<text x="415" y="139" font-size="22" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Shared local model</text>
+<rect x="391" y="163" width="312" height="39" rx="8" fill="#E1EEE5" stroke="#A6C9B3" stroke-width="1.5" />
+<text x="547" y="189" font-size="19" fill="#358B83" font-weight="700" text-anchor="middle" font-style="normal" >One import / query code path</text>
+<text x="547" y="233" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >Sequence IDs and coordinates</text>
+<rect x="483" y="244" width="13" height="40" rx="6" fill="#B2C5D7" stroke="#426DA5" stroke-width="1" />
+<path d="M485,262 L494,262" fill="none" stroke="white" stroke-width="2"/>
+<rect x="510" y="244" width="13" height="30" rx="6" fill="#B2C5D7" stroke="#426DA5" stroke-width="1" />
+<path d="M512,262 L521,262" fill="none" stroke="white" stroke-width="2"/>
+<rect x="537" y="244" width="13" height="40" rx="6" fill="#B2C5D7" stroke="#426DA5" stroke-width="1" />
+<path d="M539,262 L548,262" fill="none" stroke="white" stroke-width="2"/>
+<rect x="564" y="244" width="13" height="34" rx="6" fill="#B2C5D7" stroke="#426DA5" stroke-width="1" />
+<path d="M566,262 L575,262" fill="none" stroke="white" stroke-width="2"/>
+<rect x="591" y="244" width="13" height="40" rx="6" fill="#B2C5D7" stroke="#426DA5" stroke-width="1" />
+<path d="M593,262 L602,262" fill="none" stroke="white" stroke-width="2"/>
+<path d="M547,287 L547,305" fill="none" stroke="#358B83" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="459" y="309" width="176" height="40" rx="7" fill="white" stroke="#358B83" stroke-width="1.5" />
+<text x="547" y="336" font-size="20" fill="#20354D" font-weight="700" text-anchor="middle" font-style="normal" >Gene / locus</text>
+<path d="M547,350 L547,363" fill="none" stroke="#358B83" stroke-width="1.7"/>
+<path d="M468,363 L626,363" fill="none" stroke="#358B83" stroke-width="1.7"/>
+<path d="M468,363 L468,376" fill="none" stroke="#358B83" stroke-width="1.7" marker-end="url(#arrow)"/>
+<path d="M626,363 L626,376" fill="none" stroke="#358B83" stroke-width="1.7" marker-end="url(#arrow)"/>
+<rect x="400" y="379" width="137" height="38" rx="7" fill="white" stroke="#358B83" stroke-width="1.5" />
+<text x="468.5" y="404" font-size="18" fill="#20354D" font-weight="400" text-anchor="middle" font-style="normal" >Transcript 1</text>
+<rect x="557" y="379" width="137" height="38" rx="7" fill="white" stroke="#358B83" stroke-width="1.5" />
+<text x="625.5" y="404" font-size="18" fill="#20354D" font-weight="400" text-anchor="middle" font-style="normal" >Transcript 2</text>
+<path d="M409,441 L528,441" fill="none" stroke="#426DA5" stroke-width="1.8"/>
+<rect x="409" y="433" width="28" height="18" rx="1" fill="#8BAED0" stroke="#426DA5" stroke-width="1" />
+<rect x="457" y="433" width="18" height="18" rx="1" fill="#8BAED0" stroke="#426DA5" stroke-width="1" />
+<rect x="497" y="433" width="31" height="18" rx="1" fill="#8BAED0" stroke="#426DA5" stroke-width="1" />
+<path d="M565,441 L684,441" fill="none" stroke="#426DA5" stroke-width="1.8"/>
+<rect x="565" y="433" width="28" height="18" rx="1" fill="#8BAED0" stroke="#426DA5" stroke-width="1" />
+<rect x="613" y="433" width="18" height="18" rx="1" fill="#8BAED0" stroke="#426DA5" stroke-width="1" />
+<rect x="653" y="433" width="31" height="18" rx="1" fill="#8BAED0" stroke="#426DA5" stroke-width="1" />
+<text x="547" y="477" font-size="18" fill="#20354D" font-weight="400" text-anchor="middle" font-style="normal" >Exon • CDS • UTR relationships</text>
+<text x="547" y="501" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >Source features / inference labels</text>
+<rect x="391" y="521" width="312" height="53" rx="8" fill="white" stroke="#AAC8B5" stroke-width="1.5" />
+<rect x="403" y="532" width="28" height="29" rx="2" fill="#DFEBE3" stroke="#358B83" stroke-width="1.3" />
+<rect x="409" y="532" width="18" height="8" rx="1" fill="white" stroke="#358B83" stroke-width="1" />
+<rect x="409" y="549" width="18" height="10" rx="1" fill="white" stroke="#358B83" stroke-width="1" />
+<text x="444" y="544" font-size="19" fill="#358B83" font-weight="700" text-anchor="start" font-style="normal" >Save ↔ reopen project</text>
+<text x="444" y="565" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Inputs, locus and results</text>
+<path d="M727,350 L753,350" fill="none" stroke="#426DA5" stroke-width="2.8" marker-end="url(#arrow)"/>
+<rect x="766" y="108" width="640" height="486" rx="14" fill="#FBFAF6" stroke="#D8CCAE" stroke-width="1.5" />
+<text x="782" y="139" font-size="25" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >c</text>
+<text x="811" y="139" font-size="22" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Locus-centered queries and outputs</text>
+<rect x="786" y="162" width="600" height="180" rx="9" fill="white" stroke="#D6E0E8" stroke-width="1.5" />
+<text x="802" y="189" font-size="21" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Structure</text>
+<text x="912" y="189" font-size="19" fill="#697786" font-weight="400" text-anchor="start" font-style="italic" >V. umbellata · LOC124833352</text>
+<text x="802" y="217" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >NC_142174.1  |  chromosome 10  |  minus strand</text>
+<path d="M1361,240 L813,240" fill="none" stroke="#426DA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M813,260 L1361,260" fill="none" stroke="#426DA5" stroke-width="1.4"/>
+<path d="M920,256 l-5,4 l5,4" fill="none" stroke="#426DA5" stroke-width="1.2" />
+<path d="M1050,256 l-5,4 l5,4" fill="none" stroke="#426DA5" stroke-width="1.2" />
+<path d="M1175,256 l-5,4 l5,4" fill="none" stroke="#426DA5" stroke-width="1.2" />
+<path d="M1295,256 l-5,4 l5,4" fill="none" stroke="#426DA5" stroke-width="1.2" />
+<rect x="813.0" y="248" width="53.24170616113747" height="25" rx="1" fill="#F5DFB8" stroke="#CC8D47" stroke-width="1" />
+<rect x="890.0744354613884" y="248" width="42.241984945637" height="25" rx="1" fill="#F5DFB8" stroke="#CC8D47" stroke-width="1" />
+<rect x="1299.3557290214665" y="248" width="61.64427097853354" height="25" rx="1" fill="#F5DFB8" stroke="#CC8D47" stroke-width="1" />
+<rect x="816.5901867856147" y="248" width="49.65151937552275" height="25" rx="1" fill="#426DA5" stroke="#426DA5" stroke-width="0.7" />
+<rect x="890.0744354613884" y="248" width="42.241984945637" height="25" rx="1" fill="#426DA5" stroke="#426DA5" stroke-width="0.7" />
+<rect x="1299.3557290214665" y="248" width="59.35266239197085" height="25" rx="1" fill="#426DA5" stroke="#426DA5" stroke-width="0.7" />
+<path d="M813.0,280 L813.0,285" fill="none" stroke="#697786" stroke-width="1"/>
+<text x="813.0" y="304" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >16,647</text>
+<path d="M1069.1254530248118,280 L1069.1254530248118,285" fill="none" stroke="#697786" stroke-width="1"/>
+<text x="1069.1254530248118" y="304" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >20,000</text>
+<path d="M1361.0,280 L1361.0,285" fill="none" stroke="#697786" stroke-width="1"/>
+<text x="1361.0" y="304" font-size="18" fill="#697786" font-weight="400" text-anchor="end" font-style="normal" >23,821</text>
+<text x="802" y="329" font-size="18" fill="#20354D" font-weight="400" text-anchor="start" font-style="normal" >XM_088100767.1</text>
+<rect x="1061" y="317" width="18" height="11" rx="1" fill="#426DA5" stroke="#426DA5" stroke-width="1.5" />
+<text x="1084" y="329" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >CDS</text>
+<rect x="1141" y="317" width="18" height="11" rx="1" fill="#F5DFB8" stroke="#CC8D47" stroke-width="1.5" />
+<text x="1164" y="329" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Inferred UTR</text>
+<rect x="786" y="356" width="297" height="218" rx="9" fill="white" stroke="#D6E0E8" stroke-width="1.5" />
+<text x="802" y="384" font-size="21" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Sequence export</text>
+<text x="802" y="409" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >LOC124833352</text>
+<text x="802" y="439" font-size="18" fill="#20354D" font-weight="400" text-anchor="start" font-style="normal" >Transcript</text>
+<text x="1064" y="439" font-size="18" fill="#426DA5" font-weight="700" text-anchor="end" font-style="normal" >2,060 nt</text>
+<text x="802" y="467" font-size="18" fill="#20354D" font-weight="400" text-anchor="start" font-style="normal" >CDS</text>
+<text x="1064" y="467" font-size="18" fill="#426DA5" font-weight="700" text-anchor="end" font-style="normal" >1,983 nt</text>
+<text x="802" y="495" font-size="18" fill="#20354D" font-weight="400" text-anchor="start" font-style="normal" >Protein</text>
+<text x="1064" y="495" font-size="18" fill="#426DA5" font-weight="700" text-anchor="end" font-style="normal" >660 aa</text>
+<rect x="802" y="515" width="264" height="40" rx="5" fill="#EEF4F9" stroke="#D5E1EB" stroke-width="1.5" />
+<text x="815" y="541" font-size="18" fill="#426DA5" font-weight="400" text-anchor="start" font-style="normal" font-family="monospace">&gt;CDS  ATGGATTATGATCG…</text>
+<rect x="1097" y="356" width="289" height="218" rx="9" fill="white" stroke="#D6E0E8" stroke-width="1.5" />
+<text x="1113" y="384" font-size="21" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Expression display</text>
+<text x="1113" y="409" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >LOC148191553 · gene TPM</text>
+<path d="M1143,535.0 L1364,535.0" fill="none" stroke="#E5EAF0" stroke-width="1"/>
+<text x="1136" y="540.0" font-size="18" fill="#697786" font-weight="400" text-anchor="end" font-style="normal" >0</text>
+<path d="M1143,483.0 L1364,483.0" fill="none" stroke="#E5EAF0" stroke-width="1"/>
+<text x="1136" y="488.0" font-size="18" fill="#697786" font-weight="400" text-anchor="end" font-style="normal" >15</text>
+<path d="M1143,431.0 L1364,431.0" fill="none" stroke="#E5EAF0" stroke-width="1"/>
+<text x="1136" y="436.0" font-size="18" fill="#697786" font-weight="400" text-anchor="end" font-style="normal" >30</text>
+<rect x="1162" y="533.6411256" width="31" height="1.3588744000000001" rx="1" fill="#86A9CB" stroke="none" stroke-width="1.5" />
+<text x="1177.5" y="526.6411256" font-size="18" fill="#20354D" font-weight="400" text-anchor="middle" font-style="normal" >0.39</text>
+<text x="1177.5" y="555" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >R1</text>
+<rect x="1236" y="441.8273672" width="31" height="93.1726328" rx="1" fill="#537FAE" stroke="none" stroke-width="1.5" />
+<text x="1251.5" y="434.8273672" font-size="18" fill="#20354D" font-weight="400" text-anchor="middle" font-style="normal" >26.88</text>
+<text x="1251.5" y="555" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >R2</text>
+<rect x="1310" y="503.40033493333334" width="31" height="31.599665066666667" rx="1" fill="#A7C3D9" stroke="none" stroke-width="1.5" />
+<text x="1325.5" y="496.40033493333334" font-size="18" fill="#20354D" font-weight="400" text-anchor="middle" font-style="normal" >9.12</text>
+<text x="1325.5" y="555" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >R3</text>
+<text x="1240" y="572" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >IC426787 · 5 DPA</text>
+<path d="M547,595 L547,617" fill="none" stroke="#8875B1" stroke-width="1.8" stroke-dasharray="5 5"/>
+<path d="M547,617 L547,638" fill="none" stroke="#8875B1" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="570" y="624" font-size="18" fill="#8875B1" font-weight="400" text-anchor="start" font-style="normal" >Checked against independent source-derived references</text>
+<rect x="34" y="646" width="1372" height="390" rx="14" fill="#FAF9FC" stroke="#CBBFDE" stroke-width="1.5" />
+<text x="50" y="678" font-size="25" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >d</text>
+<text x="79" y="678" font-size="22" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Public-data evidence</text>
+<text x="1378" y="678" font-size="20" fill="#8875B1" font-weight="700" text-anchor="end" font-style="normal" >7 plant species evaluated</text>
+<rect x="50" y="699" width="459" height="315" rx="10" fill="white" stroke="#DFD8EA" stroke-width="1.5" />
+<text x="67" y="728" font-size="21" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Structural fidelity</text>
+<text x="67" y="763" font-size="30" fill="#426DA5" font-weight="700" text-anchor="start" font-style="normal" >4,641,758</text>
+<text x="248" y="760" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >recognized tuples</text>
+<text x="67" y="791" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Arabidopsis · bundled</text>
+<rect x="252" y="779" width="81.53834204677695" height="12" rx="1" fill="#426DA5" stroke="none" stroke-width="1.5" />
+<text x="491" y="791" font-size="18" fill="#20354D" font-weight="400" text-anchor="end" font-style="normal" >811,827</text>
+<text x="67" y="814" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Arabidopsis · full</text>
+<rect x="252" y="802" width="79.50246224321269" height="12" rx="1" fill="#426DA5" stroke="none" stroke-width="1.5" />
+<text x="491" y="814" font-size="18" fill="#20354D" font-weight="400" text-anchor="end" font-style="normal" >791,557</text>
+<text x="67" y="837" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Maize · excerpt</text>
+<rect x="252" y="825" width="0.037865154708620084" height="12" rx="1" fill="#9BB9D2" stroke="none" stroke-width="1.5" />
+<text x="491" y="837" font-size="18" fill="#20354D" font-weight="400" text-anchor="end" font-style="normal" >377</text>
+<text x="67" y="860" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Maize · full</text>
+<rect x="252" y="848" width="116.67800912098559" height="12" rx="1" fill="#426DA5" stroke="none" stroke-width="1.5" />
+<text x="491" y="860" font-size="18" fill="#20354D" font-weight="400" text-anchor="end" font-style="normal" >1,161,691</text>
+<text x="67" y="883" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Rice · excerpt</text>
+<rect x="252" y="871" width="0.0348520124241145" height="12" rx="1" fill="#9BB9D2" stroke="none" stroke-width="1.5" />
+<text x="491" y="883" font-size="18" fill="#20354D" font-weight="400" text-anchor="end" font-style="normal" >347</text>
+<text x="67" y="906" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Rice · full</text>
+<rect x="252" y="894" width="55.33344535073656" height="12" rx="1" fill="#426DA5" stroke="none" stroke-width="1.5" />
+<text x="491" y="906" font-size="18" fill="#20354D" font-weight="400" text-anchor="end" font-style="normal" >550,921</text>
+<text x="67" y="929" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Soybean · excerpt</text>
+<rect x="252" y="917" width="0.08426754589000597" height="12" rx="1" fill="#9BB9D2" stroke="none" stroke-width="1.5" />
+<text x="491" y="929" font-size="18" fill="#20354D" font-weight="400" text-anchor="end" font-style="normal" >839</text>
+<text x="67" y="952" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Soybean · full</text>
+<rect x="252" y="940" width="133.0" height="12" rx="1" fill="#426DA5" stroke="none" stroke-width="1.5" />
+<text x="491" y="952" font-size="18" fill="#20354D" font-weight="400" text-anchor="end" font-style="normal" >1,324,199</text>
+<text x="67" y="994" font-size="18" fill="#358B83" font-weight="700" text-anchor="start" font-style="normal" >8 inventories  ·  0 missing  ·  0 extra</text>
+<rect x="525" y="699" width="421" height="315" rx="10" fill="white" stroke="#DFD8EA" stroke-width="1.5" />
+<text x="542" y="728" font-size="21" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Sequence reconstruction</text>
+<text x="542" y="761" font-size="28" fill="#358B83" font-weight="700" text-anchor="start" font-style="normal" >15 loci</text>
+<text x="670" y="760" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >25 coding transcripts</text>
+<text x="542" y="800" font-size="18" fill="#697786" font-weight="700" text-anchor="start" font-style="normal" >Plant</text>
+<text x="706" y="800" font-size="18" fill="#697786" font-weight="700" text-anchor="middle" font-style="normal" >tx</text>
+<text x="774" y="800" font-size="18" fill="#697786" font-weight="700" text-anchor="middle" font-style="normal" >Span</text>
+<text x="844" y="800" font-size="18" fill="#697786" font-weight="700" text-anchor="middle" font-style="normal" >RNA</text>
+<text x="914" y="800" font-size="18" fill="#697786" font-weight="700" text-anchor="middle" font-style="normal" >CDS</text>
+<path d="M542,811 L929,811" fill="none" stroke="#D6E0E8" stroke-width="1"/>
+<text x="542" y="844" font-size="18" fill="#20354D" font-weight="400" text-anchor="start" font-style="italic" >Vigna</text>
+<text x="706" y="844" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >6</text>
+<circle cx="774" cy="838" r="9" fill="#E8F3EE" stroke="none" stroke-width="1.5"/>
+<path d="M770,838 l3,3 l6,-7" fill="none" stroke="#358B83" stroke-width="1.9" />
+<circle cx="844" cy="838" r="9" fill="#E8F3EE" stroke="none" stroke-width="1.5"/>
+<path d="M840,838 l3,3 l6,-7" fill="none" stroke="#358B83" stroke-width="1.9" />
+<circle cx="914" cy="838" r="9" fill="#E8F3EE" stroke="none" stroke-width="1.5"/>
+<path d="M910,838 l3,3 l6,-7" fill="none" stroke="#358B83" stroke-width="1.9" />
+<text x="542" y="887" font-size="18" fill="#20354D" font-weight="400" text-anchor="start" font-style="italic" >Andrographis</text>
+<text x="706" y="887" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >14</text>
+<circle cx="774" cy="881" r="9" fill="#E8F3EE" stroke="none" stroke-width="1.5"/>
+<path d="M770,881 l3,3 l6,-7" fill="none" stroke="#358B83" stroke-width="1.9" />
+<circle cx="844" cy="881" r="9" fill="#E8F3EE" stroke="none" stroke-width="1.5"/>
+<path d="M840,881 l3,3 l6,-7" fill="none" stroke="#358B83" stroke-width="1.9" />
+<circle cx="914" cy="881" r="9" fill="#E8F3EE" stroke="none" stroke-width="1.5"/>
+<path d="M910,881 l3,3 l6,-7" fill="none" stroke="#358B83" stroke-width="1.9" />
+<text x="542" y="930" font-size="18" fill="#20354D" font-weight="400" text-anchor="start" font-style="italic" >Hibiscus</text>
+<text x="706" y="930" font-size="18" fill="#697786" font-weight="400" text-anchor="middle" font-style="normal" >5</text>
+<circle cx="774" cy="924" r="9" fill="#E8F3EE" stroke="none" stroke-width="1.5"/>
+<path d="M770,924 l3,3 l6,-7" fill="none" stroke="#358B83" stroke-width="1.9" />
+<circle cx="844" cy="924" r="9" fill="#E8F3EE" stroke="none" stroke-width="1.5"/>
+<path d="M840,924 l3,3 l6,-7" fill="none" stroke="#358B83" stroke-width="1.9" />
+<circle cx="914" cy="924" r="9" fill="#E8F3EE" stroke="none" stroke-width="1.5"/>
+<path d="M910,924 l3,3 l6,-7" fill="none" stroke="#358B83" stroke-width="1.9" />
+<text x="542" y="973" font-size="18" fill="#358B83" font-weight="700" text-anchor="start" font-style="normal" >5 selected coding loci per plant</text>
+<text x="542" y="996" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Strand-aware sequence SHA-256 checks</text>
+<rect x="962" y="699" width="428" height="315" rx="10" fill="white" stroke="#DFD8EA" stroke-width="1.5" />
+<text x="979" y="728" font-size="21" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Expression ID reconciliation</text>
+<text x="979" y="759" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Public reads → exact RefSeq RNA → gene TPM</text>
+<circle cx="1035" cy="831" r="43" fill="none" stroke="#E3ECE8" stroke-width="11"/>
+<circle cx="1035" cy="831" r="43" fill="none" stroke="#358B83" stroke-width="11"/>
+<text x="1035" y="839" font-size="22" fill="#358B83" font-weight="700" text-anchor="middle" font-style="normal" >100%</text>
+<text x="1100" y="815" font-size="25" fill="#358B83" font-weight="700" text-anchor="start" font-style="normal" >34,914 / 34,914</text>
+<text x="1100" y="843" font-size="18" fill="#20354D" font-weight="400" text-anchor="start" font-style="normal" >gene IDs matched</text>
+<text x="1100" y="870" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >0 unmatched IDs</text>
+<rect x="979" y="901" width="394" height="93" rx="8" fill="#FCF4E9" stroke="#DDC09B" stroke-width="1.5" />
+<text x="994" y="927" font-size="18" fill="#CC8D47" font-weight="700" text-anchor="start" font-style="normal" >Reads IC426787 ≠ reference VRB3</text>
+<text x="994" y="954" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >Supports import / ID compatibility;</text>
+<text x="994" y="979" font-size="18" fill="#697786" font-weight="400" text-anchor="start" font-style="normal" >genotype-matched biology is not tested.</text>
+<text x="34" y="1070" font-size="18" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Versioned public inputs</text>
+<path d="M257,1064 L290,1064" fill="none" stroke="#697786" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="310" y="1070" font-size="18" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Source manifests + checksums</text>
+<path d="M613,1064 L647,1064" fill="none" stroke="#697786" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="667" y="1070" font-size="18" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Independent checks</text>
+<path d="M881,1064 L915,1064" fill="none" stroke="#697786" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="935" y="1070" font-size="18" fill="#20354D" font-weight="700" text-anchor="start" font-style="normal" >Reproducible scripts and saved projects</text>
 </svg>
