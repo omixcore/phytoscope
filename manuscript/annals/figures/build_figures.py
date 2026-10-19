@@ -23,6 +23,8 @@ GRAY = "#5E6A71"
 
 def save(fig, stem):
     fig.savefig(OUT / f"{stem}.svg", bbox_inches="tight")
+    svg_path = OUT / f"{stem}.svg"
+    svg_path.write_text("\n".join(line.rstrip() for line in svg_path.read_text().splitlines()) + "\n")
     fig.savefig(OUT / f"{stem}.pdf", bbox_inches="tight")
     fig.savefig(OUT / f"{stem}.png", bbox_inches="tight", dpi=300)
     plt.close(fig)

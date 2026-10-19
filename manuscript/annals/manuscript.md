@@ -1,9 +1,13 @@
 # A portable local framework for gene-structure and expression queries in underrepresented plant species
 
-**Article type:** Original Article (submission target: *Annals of the New York Academy of Sciences*)  
-**Authors:** [AUTHOR NAMES IN FINAL ORDER]  
-**Affiliations:** [AFFILIATIONS]  
-**Corresponding author:** [NAME, EMAIL, POSTAL ADDRESS]  
+**Article type:** Original Article (submission target: *Annals of the New York Academy of Sciences*)
+
+**Authors:** [AUTHOR NAMES IN FINAL ORDER]
+
+**Affiliations:** [AFFILIATIONS]
+
+**Corresponding author:** [NAME, EMAIL, POSTAL ADDRESS]
+
 **ORCID:** [ORCID FOR EACH AUTHOR]
 
 ## Abstract

@@ -1,6 +1,7 @@
 [DATE]
 
-Editor-in-Chief  
+Editor-in-Chief
+
 *Annals of the New York Academy of Sciences*
 
 Dear Editor,
@@ -19,6 +20,8 @@ Thank you for considering the manuscript.
 
 Sincerely,
 
-[CORRESPONDING AUTHOR NAME]  
-[INSTITUTION]  
+[CORRESPONDING AUTHOR NAME]
+
+[INSTITUTION]
+
 [EMAIL]
