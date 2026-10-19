@@ -43,7 +43,7 @@
       "ncbi_protein_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=protein&id=XP_087956893.1&rettype=fasta&retmode=text",
       "protein_fixture": "XP_087956893.1.faa",
       "protein_fixture_bytes": 743,
-      "protein_fixture_sha256": "ba9f287a0a4e9c8169d9c24ddaefad381fdb33523958507298945ce49928a908"
+      "protein_fixture_sha256": "99a1b155e4daa8e4f8e7e01e7a1c6aa618a8f0988f6d89dab9ed573ac6b521e4"
     }
   ],
   "independent_source_inventory": {

@@ -718,24 +718,25 @@ public class Gff3Parser {
             if (value.indexOf('%') < 0) {
                 return value;
             }
-            byte[] bytes = new byte[value.length()];
-            int n = 0;
+            java.io.ByteArrayOutputStream bytes = new java.io.ByteArrayOutputStream(value.length());
             for (int i = 0; i < value.length(); i++) {
                 char c = value.charAt(i);
                 if (c == '%' && i + 2 < value.length()) {
                     try {
-                        bytes[n++] = (byte) Integer.parseInt(value.substring(i + 1, i + 3), 16);
+                        bytes.write(Integer.parseInt(value.substring(i + 1, i + 3), 16));
                         i += 2;
                         continue;
                     } catch (NumberFormatException ignored) {
                         // Preserve malformed escapes literally below.
                     }
                 }
-                // Keep ordinary UTF-16 code units by encoding them as UTF-8.
-                byte[] encoded = String.valueOf(c).getBytes(StandardCharsets.UTF_8);
-                for (byte b : encoded) bytes[n++] = b;
+                // Raw Unicode and percent-encoded bytes may appear in the same value.
+                int codePoint = value.codePointAt(i);
+                byte[] encoded = new String(Character.toChars(codePoint)).getBytes(StandardCharsets.UTF_8);
+                bytes.writeBytes(encoded);
+                if (Character.isSupplementaryCodePoint(codePoint)) i++;
             }
-            return new String(bytes, 0, n, StandardCharsets.UTF_8);
+            return bytes.toString(StandardCharsets.UTF_8);
         }
 
         String get(String... keys) {
