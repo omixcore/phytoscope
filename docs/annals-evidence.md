@@ -7,20 +7,20 @@ extraction, explicit sample grouping, sequence screening, cross-species protein
 similarity, and splice-aware domain-to-genome mapping in one recoverable desktop
 project. Its contribution is workflow integration and provenance, not a new
 orthology algorithm, domain predictor, or causal regulatory inference method.
-The central evaluation question is whether the linked workflow reduces handoffs
-and errors in a real plant analysis while preserving enough provenance to
-reproduce it.
+The current evaluation establishes tested workflow integration, data
+reconciliation, and reproducibility properties. It does not yet establish
+fewer researcher handoffs, fewer user errors, improved usability, or time saved.
 
 ## Evidence status
 
 | Evidence | Current evidence | Remaining work before a strong methods-paper claim |
 | --- | --- | --- |
-| Operational workflow | Five tabs in the desktop UI; browser locus synchronization; promoter extraction feeds sequence QC; sample groups, FASTA/domain inputs and results are saved in portable projects; analysis output exports as TSV. The browser accepts IGV-style `sequence:start-end` navigation and preserves the visible range in project view state. Automated JavaFX regressions now fire all five research-tab actions (promoter, QC, grouping, homology and domain mapping), verify visible outputs, and cover project save/replace/restore and coordinate navigation. The three-platform CI passed on 2026-10-18; full annotation-coordinate checks and standalone packaging passed on Ubuntu. | Add a native file-save-dialog interaction test and a matched, reproducible public-data case benchmark against a documented multi-tool baseline. Do not claim human time savings or usability without participant evidence. |
+| Operational workflow | Five tabs in the desktop UI; browser locus synchronization; promoter extraction feeds sequence QC; sample groups, FASTA/domain inputs and results are saved in portable projects; analysis output exports as TSV. The browser accepts IGV-style `sequence:start-end` navigation and preserves the visible range in project view state. Automated JavaFX regressions cover all five research-tab actions, visible outputs, project save/replace/restore and coordinate navigation. Three-platform CI and public-data audit passed in run #247 on 2026-10-19. | A native file-save-dialog interaction test remains useful. The executed `gffutils` comparison is limited to scripted annotation import/search/extraction and is not a whole-workflow handoff comparison. Do not claim human time savings or usability without participant evidence. |
 | Annotation correctness and scale | Independent source-to-model checks cover Arabidopsis, rice, maize and soybean. Eight inventories contain 4,641,758 exact gene/transcript/exon/CDS/UTR tuples with zero missing/extra tuples; the full-annotation checks passed in the 2026-10-18 Ubuntu CI run. | Repeat controlled performance runs on documented hardware/memory limits; the recognized-feature scope does not validate unsupported GFF types. |
-| Existing-tool comparison | A matched PhytoScope vs `gffutils==0.13` benchmark passed for Arabidopsis, rice, maize and soybean fixtures, with 10/24/20/40 gene loci respectively, three alternating-order trials per species, and exact source-to-output tuple agreement on Ubuntu, Windows and macOS. Observed medians and limitations are recorded in [the CI benchmark report](../benchmarks/results/2026-10-18/cross-species-extraction.md). | The comparison is still a narrow parser/hierarchy task. Add curated module-level gold standards for homology, domain mapping, promoter extraction and expression summaries; run controlled hardware benchmarks before speed claims. |
+| Existing-tool comparison | A matched PhytoScope vs `gffutils==0.13` benchmark passed for Arabidopsis, rice, maize and soybean fixtures, with 10/24/20/40 gene loci respectively, three alternating-order trials per species, and exact source-to-output tuple agreement on Ubuntu, Windows and macOS. A three-trial full GFF3 rice-bean query is also checked against source tuples in CI run #247. | The comparison is still a narrow parser/hierarchy task. Import/index times are different operations and do not establish a speed ranking. Add curated module-level gold standards for homology, domain mapping, promoter extraction and expression summaries before broad module-level accuracy claims. |
 | Research-module correctness | The real-data calculation suite checks eight 2,200-bp promoter windows across both strands against direct TAIR10 FASTA slicing/reverse-complement calculations; four real RBCS CDS QC reports against independently reconstructed metrics; all 16 within-family Arabidopsis RBCS protein alignments against a test-side Smith–Waterman reference; E-MTAB-7978 grouping arithmetic including measured zeros; and 16 domain/deletion coordinate records in 13 genes against independent Python calculations. In the three-platform CI run #192, bedtools v2.31.1 independently reproduced all 8/8 promoter sequences with zero mismatches. BLASTP 2.12.0+ agreed with PhytoScope on 12/12 non-self RBCS-family pairs and 8/8 unrelated-family controls both in the Arabidopsis-only panel and in a new four-species mature-RBCS panel (20/20 pairwise classifications per panel). On the tiny cross-species panel, one observed call took 21.63 ms in PhytoScope and 32.4 ms in BLASTP; this is startup-dominated and not a speed claim. Reports are retained in CI artifacts. | The new four-species RBCS panel is a single-family smoke test, not a multi-family curated gold standard or general precision/recall estimate; its negatives are not taxonomically balanced and it does not validate orthology. Expand independently curated multi-family homolog/domain pairs, add a multi-replicate expression gold set, and test more sequence/annotation edge cases before making broad accuracy claims. |
 | Independent biological examples | The RBCS-family expression case reproduces a known pattern from Expression Atlas E-MTAB-7978. Published PIF6 work links a short splice variant to seed dormancy/germination, but the sequence-level identity gate now rejects the frozen `AT3G62090.4` candidate as that published beta isoform: the current model is 341 aa with an internal 22-aa deletion, whereas the pinned UniProtKB D0EDQ7 reference is 188 aa (the literature reports a 182-aa construct). | PIF6 remains locus-level context, not an isoform-specific positive control and not a new discovery. No new biological finding independently supported by additional evidence has been established. |
-| Researcher value | A real-data calculation report and JavaFX interaction regression demonstrate linked outputs across five tabs and portable-project restoration. The PastDB follow-up audit now maps exact event coordinates to condition PSI, source-study labels and SRA run accessions in a CI artifact. | The [computational workflow-value protocol](researcher-value-study.md) still lacks an executed matched multi-tool workflow and measured handoffs/provenance completeness. Public PastDB PSI is condition-aggregated and does not establish independent validation. No participant study or human time-saving/usability claim is planned. No new biological discovery is established. |
+| Researcher value | A real-data calculation report, JavaFX interaction regressions, portable-project restoration, and exact-query comparison against `gffutils` demonstrate specified technical properties. The PastDB audit maps event coordinates to condition PSI, source-study labels and SRA run accessions. | The [computational workflow-value protocol](researcher-value-study.md) still lacks a matched end-to-end multi-tool handoff/provenance comparison. Public PastDB PSI is condition-aggregated and does not establish independent validation. No participant study or human time-saving/usability claim is planned. No new biological discovery is established. |
 
 ## Fair comparison protocol
 
@@ -94,9 +94,10 @@ benchmark or a general sensitivity/specificity estimate.
 The workflow-value protocol is now computational-only: it defines frozen public
 inputs, source-derived gold outputs, correctness, handoffs, provenance completeness,
 and project round-trip metrics against a documented multi-tool baseline. The
-PastDB audit now emits source-mapped event/condition/SRA tables, but the matched
-workflow and handoff comparison remains unrun. No participant study or human
-time-saving claim is planned.
+PastDB audit now emits source-mapped event/condition/SRA tables. The existing
+`gffutils` benchmarks compare a specific scripted annotation task, not the full
+multi-tool workflow; the matched handoff/provenance comparison remains unrun. No
+participant study or human time-saving claim is planned.
 
 The independent biological-discovery gap remains open. The 13-gene screen
 still yields zero candidates meeting its predeclared independent-evidence
@@ -117,12 +118,21 @@ contained 4,641,758 tuples with no missing/extra records. The benchmark reports
 in-memory import and SQLite index construction separately; it is not a speed
 ranking.
 
-The latest [PR validation run #176](https://github.com/omixcore/phytoscope/actions/runs/39115541048)
+The [PR validation run #176](https://github.com/omixcore/phytoscope/actions/runs/39115541048)
 also passed on Ubuntu, Windows and macOS. On Ubuntu it completed the full
 annotation-coordinate checks, the bedtools promoter comparison, the BLASTP
 similarity comparison and standalone packaging. The small external-tool
 comparisons improve the evidence base but do not close the curated module-level
 gold-standard gap or the computational workflow-value comparison on a frozen biological case.
+
+The later [dev CI run #247](https://github.com/omixcore/phytoscope/actions/runs/39234186147)
+passed on Ubuntu, Windows and macOS and completed the public-data audit. It
+includes the rice-bean public RNA-seq matrix generated against RefSeq assembly
+GCF_029865625.1, with 34,914/34,914 expression IDs reconciled to the exact
+annotation, zero unmatched IDs, and no invalid or missing cells. The expression
+source genotype IC426787 differs from assembly cultivar VRB3, so this is an
+import/identifier-compatibility result only. This still does not complete the
+end-to-end workflow handoff/provenance comparison.
 
 
 ## PIF6 sequence-identity gate and claim boundary

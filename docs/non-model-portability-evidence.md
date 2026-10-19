@@ -167,17 +167,19 @@ python tools/fetch_additional_nonmodel_refs.py --directory target/additional-non
 python tools/build_nonmodel_sequence_gold.py
 ```
 
-The paper's older rice-bean expression data were mapped against a different
-cultivar/assembly. A 2026 lncRNA study also reports expression values for
-transcripts from a different draft assembly and uses StringTie model IDs. Neither
-is loaded as expression for GCF_029865625.1. Expression must stay out of the
-evidence claim until a compatible matrix is sourced or reads are quantified
-against this exact assembly with sample metadata and a reproducible workflow.
-The application-side matrix contract is tested separately in
-`AdditionalNonModelReferenceTest`: a two-row synthetic probe using real NCBI
-RefSeq gene IDs verifies that user-supplied sample columns, declared units,
-exact-ID reconciliation and measured zero values are handled. The values are
-explicitly synthetic and provide no biological expression evidence.
+The paper's older rice-bean expression matrix was mapped against a different
+cultivar/assembly, and a 2026 lncRNA study reports transcript values from a
+different draft assembly with StringTie model IDs. Neither pre-made matrix is
+used here. Instead, the three public IC426787 5-DPA read pairs described above
+were re-quantified against the exact GCF_029865625.1 RefSeq RNA FASTA and
+reconciled to that release's GFF3 IDs. This supports the bounded expression
+import/ID-compatibility claim; it does not remove the genotype mismatch or
+validate expression biology against the VRB3 reference. The application-side
+matrix contract is tested separately in `AdditionalNonModelReferenceTest`: a
+two-row synthetic probe using real NCBI RefSeq gene IDs verifies that
+user-supplied sample columns, declared units, exact-ID reconciliation and
+measured zero values are handled. The synthetic values provide no biological
+expression evidence.
 
 ## Required end-to-end portability record
 

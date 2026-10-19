@@ -193,6 +193,7 @@ See the audit document for source URLs, checks and interpretation of parser coun
 ## Reproducibility and distribution
 
 - [Scientific contribution, evidence status and remaining work](docs/annals-evidence.md)
+- [Annals submission-readiness audit (internal checklist)](docs/annals-submission-readiness.md)
 - [Validation and source audit](docs/chromosome-validation.md)
 - [Validation, performance and comparison protocols](docs/validation-and-benchmarks.md)
 - [Non-model portability evidence, candidate public case and claim limits](docs/non-model-portability-evidence.md)
