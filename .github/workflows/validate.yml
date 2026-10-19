@@ -50,6 +50,12 @@ jobs:
         run: python tools/compare_homology_blastp.py --report target/research-validation/research-module-gold-set.json --out target/research-validation/blastp-homology-comparison.json
       - name: Install matched extraction baseline
         run: python -m pip install gffutils==0.13
+      - name: Fetch and verify rice bean public reference inputs
+        if: runner.os == 'Linux'
+        run: python tools/fetch_vigna_reference.py --directory target/non-model/vigna-umbellata
+      - name: Validate rice bean full annotation and sequence products
+        if: runner.os == 'Linux'
+        run: sh mvnw -B -Dtest=NonModelVignaReferenceTest -Dphytoscope.vignaReferenceDir=target/non-model/vigna-umbellata test
       - name: Four-species matched extraction benchmark
         shell: bash
         run: python tools/run_cross_species_extraction_benchmark.py --jar target/phytoscope-0.2.0.jar --out target/cross-species-extraction --trials 3

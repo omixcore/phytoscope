@@ -26,28 +26,60 @@ verified RNA-seq accession and must not be used as biological validation. The
 legacy test fixture remains solely for UI/parser regression and is not shipped
 as a species dataset.
 
-## Candidate public case and current blocker
+## Completed public case: rice bean (*Vigna umbellata*)
 
-The 2026 chromosome-level *Primula kwangtungensis* genome paper reports assembly
-GCA_054094925.1, nine chromosomes, a public GFF3/genome/sequence supplement
-(Figshare article 29479610), and six public RNA-seq samples (SRX26340530–35).
-This is a strong candidate because it is a recently resourced, rare plant. It is
-not yet a completed PhytoScope validation case: the supplement download failed
-in the current evaluation environment, and the six raw RNA-seq runs are tens of
-gigabytes compressed. Do not count it as an imported dataset or expression
-validation until files are successfully retrieved, checksummed and processed.
+The first full non-model portability case uses the underutilized crop rice bean,
+RefSeq assembly **GCF_029865625.1, Vumbellata_1.0** (cultivar VRB3), annotation
+release **GCF_029865625.1-RS_2026_09**. The NCBI annotation report lists 11
+assembled chromosomes, 221 unplaced scaffolds, 41,713 gene/pseudogene records
+and 32,671 protein-coding genes. The GFF3 contains 232 sequence IDs; the
+corresponding GTF covers 99 sequence IDs. These counts are intentionally
+reported separately: the formats from the same release do not cover identical
+sequence sets.
 
-| Item | Public identifier | Verification status |
+The end-to-end regression imports the complete official GFF3 and GTF archives,
+checks counts and searches the same gene in both, then loads a matching
+chromosome FASTA and checks a minus-strand three-exon locus
+(`LOC124833352`, chromosome `NC_142174.1`) against a frozen independent sequence
+gold. Its CDS exactly matched NCBI's RefSeq CDS record `XP_087956893.1` when the
+gold was generated. The gold records genomic span, spliced transcript, CDS,
+protein and terminal UTR sequences inferred from exon/CDS boundaries. This
+annotation has no explicit UTR rows, so the two UTR values are labelled
+**inferred**, not source-annotated. The small frozen sequence gold and RefSeq
+protein record are checked in at `src/test/resources/non-model/vigna-umbellata/`;
+the complete source archives are fetched and SHA-256 verified by
+`tools/fetch_vigna_reference.py`. Source URLs, access date, checksums and
+expected feature counts are in `manifest.json`.
+
+To repeat locally with Java 21:
+
+```sh
+python tools/fetch_vigna_reference.py --directory target/non-model/vigna-umbellata
+sh mvnw -B -Dtest=NonModelVignaReferenceTest \
+  -Dphytoscope.vignaReferenceDir=target/non-model/vigna-umbellata test
+```
+
+This is evidence that PhytoScope can import these real non-model source files
+without species-specific code. It does not demonstrate support for every
+annotation dialect, every incomplete source, or every species. The targeted
+search found NCBI's generic assembly/annotation pages, not a dedicated
+rice-bean gene query portal; avoid the stronger claim that no web resource of
+any kind exists.
+
+| Item | Public identifier/source | Verification status |
 | --- | --- | --- |
-| Genome assembly | GCA_054094925.1 | Paper/NCBI metadata checked; FASTA not imported here |
-| Annotation | Figshare article 29479610, `gene.gff3` | File metadata/checksum checked; download blocked here |
-| Expression reads | SRX26340530–35 | Run metadata checked; no quantification performed |
-| End-to-end import/search/structure/export | — | Not yet tested |
+| Assembly | GCF_029865625.1 | Matching chromosome 10 FASTA loaded |
+| Annotation | NCBI RefSeq release GCF_029865625.1-RS_2026_09 | Complete GFF3 and GTF imports/counts asserted |
+| Locus structure | LOC124833352 / XM_088100767.1 | Coordinates, minus strand, three exons and 1,983-nt CDS asserted |
+| Sequence products | NC_142174.1 plus RefSeq CDS/protein records | Genomic span, transcript, CDS, UTR inference and translation compared with frozen gold |
+| Expression | No compatible matrix validated | Not part of this case; RNA-seq evidence cited by the annotation report is not an expression matrix |
 
-The evaluation must not infer expression levels from annotation, genome size or
-RNA-seq accession metadata. Expression requires a count/abundance matrix or a
-reproducible quantification workflow, with sample metadata and reference
-assembly compatibility documented.
+The paper's older rice-bean expression data were mapped against a different
+cultivar/assembly. A 2026 lncRNA study also reports expression values for
+transcripts from a different draft assembly and uses StringTie model IDs. Neither
+is loaded as expression for GCF_029865625.1. Expression must stay out of the
+evidence claim until a compatible matrix is sourced or reads are quantified
+against this exact assembly with sample metadata and a reproducible workflow.
 
 ## Required end-to-end portability record
 
@@ -101,13 +133,16 @@ metadata. Functional descriptions, orthology, causal effects, expression
 patterns and missing isoforms cannot be inferred solely from feature
 coordinates. Missing fields stay missing; the software must not invent them.
 
-## Publication claim boundary
+## Remaining evidence gaps and publication claim boundary
 
-The software-framework claim can be supported by successful, independently
-checked imports and repeatable queries on several genuinely non-model public
-datasets. A biological discovery is an optional case study, not a prerequisite
-for demonstrating portability and not a substitute for parser/sequence gold
-standards. Until at least one non-model case is downloaded and validated end to
-end, describe the current evidence as cross-species format regression plus a
-non-model portability evaluation plan, rather than demonstrated coverage of
-portal-poor species.
+One species and one checked locus establish a concrete end-to-end example, but
+are insufficient for a broad “works across non-model species” claim. Next gaps
+are: (1) repeat the same unchanged workflow on at least two more unrelated
+portal-poor plants, with different annotation sources/dialects; (2) add
+independent gold loci covering multiple isoforms, missing optional fields,
+unplaced scaffolds and explicit-vs-inferred UTR cases; (3) benchmark the full
+GFF3/GTF imports for runtime, peak memory, warnings and query/export hashes on
+declared hardware; and (4) complete the planned same-input comparison against
+manual file handling, a general browser and a script workflow. Until those
+comparisons are run, report them as evaluation criteria, not results. A
+biological discovery is optional and cannot replace the portability gold sets.

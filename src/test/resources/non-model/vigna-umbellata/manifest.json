@@ -1,0 +1,83 @@
+{
+  "scientific_name": "Vigna umbellata",
+  "common_name": "rice bean",
+  "status": "underutilized non-model crop; targeted search did not identify a dedicated species-specific gene query portal",
+  "assembly": {
+    "accession": "GCF_029865625.1",
+    "name": "Vumbellata_1.0",
+    "cultivar": "VRB3",
+    "annotation_release": "GCF_029865625.1-RS_2026_09",
+    "annotation_release_date": "2026-09-04",
+    "ncbi_report": "https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_029865625.1/"
+  },
+  "retrieved_utc_date": "2026-10-18",
+  "source_terms": "NCBI RefSeq public data; no separate dataset license field was stated in the retrieved annotation report. Preserve accession and source attribution when reusing.",
+  "sources": [
+    {
+      "local_file": "GCF_029865625.1_genomic.gff.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/865/625/GCF_029865625.1_Vumbellata_1.0/GCF_029865625.1_Vumbellata_1.0_genomic.gff.gz",
+      "bytes": 11533734,
+      "md5_from_NCBI_md5checksums": "f051f69254aabf92d935d06e086f74a0",
+      "sha256_local": "5c50d02f221c5e39d5193ed07904f2fa23e2f410e54a581f59db74929a57e46e"
+    },
+    {
+      "local_file": "GCF_029865625.1_genomic.gtf.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/865/625/GCF_029865625.1_Vumbellata_1.0/GCF_029865625.1_Vumbellata_1.0_genomic.gtf.gz",
+      "bytes": 11755181,
+      "md5_from_NCBI_md5checksums": "fd2cdae143b8da867766fab7cc3bad6f",
+      "sha256_local": "2315735a3dabee035e173cc290f51748aa04f8351209895dee357706802a7414"
+    },
+    {
+      "local_file": "NC_142174.1.fna",
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NC_142174.1&rettype=fasta&retmode=text",
+      "record": "NC_142174.1, chromosome 10, 25,756,035 bp",
+      "bytes": 26124084,
+      "sha256": "c726f9ad50684d573622669b34ae6e48e12f41d737106d68070e6e2ac9c41805"
+    },
+    {
+      "gold_file": "gold-LOC124833352.fasta",
+      "sha256": "dcfd75fc7508c22cda842f9e65ccdddd8b117e56fb09d950864bffebeabcd419",
+      "derivation": "Independent strand-aware slicing from source GFF3 and NC_142174.1 FASTA; CDS compared byte-for-byte after FASTA normalization with NCBI RefSeq CDS XP_087956893.1; protein sequence from NCBI Eutils efetch for XP_087956893.1. UTR sequences are inferred from terminal exon/CDS boundaries because source annotation has no explicit UTR rows.",
+      "ncbi_cds_url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/865/625/GCF_029865625.1_Vumbellata_1.0/GCF_029865625.1_Vumbellata_1.0_cds_from_genomic.fna.gz",
+      "ncbi_cds_archive_md5": "367b354ab7d42fdf7b7469eeaf64af76",
+      "ncbi_protein_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=protein&id=XP_087956893.1&rettype=fasta&retmode=text",
+      "protein_fixture": "XP_087956893.1.faa",
+      "protein_fixture_bytes": 743,
+      "protein_fixture_sha256": "ba9f287a0a4e9c8169d9c24ddaefad381fdb33523958507298945ce49928a908"
+    }
+  ],
+  "independent_source_inventory": {
+    "gff3_feature_rows": 726726,
+    "gff3_sequence_ids": 232,
+    "gff3_gene_and_pseudogene_features": 41713,
+    "gff3_protein_coding_genes_reported_by_ncbi": 32671,
+    "gtf_feature_rows": 807311,
+    "gtf_sequence_ids": 99,
+    "gtf_gene_rows": 41713,
+    "explicit_utr_features": 0
+  },
+  "validated_locus": {
+    "gene_id_gff3": "gene-LOC124833352",
+    "gene_id_gtf": "LOC124833352",
+    "transcript_id": "rna-XM_088100767.1",
+    "protein_id": "XP_087956893.1",
+    "sequence_id": "NC_142174.1",
+    "start_1_based_inclusive": 16647,
+    "end_1_based_inclusive": 23821,
+    "strand": "-",
+    "exon_intervals": [[23014, 23821], [17656, 18209], [16647, 17344]],
+    "cds_intervals": [[23014, 23791], [17656, 18209], [16694, 17344]],
+    "exon_count": 3,
+    "genomic_span_nt": 7175,
+    "transcript_nt": 2060,
+    "cds_nt": 1983,
+    "inferred_5prime_utr_nt": 30,
+    "inferred_3prime_utr_nt": 47,
+    "protein_aa_excluding_terminal_stop": 660
+  },
+  "expression": {
+    "validated_matrix": null,
+    "status": "not evaluated",
+    "reason": "Located public rice-bean expression studies use different cultivar/reference assemblies or StringTie transcript identifiers; their values are not assembly-compatible evidence for GCF_029865625.1 without remapping or explicit ID reconciliation."
+  }
+}
