@@ -90,10 +90,26 @@ validate annotation import, sequence recognition, locus search and structure
 presence; the test also fetches each target RefSeq scaffold FASTA, independently
 reconstructs at least one transcript and CDS from source GFF3 coordinates, and
 compares them with PhytoScope exports. Rice bean remains the only case with a
-frozen multi-product sequence gold set covering genomic span, transcript, CDS,
-protein and inferred UTRs. A targeted search located general NCBI assembly/Gene records,
+full per-locus gold set covering genomic span, transcript, CDS, protein and
+inferred UTRs; the additional cases now have multi-locus hashes for span,
+transcript and CDS. A targeted search located general NCBI assembly/Gene records,
 not dedicated species-specific query portals; phrase this as a scoped search
 result rather than proof that no such resource exists.
+
+The frozen sequence gold was broadened to five coding loci on the tested
+sequence accession in each species. The checked-in
+`src/test/resources/non-model/multi-locus-sequence-gold.tsv` contains 25
+coding-transcript records, including all coding isoforms for the selected loci,
+with source-derived gene bounds, strand, exon/CDS lengths and SHA-256 hashes for
+genomic span, spliced transcript and CDS. The independent builder
+`tools/build_nonmodel_sequence_gold.py` reconstructs these sequences directly
+from GFF3 feature rows and the matching accession FASTA without using the
+PhytoScope parser. Java tests compare PhytoScope exports and locus metadata to
+the frozen values. After fetching the verified public inputs, regenerate with:
+
+```sh
+python tools/build_nonmodel_sequence_gold.py
+```
 
 The paper's older rice-bean expression data were mapped against a different
 cultivar/assembly. A 2026 lncRNA study also reports expression values for
@@ -101,6 +117,11 @@ transcripts from a different draft assembly and uses StringTie model IDs. Neithe
 is loaded as expression for GCF_029865625.1. Expression must stay out of the
 evidence claim until a compatible matrix is sourced or reads are quantified
 against this exact assembly with sample metadata and a reproducible workflow.
+The application-side matrix contract is tested separately in
+`AdditionalNonModelReferenceTest`: a two-row synthetic probe using real NCBI
+RefSeq gene IDs verifies that user-supplied sample columns, declared units,
+exact-ID reconciliation and measured zero values are handled. The values are
+explicitly synthetic and provide no biological expression evidence.
 
 ## Required end-to-end portability record
 
@@ -167,18 +188,22 @@ coordinates. Missing fields stay missing; the software must not invent them.
 
 ## Remaining evidence gaps and publication claim boundary
 
-The completed cohort contains one full GFF3/GTF sequence-gold case and two
-additional complete RefSeq GFF3 import/search/sequence-extraction checks. This
-supports portability across these three portal-poor plant examples, but not an
-unqualified claim that every species or annotation works unchanged. Remaining
-gaps are: (1) no compatible, source-traceable expression matrix has been
-validated for these exact assemblies; (2) only rice bean has a frozen
-multi-product sequence gold set, while the other two cases compare
-source-derived transcript/CDS sequences for one selected locus; (3) multi-locus
-sequence gold should cover more genes, isoforms, missing fields, and
-explicit-versus-inferred UTR cases; (4) runtime, peak memory, warnings and
-export hashes need reporting on declared hardware; and (5) same-task manual
-handling and IGV/JBrowse comparisons remain unexecuted. The gffutils comparison
-is an objective script-workflow baseline, not a browser or usability
-comparison. No participant study, time-saving claim, or new biological
-discovery is claimed.
+The completed cohort contains one full GFF3/GTF sequence-gold case, two
+additional complete RefSeq GFF3 import/search/sequence-extraction checks, and
+frozen source-derived multi-locus sequence gold across all three assemblies.
+This supports portability across these three portal-poor plant examples, but
+not an unqualified claim that every species or annotation works unchanged.
+Remaining gaps are: (1) no biological, source-traceable expression matrix has
+been validated for these exact assemblies (the synthetic ID/schema probe only
+checks software compatibility); (2) sequence gold covers five loci
+per species on the tested sequence accession, not genome-wide loci, additional
+annotation dialects, or all optional-field/UTR edge cases; (3) runtime and peak
+memory need reporting on declared hardware; and (4) same-task manual handling
+and IGV/JBrowse comparisons remain unexecuted. Public rice-bean expression
+records located either use other cultivar/assembly transcript IDs or provide
+raw reads without a processed matrix tied to the RefSeq gene IDs. The
+Andrographis root/leaf study also does not provide a compatible matrix for the
+tested RefSeq release. Do not treat those records as validated PhytoScope
+expression inputs. The gffutils comparison is an objective script-workflow
+baseline, not a browser or usability comparison. No participant study,
+time-saving claim, or new biological discovery is claimed.

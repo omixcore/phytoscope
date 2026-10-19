@@ -56,6 +56,7 @@ class NonModelVignaReferenceTest {
         assertEquals(gold.get("three_prime_UTR_inferred"), transcript.threePrimeUtrSequence());
         assertEquals("inferred from exon/CDS boundaries", transcript.fivePrimeUtrSource());
         assertEquals("inferred from exon/CDS boundaries", transcript.threePrimeUtrSource());
+        assertMultiLocusSequenceGold(genome, sequences);
     }
 
     @Test void fullRefSeqGtfImportsAndFindsTheSameLocus() throws Exception {
@@ -108,5 +109,43 @@ class NonModelVignaReferenceTest {
             }
         }
         return result;
+    }
+
+    private static void assertMultiLocusSequenceGold(GenomeDataService genome,
+                                                      GeneSequenceService sequences) throws Exception {
+        int checked = 0;
+        try (var raw = NonModelVignaReferenceTest.class.getResourceAsStream(
+                "/non-model/multi-locus-sequence-gold.tsv")) {
+            assertNotNull(raw);
+            try (var reader = new BufferedReader(new InputStreamReader(raw, StandardCharsets.UTF_8))) {
+                reader.readLine();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] row = line.split("\\t");
+                    if (!row[1].equals("GCF_029865625.1_genomic.gff.gz") || !row[2].equals(CHROMOSOME)) continue;
+                    var gene = genome.findGene(row[3]);
+                    assertNotNull(gene, "frozen source-gold gene must be searchable: " + row[3]);
+                    assertEquals(Integer.parseInt(row[5]), gene.getStart());
+                    assertEquals(Integer.parseInt(row[6]), gene.getEnd());
+                    assertEquals(row[7].charAt(0), gene.getStrand());
+                    var products = sequences.extract(gene);
+                    assertEquals(row[11], sha256(products.genomicSpanSequence()), row[3] + " span hash");
+                    var transcript = products.transcripts().stream()
+                            .filter(tx -> tx.transcriptId().equals(row[4])).findFirst().orElse(null);
+                    assertNotNull(transcript, "frozen source-gold transcript must be exported: " + row[4]);
+                    assertEquals(Integer.parseInt(row[8]), transcript.exonCount());
+                    assertEquals(Integer.parseInt(row[10]), transcript.cdsSequence().length());
+                    assertEquals(row[12], sha256(transcript.transcriptSequence()), row[4] + " transcript hash");
+                    assertEquals(row[13], sha256(transcript.cdsSequence()), row[4] + " CDS hash");
+                    checked++;
+                }
+            }
+        }
+        assertTrue(checked >= 5, "at least five coding transcripts are covered by frozen sequence gold");
+    }
+
+    private static String sha256(String text) throws Exception {
+        return java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256")
+                .digest(text.getBytes(StandardCharsets.US_ASCII)));
     }
 }
