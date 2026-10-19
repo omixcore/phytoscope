@@ -1,0 +1,110 @@
+{
+  "study": "PRJNA765494",
+  "species": "Vigna umbellata",
+  "study_url": "https://www.ncbi.nlm.nih.gov/bioproject/765494/",
+  "source_genotype": "IC426787",
+  "developmental_stage": "5 days post anthesis",
+  "assembly_accession": "GCF_029865625.1",
+  "assembly_name": "Vumbellata_1.0",
+  "cultivar": "VRB3",
+  "annotation_release": "GCF_029865625.1-RS_2026_09",
+  "annotation_url": "https://www.ncbi.nlm.nih.gov/refseq/annotation_euk/Vigna_umbellata/GCF_029865625.1-RS_2026_09/",
+  "reference_inputs": {
+    "rna_fasta_archive": {
+      "file": "GCF_029865625.1_Vumbellata_1.0_rna.fna.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/865/625/GCF_029865625.1_Vumbellata_1.0/GCF_029865625.1_Vumbellata_1.0_rna.fna.gz",
+      "ncbi_md5": "b39ade0ed73ce453276f0a5c41a7cd9a"
+    },
+    "gff3_archive": {
+      "file": "GCF_029865625.1_genomic.gff.gz",
+      "url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/865/625/GCF_029865625.1_Vumbellata_1.0/GCF_029865625.1_genomic.gff.gz",
+      "ncbi_md5": "f051f69254aabf92d935d06e086f74a0"
+    }
+  },
+  "quantifier": "salmon 2.8.0",
+  "library_type": "Salmon auto-detected paired-end",
+  "mapping_mode": "selective alignment (Salmon 2.8.0 default)",
+  "gene_tpm_method": "Salmon --geneMap aggregates transcript estimates by exact RefSeq GFF3 parent gene ID; not length-corrected by tximport and not used for differential-expression inference.",
+  "index_kmer_length": 31,
+  "transcript_fasta_sha256": "8d39bf8901fd422618359b0723922fc7f98a394168541c6d813ad6a4213c7567",
+  "gff3_sha256": "5c50d02f221c5e39d5193ed07904f2fa23e2f410e54a581f59db74929a57e46e",
+  "transcript_count": 54178,
+  "gene_map_count": 36754,
+  "samples": [
+    {
+      "run_accession": "SRR16122599",
+      "sample_label": "IC426787_5DPA_rep1",
+      "fastq_urls": [
+        "https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR161/099/SRR16122599/SRR16122599_1.fastq.gz",
+        "https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR161/099/SRR16122599/SRR16122599_2.fastq.gz"
+      ],
+      "fastq_1": {
+        "bytes": 1992605096,
+        "md5": "0001bb88323341d7e30e6eb08ace0834"
+      },
+      "fastq_2": {
+        "bytes": 2263549691,
+        "md5": "870c5890367c7c3bab55e9a34711b236"
+      },
+      "salmon_expected_library_format": "IU",
+      "compatible_fragment_ratio": 1.0,
+      "assigned_fragments": 21999811,
+      "quant_genes_sha256": "5c0b64baf315427a97a51ac3d48d7f55f92f50e60532a56778940b26a7ccd665"
+    },
+    {
+      "run_accession": "SRR16122608",
+      "sample_label": "IC426787_5DPA_rep2",
+      "fastq_urls": [
+        "https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR161/008/SRR16122608/SRR16122608_1.fastq.gz",
+        "https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR161/008/SRR16122608/SRR16122608_2.fastq.gz"
+      ],
+      "fastq_1": {
+        "bytes": 1347654696,
+        "md5": "fa6a9371a993af899502e3fbb50dbd4b"
+      },
+      "fastq_2": {
+        "bytes": 1545764414,
+        "md5": "b813a2c1baa1d82d5a650560fc1ab40f"
+      },
+      "salmon_expected_library_format": "IU",
+      "compatible_fragment_ratio": 1.0,
+      "assigned_fragments": 16000136,
+      "quant_genes_sha256": "ada4f3b0df5a97a5103b634bcb0c35aa8bf173c81c46945b4ce54e8ebe11df40"
+    },
+    {
+      "run_accession": "SRR16122607",
+      "sample_label": "IC426787_5DPA_rep3",
+      "fastq_urls": [
+        "https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR161/007/SRR16122607/SRR16122607_1.fastq.gz",
+        "https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR161/007/SRR16122607/SRR16122607_2.fastq.gz"
+      ],
+      "fastq_1": {
+        "bytes": 2042811388,
+        "md5": "13da9b2813373eb1357587bbc58bcf3f"
+      },
+      "fastq_2": {
+        "bytes": 2327301235,
+        "md5": "15e29c932df5c3c29c53416b46e0aa28"
+      },
+      "salmon_expected_library_format": "IU",
+      "compatible_fragment_ratio": 1.0,
+      "assigned_fragments": 23225998,
+      "quant_genes_sha256": "64d7afb6537d86ad8e899d0404a14e8489fe2ded6a9e28a5d87018b01cda25a6"
+    }
+  ],
+  "matrix": {
+    "file": "public-expression.tsv",
+    "genes": 34914,
+    "sha256": "090e5211a30a73c280bad36700aa4c3bf0e9b4417c7ad63de7387e2314783a42",
+    "matched_annotation_gene_ids": 34914,
+    "unmatched_gene_ids": 0,
+    "missing_cells": 0,
+    "invalid_cells": 0,
+    "per_sample_tpm_sum": [
+      1000000.000034,
+      999999.999897,
+      999999.999951
+    ]
+  },
+  "limitation": "Source genotype IC426787 differs from reference cultivar VRB3; this validates data import and exact-ID reconciliation, not genotype-matched biology or differential expression."
+}

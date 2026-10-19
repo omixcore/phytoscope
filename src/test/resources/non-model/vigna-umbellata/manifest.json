@@ -67,10 +67,54 @@
     "start_1_based_inclusive": 16647,
     "end_1_based_inclusive": 23821,
     "strand": "-",
-    "exon_intervals": [[23014, 23821], [17656, 18209], [16647, 17344]],
-    "cds_intervals": [[23014, 23791], [17656, 18209], [16694, 17344]],
-    "gtf_cds_intervals": [[23014, 23791], [17656, 18209], [16697, 17344]],
-    "gtf_stop_codon_intervals": [[16694, 16696]],
+    "exon_intervals": [
+      [
+        23014,
+        23821
+      ],
+      [
+        17656,
+        18209
+      ],
+      [
+        16647,
+        17344
+      ]
+    ],
+    "cds_intervals": [
+      [
+        23014,
+        23791
+      ],
+      [
+        17656,
+        18209
+      ],
+      [
+        16694,
+        17344
+      ]
+    ],
+    "gtf_cds_intervals": [
+      [
+        23014,
+        23791
+      ],
+      [
+        17656,
+        18209
+      ],
+      [
+        16697,
+        17344
+      ]
+    ],
+    "gtf_stop_codon_intervals": [
+      [
+        16694,
+        16696
+      ]
+    ],
     "exon_count": 3,
     "genomic_span_nt": 7175,
     "transcript_nt": 2060,
@@ -81,8 +125,20 @@
     "protein_aa_excluding_terminal_stop": 660
   },
   "expression": {
-    "validated_matrix": null,
-    "status": "not evaluated",
-    "reason": "Located public rice-bean expression studies use different cultivar/reference assemblies or StringTie transcript identifiers; their values are not assembly-compatible evidence for GCF_029865625.1 without remapping or explicit ID reconciliation."
+    "validated_matrix": "public-expression.tsv",
+    "matrix_provenance": "public-expression-manifest.json",
+    "status": "Public raw reads re-quantified against the matching GCF_029865625.1 RefSeq RNA FASTA and GFF3; all matrix gene IDs reconcile exactly.",
+    "quantifier": "Salmon 2.8.0",
+    "gene_rows": 34914,
+    "matched_annotation_gene_ids": 34914,
+    "unmatched_gene_ids": 0,
+    "annotation_gene_and_pseudogene_ids": 41713,
+    "samples": [
+      "SRR16122599",
+      "SRR16122608",
+      "SRR16122607"
+    ],
+    "unit": "TPM",
+    "limitation": "Reads are from genotype IC426787 while the reference assembly cultivar is VRB3. This validates public-data import and exact-ID reconciliation, not genotype-matched biology or differential expression."
   }
 }

@@ -68,8 +68,9 @@ structure tuples. Two additional RefSeq plants exercise whole-file import,
 search and independent transcript/CDS sequence reconstruction. The full scope,
 source manifests, outputs and limits are recorded in
 [`non-model-portability-evidence.md`](non-model-portability-evidence.md). These
-checks do not compare interactive genome browsers or establish expression-data
-compatibility.
+checks include one public raw-read re-quantification and exact gene-ID matrix
+reconciliation for rice bean. They do not compare interactive genome browsers
+or establish expression compatibility across other non-model taxa.
 
 ## Browser/user-task study protocol
 

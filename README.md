@@ -24,6 +24,14 @@ are in the per-reference manifests and
 [data provenance](src/main/resources/data/reference-provenance.json).
 
 **The default Arabidopsis reference also bundles the measured transcriptome panel** used by the browser expression track: **32,833 genes** across six single-assay conditions from Expression Atlas **E-MTAB-7978**, with SHA-256 pinned inputs and a fully traceable extraction manifest. Select any measured gene to see a **six-column vertical TPM bar chart in the right Gene Details pane**. Genes without measured data show an explicit missing-data message rather than a wall of `NA` cells.
+
+The rice-bean non-model validation now includes three public 5-DPA RNA-seq
+replicates re-quantified against RefSeq assembly GCF_029865625.1. All 34,914
+gene-level expression IDs reconcile exactly to that assembly's annotation.
+The read genotype (IC426787) differs from the reference cultivar (VRB3), so
+this is data-import/ID-compatibility evidence, not genotype-matched biology;
+see the [full validation record](docs/non-model-portability-evidence.md).
+
 The [case-study guide](examples/arabidopsis-atlas/README.md) records the source,
 ENA runs, exact extracted values, reproduction commands and interpretation limits.
 The separate [case-study interpretation](docs/case-study-arabidopsis-rbcs.md)
@@ -206,8 +214,9 @@ same-species panel and a small four-species mature-RBCS panel (Arabidopsis, rice
 maize and soybean). Both panels agree on 20/20 non-self positive/negative pair
 classifications. The cross-species panel is a single-family smoke test, not a
 one-to-one orthology benchmark or module-wide precision/recall estimate. Broader
-multi-family/domain gold sets, replicate-based expression validation, controlled
-performance runs and a matched researcher task study remain necessary. The
+multi-family/domain gold sets, expression compatibility across more species,
+controlled performance runs and a matched researcher task study remain
+necessary. The
 [researcher-value protocol](docs/researcher-value-study.md) is a plan,
 not evidence from participants.
 A separate fixed-rule screen of 48,002 complete Arabidopsis CDS models yielded

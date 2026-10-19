@@ -90,6 +90,35 @@ class NonModelVignaReferenceTest {
         assertEquals(47, transcript.threePrimeUtrSequence().length(), "stop_codon must not be mislabeled as inferred UTR");
     }
 
+    @Test void publicRnaSeqQuantificationImportsAndReconcilesToExactRefSeqGenes() throws Exception {
+        var genome = new GenomeDataService();
+        genome.loadFromFile(DATA.resolve("GCF_029865625.1_genomic.gff.gz"));
+        var expression = new io.gitee.omixcore.phytoscope.service.ExpressionDataService();
+        expression.loadFromResource("/non-model/vigna-umbellata/public-expression.tsv",
+                "PRJNA765494; Salmon 2.8.0 re-quantified to GCF_029865625.1 RefSeq transcripts");
+
+        var report = expression.reconcile(genome);
+        assertEquals(List.of("IC426787_5DPA_rep1", "IC426787_5DPA_rep2", "IC426787_5DPA_rep3"),
+                expression.getTissues());
+        assertEquals("TPM", expression.getValueUnit());
+        assertEquals(expression.getProfileCount(), report.rows());
+        assertEquals(expression.getProfileCount(), report.matchedIds(), report.summary());
+        assertEquals(34_914, report.profiles(), "Salmon 2.8.0 retained gene targets from the matching RefSeq RNA FASTA");
+        assertEquals(41_713, report.annotationIds());
+        assertTrue(report.unmatchedIds().isEmpty(), report.summary());
+        assertEquals(0, report.missingCells());
+        assertEquals(0, report.invalidCells());
+
+        var known = expression.getProfileForAnnotation("gene-LOC124833352");
+        assertNotNull(known, "published read quantification must reconcile to the independently checked locus");
+        for (String sample : expression.getTissues()) {
+            assertTrue(Double.isFinite(known.getTpm(sample)));
+            assertTrue(known.getTpm(sample) >= 0.0);
+        }
+        assertTrue(expression.getProfileIds().stream().allMatch(id -> genome.findGene(id) != null),
+                "every matrix row must use an exact gene ID from the matching RefSeq annotation");
+    }
+
     private static Map<String, String> readGold() throws Exception {
         Map<String, String> result = new LinkedHashMap<>();
         try (var raw = NonModelVignaReferenceTest.class.getResourceAsStream(
