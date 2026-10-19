@@ -183,6 +183,8 @@ public class Gff3Parser {
         List<RawFeature> rawTranscripts = new ArrayList<>();
         List<RawFeature> rawExons = new ArrayList<>();
         List<RawFeature> rawCds = new ArrayList<>();
+        List<RawFeature> rawStartCodons = new ArrayList<>();
+        List<RawFeature> rawStopCodons = new ArrayList<>();
         List<RawFeature> rawUtr5 = new ArrayList<>();
         List<RawFeature> rawUtr3 = new ArrayList<>();
 
@@ -243,6 +245,8 @@ public class Gff3Parser {
                     case MRNA, TRANSCRIPT -> rawTranscripts.add(raw);
                     case EXON -> rawExons.add(raw);
                     case CDS -> rawCds.add(raw);
+                    case START_CODON -> rawStartCodons.add(raw);
+                    case STOP_CODON -> rawStopCodons.add(raw);
                     case FIVE_UTR -> rawUtr5.add(raw);
                     case THREE_UTR -> rawUtr3.add(raw);
                     default -> {
@@ -310,6 +314,8 @@ public class Gff3Parser {
                 attachToExon(parent, cds);
             }
         }
+        attachCodons(rawStartCodons, transcriptById, FeatureType.START_CODON, true);
+        attachCodons(rawStopCodons, transcriptById, FeatureType.STOP_CODON, false);
         for (RawFeature raw : rawUtr5) {
             attachUtr(raw, transcriptById, FeatureType.FIVE_UTR);
         }
@@ -515,6 +521,19 @@ public class Gff3Parser {
                     raw.start, raw.end, raw.strand);
             utr.setAttributes(raw.attributes);
             attachToExon(parent, utr);
+        }
+    }
+
+    private void attachCodons(List<RawFeature> features, Map<String, Transcript> transcriptById,
+                              FeatureType type, boolean start) {
+        for (RawFeature raw : features) {
+            for (Transcript transcript : resolveTranscripts(raw, transcriptById)) {
+                GenomicFeature codon = new GenomicFeature(raw.id, raw.chromosome, type,
+                        raw.start, raw.end, raw.strand);
+                codon.setAttributes(raw.attributes);
+                if (start) transcript.addStartCodonSegment(codon);
+                else transcript.addStopCodonSegment(codon);
+            }
         }
     }
 

@@ -69,8 +69,23 @@ class NonModelVignaReferenceTest {
         assertEquals(23_821, gene.getEnd());
         assertEquals('-', gene.getStrand());
         assertEquals(1, gene.getTranscripts().size());
-        assertEquals(3, gene.getTranscripts().getFirst().getExonCount());
-        assertEquals(1_983, gene.getTranscripts().getFirst().getCdsLength());
+        var model = gene.getTranscripts().getFirst();
+        assertEquals(3, model.getExonCount());
+        assertEquals(1_980, model.getCdsLength());
+        assertEquals(3, model.getStopCodonSegments().stream().mapToInt(s -> s.length()).sum());
+        assertEquals(List.of(List.of(16_697, 17_344), List.of(17_656, 18_209), List.of(23_014, 23_791)),
+                model.getAllCdsSegments().stream().map(s -> List.of(s.getStart(), s.getEnd())).sorted(
+                        java.util.Comparator.comparingInt(x -> x.get(0))).toList());
+        var sequences = new GeneSequenceService();
+        sequences.loadFromFile(DATA.resolve("NC_142174.1.fna"));
+        var extracted = sequences.extract(gene);
+        var transcript = extracted.transcripts().getFirst();
+        Map<String, String> gold = readGold();
+        assertEquals(gold.get("CDS_GTF_without_stop_codon"), transcript.cdsSequence());
+        assertEquals(gold.get("protein"), transcript.proteinSequence());
+        assertEquals(gold.get("five_prime_UTR_inferred"), transcript.fivePrimeUtrSequence());
+        assertEquals(gold.get("three_prime_UTR_inferred"), transcript.threePrimeUtrSequence());
+        assertEquals(47, transcript.threePrimeUtrSequence().length(), "stop_codon must not be mislabeled as inferred UTR");
     }
 
     private static Map<String, String> readGold() throws Exception {

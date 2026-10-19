@@ -36,8 +36,8 @@
     },
     {
       "gold_file": "gold-LOC124833352.fasta",
-      "sha256": "dcfd75fc7508c22cda842f9e65ccdddd8b117e56fb09d950864bffebeabcd419",
-      "derivation": "Independent strand-aware slicing from source GFF3 and NC_142174.1 FASTA; CDS compared byte-for-byte after FASTA normalization with NCBI RefSeq CDS XP_087956893.1; protein sequence from NCBI Eutils efetch for XP_087956893.1. UTR sequences are inferred from terminal exon/CDS boundaries because source annotation has no explicit UTR rows.",
+      "sha256": "8e8101885f30766469b74b92dabc2e26a149ebb7765842bee5567ececde3a71a",
+      "derivation": "Independent strand-aware slicing from source GFF3/GTF and NC_142174.1 FASTA. The GFF3 CDS includes the terminal stop codon (1,983 nt); the GTF CDS excludes it and represents it as a separate stop_codon feature (1,980 nt). Both translate to the same RefSeq protein XP_087956893.1. GFF3 CDS was compared byte-for-byte with NCBI RefSeq CDS XP_087956893.1. UTR sequences are inferred from terminal exon and CDS/codon boundaries because source annotations have no explicit UTR rows.",
       "ncbi_cds_url": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/029/865/625/GCF_029865625.1_Vumbellata_1.0/GCF_029865625.1_Vumbellata_1.0_cds_from_genomic.fna.gz",
       "ncbi_cds_archive_md5": "367b354ab7d42fdf7b7469eeaf64af76",
       "ncbi_protein_url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=protein&id=XP_087956893.1&rettype=fasta&retmode=text",
@@ -54,6 +54,8 @@
     "gtf_feature_rows": 807311,
     "gtf_sequence_ids": 99,
     "gtf_gene_rows": 41713,
+    "gtf_start_codon_features": 46153,
+    "gtf_stop_codon_features": 46204,
     "explicit_utr_features": 0
   },
   "validated_locus": {
@@ -67,10 +69,13 @@
     "strand": "-",
     "exon_intervals": [[23014, 23821], [17656, 18209], [16647, 17344]],
     "cds_intervals": [[23014, 23791], [17656, 18209], [16694, 17344]],
+    "gtf_cds_intervals": [[23014, 23791], [17656, 18209], [16697, 17344]],
+    "gtf_stop_codon_intervals": [[16694, 16696]],
     "exon_count": 3,
     "genomic_span_nt": 7175,
     "transcript_nt": 2060,
     "cds_nt": 1983,
+    "gtf_cds_nt_excluding_separate_stop_codon": 1980,
     "inferred_5prime_utr_nt": 30,
     "inferred_3prime_utr_nt": 47,
     "protein_aa_excluding_terminal_stop": 660

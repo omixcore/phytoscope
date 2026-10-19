@@ -33,6 +33,8 @@ class Gff3ParserEdgeCaseTest {
         assertEquals(FeatureType.TRANSCRIPT, FeatureType.fromSoTerm("primary_transcript"));
         assertEquals(FeatureType.FIVE_UTR, FeatureType.fromSoTerm("five_prime_UTR_region"));
         assertEquals(FeatureType.THREE_UTR, FeatureType.fromSoTerm("three_prime_UTR_region"));
+        assertEquals(FeatureType.START_CODON, FeatureType.fromSoTerm("start_codon"));
+        assertEquals(FeatureType.STOP_CODON, FeatureType.fromSoTerm("stop_codon"));
         assertEquals(FeatureType.TRANSCRIPT, FeatureType.fromSoTerm("miRNA_primary_transcript"));
         assertEquals(FeatureType.TRANSCRIPT, FeatureType.fromSoTerm("pseudogenic_transcript"));
         assertEquals(FeatureType.EXON, FeatureType.fromSoTerm("pseudogenic_exon"));

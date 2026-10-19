@@ -11,9 +11,15 @@ public class Transcript extends GenomicFeature {
 
     private final List<Exon> exons = new ArrayList<>();
     private final List<GenomicFeature> unassignedSegments = new ArrayList<>();
+    private final List<GenomicFeature> startCodonSegments = new ArrayList<>();
+    private final List<GenomicFeature> stopCodonSegments = new ArrayList<>();
     /** Source CDS/UTR segments without an overlapping annotated exon; never fabricate exons. */
     public List<GenomicFeature> getUnassignedSegments() { return List.copyOf(unassignedSegments); }
     public void addUnassignedSegment(GenomicFeature segment) { unassignedSegments.add(segment); }
+    public List<GenomicFeature> getStartCodonSegments() { return List.copyOf(startCodonSegments); }
+    public void addStartCodonSegment(GenomicFeature segment) { startCodonSegments.add(segment); }
+    public List<GenomicFeature> getStopCodonSegments() { return List.copyOf(stopCodonSegments); }
+    public void addStopCodonSegment(GenomicFeature segment) { stopCodonSegments.add(segment); }
     public List<GenomicFeature> getAllCdsSegments() {
         return java.util.stream.Stream.concat(exons.stream().flatMap(e -> e.getCdsSegments().stream()),
                 unassignedSegments.stream().filter(s -> s.getType() == FeatureType.CDS)).toList();

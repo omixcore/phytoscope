@@ -10,6 +10,8 @@ public enum FeatureType {
     TRANSCRIPT("transcript", "Transcript"),
     EXON("exon", "Exon"),
     CDS("CDS", "Coding sequence"),
+    START_CODON("start_codon", "Start codon"),
+    STOP_CODON("stop_codon", "Stop codon"),
     FIVE_UTR("five_prime_UTR", "5' UTR"),
     THREE_UTR("three_prime_UTR", "3' UTR"),
     INTRON("intron", "Intron"),
@@ -66,6 +68,8 @@ public enum FeatureType {
             case "three_prime_utr", "three_prime_utr_region",
                  "3'utr", "3utr", "3_prime_utr" -> THREE_UTR;
             case "pseudogenic_exon" -> EXON;
+            case "start_codon" -> START_CODON;
+            case "stop_codon" -> STOP_CODON;
             default -> UNKNOWN;
         };
     }

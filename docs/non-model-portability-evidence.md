@@ -41,11 +41,14 @@ The end-to-end regression imports the complete official GFF3 and GTF archives,
 checks counts and searches the same gene in both, then loads a matching
 chromosome FASTA and checks a minus-strand three-exon locus
 (`LOC124833352`, chromosome `NC_142174.1`) against a frozen independent sequence
-gold. Its CDS exactly matched NCBI's RefSeq CDS record `XP_087956893.1` when the
-gold was generated. The gold records genomic span, spliced transcript, CDS,
-protein and terminal UTR sequences inferred from exon/CDS boundaries. This
-annotation has no explicit UTR rows, so the two UTR values are labelled
-**inferred**, not source-annotated. The small frozen sequence gold and RefSeq
+gold. Its GFF3 CDS exactly matched NCBI's RefSeq CDS record `XP_087956893.1`
+when the gold was generated. This example also tests a real format boundary:
+GFF3 includes the terminal stop codon inside its 1,983-nt CDS, while NCBI GTF
+records a 1,980-nt CDS and a separate three-base `stop_codon`. PhytoScope keeps
+that codon distinct, avoids mislabeling it as inferred UTR, and translates both
+representations to the same RefSeq protein. The annotation has no explicit UTR
+rows, so the two UTR values are labelled **inferred**, not source-annotated.
+The small frozen sequence gold and RefSeq
 protein record are checked in at `src/test/resources/non-model/vigna-umbellata/`;
 the complete source archives are fetched and SHA-256 verified by
 `tools/fetch_vigna_reference.py`. Source URLs, access date, checksums and

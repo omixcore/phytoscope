@@ -284,17 +284,20 @@ public final class GeneSequenceService {
         List<GenomicFeature> cdsSegments = distinctSegments(transcript.getAllCdsSegments());
         cdsSegments.sort(segmentOrder(transcript.getStrand()));
         String cds = joinSegments(chromosomeSequence, cdsSegments, transcript.getChromosome(), transcript.getStrand());
+        List<GenomicFeature> codingBoundaries = new ArrayList<>(cdsSegments);
+        codingBoundaries.addAll(transcript.getStartCodonSegments());
+        codingBoundaries.addAll(transcript.getStopCodonSegments());
 
         List<GenomicFeature> utr5 = annotatedUtrSegments(transcript, FeatureType.FIVE_UTR);
         List<GenomicFeature> utr3 = annotatedUtrSegments(transcript, FeatureType.THREE_UTR);
         String utr5Source = "annotated";
         String utr3Source = "annotated";
-        if (utr5.isEmpty() && !cdsSegments.isEmpty()) {
-            utr5 = inferTerminalUtr(exons, cdsSegments, transcript.getStrand(), true);
+        if (utr5.isEmpty() && !codingBoundaries.isEmpty()) {
+            utr5 = inferTerminalUtr(exons, codingBoundaries, transcript.getStrand(), true);
             utr5Source = utr5.isEmpty() ? "not annotated / not inferable" : "inferred from exon/CDS boundaries";
         }
-        if (utr3.isEmpty() && !cdsSegments.isEmpty()) {
-            utr3 = inferTerminalUtr(exons, cdsSegments, transcript.getStrand(), false);
+        if (utr3.isEmpty() && !codingBoundaries.isEmpty()) {
+            utr3 = inferTerminalUtr(exons, codingBoundaries, transcript.getStrand(), false);
             utr3Source = utr3.isEmpty() ? "not annotated / not inferable" : "inferred from exon/CDS boundaries";
         }
         utr5.sort(segmentOrder(transcript.getStrand()));
