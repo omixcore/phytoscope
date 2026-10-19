@@ -18,7 +18,7 @@ public final class BenchmarkRunner {
         Map<String, String> options = new HashMap<>();
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("--benchmark")) continue;
-            if (!Set.of("--annotation", "--example", "--out").contains(args[i]) || i + 1 >= args.length) throw new IllegalArgumentException("Invalid benchmark option: " + args[i]);
+            if (!Set.of("--annotation", "--example", "--out", "--query-ids").contains(args[i]) || i + 1 >= args.length) throw new IllegalArgumentException("Invalid benchmark option: " + args[i]);
             String key = args[i]; options.put(key, args[++i]);
         }
         if (options.containsKey("--annotation") == options.containsKey("--example")) throw new IllegalArgumentException("Choose one --annotation or --example");
@@ -49,13 +49,25 @@ public final class BenchmarkRunner {
         report.put("select_all_sequences_ms", millis(start));
         List<Gene> genes = genome.getGenes();
         if (genes.isEmpty()) throw new IllegalArgumentException("Annotation has no genes");
+        List<Gene> queryGenes;
+        if (options.containsKey("--query-ids")) {
+            queryGenes = Arrays.stream(options.get("--query-ids").split(","))
+                    .map(String::trim).filter(id -> !id.isEmpty())
+                    .map(id -> {
+                        Gene gene = genome.findGene(id);
+                        if (gene == null) throw new IllegalArgumentException("Unknown query gene: " + id);
+                        return gene;
+                    }).distinct().toList();
+            if (queryGenes.isEmpty()) throw new IllegalArgumentException("--query-ids must include at least one gene ID");
+        } else {
+            queryGenes = genes.subList(0, Math.min(4, genes.size()));
+        }
         int repetitions = 100;
         List<Double> searchMs = new ArrayList<>();
         for (int i = 0; i < repetitions; i++) {
-            String query = genes.get(i % genes.size()).getId(); start = System.nanoTime(); genome.search(query); searchMs.add(millis(start));
+            String query = queryGenes.get(i % queryGenes.size()).getId(); start = System.nanoTime(); genome.search(query); searchMs.add(millis(start));
         }
-        searchMs.sort(Double::compareTo); report.put("search_repetitions", repetitions); report.put("search_median_ms", searchMs.get(50)); report.put("search_p95_ms", searchMs.get(94));
-        List<Gene> queryGenes = genes.subList(0, Math.min(4, genes.size()));
+        searchMs.sort(Double::compareTo); report.put("search_repetitions", repetitions); report.put("search_query_ids", queryGenes.stream().map(Gene::getId).toList()); report.put("search_median_ms", searchMs.get(50)); report.put("search_p95_ms", searchMs.get(94));
         List<Double> hierarchyMs = new ArrayList<>(); long visited = 0;
         for (int iteration = 0; iteration < 100; iteration++) {
             start = System.nanoTime();

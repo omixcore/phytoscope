@@ -121,6 +121,17 @@ and peak memory. Separate setup from task execution. Without participants,
 report only those observed workflow properties. Do not claim that PhytoScope is
 easier, saves researchers time, improves usability or increases discovery.
 
+For the rice-bean case, `tools/compare_public_case.py` now implements the
+scripted part of this comparison: PhytoScope and gffutils 0.13 import the same
+full GFF3, query the same frozen locus, and must produce identical structure
+tuples that also match the independent source GFF3 inventory. It runs three
+fresh-process trials in alternating order and records index/import time,
+selected-locus query latency, memory metric units, commands and versions in the
+GitHub Actions artifact `non-model-comparison`. Since gffutils builds a SQLite
+index while PhytoScope uses an in-memory model, the cold setup measurements are
+reported separately. This does not compare manual handling or the IGV/JBrowse
+interfaces; those remain open, and there is no user-effort or usability claim.
+
 ## Information users must supply; information annotations cannot establish
 
 The annotation identifies the features and coordinates encoded by its source;
@@ -136,13 +147,14 @@ coordinates. Missing fields stay missing; the software must not invent them.
 ## Remaining evidence gaps and publication claim boundary
 
 One species and one checked locus establish a concrete end-to-end example, but
-are insufficient for a broad “works across non-model species” claim. Next gaps
-are: (1) repeat the same unchanged workflow on at least two more unrelated
-portal-poor plants, with different annotation sources/dialects; (2) add
-independent gold loci covering multiple isoforms, missing optional fields,
-unplaced scaffolds and explicit-vs-inferred UTR cases; (3) benchmark the full
-GFF3/GTF imports for runtime, peak memory, warnings and query/export hashes on
-declared hardware; and (4) complete the planned same-input comparison against
-manual file handling, a general browser and a script workflow. Until those
-comparisons are run, report them as evaluation criteria, not results. A
-biological discovery is optional and cannot replace the portability gold sets.
+are insufficient for a broad “works across non-model species” claim. The
+remaining gaps are: (1) repeat the unchanged workflow on at least two more
+unrelated portal-poor plants, with different annotation sources/dialects; (2)
+add independent gold loci covering multiple isoforms, missing optional fields,
+unplaced scaffolds and explicit-vs-inferred UTR cases; (3) record full GFF3/GTF
+runtime, peak memory, warnings and query/export hashes on declared hardware;
+and (4) complete the same-input comparison against manual file handling and a
+general browser. The gffutils script baseline is implemented, but its measured
+results are pending CI and must be reviewed before citing any performance
+numbers. A biological discovery is optional and cannot replace the
+portability gold sets.

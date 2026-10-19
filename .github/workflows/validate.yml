@@ -56,6 +56,9 @@ jobs:
       - name: Validate rice bean full annotation and sequence products
         if: runner.os == 'Linux'
         run: sh mvnw -B -Dtest=NonModelVignaReferenceTest -Dphytoscope.vignaReferenceDir=target/non-model/vigna-umbellata test
+      - name: Compare same rice bean task with gffutils
+        if: runner.os == 'Linux'
+        run: python tools/compare_public_case.py --jar target/phytoscope-0.2.0.jar --annotation target/non-model/vigna-umbellata/GCF_029865625.1_genomic.gff.gz --gene-ids gene-LOC124833352 --out target/non-model-comparison --trials 3
       - name: Four-species matched extraction benchmark
         shell: bash
         run: python tools/run_cross_species_extraction_benchmark.py --jar target/phytoscope-0.2.0.jar --out target/cross-species-extraction --trials 3
@@ -86,6 +89,7 @@ jobs:
             target/benchmark-rice/
             target/cross-species-extraction/
             target/research-validation/
+            target/non-model-comparison/
             target/independent-isoforms/reproduced/
             target/independent-isoforms/pif6-identity-validation.json
             target/packaged-smoke/

@@ -688,12 +688,18 @@ public class Gff3Parser {
         /** Parses the GTF {@code key "value"; } form, also tolerating {@code key value;}. */
         private static Map<String, String> parseGtfAttributes(String attrString) {
             Map<String, String> map = new HashMap<>();
-            for (String pair : attrString.split(";")) {
+            for (String pair : splitGtfAttributes(attrString)) {
                 String trimmed = pair.trim();
                 if (trimmed.isEmpty()) {
                     continue;
                 }
-                int space = trimmed.indexOf(' ');
+                int space = -1;
+                for (int i = 0; i < trimmed.length(); i++) {
+                    if (Character.isWhitespace(trimmed.charAt(i))) {
+                        space = i;
+                        break;
+                    }
+                }
                 String key;
                 String value;
                 if (space < 0) {
@@ -711,6 +717,28 @@ public class Gff3Parser {
                 }
             }
             return map;
+        }
+
+        /** Splits GTF attributes on semicolons outside quoted values. */
+        private static List<String> splitGtfAttributes(String attributes) {
+            List<String> pairs = new ArrayList<>();
+            StringBuilder pair = new StringBuilder();
+            boolean quoted = false;
+            boolean escaped = false;
+            for (int i = 0; i < attributes.length(); i++) {
+                char c = attributes.charAt(i);
+                if (c == ';' && !quoted) {
+                    pairs.add(pair.toString());
+                    pair.setLength(0);
+                    continue;
+                }
+                pair.append(c);
+                if (c == '"' && !escaped) quoted = !quoted;
+                if (c == '\\' && quoted && !escaped) escaped = true;
+                else escaped = false;
+            }
+            if (!pair.isEmpty()) pairs.add(pair.toString());
+            return pairs;
         }
 
         /** Handles the percent-escaping defined by the GFF3 spec. */

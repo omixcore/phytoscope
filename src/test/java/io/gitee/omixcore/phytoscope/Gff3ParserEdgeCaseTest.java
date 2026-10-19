@@ -82,6 +82,19 @@ class Gff3ParserEdgeCaseTest {
     }
 
     @Test
+    void keepsSemicolonsInsideQuotedGtfAttributes() throws Exception {
+        String gtf = "chrA\tsrc\tgene\t1\t100\t.\t+\t.\tgene_id \"PHT4;5\"; gene_name \"phosphate transporter 4;5\";\n"
+                + "chrA\tsrc\tgene\t200\t300\t.\t+\t.\tgene_id \"PHT4;2\"; gene_name \"phosphate transporter 4;2\";\n";
+        var result = new Gff3Parser().parse(new ByteArrayInputStream(
+                gtf.getBytes(StandardCharsets.UTF_8)), AnnotationFormat.GTF, "quoted-semicolon.gtf");
+        assertEquals(2, result.genes().size());
+        assertEquals("PHT4;5", result.genes().get(0).getId());
+        assertEquals("phosphate transporter 4;5", result.genes().get(0).getName());
+        assertEquals("PHT4;2", result.genes().get(1).getId());
+        assertEquals("phosphate transporter 4;2", result.genes().get(1).getName());
+    }
+
+    @Test
     void keepsAccessionSequenceIdsAndExactMinusStrandModelsWhenOptionalMetadataIsAbsent() throws Exception {
         // Independent hand-calculated mini gold set. The accession-style seqid has
         // no sequence-region/chromosome directive, gene Name, or source metadata.
