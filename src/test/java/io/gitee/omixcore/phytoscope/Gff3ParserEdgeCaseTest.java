@@ -75,7 +75,7 @@ class Gff3ParserEdgeCaseTest {
     void decodesLongUnicodeGtfValuesWithoutUndersizedBuffer() throws Exception {
         String expected = "水稻参考基因组的长功能描述包含多个Unicode字符和%符号";
         String gtf = "chrA\tsrc\tgene\t1\t100\t.\t+\t.\tgene_id \"g1\"; gene_name \""
-                + expected.replace("%", "%25") + "%20版本信息;\";\n";
+                + expected.replace("%", "%25") + "%20版本信息\";\n";
         var result = new Gff3Parser().parse(new ByteArrayInputStream(
                 gtf.getBytes(StandardCharsets.UTF_8)), AnnotationFormat.GTF, "unicode.gtf");
         assertEquals(expected + " 版本信息", result.genes().getFirst().getName());
