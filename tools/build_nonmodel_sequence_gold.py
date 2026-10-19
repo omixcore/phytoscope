@@ -46,15 +46,15 @@ def read_records(annotation, sequence):
     return records
 
 
-def build(data_root):
+def build(data_root, additional_root):
     rows = []
     for species, annotation_name, sequence, target in CASES:
-        directory = data_root / ("vigna-umbellata" if species == "vigna-umbellata" else "additional")
+        directory = data_root / "vigna-umbellata" if species == "vigna-umbellata" else additional_root
         annotation = directory / annotation_name
         records = read_records(annotation, sequence)
         fasta = directory / f"{sequence}.fna"
         genome = "".join(line.strip() for line in fasta.read_text(encoding="ascii").splitlines()
-                         if not line.startswith(">" )).upper()
+                         if not line.startswith(">")).upper()
         tx_parent, tx_rows = {}, {}
         genes = []
         for feature in records:
@@ -99,10 +99,11 @@ def build(data_root):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--data-root", type=Path, default=Path("target/non-model"))
+    parser.add_argument("--additional-root", type=Path, default=Path("target/additional-nonmodel"))
     parser.add_argument("--output", type=Path,
                         default=Path("src/test/resources/non-model/multi-locus-sequence-gold.tsv"))
     args = parser.parse_args()
-    rows = build(args.data_root)
+    rows = build(args.data_root, args.additional_root)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8", newline="") as output:
         writer = csv.writer(output, delimiter="\t", lineterminator="\n")

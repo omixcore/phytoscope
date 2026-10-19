@@ -108,6 +108,8 @@ PhytoScope parser. Java tests compare PhytoScope exports and locus metadata to
 the frozen values. After fetching the verified public inputs, regenerate with:
 
 ```sh
+python tools/fetch_vigna_reference.py --directory target/non-model/vigna-umbellata
+python tools/fetch_additional_nonmodel_refs.py --directory target/additional-nonmodel
 python tools/build_nonmodel_sequence_gold.py
 ```
 
