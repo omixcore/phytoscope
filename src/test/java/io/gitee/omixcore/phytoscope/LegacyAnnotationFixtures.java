@@ -86,8 +86,9 @@ final class LegacyAnnotationFixtures {
                     BASE + "mint/mentha_spicata_expression.tsv",
                     "Complete plastid genome GenBank MG256495 "
                             + "(Wang et al. 2017, Mitochondrial DNA Part B) plus the "
-                            + "mitochondrial contigs ON631245-ON631247; "
-                            + "expression from public M. spicata RNA-seq")
+                            + "mitochondrial contigs ON631245-ON631247; the paired "
+                            + "expression table is explicitly illustrative and is not "
+                            + "linked to a verified public M. spicata RNA-seq dataset")
 
     );
     static ExampleDataset byId(String id) {

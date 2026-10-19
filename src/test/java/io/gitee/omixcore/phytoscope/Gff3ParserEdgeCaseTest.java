@@ -70,4 +70,36 @@ class Gff3ParserEdgeCaseTest {
                 gff.getBytes(StandardCharsets.UTF_8)), null, "utf8.gff3");
         assertEquals("玉米", result.genes().getFirst().getName());
     }
+
+    @Test
+    void keepsAccessionSequenceIdsAndExactMinusStrandModelsWhenOptionalMetadataIsAbsent() throws Exception {
+        // Independent hand-calculated mini gold set. The accession-style seqid has
+        // no sequence-region/chromosome directive, gene Name, or source metadata.
+        String gff = "##gff-version 3\n"
+                + "CM099999.1\t.\tgene\t101\t260\t.\t-\t.\tID=gene-X\n"
+                + "CM099999.1\t.\tmRNA\t101\t260\t.\t-\t.\tID=tx-X.1;Parent=gene-X\n"
+                + "CM099999.1\t.\texon\t101\t130\t.\t-\t.\tParent=tx-X.1\n"
+                + "CM099999.1\t.\tfive_prime_UTR\t121\t130\t.\t-\t.\tParent=tx-X.1\n"
+                + "CM099999.1\t.\tCDS\t110\t120\t.\t-\t0\tParent=tx-X.1\n"
+                + "CM099999.1\t.\texon\t201\t260\t.\t-\t.\tParent=tx-X.1\n"
+                + "CM099999.1\t.\tCDS\t201\t230\t.\t-\t2\tParent=tx-X.1\n"
+                + "CM099999.1\t.\tthree_prime_UTR\t231\t260\t.\t-\t.\tParent=tx-X.1\n";
+        var result = new Gff3Parser().parse(new ByteArrayInputStream(
+                gff.getBytes(StandardCharsets.UTF_8)), null, "accession.gff3");
+
+        assertEquals(1, result.genes().size());
+        var gene = result.genes().getFirst();
+        assertEquals("gene-X", gene.getId());
+        assertEquals("CM099999.1", gene.getChromosome());
+        assertEquals(101, gene.getStart());
+        assertEquals(260, gene.getEnd());
+        assertEquals('-', gene.getStrand());
+        var transcript = gene.getTranscripts().getFirst();
+        assertEquals("tx-X.1", transcript.getId());
+        assertEquals(2, transcript.getExonCount());
+        assertEquals(41, transcript.getCdsLength());
+        assertEquals(40, transcript.getExons().stream()
+                .flatMap(exon -> exon.getUtrSegments().stream())
+                .mapToInt(io.gitee.omixcore.phytoscope.model.GenomicFeature::length).sum());
+    }
 }

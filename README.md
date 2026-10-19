@@ -187,6 +187,7 @@ See the audit document for source URLs, checks and interpretation of parser coun
 - [Scientific contribution, evidence status and remaining work](docs/annals-evidence.md)
 - [Validation and source audit](docs/chromosome-validation.md)
 - [Validation, performance and comparison protocols](docs/validation-and-benchmarks.md)
+- [Non-model portability evidence, candidate public case and claim limits](docs/non-model-portability-evidence.md)
 - [Cross-species extraction results (2026-10-18)](benchmarks/results/2026-10-18/cross-species-extraction.md)
 - [Four-species RBCS family-level homology fixture](examples/cross-species-homology-gold-set/README.md)
 - [Cross-species homology comparison with BLASTP](benchmarks/results/2026-10-18/cross-species-homology.md)

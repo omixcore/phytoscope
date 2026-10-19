@@ -1,4 +1,5 @@
 # LEGACY REGRESSION FIXTURE ONLY: illustrative values, not authoritative biological evidence.
+# No source RNA-seq accession is associated with these values. Do not use for biological claims or validation.
 # unit=TPM
 ## Original description: TPM (Transcripts Per Million), mean across aggregated public RNA-seq
 GeneID	Leaf	Stem	Root	Flower	Rhizome

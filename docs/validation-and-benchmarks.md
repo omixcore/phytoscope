@@ -102,6 +102,14 @@ time are reported separately; they are not used to assert general speed
 superiority. This benchmark does not validate homology, domain prediction,
 promoter function, or researcher usability.
 
+The four fixtures are Arabidopsis, rice, maize and soybean. They do not yet
+establish end-to-end coverage of portal-poor non-model plants. A separate
+[non-model portability evidence record](non-model-portability-evidence.md)
+tracks that claim, a public Primula candidate whose supplement could not be
+retrieved in this evaluation environment, missing-input boundaries, and a
+matched objective comparator protocol. Do not present the candidate as a
+completed test.
+
 ## Researcher-value study
 
 The protocol and blank data-collection template are in
