@@ -37,6 +37,8 @@ CASES = {
     },
 }
 
+EUTILS_FASTA = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id={accession}&rettype=fasta&retmode=text"
+
 
 def fetch(url: str, destination: Path) -> None:
     request = urllib.request.Request(url, headers={"User-Agent": "PhytoScope-validation/1.0"})
@@ -91,8 +93,22 @@ def main() -> None:
         case_manifest.update({"format": "GFF3", "source_url": source_url, "source_md5": official_md5,
                               "source_sha256": actual_sha, "bytes": destination.stat().st_size,
                               "local_file": filename})
+        sequence_filename = f"{case['target_sequence']}.fna"
+        sequence_path = args.directory / sequence_filename
+        sequence_url = EUTILS_FASTA.format(accession=case["target_sequence"])
+        fetch(sequence_url, sequence_path)
+        fasta = sequence_path.read_text(encoding="ascii")
+        header = fasta.splitlines()[0] if fasta.splitlines() else ""
+        if not header.startswith(f">{case['target_sequence']} "):
+            raise RuntimeError(f"NCBI returned unexpected FASTA record for {case['target_sequence']}: {header}")
+        sequence_sha = hashlib.sha256(sequence_path.read_bytes()).hexdigest()
+        sequence_length = sum(len(line.strip()) for line in fasta.splitlines()[1:] if line.strip())
+        case_manifest.update({"sequence_fasta_url": sequence_url, "sequence_fasta_file": sequence_filename,
+                              "sequence_fasta_sha256": sequence_sha, "sequence_length": sequence_length,
+                              "sequence_fasta_bytes": sequence_path.stat().st_size})
         manifest["datasets"][key] = case_manifest
-        print(f"VERIFIED {key} {filename} MD5={official_md5} SHA256={actual_sha}")
+        print(f"VERIFIED {key} {filename} MD5={official_md5} SHA256={actual_sha}; "
+              f"{sequence_filename} length={sequence_length} SHA256={sequence_sha}")
     (args.directory / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
 

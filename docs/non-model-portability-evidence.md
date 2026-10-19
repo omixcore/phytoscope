@@ -87,8 +87,11 @@ fetched during CI and checked against the corresponding NCBI
 and source URL. Tests compare full gene/sequence inventories to NCBI release
 counts and verify exact target coordinates and searchable IDs. These two cases
 validate annotation import, sequence recognition, locus search and structure
-presence; only the rice-bean case currently has matched DNA sequence and frozen
-sequence gold. A targeted search located general NCBI assembly/Gene records,
+presence; the test also fetches each target RefSeq scaffold FASTA, independently
+reconstructs at least one transcript and CDS from source GFF3 coordinates, and
+compares them with PhytoScope exports. Rice bean remains the only case with a
+frozen multi-product sequence gold set covering genomic span, transcript, CDS,
+protein and inferred UTRs. A targeted search located general NCBI assembly/Gene records,
 not dedicated species-specific query portals; phrase this as a scoped search
 result rather than proof that no such resource exists.
 
@@ -164,15 +167,18 @@ coordinates. Missing fields stay missing; the software must not invent them.
 
 ## Remaining evidence gaps and publication claim boundary
 
-One species and one checked locus establish a concrete end-to-end example, but
-are insufficient for a broad “works across non-model species” claim. The
-remaining gaps are: (1) repeat the unchanged workflow on at least two more
-unrelated portal-poor plants, with different annotation sources/dialects; (2)
-add independent gold loci covering multiple isoforms, missing optional fields,
-unplaced scaffolds and explicit-vs-inferred UTR cases; (3) record full GFF3/GTF
-runtime, peak memory, warnings and query/export hashes on declared hardware;
-and (4) complete the same-input comparison against manual file handling and a
-general browser. The gffutils script baseline is implemented, but its measured
-results are pending CI and must be reviewed before citing any performance
-numbers. A biological discovery is optional and cannot replace the
-portability gold sets.
+The completed cohort contains one full GFF3/GTF sequence-gold case and two
+additional complete RefSeq GFF3 import/search/sequence-extraction checks. This
+supports portability across these three portal-poor plant examples, but not an
+unqualified claim that every species or annotation works unchanged. Remaining
+gaps are: (1) no compatible, source-traceable expression matrix has been
+validated for these exact assemblies; (2) only rice bean has a frozen
+multi-product sequence gold set, while the other two cases compare
+source-derived transcript/CDS sequences for one selected locus; (3) multi-locus
+sequence gold should cover more genes, isoforms, missing fields, and
+explicit-versus-inferred UTR cases; (4) runtime, peak memory, warnings and
+export hashes need reporting on declared hardware; and (5) same-task manual
+handling and IGV/JBrowse comparisons remain unexecuted. The gffutils comparison
+is an objective script-workflow baseline, not a browser or usability
+comparison. No participant study, time-saving claim, or new biological
+discovery is claimed.

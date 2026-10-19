@@ -62,6 +62,15 @@ structure-extraction agreement; it does not establish superiority over genome
 browsers or compare interactive usability. Source documentation:
 https://daler.github.io/gffutils/ and https://github.com/daler/gffutils.
 
+For a full public non-model plant input, the rice-bean case runs the same-locus
+comparison against `gffutils==0.13` and checks both tools against source-derived
+structure tuples. Two additional RefSeq plants exercise whole-file import,
+search and independent transcript/CDS sequence reconstruction. The full scope,
+source manifests, outputs and limits are recorded in
+[`non-model-portability-evidence.md`](non-model-portability-evidence.md). These
+checks do not compare interactive genome browsers or establish expression-data
+compatibility.
+
 ## Browser/user-task study protocol
 
 A publication-level usability comparison still requires actual users or a fully
