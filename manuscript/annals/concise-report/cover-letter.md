@@ -22,4 +22,6 @@ Fei Liang
 
 Key Laboratory of Tropical Fruit Biology of Ministry of Agriculture, South Subtropical Crops Research Institute, Chinese Academy of Tropical Agricultural Sciences, Zhanjiang, China
 
-[CORRESPONDING AUTHOR EMAIL]
+fyliangfei@163.com
+
+ORCID: https://orcid.org/0009-0002-8775-2565

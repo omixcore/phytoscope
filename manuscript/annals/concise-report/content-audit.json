@@ -7,7 +7,7 @@
   "abstract_words": 150,
   "graphical_summary_words": 32,
   "body_words_excluding_headings": 1280,
-  "total_manuscript_words_including_references_and_legend": 2339,
+  "total_manuscript_words_including_references_and_legend": 2343,
   "references": 14,
   "keywords": 6,
   "limits_checked": {
@@ -19,11 +19,15 @@
   },
   "figure_1_format": "Arial Regular 7 pt; black text; black 0.5 pt strokes; uppercase A-D",
   "new_analyses_run": false,
-  "author_metadata_complete": false,
+  "author_metadata_complete": true,
   "author_declarations_complete": false,
   "checked_guidelines_date": "2026-10-26",
   "guideline_url": "https://nyaspubs.onlinelibrary.wiley.com/hub/journal/17496632/author-guidelines.html",
   "word_count_method": "Unicode word tokens; internal apostrophes and hyphens counted within a word; headings excluded from body",
   "supporting_table_files": 1,
-  "source_repository": "https://github.com/omixcore/phytoscope"
+  "source_repository": "https://github.com/omixcore/phytoscope",
+  "corresponding_author_email_complete": true,
+  "corresponding_author_orcid_complete": true,
+  "manuscript_font": "Times New Roman",
+  "figure_and_workbook_font": "Arial"
 }

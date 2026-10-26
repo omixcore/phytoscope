@@ -54,7 +54,7 @@ with tempfile.TemporaryDirectory(prefix='phyto-concise-') as td:
   for p in sorted((O/folder).iterdir()):
    if p.is_file():copy(p,'03_Supporting_Information/'+folder+'/'+p.name)
  for n in ['cover-letter.docx','cover-letter.pdf','cover-letter.md','journal-requirements.md']:copy(O/n,'04_Submission_Documents/'+n)
- for n in ['content-audit.json','artwork-audit.json','reference-metadata-audit.json','references-verified.json']:copy(O/n,'06_Checks/'+n)
+ for n in ['content-audit.json','artwork-audit.json','manuscript-font-audit.json','reference-metadata-audit.json','references-verified.json']:copy(O/n,'06_Checks/'+n)
  for n in ['build_report.py','consolidate_support.py','build_tables.mjs','supporting-tables-data.json','build_package.py']:copy(O/n,'05_Reproducibility/Report_sources/'+n)
  for n in ['multi-locus-sequence-gold.tsv','vigna-umbellata/manifest.json','vigna-umbellata/public-expression-manifest.json','vigna-umbellata/public-expression.tsv','vigna-umbellata/gold-LOC124833352.fasta','vigna-umbellata/XP_087956893.1.faa']:copy(ROOT/'src/test/resources/non-model'/n,'05_Reproducibility/Public_data/'+n)
  for p in sorted((ROOT/'benchmarks/results/2026-10-16').glob('*/structure-validation.json')):copy(p,'05_Reproducibility/Evidence/'+p.parent.name+'_structure-validation.json')
@@ -70,14 +70,14 @@ Figure artwork and workbook text: Arial Regular 7 pt; black text; figure strokes
 Body: {audit['body_words_excluding_headings']} words. Abstract: {audit['abstract_words']} words. References: 14.
 Current journal instructions checked 26 October 2026; see 04_Submission_Documents.
 
-01_Manuscript: editable Word, review PDF, Markdown.
+01_Manuscript: editable Word, review PDF, Markdown; manuscript text uses Times New Roman.
 02_Main_Figure: the sole main figure, PDF/vector SVG/600-dpi PNG, outlined SVG and legend.
 03_Supporting_Information: extended methods, one combined Figure S1 and Tables S1–S4 in one Excel workbook.
 04_Submission_Documents: cover letter and preparation/author-review record.
 05_Reproducibility: selected public data, gold records, manifests, evidence and report source scripts.
 06_Checks: word counts, reference metadata, actual PDF font/stroke audit, SHA256 inventory.
 
-Author names and affiliations are supplied. Corresponding-author email, ORCIDs, CRediT roles,
+Author names, affiliations, corresponding-author email and Fei Liang’s ORCID are supplied. CRediT roles,
 funding, conflicts, author approval/originality statements and archival DOI remain
 explicit author-controlled fields. This draft has not been submitted.
 
@@ -86,7 +86,7 @@ The manuscript and supporting materials are maintained in the dev branch.
 To reproduce, use the report together with its accompanying evidence;
 follow the commands in Supporting Information and docs/non-model-portability-evidence.md.
 The archive includes selected inputs, not full genomes/FASTQ archives. Public fetch
-scripts verify source checksums. Arial font files are not redistributed.
+scripts verify source checksums. Arial and Times New Roman font files are not redistributed.
 Packaging checked document structure, all rendered Word pages, figure styles,
 reference order and archive integrity; it did not rerun application/biological analyses.
 Expression evidence concerns exact-release IDs from IC426787 reads against VRB3,

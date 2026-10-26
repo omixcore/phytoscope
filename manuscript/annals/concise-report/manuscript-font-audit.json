@@ -1,0 +1,26 @@
+[
+  {
+    "file": "manuscript.pdf",
+    "fonts": [
+      "TimesNewRomanPS-BoldMT",
+      "TimesNewRomanPS-ItalicMT",
+      "TimesNewRomanPSMT"
+    ],
+    "pages": 7
+  },
+  {
+    "file": "supporting-information.pdf",
+    "fonts": [
+      "TimesNewRomanPS-BoldMT",
+      "TimesNewRomanPSMT"
+    ],
+    "pages": 2
+  },
+  {
+    "file": "cover-letter.pdf",
+    "fonts": [
+      "TimesNewRomanPSMT"
+    ],
+    "pages": 1
+  }
+]

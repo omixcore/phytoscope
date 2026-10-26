@@ -14,10 +14,10 @@ def base_doc():
  d=Document();s=d.sections[0];s.page_width=Mm(210);s.page_height=Mm(297)
  s.left_margin=s.right_margin=s.top_margin=s.bottom_margin=Mm(25)
  for name,size,bold in [('Normal',11,False),('Title',14,False),('Heading 1',11,True),('Heading 2',11,False)]:
-  st=d.styles[name];st.font.name='Arial';st.font.size=Pt(size);st.font.bold=bold;st.font.color.rgb=RGBColor(0,0,0)
+  st=d.styles[name];st.font.name='Times New Roman';st.font.size=Pt(size);st.font.bold=bold;st.font.color.rgb=RGBColor(0,0,0)
   rf=st._element.get_or_add_rPr().rFonts
   for k in ['asciiTheme','hAnsiTheme','eastAsiaTheme','cstheme']:rf.attrib.pop(qn('w:'+k),None)
-  for k in ['ascii','hAnsi','eastAsia','cs']:rf.set(qn('w:'+k),'Arial')
+  for k in ['ascii','hAnsi','eastAsia','cs']:rf.set(qn('w:'+k),'Times New Roman')
   st.paragraph_format.space_after=Pt(4)
   if 'Heading' in name:st.paragraph_format.keep_with_next=True
  d.styles['Normal'].paragraph_format.line_spacing=2
@@ -34,7 +34,7 @@ def paragraph(d,text,style=None,spacing=None,size=None):
   else:m.add_runs(p,part)
  if spacing:p.paragraph_format.line_spacing=spacing
  if size:
-  for r in p.runs:r.font.name='Arial';r.font.size=Pt(size)
+  for r in p.runs:r.font.name='Times New Roman';r.font.size=Pt(size)
  return p
 def make(src,dest,kind):
  d=base_doc();in_code=False;code=[];table=[];section=''
@@ -62,7 +62,7 @@ def make(src,dest,kind):
    flush()
    if in_code:
     p=paragraph(d,'\n'.join(code),spacing=1.0,size=8)
-    for r in p.runs:r.font.name='Courier New'
+    for r in p.runs:r.font.name='Times New Roman'
     code=[];in_code=False
    else:in_code=True
    continue
@@ -88,7 +88,11 @@ def make(src,dest,kind):
     if kind=='main' and (l.startswith('**') or section in ['','Abstract']):
      p.paragraph_format.line_spacing=1.15
     if section=='Abstract':p.paragraph_format.keep_together=True
- flush();m.apply_publication_table_style(d);d.save(dest);return d
+ flush();m.apply_publication_table_style(d)
+ for p in d.paragraphs:
+  for r in p.runs:
+   r.font.name='Times New Roman'
+ d.save(dest);return d
 main=make(O/'manuscript.md',O/'manuscript.docx','main')
 si=make(O/'supporting-information.md',O/'supporting-information.docx','support')
 make(O/'cover-letter.md',O/'cover-letter.docx','cover')
