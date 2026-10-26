@@ -1,335 +1,158 @@
-<?xml version='1.0' encoding='utf-8'?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns2="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" width="297mm" height="210mm" viewBox="0 0 297 210" preserveAspectRatio="xMidYMid meet"><title>PhytoScope Figure 2</title><rect width="297" height="210" fill="white" stroke="none" /><g id="Figure_2" transform="translate(40.804000000000016,46.2466140638889) scale(0.35277777777777775)"><metadata>
-  <rdf:RDF>
-   <ns2:Work>
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-    <dc:date>2026-10-19T05:37:39.001925</dc:date>
-    <dc:format>image/svg+xml</dc:format>
-    <dc:creator>
-     <ns2:Agent>
-      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
-     </ns2:Agent>
-    </dc:creator>
-   </ns2:Work>
-  </rdf:RDF>
- </metadata>
- <defs>
-  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
- </defs>
- <g id="figure_1">
-  <g id="patch_1">
-   <path d="M 0 333.090062 L 610.56 333.090062 L 610.56 0 L 0 0 z " style="fill: #ffffff" />
-  </g>
-  <g id="axes_1">
-   <g id="patch_2">
-    <path d="M 73.34 304.138312 L 603.36 304.138312 L 603.36 63.866312 L 73.34 63.866312 z " style="fill: #ffffff" />
-   </g>
-   <g clip-path="url(#pe50ea9d4ce)">
-    <g transform="scale(1 -1) translate(0 -240.48)"><rect x="73.34" y="-63.658312" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="206.0" y="-63.658312" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="338.65999999999997" y="-63.658312" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="471.32000000000005" y="-63.658312" width="132.66" height="34.354285714285716" fill="#f0f2f3" stroke="none" /><rect x="73.34" y="-29.304026285714286" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="206.0" y="-29.304026285714286" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="338.65999999999997" y="-29.304026285714286" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="471.32000000000005" y="-29.304026285714286" width="132.66" height="34.354285714285716" fill="#f0f2f3" stroke="none" /><rect x="73.34" y="5.0502594285714295" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="206.0" y="5.0502594285714295" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="338.65999999999997" y="5.0502594285714295" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="471.32000000000005" y="5.0502594285714295" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="73.34" y="39.40454514285714" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="206.0" y="39.40454514285714" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="338.65999999999997" y="39.40454514285714" width="132.66" height="34.354285714285716" fill="#f0f2f3" stroke="none" /><rect x="471.32000000000005" y="39.40454514285714" width="132.66" height="34.354285714285716" fill="#f0f2f3" stroke="none" /><rect x="73.34" y="73.75883085714287" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="206.0" y="73.75883085714287" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="338.65999999999997" y="73.75883085714287" width="132.66" height="34.354285714285716" fill="#f0f2f3" stroke="none" /><rect x="471.32000000000005" y="73.75883085714287" width="132.66" height="34.354285714285716" fill="#f0f2f3" stroke="none" /><rect x="73.34" y="108.11311657142855" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="206.0" y="108.11311657142855" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="338.65999999999997" y="108.11311657142855" width="132.66" height="34.354285714285716" fill="#f0f2f3" stroke="none" /><rect x="471.32000000000005" y="108.11311657142855" width="132.66" height="34.354285714285716" fill="#f0f2f3" stroke="none" /><rect x="73.34" y="142.4674022857143" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="206.0" y="142.4674022857143" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="338.65999999999997" y="142.4674022857143" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /><rect x="471.32000000000005" y="142.4674022857143" width="132.66" height="34.354285714285716" fill="#3b8c86" stroke="none" /></g></g>
-   <g id="matplotlib.axis_1">
-    <g id="xtick_1">
-     <g id="line2d_1" />
-     <g id="text_1">
-      <text style="font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" transform="translate(106.113203 42.916562)">Full annotation</text>
-      <text style="font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" transform="translate(124.734766 52.994594)">import</text>
-     </g>
-    </g>
-    <g id="xtick_2">
-     <g id="line2d_2" />
-     <g id="text_2">
-      <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="272.0975" y="52.994594" transform="rotate(-0 272.0975 52.994594)">Search / structure</text>
-     </g>
-    </g>
-    <g id="xtick_3">
-     <g id="line2d_3" />
-     <g id="text_3">
-      <text style="font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" transform="translate(376.078125 42.916562)">Independent</text>
-      <text style="font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" transform="translate(371.769375 52.994594)">sequence gold</text>
-     </g>
-    </g>
-    <g id="xtick_4">
-     <g id="line2d_4" />
-     <g id="text_4">
-      <text style="font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" transform="translate(496.583594 42.916562)">Expression matrix</text>
-      <text style="font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" transform="translate(514.952031 52.994594)">validation</text>
-     </g>
-    </g>
-    <g id="xtick_5">
-     <g id="line2d_5">
-      <path d="M 73.34 304.138312 L 73.34 63.866312 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_6">
-      <defs>
-       <path id="mc8da39a333" d="M 0 0 L 0 -2 " style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </defs>
-      <g>
-       <use xlink:href="#mc8da39a333" x="73.34" y="63.866312" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="xtick_6">
-     <g id="line2d_7">
-      <path d="M 205.845 304.138312 L 205.845 63.866312 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_8">
-      <g>
-       <use xlink:href="#mc8da39a333" x="205.845" y="63.866312" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="xtick_7">
-     <g id="line2d_9">
-      <path d="M 338.35 304.138312 L 338.35 63.866312 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_10">
-      <g>
-       <use xlink:href="#mc8da39a333" x="338.35" y="63.866312" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="xtick_8">
-     <g id="line2d_11">
-      <path d="M 470.855 304.138312 L 470.855 63.866312 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_12">
-      <g>
-       <use xlink:href="#mc8da39a333" x="470.855" y="63.866312" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="xtick_9">
-     <g id="line2d_13">
-      <path d="M 603.36 304.138312 L 603.36 63.866312 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_14">
-      <g>
-       <use xlink:href="#mc8da39a333" x="603.36" y="63.866312" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-   </g>
-   <g id="matplotlib.axis_2">
-    <g id="ytick_1">
-     <g id="line2d_15" />
-     <g id="text_5">
-      <text style="text-anchor: end; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="69.84" y="84.447895" transform="rotate(-0 69.84 84.447895)">A. thaliana</text>
-     </g>
-    </g>
-    <g id="ytick_2">
-     <g id="line2d_16" />
-     <g id="text_6">
-      <text style="text-anchor: end; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="69.84" y="118.772467" transform="rotate(-0 69.84 118.772467)">O. sativa</text>
-     </g>
-    </g>
-    <g id="ytick_3">
-     <g id="line2d_17" />
-     <g id="text_7">
-      <text style="text-anchor: end; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="69.84" y="153.097038" transform="rotate(-0 69.84 153.097038)">Z. mays</text>
-     </g>
-    </g>
-    <g id="ytick_4">
-     <g id="line2d_18" />
-     <g id="text_8">
-      <text style="text-anchor: end; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="69.84" y="187.421609" transform="rotate(-0 69.84 187.421609)">G. max</text>
-     </g>
-    </g>
-    <g id="ytick_5">
-     <g id="line2d_19" />
-     <g id="text_9">
-      <text style="text-anchor: end; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="69.84" y="221.746181" transform="rotate(-0 69.84 221.746181)">V. umbellata</text>
-     </g>
-    </g>
-    <g id="ytick_6">
-     <g id="line2d_20" />
-     <g id="text_10">
-      <text style="text-anchor: end; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="69.84" y="256.070752" transform="rotate(-0 69.84 256.070752)">A. paniculata</text>
-     </g>
-    </g>
-    <g id="ytick_7">
-     <g id="line2d_21" />
-     <g id="text_11">
-      <text style="text-anchor: end; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="69.84" y="290.395324" transform="rotate(-0 69.84 290.395324)">H. syriacus</text>
-     </g>
-    </g>
-    <g id="ytick_8">
-     <g id="line2d_22">
-      <path d="M 73.34 63.866312 L 603.36 63.866312 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_23">
-      <defs>
-       <path id="mfb7e2069db" d="M 0 0 L -2 0 " style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </defs>
-      <g>
-       <use xlink:href="#mfb7e2069db" x="73.34" y="63.866312" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="ytick_9">
-     <g id="line2d_24">
-      <path d="M 73.34 98.190884 L 603.36 98.190884 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_25">
-      <g>
-       <use xlink:href="#mfb7e2069db" x="73.34" y="98.190884" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="ytick_10">
-     <g id="line2d_26">
-      <path d="M 73.34 132.515455 L 603.36 132.515455 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_27">
-      <g>
-       <use xlink:href="#mfb7e2069db" x="73.34" y="132.515455" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="ytick_11">
-     <g id="line2d_28">
-      <path d="M 73.34 166.840027 L 603.36 166.840027 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_29">
-      <g>
-       <use xlink:href="#mfb7e2069db" x="73.34" y="166.840027" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="ytick_12">
-     <g id="line2d_30">
-      <path d="M 73.34 201.164598 L 603.36 201.164598 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_31">
-      <g>
-       <use xlink:href="#mfb7e2069db" x="73.34" y="201.164598" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="ytick_13">
-     <g id="line2d_32">
-      <path d="M 73.34 235.48917 L 603.36 235.48917 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_33">
-      <g>
-       <use xlink:href="#mfb7e2069db" x="73.34" y="235.48917" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="ytick_14">
-     <g id="line2d_34">
-      <path d="M 73.34 269.813741 L 603.36 269.813741 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_35">
-      <g>
-       <use xlink:href="#mfb7e2069db" x="73.34" y="269.813741" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-    <g id="ytick_15">
-     <g id="line2d_36">
-      <path d="M 73.34 304.138312 L 603.36 304.138312 " clip-path="url(#pe50ea9d4ce)" style="fill: none; stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-     </g>
-     <g id="line2d_37">
-      <g>
-       <use xlink:href="#mfb7e2069db" x="73.34" y="304.138312" style="stroke: #000000; stroke-width: 0.5; stroke-linecap: round; stroke-linejoin: round" />
-      </g>
-     </g>
-    </g>
-   </g>
-   <g id="text_12">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="139.5925" y="83.236098" transform="rotate(-0 139.5925 83.236098)">Tested</text>
-   </g>
-   <g id="text_13">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="272.0975" y="83.236098" transform="rotate(-0 272.0975 83.236098)">Tested</text>
-   </g>
-   <g id="text_14">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="404.6025" y="83.236098" transform="rotate(-0 404.6025 83.236098)">Tested</text>
-   </g>
-   <g id="text_15">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="537.1075" y="83.236098" transform="rotate(-0 537.1075 83.236098)">Tested</text>
-   </g>
-   <g id="text_16">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="139.5925" y="117.56067" transform="rotate(-0 139.5925 117.56067)">Tested</text>
-   </g>
-   <g id="text_17">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="272.0975" y="117.56067" transform="rotate(-0 272.0975 117.56067)">Tested</text>
-   </g>
-   <g id="text_18">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="404.6025" y="117.56067" transform="rotate(-0 404.6025 117.56067)">—</text>
-   </g>
-   <g id="text_19">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="537.1075" y="117.56067" transform="rotate(-0 537.1075 117.56067)">—</text>
-   </g>
-   <g id="text_20">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="139.5925" y="151.885241" transform="rotate(-0 139.5925 151.885241)">Tested</text>
-   </g>
-   <g id="text_21">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="272.0975" y="151.885241" transform="rotate(-0 272.0975 151.885241)">Tested</text>
-   </g>
-   <g id="text_22">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="404.6025" y="151.885241" transform="rotate(-0 404.6025 151.885241)">—</text>
-   </g>
-   <g id="text_23">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="537.1075" y="151.885241" transform="rotate(-0 537.1075 151.885241)">—</text>
-   </g>
-   <g id="text_24">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="139.5925" y="186.209812" transform="rotate(-0 139.5925 186.209812)">Tested</text>
-   </g>
-   <g id="text_25">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="272.0975" y="186.209812" transform="rotate(-0 272.0975 186.209812)">Tested</text>
-   </g>
-   <g id="text_26">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="404.6025" y="186.209812" transform="rotate(-0 404.6025 186.209812)">—</text>
-   </g>
-   <g id="text_27">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="537.1075" y="186.209812" transform="rotate(-0 537.1075 186.209812)">—</text>
-   </g>
-   <g id="text_28">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="139.5925" y="220.534384" transform="rotate(-0 139.5925 220.534384)">Tested</text>
-   </g>
-   <g id="text_29">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="272.0975" y="220.534384" transform="rotate(-0 272.0975 220.534384)">Tested</text>
-   </g>
-   <g id="text_30">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="404.6025" y="220.534384" transform="rotate(-0 404.6025 220.534384)">Tested</text>
-   </g>
-   <g id="text_31">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="537.1075" y="220.534384" transform="rotate(-0 537.1075 220.534384)">Tested</text>
-   </g>
-   <g id="text_32">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="139.5925" y="254.858955" transform="rotate(-0 139.5925 254.858955)">Tested</text>
-   </g>
-   <g id="text_33">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="272.0975" y="254.858955" transform="rotate(-0 272.0975 254.858955)">Tested</text>
-   </g>
-   <g id="text_34">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="404.6025" y="254.858955" transform="rotate(-0 404.6025 254.858955)">Tested</text>
-   </g>
-   <g id="text_35">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="537.1075" y="254.858955" transform="rotate(-0 537.1075 254.858955)">—</text>
-   </g>
-   <g id="text_36">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="139.5925" y="289.183527" transform="rotate(-0 139.5925 289.183527)">Tested</text>
-   </g>
-   <g id="text_37">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="272.0975" y="289.183527" transform="rotate(-0 272.0975 289.183527)">Tested</text>
-   </g>
-   <g id="text_38">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="404.6025" y="289.183527" transform="rotate(-0 404.6025 289.183527)">Tested</text>
-   </g>
-   <g id="text_39">
-    <text style="text-anchor: middle; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="537.1075" y="289.183527" transform="rotate(-0 537.1075 289.183527)">—</text>
-   </g>
-   <g id="text_40">
-    <text style="text-anchor: start; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="73.34" y="17.077969" transform="rotate(-0 73.34 17.077969)">Evaluation coverage by species and data task</text>
-   </g>
-  </g>
-  <g id="text_41">
-   <text style="text-anchor: start; font-family: Arial; font-size: 7.0px; font-weight: 400; font-style: normal; fill: #000000; stroke: none" x="7.2" y="324.226312" transform="rotate(-0 7.2 324.226312)">Sequence gold: five selected coding loci per additional plant; reference species have separate structural audits.</text>
-  </g>
- </g>
- <defs>
-  <clipPath id="pe50ea9d4ce">
-   <rect x="73.34" y="63.866312" width="530.02" height="240.272" />
-  </clipPath>
- </defs>
-</g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="297mm" height="210mm" viewBox="0 0 297 210">
+<rect width="297" height="210" fill="white"/>
+<text x="25" y="27" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Figure S1. Public-data evaluation and supporting checks</text>
+<text x="25" y="36" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">A  Evaluation coverage</text>
+<text x="66" y="43" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Full</text>
+<text x="66" y="46.5" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">import</text>
+<text x="85" y="43" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Search /</text>
+<text x="85" y="46.5" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">structure</text>
+<text x="104" y="43" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Sequence</text>
+<text x="104" y="46.5" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">gold</text>
+<text x="123" y="43" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Expression</text>
+<text x="123" y="46.5" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">matrix</text>
+<text x="25" y="53.2" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">A. thaliana</text>
+<rect x="56.5" y="49.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="66" y="53.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="75.5" y="49.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="85" y="53.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="94.5" y="49.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="104" y="53.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="113.5" y="49.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="123" y="53.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<text x="25" y="59.7" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">O. sativa</text>
+<rect x="56.5" y="55.5" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="66" y="59.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="75.5" y="55.5" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="85" y="59.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="94.5" y="55.5" width="19" height="6.5" fill="#f0f2f3" stroke="black" stroke-width="0.176388889"/>
+<text x="104" y="59.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">—</text>
+<rect x="113.5" y="55.5" width="19" height="6.5" fill="#f0f2f3" stroke="black" stroke-width="0.176388889"/>
+<text x="123" y="59.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">—</text>
+<text x="25" y="66.2" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Z. mays</text>
+<rect x="56.5" y="62.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="66" y="66.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="75.5" y="62.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="85" y="66.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="94.5" y="62.0" width="19" height="6.5" fill="#f0f2f3" stroke="black" stroke-width="0.176388889"/>
+<text x="104" y="66.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">—</text>
+<rect x="113.5" y="62.0" width="19" height="6.5" fill="#f0f2f3" stroke="black" stroke-width="0.176388889"/>
+<text x="123" y="66.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">—</text>
+<text x="25" y="72.7" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">G. max</text>
+<rect x="56.5" y="68.5" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="66" y="72.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="75.5" y="68.5" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="85" y="72.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="94.5" y="68.5" width="19" height="6.5" fill="#f0f2f3" stroke="black" stroke-width="0.176388889"/>
+<text x="104" y="72.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">—</text>
+<rect x="113.5" y="68.5" width="19" height="6.5" fill="#f0f2f3" stroke="black" stroke-width="0.176388889"/>
+<text x="123" y="72.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">—</text>
+<text x="25" y="79.2" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">V. umbellata</text>
+<rect x="56.5" y="75.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="66" y="79.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="75.5" y="75.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="85" y="79.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="94.5" y="75.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="104" y="79.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="113.5" y="75.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="123" y="79.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<text x="25" y="85.7" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">A. paniculata</text>
+<rect x="56.5" y="81.5" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="66" y="85.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="75.5" y="81.5" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="85" y="85.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="94.5" y="81.5" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="104" y="85.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="113.5" y="81.5" width="19" height="6.5" fill="#f0f2f3" stroke="black" stroke-width="0.176388889"/>
+<text x="123" y="85.7" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">—</text>
+<text x="25" y="92.2" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">H. syriacus</text>
+<rect x="56.5" y="88.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="66" y="92.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="75.5" y="88.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="85" y="92.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="94.5" y="88.0" width="19" height="6.5" fill="#d8eae7" stroke="black" stroke-width="0.176388889"/>
+<text x="104" y="92.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Tested</text>
+<rect x="113.5" y="88.0" width="19" height="6.5" fill="#f0f2f3" stroke="black" stroke-width="0.176388889"/>
+<text x="123" y="92.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">—</text>
+<text x="25" y="100" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Sequence gold covers selected loci; “—” indicates not evaluated.</text>
+<text x="154" y="36" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">B  Structural tuple inventories</text>
+<text x="154" y="46" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Arabidopsis · bundled</text>
+<rect x="191" y="43" width="31.313327142857144" height="3.7" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="271" y="46" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">811,827</text>
+<text x="154" y="52" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Arabidopsis · full</text>
+<rect x="191" y="49" width="30.531484285714285" height="3.7" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="271" y="52" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">791,557</text>
+<text x="154" y="58" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Maize · excerpt</text>
+<rect x="191" y="55" width="0.014541428571428571" height="3.7" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="271" y="58" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">377</text>
+<text x="154" y="64" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Maize · full</text>
+<rect x="191" y="61" width="44.80808142857143" height="3.7" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="271" y="64" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">1,161,691</text>
+<text x="154" y="70" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Rice · excerpt</text>
+<rect x="191" y="67" width="0.013384285714285715" height="3.7" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="271" y="70" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">347</text>
+<text x="154" y="76" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Rice · full</text>
+<rect x="191" y="73" width="21.24981" height="3.7" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="271" y="76" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">550,921</text>
+<text x="154" y="82" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Soybean · excerpt</text>
+<rect x="191" y="79" width="0.03236142857142857" height="3.7" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="271" y="82" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">839</text>
+<text x="154" y="88" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Soybean · full</text>
+<rect x="191" y="85" width="51.07624714285714" height="3.7" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="271" y="88" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">1,324,199</text>
+<text x="154" y="97" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">4,641,758 recognized tuples; 0 missing; 0 extra.</text>
+<text x="154" y="101" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Bars share a linear scale; counts are feature/relationship records.</text>
+<text x="25" y="116" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">C  Public ricebean expression and reference reconciliation</text>
+<path d="M35,156 L88,156" fill="none" stroke="black" stroke-width="0.176388889"/>
+<text x="32" y="157" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">0</text>
+<path d="M35,146 L88,146" fill="none" stroke="black" stroke-width="0.176388889"/>
+<text x="32" y="147" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">10</text>
+<path d="M35,136 L88,136" fill="none" stroke="black" stroke-width="0.176388889"/>
+<text x="32" y="137" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">20</text>
+<path d="M35,126 L88,126" fill="none" stroke="black" stroke-width="0.176388889"/>
+<text x="32" y="127" text-anchor="end" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">30</text>
+<rect x="39" y="134.000189" width="8" height="21.999811" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="43" y="132.000189" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">21,999,811</text>
+<text x="43" y="161" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">SRR16122599</text>
+<rect x="57" y="139.999864" width="8" height="16.000136" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="61" y="137.999864" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">16,000,136</text>
+<text x="61" y="161" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">SRR16122608</text>
+<rect x="75" y="132.774002" width="8" height="23.225998" fill="#426e9e" stroke="none" stroke-width="0.176388889"/>
+<text x="79" y="130.774002" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">23,225,998</text>
+<text x="79" y="161" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">SRR16122607</text>
+<text x="35" y="123" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Assigned fragments (millions)</text>
+<rect x="95" y="125" width="48" height="11" fill="#f3f6f7" stroke="black" stroke-width="0.176388889"/>
+<text x="119" y="129.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">IC426787 · 5 DPA</text>
+<text x="119" y="133.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Three paired-read libraries</text>
+<path d="M119,136 V138 l-0.7,-1 M119,138 l0.7,-1" fill="none" stroke="black" stroke-width="0.176388889"/>
+<rect x="95" y="139" width="48" height="11" fill="#f3f6f7" stroke="black" stroke-width="0.176388889"/>
+<text x="119" y="143.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">GCF_029865625.1 · VRB3</text>
+<text x="119" y="147.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">54,178 RefSeq RNAs</text>
+<path d="M119,150 V152 l-0.7,-1 M119,152 l0.7,-1" fill="none" stroke="black" stroke-width="0.176388889"/>
+<rect x="95" y="153" width="48" height="11" fill="#f3f6f7" stroke="black" stroke-width="0.176388889"/>
+<text x="119" y="157.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Salmon 2.8.0 · gene TPM</text>
+<text x="119" y="161.2" text-anchor="middle" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">34,914 / 34,914 IDs matched</text>
+<text x="25" y="174" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">0 invalid/missing cells; each TPM column sums to 1 million within rounding.</text>
+<text x="25" y="179" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">IC426787 reads differ from VRB3: technical import/ID validation only.</text>
+<text x="154" y="116" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">D  Independent module checks</text>
+<rect x="154" y="124" width="57" height="25" fill="#f7f9fa" stroke="black" stroke-width="0.176388889"/>
+<text x="156" y="129" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Promoter sequences</text>
+<text x="156" y="134" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">8 / 8 exact</text>
+<text x="156" y="139" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Direct slicing + bedtools</text>
+<text x="156" y="144" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">2,200 bp; both strands</text>
+<rect x="214" y="124" width="57" height="25" fill="#f7f9fa" stroke="black" stroke-width="0.176388889"/>
+<text x="216" y="129" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Domain coordinates</text>
+<text x="216" y="134" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">16 / 16 matched</text>
+<text x="216" y="139" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Independent reconstruction</text>
+<text x="216" y="144" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">13 genes</text>
+<rect x="154" y="152" width="57" height="25" fill="#f7f9fa" stroke="black" stroke-width="0.176388889"/>
+<text x="156" y="157" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Similarity classifications</text>
+<text x="156" y="162" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">20 / 20 agreed</text>
+<text x="156" y="167" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Small RBCS-family panels</text>
+<text x="156" y="172" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Not an orthology test</text>
+<rect x="214" y="152" width="57" height="25" fill="#f7f9fa" stroke="black" stroke-width="0.176388889"/>
+<text x="216" y="157" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Expression identifiers</text>
+<text x="216" y="162" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">34,914 / 34,914</text>
+<text x="216" y="167" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Exact ricebean RefSeq IDs</text>
+<text x="216" y="172" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Separate task denominator</text>
+<text x="154" y="183" text-anchor="start" font-family="Arial" font-size="2.469444444" font-weight="normal" fill="black">Task-specific denominators are retained; no pooled accuracy score.</text>
+</svg>

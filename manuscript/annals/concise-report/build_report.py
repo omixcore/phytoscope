@@ -88,14 +88,6 @@ def make(src,dest,kind):
 main=make(O/'manuscript.md',O/'manuscript.docx','main')
 si=make(O/'supporting-information.md',O/'supporting-information.docx','support')
 make(O/'cover-letter.md',O/'cover-letter.docx','cover')
-# The journal requests tables as separate editable Word documents.
-tabdir=O/'Supporting_Tables';tabdir.mkdir(exist_ok=True)
-captions=[p.text for p in si.paragraphs if p.text.startswith('Table S')]
-for i,(caption,t) in enumerate(zip(captions,si.tables),1):
- d=base_doc();p=paragraph(d,caption,spacing=1.0,size=7)
- p.paragraph_format.keep_with_next=True
- d._element.body.insert(len(d._element.body)-1,deepcopy(t._tbl))
- m.apply_publication_table_style(d);d.save(tabdir/f'Table_S{i}.docx')
 # Keep the approved main-figure geometry. Uppercase labels follow Annals policy.
 NS='http://www.w3.org/2000/svg';E.register_namespace('',NS)
 r=E.parse(BASE/'figures/standardized/Figure_1.svg').getroot()
@@ -107,13 +99,4 @@ for ext in ['pdf','png']:
  if ext=='png':cmd+=['--export-dpi=600']
  subprocess.run(cmd,check=True,capture_output=True)
 subprocess.run(['inkscape',str(p),'--export-type=svg','--export-text-to-path','--export-plain-svg',f'--export-filename={O/"Figure_1_outlined.svg"}'],check=True,capture_output=True)
-supp=O/'Supporting_Figures';supp.mkdir(exist_ok=True)
-for i in range(1,5):
- for ext in ['pdf','svg','png']:shutil.copy2(BASE/f'figures/standardized/Figure_{i+1}.{ext}',supp/f'Figure_S{i}.{ext}')
- shutil.copy2(BASE/f'figures/standardized/Figure_{i+1}_outlined.svg',supp/f'Figure_S{i}_outlined.svg')
-# Export matching vector copies of the newly corrected Word tables.
-s=(BASE/'figures/build_supplementary_tables.py').read_text()
-s=s.replace("OUT=O/'standardized'","OUT=O/'Supporting_Tables'").replace("D=Document(O.parent/'supplementary-information.docx')","D=Document(O/'supporting-information.docx')")
-(O/'build_table_assets.py').write_text(s)
-subprocess.run(['python',str(O/'build_table_assets.py')],check=True)
-print('Built main report, support, cover, four separate Word tables, one main figure and four supporting figures.')
+subprocess.run(['python',str(O/'consolidate_support.py')],check=True)

@@ -20,7 +20,7 @@ for c in re.findall(r'\[([0-9, ]+)\]',body):
   if n not in seen:seen.append(n)
 assert refids==seen==list(range(1,15))
 audit=json.loads((O/'content-audit.json').read_text())
-audit.update(abstract_words=words(abstract),body_words_excluding_headings=words(body)+words('Introduction'),total_manuscript_words_including_references_and_legend=words(md),references=len(refids))
+audit.update(supporting_figures=1, supporting_table_files=1, abstract_words=words(abstract),body_words_excluding_headings=words(body)+words('Introduction'),total_manuscript_words_including_references_and_legend=words(md),references=len(refids))
 # Include the Introduction text (the split removed only its heading).
 audit['body_words_excluding_headings']=words(body)
 audit['word_count_method']='Unicode word tokens; internal apostrophes and hyphens counted within a word; headings excluded from body'
@@ -47,12 +47,13 @@ with tempfile.TemporaryDirectory(prefix='phyto-concise-') as td:
  for n in ['manuscript.docx','manuscript.pdf','manuscript.md']:copy(O/n,'01_Manuscript/'+n)
  for n in ['Figure_1.pdf','Figure_1.svg','Figure_1.png','Figure_1_outlined.svg','Figure_1_legend.md']:copy(O/n,'02_Main_Figure/'+n)
  for n in ['supporting-information.docx','supporting-information.pdf','supporting-information.md']:copy(O/n,'03_Supporting_Information/'+n)
- for folder in ['Supporting_Figures','Supporting_Tables']:
+ copy(O/'Supporting_Tables.xlsx','03_Supporting_Information/Supporting_Tables.xlsx')
+ for folder in ['Supporting_Figures']:
   for p in sorted((O/folder).iterdir()):
    if p.is_file():copy(p,'03_Supporting_Information/'+folder+'/'+p.name)
  for n in ['cover-letter.docx','cover-letter.pdf','cover-letter.md','journal-requirements.md']:copy(O/n,'04_Submission_Documents/'+n)
  for n in ['content-audit.json','artwork-audit.json','reference-metadata-audit.json','references-verified.json']:copy(O/n,'06_Checks/'+n)
- for n in ['build_report.py','build_table_assets.py','build_package.py']:copy(O/n,'05_Reproducibility/Report_sources/'+n)
+ for n in ['build_report.py','consolidate_support.py','build_tables.mjs','supporting-tables-data.json','build_package.py']:copy(O/n,'05_Reproducibility/Report_sources/'+n)
  for n in ['multi-locus-sequence-gold.tsv','vigna-umbellata/manifest.json','vigna-umbellata/public-expression-manifest.json','vigna-umbellata/public-expression.tsv','vigna-umbellata/gold-LOC124833352.fasta','vigna-umbellata/XP_087956893.1.faa']:copy(ROOT/'src/test/resources/non-model'/n,'05_Reproducibility/Public_data/'+n)
  for p in sorted((ROOT/'benchmarks/results/2026-10-16').glob('*/structure-validation.json')):copy(p,'05_Reproducibility/Evidence/'+p.parent.name+'_structure-validation.json')
  for n in ['non-model-portability-evidence.md','validation-and-benchmarks.md']:copy(ROOT/'docs'/n,'05_Reproducibility/Evidence/'+n)
@@ -60,16 +61,16 @@ with tempfile.TemporaryDirectory(prefix='phyto-concise-') as td:
  (out/'README_FIRST.txt').write_text(f'''PhytoScope: Concise Report for Annals of the New York Academy of Sciences
 
 Selected main artwork: ONE Figure 1, also reused for the graphical abstract.
-Four supporting figures and four editable supporting tables accompany the report.
+One combined supporting figure and one Excel workbook (Tables S1–S4) accompany the report.
 The main figure preserves the approved overview geometry, with uppercase A-D labels.
-All figure/table artwork: Arial Regular 7 pt; black text and black 0.5 pt strokes.
+Figure artwork and workbook text: Arial Regular 7 pt; black text; figure strokes 0.5 pt.
 
 Body: {audit['body_words_excluding_headings']} words. Abstract: {audit['abstract_words']} words. References: 14.
 Current journal instructions checked 26 October 2026; see 04_Submission_Documents.
 
 01_Manuscript: editable Word, review PDF, Markdown.
 02_Main_Figure: the sole main figure, PDF/vector SVG/600-dpi PNG, outlined SVG and legend.
-03_Supporting_Information: extended methods, S1-S4 figures and separate editable S1-S4 tables.
+03_Supporting_Information: extended methods, one combined Figure S1 and Tables S1–S4 in one Excel workbook.
 04_Submission_Documents: cover letter and preparation/author-review record.
 05_Reproducibility: selected public data, gold records, manifests, evidence and report source scripts.
 06_Checks: word counts, reference metadata, actual PDF font/stroke audit, SHA256 inventory.
@@ -95,7 +96,7 @@ not genotype-matched expression biology or measured gains in user efficiency.
   elif p.suffix=='.docx':
    with ZipFile(p) as z:assert z.testzip() is None;ET.fromstring(z.read('word/document.xml'))
  assert len(list((out/'02_Main_Figure').glob('*.pdf')))==1
- check={'main_figures':1,'supporting_figures':4,'supporting_tables':4,'references':14,'pdf_page_counts':pdfs,'docx_integrity':'PASS','rendered_word_pages_visually_checked':15,'application_tests_rerun':False,'author_fields_complete':False}
+ check={'main_figures':1,'supporting_figures':1,'supporting_tables':4,'references':14,'pdf_page_counts':pdfs,'docx_integrity':'PASS','rendered_word_pages_visually_checked':11,'application_tests_rerun':False,'author_fields_complete':False}
  (out/'06_Checks/package-check.json').write_text(json.dumps(check,indent=2)+'\n')
  inventory=[{'path':str(p.relative_to(out)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(out.rglob('*')) if p.is_file()]
  (out/'06_Checks/file-inventory.json').write_text(json.dumps(inventory,indent=2)+'\n')

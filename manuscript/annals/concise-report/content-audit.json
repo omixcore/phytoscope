@@ -2,7 +2,7 @@
   "article_type": "Concise Report",
   "main_figures": 1,
   "main_tables": 0,
-  "supporting_figures": 4,
+  "supporting_figures": 1,
   "supporting_tables": 4,
   "abstract_words": 150,
   "graphical_summary_words": 32,
@@ -24,5 +24,6 @@
   "author_declarations_complete": false,
   "checked_guidelines_date": "2026-10-26",
   "guideline_url": "https://nyaspubs.onlinelibrary.wiley.com/hub/journal/17496632/author-guidelines.html",
-  "word_count_method": "Unicode word tokens; internal apostrophes and hyphens counted within a word; headings excluded from body"
+  "word_count_method": "Unicode word tokens; internal apostrophes and hyphens counted within a word; headings excluded from body",
+  "supporting_table_files": 1
 }
