@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297" preserveAspectRatio="xMidYMid meet">
+<rect width="210" height="297" fill="white"/>
+<g id="Table_S3">
+<text x="25.2" y="28.0" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Table S3. Public expression quantification inputs and output</text>
+<rect x="25.2" y="35" width="79.8" height="5.3" fill="#F0F2F3" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="38.0" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Field</text>
+<rect x="105.0" y="35" width="79.8" height="5.3" fill="#F0F2F3" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="38.0" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Value</text>
+<rect x="25.2" y="40.3" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="43.3" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">BioProject</text>
+<rect x="105.0" y="40.3" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="43.3" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">PRJNA765494</text>
+<rect x="25.2" y="45.599999999999994" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="48.599999999999994" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Genotype / developmental stage</text>
+<rect x="105.0" y="45.599999999999994" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="48.599999999999994" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">IC426787; 5 days post anthesis</text>
+<rect x="25.2" y="50.89999999999999" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="53.89999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Runs</text>
+<rect x="105.0" y="50.89999999999999" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="53.89999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">SRR16122599, SRR16122608, SRR16122607</text>
+<rect x="25.2" y="56.19999999999999" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="59.19999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Assembly / cultivar</text>
+<rect x="105.0" y="56.19999999999999" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="59.19999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">GCF_029865625.1 / Vumbellata_1.0 / VRB3</text>
+<rect x="25.2" y="61.499999999999986" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="64.49999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Annotation release</text>
+<rect x="105.0" y="61.499999999999986" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="64.49999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">GCF_029865625.1-RS_2026_09</text>
+<rect x="25.2" y="66.79999999999998" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="69.79999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Quantifier</text>
+<rect x="105.0" y="66.79999999999998" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="69.79999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Salmon 2.8.0; selective alignment; k-mer length 31</text>
+<rect x="25.2" y="72.09999999999998" width="79.8" height="8.6" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="75.09999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Reference transcript count</text>
+<rect x="105.0" y="72.09999999999998" width="79.8" height="8.6" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="75.09999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">54,178; RefSeq RNA FASTA SHA-256 in</text>
+<text x="106.5" y="78.39999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">public-expression-manifest.json</text>
+<rect x="25.2" y="80.69999999999997" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="83.69999999999997" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Distinct GFF3 parent genes / matrix rows</text>
+<rect x="105.0" y="80.69999999999997" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="83.69999999999997" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">36,754 distinct parent genes / 34,914 matrix rows</text>
+<rect x="25.2" y="85.99999999999997" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="88.99999999999997" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Exact annotation ID matches</text>
+<rect x="105.0" y="85.99999999999997" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="88.99999999999997" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">34,914 of 34,914 matrix IDs; 0 unmatched</text>
+<rect x="25.2" y="91.29999999999997" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="94.29999999999997" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Missing / invalid cells</text>
+<rect x="105.0" y="91.29999999999997" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="94.29999999999997" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">0 / 0</text>
+<rect x="25.2" y="96.59999999999997" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="99.59999999999997" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">TPM column sums</text>
+<rect x="105.0" y="96.59999999999997" width="79.8" height="5.3" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="99.59999999999997" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">1,000,000.000034; 999,999.999897; 999,999.999951</text>
+<rect x="25.2" y="101.89999999999996" width="79.8" height="8.6" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="104.89999999999996" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Interpretive limit</text>
+<rect x="105.0" y="101.89999999999996" width="79.8" height="8.6" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="104.89999999999996" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Genotype differs from reference cultivar; import and identifier</text>
+<text x="106.5" y="108.19999999999996" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">compatibility only; no differential-expression inference</text>
+</g></svg>

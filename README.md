@@ -194,10 +194,10 @@ See the audit document for source URLs, checks and interpretation of parser coun
 
 - [Scientific contribution, evidence status and remaining work](docs/annals-evidence.md)
 - [Annals submission-readiness audit (internal checklist)](docs/annals-submission-readiness.md)
-- [Annals manuscript and submission package](manuscript/annals/manuscript.md)
-- [Supplementary Information](manuscript/annals/supplementary-information.md)
-- [Download current manuscript materials ZIP](manuscript/annals/submission/PhytoScope_Submission_Package_20261026.zip)
-- [Standardized figures and supplementary tables](manuscript/annals/figures/standardized/) — Arial Regular 7 pt; black 0.5 pt strokes; editable and outlined SVG/PDF outputs. Author metadata/declarations and reference expansion remain pending as listed inside the ZIP.
+- [Current Annals Concise Report: one main figure](manuscript/annals/concise-report/manuscript.md)
+- [Supporting Information](manuscript/annals/concise-report/supporting-information.md)
+- [Download Concise Report submission package](manuscript/annals/concise-report/PhytoScope_Concise_Report_20261026.zip)
+- [Report files, Figure 1 and supplementary artwork](manuscript/annals/concise-report/) — Arial Regular 7 pt; black 0.5 pt strokes; editable and outlined vectors. Author metadata and declarations remain explicit placeholders. The earlier five-main-figure article is archived in the parent folder.
 - [Validation and source audit](docs/chromosome-validation.md)
 - [Validation, performance and comparison protocols](docs/validation-and-benchmarks.md)
 - [Non-model portability evidence, candidate public case and claim limits](docs/non-model-portability-evidence.md)
