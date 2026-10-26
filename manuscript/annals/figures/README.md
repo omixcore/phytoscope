@@ -4,13 +4,13 @@
 
 | Figure | File stem | Build script |
 | --- | --- | --- |
-| 1 | `figure1-portrait-A4` | `build_portrait_figure.py` |
+| 1 | `figure1-original-layout-A4` | `build_reference_style_figure.py` |
 | 2 | `figure2-coverage` | `build_figures.py` |
 | 3 | `figure3-annotation-tuples` | `build_figures.py` |
 | 4 | `figure4-expression-reconciliation` | `build_figures.py` |
 | 5 | `figure5-module-checks` | `build_figures.py` |
 
-The selected Figure 1 is now the A4 portrait design, using Arial Regular 7 pt, black text and 0.5 pt black strokes. Use `figure1-portrait-legend.md` for its English and Chinese legends and `figure1-portrait-format.md` for copying and sizing details. Earlier `figure1-workflow` and `figure1-highlights` designs are retained for comparison.
+The selected Figure 1 now retains the full original overview layout in A4 landscape with Arial Regular 7 pt, black text and 0.5 pt black strokes. Use `figure1-legend.md` for the English and Chinese legend and `figure1-original-layout-format.md` for sizing and copying details. The simplified portrait design and earlier overviews are retained as history.
 
 ## Rebuild the earlier overview design
 
