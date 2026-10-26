@@ -5,7 +5,7 @@ Guideline snapshot checked 2026-10-19: Original Articles are 2,500–7,000 words
 ## Package drafted
 
 - [x] Original Article manuscript with title, abstract, keywords, Introduction, Methods, Results, Discussion, Conclusion, declarations placeholders, references, and legends.
-- [x] Five selected main figures with vector and raster output (Figure 1: `figures/build_graphical_abstract.py`; Figures 2–5: `figures/build_figures.py`; see `figures/README.md`).
+- [x] Five selected main figures with vector and raster output (Figure 1: `figures/build_portrait_figure.py`; Figures 2–5: `figures/build_figures.py`; see `figures/README.md`).
 - [x] Supplementary Information with data coverage, counts, quantification settings, module checks, and limitations.
 - [x] Cover letter draft scoped to the evidence.
 - [x] Data availability statement naming repository and public accessions.

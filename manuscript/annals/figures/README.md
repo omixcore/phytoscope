@@ -4,15 +4,15 @@
 
 | Figure | File stem | Build script |
 | --- | --- | --- |
-| 1 | `figure1-highlights` | `build_graphical_abstract.py` |
+| 1 | `figure1-portrait-A4` | `build_portrait_figure.py` |
 | 2 | `figure2-coverage` | `build_figures.py` |
 | 3 | `figure3-annotation-tuples` | `build_figures.py` |
 | 4 | `figure4-expression-reconciliation` | `build_figures.py` |
 | 5 | `figure5-module-checks` | `build_figures.py` |
 
-`figure1-workflow` is the earlier workflow-only design retained for comparison; use `figure1-highlights` as the selected Figure 1. Its updated English and Chinese legends are in `figure1-legend.md`.
+The selected Figure 1 is now the A4 portrait design, using Arial Regular 7 pt, black text and 0.5 pt black strokes. Use `figure1-portrait-legend.md` for its English and Chinese legends and `figure1-portrait-format.md` for copying and sizing details. Earlier `figure1-workflow` and `figure1-highlights` designs are retained for comparison.
 
-## Rebuild Figure 1
+## Rebuild the earlier overview design
 
 Run from the repository root with Python 3, Pillow and Inkscape available:
 
