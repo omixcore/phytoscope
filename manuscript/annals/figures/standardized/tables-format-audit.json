@@ -1,0 +1,46 @@
+[
+  {
+    "table": "S1",
+    "rows": 8,
+    "columns": 4,
+    "font": "ArialMT",
+    "font_pt": 7,
+    "border_pt": 0.5,
+    "color": "#000000",
+    "content_bottom_mm": 133.5,
+    "all_checks": "PASS"
+  },
+  {
+    "table": "S2",
+    "rows": 10,
+    "columns": 4,
+    "font": "ArialMT",
+    "font_pt": 7,
+    "border_pt": 0.5,
+    "color": "#000000",
+    "content_bottom_mm": 87.99999999999997,
+    "all_checks": "PASS"
+  },
+  {
+    "table": "S3",
+    "rows": 13,
+    "columns": 2,
+    "font": "ArialMT",
+    "font_pt": 7,
+    "border_pt": 0.5,
+    "color": "#000000",
+    "content_bottom_mm": 110.49999999999996,
+    "all_checks": "PASS"
+  },
+  {
+    "table": "S4",
+    "rows": 7,
+    "columns": 4,
+    "font": "ArialMT",
+    "font_pt": 7,
+    "border_pt": 0.5,
+    "color": "#000000",
+    "content_bottom_mm": 118.29999999999998,
+    "all_checks": "PASS"
+  }
+]

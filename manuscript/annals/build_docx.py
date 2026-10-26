@@ -1,7 +1,7 @@
 from pathlib import Path
 import re
 from docx import Document
-from docx.shared import Inches, Pt
+from docx.shared import Inches, Pt, Mm, RGBColor
 from docx.enum.text import WD_LINE_SPACING
 from docx.enum.section import WD_SECTION
 from docx.oxml import OxmlElement
@@ -31,6 +31,47 @@ def add_runs(p, text):
             p.add_run(token[1:-1]).italic = True
         pos = m.end()
     if pos < len(text): p.add_run(text[pos:])
+
+def apply_publication_table_style(doc):
+    # Figure/table style requested by the authors; body text keeps manuscript styles.
+    for table in doc.tables:
+        table.autofit = False
+        tblpr = table._tbl.tblPr
+        indent = tblpr.find(qn('w:tblInd'))
+        if indent is None:
+            indent = OxmlElement('w:tblInd'); tblpr.append(indent)
+        indent.set(qn('w:w'),'114'); indent.set(qn('w:type'),'dxa')
+        widths = [int(c.width or Mm(40)) for c in table.columns]
+        factor = int(Mm(159.5)) / sum(widths)
+        widths = [int(w * factor) for w in widths]
+        for col, width in zip(table.columns, widths):
+            col.width = width
+        for row in table.rows:
+            for i, cell in enumerate(row.cells):
+                cell.width = widths[min(i, len(widths)-1)]
+                tcpr = cell._tc.get_or_add_tcPr()
+                borders = tcpr.find(qn('w:tcBorders'))
+                if borders is None:
+                    borders = OxmlElement('w:tcBorders'); tcpr.append(borders)
+                for edge in ['top','left','bottom','right','insideH','insideV']:
+                    el = borders.find(qn('w:'+edge))
+                    if el is None:
+                        el = OxmlElement('w:'+edge); borders.append(el)
+                    for k,v in [('val','single'),('sz','4'),('color','000000'),('space','0')]:
+                        el.set(qn('w:'+k),v)
+                for para in cell.paragraphs:
+                    para.paragraph_format.line_spacing = 1.0
+                    for run in para.runs:
+                        run.font.name = 'Arial'; run.font.size = Pt(7)
+                        run._element.get_or_add_rPr().rFonts.set(qn('w:eastAsia'),'Arial')
+                        run.font.color.rgb = RGBColor(0,0,0)
+                        run.bold = False; run.italic = False
+    for para in doc.paragraphs:
+        if re.match(r'^Table S[0-9]+[.]',para.text):
+            for run in para.runs:
+                run.font.name = 'Arial'; run.font.size = Pt(7)
+                run.font.color.rgb = RGBColor(0,0,0)
+                run.bold = False; run.italic = False
 
 def parse_md(src, out, title_style=True):
     doc=Document()
@@ -114,7 +155,14 @@ def parse_md(src, out, title_style=True):
     for s in doc.sections:
         p=s.footer.paragraphs[0];p.alignment=2
         fld=OxmlElement('w:fldSimple');fld.set(qn('w:instr'),'PAGE');p._p.append(fld)
+    if src.stem == 'supplementary-information':
+        for section in doc.sections:
+            section.page_width = Mm(210); section.page_height = Mm(297)
+            section.left_margin = section.right_margin = Mm(25)
+            section.top_margin = section.bottom_margin = Mm(25)
+    apply_publication_table_style(doc)
     doc.save(out)
 
-parse_md(BASE/'manuscript.md', BASE/'manuscript.docx')
-parse_md(BASE/'supplementary-information.md', BASE/'supplementary-information.docx')
+if __name__ == '__main__':
+    parse_md(BASE/'manuscript.md', BASE/'manuscript.docx')
+    parse_md(BASE/'supplementary-information.md', BASE/'supplementary-information.docx')

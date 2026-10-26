@@ -1,0 +1,15 @@
+{
+  "tables": 4,
+  "Arial_pt": 7,
+  "bold": false,
+  "text_color": "000000",
+  "border_color": "000000",
+  "border_pt": 0.5,
+  "page_mm": [
+    210,
+    297
+  ],
+  "nominal_margins_mm": 25,
+  "DOCX_checks": "PASS",
+  "PDF_pages": 3
+}

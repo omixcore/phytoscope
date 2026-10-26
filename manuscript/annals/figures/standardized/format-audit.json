@@ -1,0 +1,111 @@
+[
+  {
+    "figure": 1,
+    "source": "figure1-original-layout-A4",
+    "source_text_retained": true,
+    "source_layout_retained": true,
+    "PDF_font": "ArialMT",
+    "PDF_font_pt": 7,
+    "PDF_text_color": "#000000",
+    "PDF_stroke_color": "#000000",
+    "PDF_stroke_pt": 0.5,
+    "PDF_images": 0,
+    "all_checks": "PASS"
+  },
+  {
+    "figure": 2,
+    "source": "figure2-coverage",
+    "source_text_retained": true,
+    "source_layout_retained": true,
+    "text_nodes": 44,
+    "joined_arrows": 0,
+    "coverage_bitmaps_vectorized": 1,
+    "artwork_mm": [
+      215.39199999999997,
+      117.5067718722222
+    ],
+    "offset_mm": [
+      40.804000000000016,
+      46.2466140638889
+    ],
+    "PDF_font": "ArialMT",
+    "PDF_font_pt": 7,
+    "PDF_text_color": "#000000",
+    "PDF_stroke_color": "#000000",
+    "PDF_stroke_pt": 0.5,
+    "PDF_images": 0,
+    "all_checks": "PASS"
+  },
+  {
+    "figure": 3,
+    "source": "figure3-annotation-tuples",
+    "source_text_retained": true,
+    "source_layout_retained": true,
+    "text_nodes": 37,
+    "joined_arrows": 0,
+    "coverage_bitmaps_vectorized": 0,
+    "artwork_mm": [
+      226.56204687499996,
+      117.04683784444444
+    ],
+    "offset_mm": [
+      35.21897656250002,
+      46.47658107777778
+    ],
+    "PDF_font": "ArialMT",
+    "PDF_font_pt": 7,
+    "PDF_text_color": "#000000",
+    "PDF_stroke_color": "#000000",
+    "PDF_stroke_pt": 0.5,
+    "PDF_images": 0,
+    "all_checks": "PASS"
+  },
+  {
+    "figure": 4,
+    "source": "figure4-expression-reconciliation",
+    "source_text_retained": true,
+    "source_layout_retained": true,
+    "text_nodes": 27,
+    "joined_arrows": 3,
+    "coverage_bitmaps_vectorized": 0,
+    "artwork_mm": [
+      226.6007420111111,
+      113.51533402777777
+    ],
+    "offset_mm": [
+      35.19962899444445,
+      48.242332986111116
+    ],
+    "PDF_font": "ArialMT",
+    "PDF_font_pt": 7,
+    "PDF_text_color": "#000000",
+    "PDF_stroke_color": "#000000",
+    "PDF_stroke_pt": 0.5,
+    "PDF_images": 0,
+    "all_checks": "PASS"
+  },
+  {
+    "figure": 5,
+    "source": "figure5-module-checks",
+    "source_text_retained": true,
+    "source_layout_retained": true,
+    "text_nodes": 14,
+    "joined_arrows": 0,
+    "coverage_bitmaps_vectorized": 0,
+    "artwork_mm": [
+      200.88674791666668,
+      98.9584
+    ],
+    "offset_mm": [
+      48.05662604166666,
+      55.5208
+    ],
+    "PDF_font": "ArialMT",
+    "PDF_font_pt": 7,
+    "PDF_text_color": "#000000",
+    "PDF_stroke_color": "#000000",
+    "PDF_stroke_pt": 0.5,
+    "PDF_images": 0,
+    "all_checks": "PASS"
+  }
+]

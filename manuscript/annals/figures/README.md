@@ -1,3 +1,7 @@
+# Current standardized upload set
+
+Use [`standardized/`](standardized/) for all five main figures and four supplementary tables. These retain the selected data/layout and apply Arial Regular 7 pt, black text and black 0.5 pt strokes. Figure 1 retains the full approved original overview. Rebuild with `standardize_figures.py` and `build_supplementary_tables.py`.
+
 # Manuscript figures
 
 ## Selected main figures

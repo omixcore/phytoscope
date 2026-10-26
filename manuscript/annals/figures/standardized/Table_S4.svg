@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297" preserveAspectRatio="xMidYMid meet">
+<rect width="210" height="297" fill="white"/>
+<g id="Table_S4">
+<text x="25.2" y="28.0" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Table S4. Additional module validation panels</text>
+<rect x="25.2" y="35" width="39.9" height="5.3" fill="#F0F2F3" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="38.0" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Function</text>
+<rect x="65.1" y="35" width="39.9" height="5.3" fill="#F0F2F3" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="66.6" y="38.0" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Independent reference</text>
+<rect x="105.0" y="35" width="39.9" height="5.3" fill="#F0F2F3" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="38.0" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Observed result</text>
+<rect x="144.89999999999998" y="35" width="39.9" height="5.3" fill="#F0F2F3" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="146.39999999999998" y="38.0" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Scope limit</text>
+<rect x="25.2" y="40.3" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="43.3" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Promoter extraction</text>
+<rect x="65.1" y="40.3" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="66.6" y="43.3" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Direct 1-based inclusive FASTA</text>
+<text x="66.6" y="46.599999999999994" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">slicing and reverse complement;</text>
+<text x="66.6" y="49.9" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">bedtools 2.31.1</text>
+<rect x="105.0" y="40.3" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="43.3" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">8/8 exact sequences, 2,200 bp</text>
+<text x="106.5" y="46.599999999999994" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">each, both strands represented</text>
+<rect x="144.89999999999998" y="40.3" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="146.39999999999998" y="43.3" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Eight loci on one Arabidopsis</text>
+<text x="146.39999999999998" y="46.599999999999994" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">chromosome</text>
+<rect x="25.2" y="52.199999999999996" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="55.199999999999996" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">CDS sequence quality</text>
+<rect x="65.1" y="52.199999999999996" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="66.6" y="55.199999999999996" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Independent</text>
+<text x="66.6" y="58.49999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">base-count/frame/start/stop</text>
+<text x="66.6" y="61.8" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">oracle</text>
+<rect x="105.0" y="52.199999999999996" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="55.199999999999996" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Four RBCS CDS models (411,</text>
+<text x="106.5" y="58.49999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">561, 546, 546 nt) matched; no</text>
+<text x="106.5" y="61.8" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">ambiguous bases flagged</text>
+<rect x="144.89999999999998" y="52.199999999999996" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="146.39999999999998" y="55.199999999999996" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Four models from one family</text>
+<rect x="25.2" y="64.1" width="39.9" height="21.799999999999997" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="67.1" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Protein similarity</text>
+<rect x="65.1" y="64.1" width="39.9" height="21.799999999999997" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="66.6" y="67.1" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Test-side Smith–Waterman and</text>
+<text x="66.6" y="70.39999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">BLASTP 2.12.0+</text>
+<rect x="105.0" y="64.1" width="39.9" height="21.799999999999997" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="67.1" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">All 16 within-panel alignment</text>
+<text x="106.5" y="70.39999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">metric checks; 12/12 non-self</text>
+<text x="106.5" y="73.69999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">RBCS and 8/8 negative pair</text>
+<text x="106.5" y="77.0" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">classifications agree; 20/20 in the</text>
+<text x="106.5" y="80.3" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">cross-species mature-RBCS</text>
+<text x="106.5" y="83.6" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">panel</text>
+<rect x="144.89999999999998" y="64.1" width="39.9" height="21.799999999999997" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="146.39999999999998" y="67.1" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Small one-family smoke test; not</text>
+<text x="146.39999999999998" y="70.39999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">orthology, sensitivity, or specificity</text>
+<text x="146.39999999999998" y="73.69999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">evaluation</text>
+<rect x="25.2" y="85.89999999999999" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="88.89999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Expression grouping</text>
+<rect x="65.1" y="85.89999999999999" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="66.6" y="88.89999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Expression Atlas E-MTAB-7978</text>
+<text x="66.6" y="92.19999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">source values</text>
+<rect x="105.0" y="85.89999999999999" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="88.89999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Selected means/medians</text>
+<text x="106.5" y="92.19999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">reproduced; measured zeros</text>
+<text x="106.5" y="95.49999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">retained</text>
+<rect x="144.89999999999998" y="85.89999999999999" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="146.39999999999998" y="88.89999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Single-assay group arithmetic,</text>
+<text x="146.39999999999998" y="92.19999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">not differential expression</text>
+<rect x="25.2" y="97.79999999999998" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="100.79999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Domain mapping</text>
+<rect x="65.1" y="97.79999999999998" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="66.6" y="100.79999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Independent Python</text>
+<text x="66.6" y="104.09999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">reconstruction</text>
+<rect x="105.0" y="97.79999999999998" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="100.79999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">16 domain/deletion coordinate</text>
+<text x="106.5" y="104.09999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">records across 13 genes</text>
+<text x="106.5" y="107.39999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">matched</text>
+<rect x="144.89999999999998" y="97.79999999999998" width="39.9" height="11.899999999999999" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="146.39999999999998" y="100.79999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Existing annotated models; not a</text>
+<text x="146.39999999999998" y="104.09999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">curated multi-species accuracy</text>
+<text x="146.39999999999998" y="107.39999999999998" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">set</text>
+<rect x="25.2" y="109.69999999999999" width="39.9" height="8.6" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="26.7" y="112.69999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Project persistence</text>
+<rect x="65.1" y="109.69999999999999" width="39.9" height="8.6" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="66.6" y="112.69999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">JavaFX regression actions</text>
+<rect x="105.0" y="109.69999999999999" width="39.9" height="8.6" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="106.5" y="112.69999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Save, replace, restore, locus</text>
+<text x="106.5" y="115.99999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">state and outputs verified in CI</text>
+<rect x="144.89999999999998" y="109.69999999999999" width="39.9" height="8.6" fill="white" stroke="#000000" stroke-width="0.17638888888888887"/>
+<text x="146.39999999999998" y="112.69999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">Software behavior, not usability</text>
+<text x="146.39999999999998" y="115.99999999999999" font-family="Arial" font-size="2.469444444444444" font-weight="400" fill="#000000">study</text>
+</g></svg>
