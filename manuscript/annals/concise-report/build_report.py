@@ -27,7 +27,11 @@ def base_doc():
   if bb is not None:pp.remove(bb)
  return d
 def paragraph(d,text,style=None,spacing=None,size=None):
- p=d.add_paragraph(style=style);m.add_runs(p,text)
+ p=d.add_paragraph(style=style)
+ for part in re.split(r'(<sup>.*?</sup>)',text):
+  if part.startswith('<sup>'):
+   r=p.add_run(part[5:-6]);r.font.superscript=True;r.font.size=Pt(8)
+  else:m.add_runs(p,part)
  if spacing:p.paragraph_format.line_spacing=spacing
  if size:
   for r in p.runs:r.font.name='Arial';r.font.size=Pt(size)
@@ -81,7 +85,7 @@ def make(src,dest,kind):
     for r in p.runs:r.bold=False
    else:
     p=paragraph(d,l)
-    if kind=='main' and (l.startswith('**') or section=='Abstract'):
+    if kind=='main' and (l.startswith('**') or section in ['','Abstract']):
      p.paragraph_format.line_spacing=1.15
     if section=='Abstract':p.paragraph_format.keep_together=True
  flush();m.apply_publication_table_style(d);d.save(dest);return d

@@ -6,7 +6,7 @@ The report centers on the reusable locus framework, source-verified structures/s
 
 The reference list is focused on directly cited sources and is below the journal's 50-reference maximum. The earlier request to expand a full article to 50–60 references does not apply to this shorter format. The expression dataset is cited to the original Verma et al. seed-development study, rather than the genome paper. Metadata and claim mapping are recorded in the reference audit.
 
-`journal-requirements.md` records the current instructions checked on 26 October 2026. `content-audit.json` records counts and validation. Author metadata, contributions, funding, conflicts and permanent archive DOI remain author-controlled fields. This prepared draft has not been submitted.
+`journal-requirements.md` records the current instructions checked on 26 October 2026. `content-audit.json` records counts and validation. Author names, affiliations, equal contribution and correspondence designation follow the supplied author image. Corresponding-author email, ORCIDs, contributions, funding, conflicts and permanent archive DOI remain author-controlled fields. This prepared draft has not been submitted.
 
 
 Files: [Word manuscript](manuscript.docx), [review PDF](manuscript.pdf), [Figure 1](Figure_1.pdf), and [complete submission package](PhytoScope_Concise_Report_20261026.zip).

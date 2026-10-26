@@ -18,6 +18,8 @@ Thank you for considering the manuscript.
 
 Sincerely,
 
-[CORRESPONDING AUTHOR NAME]
+Fei Liang
 
-[INSTITUTION AND EMAIL]
+Key Laboratory of Tropical Fruit Biology of Ministry of Agriculture, South Subtropical Crops Research Institute, Chinese Academy of Tropical Agricultural Sciences, Zhanjiang, China
+
+[CORRESPONDING AUTHOR EMAIL]

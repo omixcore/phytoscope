@@ -20,7 +20,7 @@ for(const t of data){
  for(let j=0;j<cols;j++)s.getRange(`${String.fromCharCode(65+j)}4:${String.fromCharCode(65+j)}${end}`).format.columnWidth=t.name==='Table S2'?(j===0?40:20):cols===2?(j===0?45:105):[34,46,50,54][j];
  s.getRange(`A4:${last}${end}`).format.autofitRows();
  if(t.name==='Table S2'){s.getRange(`B5:D${end}`).setNumberFormat('#,##0');}
- const note=end+2;s.getRange(`A${note}:${last}${note+1}`).merge();s.getRange(`A${note}`).values=[['Source: PhytoScope Supporting Information, evidence snapshot 159ae0f79bd3681afc6c914db282c515190a3888; https://github.com/omixcore/phytoscope']];s.getRange(`A${note}:${last}${note+1}`).format={font:{name:'Arial',size:7,bold:false,color:'#000000'},wrapText:true};
+ const note=end+2;s.getRange(`A${note}:${last}${note+1}`).merge();s.getRange(`A${note}`).values=[['Source: PhytoScope Supporting Information; https://github.com/omixcore/phytoscope']];s.getRange(`A${note}:${last}${note+1}`).format={font:{name:'Arial',size:7,bold:false,color:'#000000'},wrapText:true};
 }
 wb.recalculate();
 console.log((await wb.inspect({kind:'sheet',include:'id,name',maxChars:2000})).ndjson);

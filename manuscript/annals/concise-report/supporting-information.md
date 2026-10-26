@@ -4,7 +4,7 @@ PhytoScope for portable local queries of plant genome data
 
 ## Supplementary Methods
 
-The software and evidence snapshot is commit `159ae0f79bd3681afc6c914db282c515190a3888` at https://github.com/omixcore/phytoscope. The code requires Java 21. Source accessions, versions, checksums, gene/transcript gold records, and the public expression matrix are supplied with this report. Full genomes, annotation archives and raw reads are fetched from their public repositories rather than duplicated in the submission package.
+The software and supporting evidence are available at https://github.com/omixcore/phytoscope. The code requires Java 21. Source accessions, versions, checksums, gene/transcript gold records, and the public expression matrix are supplied with this report. Full genomes, annotation archives and raw reads are fetched from their public repositories rather than duplicated in the submission package.
 
 The three additional RefSeq assemblies are GCF_029865625.1, GCF_009805555.1 and GCF_006381635.1. Official annotation checksums and accession-matched FASTA identify the tested releases. The eight structural inventories independently specify recognized feature types, explicit parents, sequence identifiers, strands and 1-based inclusive coordinates; unsupported feature types are reported separately. Five coding loci per additional species produce six ricebean, 14 Andrographis and five Hibiscus coding-transcript gold records, with independent genomic-span, spliced-transcript and CDS SHA-256 digests.
 

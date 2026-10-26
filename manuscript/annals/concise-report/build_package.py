@@ -44,6 +44,8 @@ with tempfile.TemporaryDirectory(prefix='phyto-concise-') as td:
  out=Path(td)/NAME;out.mkdir()
  def copy(src,dest):
   target=out/dest;target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,target)
+  if target.suffix in ['.md','.txt']:
+   lines=target.read_text().splitlines();target.write_text('\n'.join(l for l in lines if not ('commit' in l.lower() and re.search(r'\b[0-9a-f]{40}\b',l)))+'\n')
  for n in ['manuscript.docx','manuscript.pdf','manuscript.md']:copy(O/n,'01_Manuscript/'+n)
  for n in ['Figure_1.pdf','Figure_1.svg','Figure_1.png','Figure_1_outlined.svg','Figure_1_legend.md']:copy(O/n,'02_Main_Figure/'+n)
  for n in ['supporting-information.docx','supporting-information.pdf','supporting-information.md']:copy(O/n,'03_Supporting_Information/'+n)
@@ -75,13 +77,13 @@ Current journal instructions checked 26 October 2026; see 04_Submission_Document
 05_Reproducibility: selected public data, gold records, manifests, evidence and report source scripts.
 06_Checks: word counts, reference metadata, actual PDF font/stroke audit, SHA256 inventory.
 
-Author names, affiliations, ORCIDs, corresponding-author details, CRediT roles,
+Author names and affiliations are supplied. Corresponding-author email, ORCIDs, CRediT roles,
 funding, conflicts, author approval/originality statements and archival DOI remain
 explicit author-controlled fields. This draft has not been submitted.
 
-Source/evidence snapshot: https://github.com/omixcore/phytoscope/tree/159ae0f79bd3681afc6c914db282c515190a3888
-The manuscript-formatting changes postdate that snapshot and are versioned on dev.
-To reproduce, check out the current dev report together with the pinned evidence;
+Software and evidence: https://github.com/omixcore/phytoscope
+The manuscript and supporting materials are maintained in the dev branch.
+To reproduce, use the report together with its accompanying evidence;
 follow the commands in Supporting Information and docs/non-model-portability-evidence.md.
 The archive includes selected inputs, not full genomes/FASTQ archives. Public fetch
 scripts verify source checksums. Arial font files are not redistributed.
@@ -96,7 +98,7 @@ not genotype-matched expression biology or measured gains in user efficiency.
   elif p.suffix=='.docx':
    with ZipFile(p) as z:assert z.testzip() is None;ET.fromstring(z.read('word/document.xml'))
  assert len(list((out/'02_Main_Figure').glob('*.pdf')))==1
- check={'main_figures':1,'supporting_figures':1,'supporting_tables':4,'references':14,'pdf_page_counts':pdfs,'docx_integrity':'PASS','rendered_word_pages_visually_checked':11,'application_tests_rerun':False,'author_fields_complete':False}
+ check={'main_figures':1,'supporting_figures':1,'supporting_tables':4,'references':14,'pdf_page_counts':pdfs,'docx_integrity':'PASS','rendered_word_pages_visually_checked':sum(len(fitz.open(O/(n+'.pdf'))) for n in ['manuscript','supporting-information','cover-letter']),'application_tests_rerun':False,'author_fields_complete':False}
  (out/'06_Checks/package-check.json').write_text(json.dumps(check,indent=2)+'\n')
  inventory=[{'path':str(p.relative_to(out)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(out.rglob('*')) if p.is_file()]
  (out/'06_Checks/file-inventory.json').write_text(json.dumps(inventory,indent=2)+'\n')

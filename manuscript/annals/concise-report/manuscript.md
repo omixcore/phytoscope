@@ -2,11 +2,17 @@
 
 **Article type:** Concise Report
 
-**Authors:** [AUTHOR NAMES IN FINAL ORDER]
+**Authors:** Xiaofeng Song<sup>1†</sup>, Pengyu Chen<sup>1†</sup> and Fei Liang<sup>2*</sup>
 
-**Affiliations:** [INSTITUTIONAL AFFILIATIONS]
+**Affiliations:**
 
-**Correspondence:** [CORRESPONDING AUTHOR NAME AND EMAIL]
+<sup>1</sup> North Henan Medical University, Xinxiang, China
+
+<sup>2</sup> Key Laboratory of Tropical Fruit Biology of Ministry of Agriculture, South Subtropical Crops Research Institute, Chinese Academy of Tropical Agricultural Sciences, Zhanjiang, China
+
+<sup>†</sup> These authors contributed equally to this work.
+
+**Correspondence:** <sup>*</sup> Fei Liang; [CORRESPONDING AUTHOR EMAIL]
 
 **ORCID:** [AUTHOR ORCIDS]
 
@@ -84,7 +90,7 @@ This study analyzed public plant datasets and software behavior. It involved no 
 
 ## Data Availability
 
-Software, frozen evidence, public expression values, source manifests, and reproduction scripts are available at https://github.com/omixcore/phytoscope. The application/evidence snapshot is commit 159ae0f79bd3681afc6c914db282c515190a3888. The expression reads are available under PRJNA765494; the matched reference files use GCF_029865625.1 and annotation release GCF_029865625.1-RS_2026_09. Additional assemblies are GCF_009805555.1 and GCF_006381635.1. Supporting Information identifies versions, input checksums, selected loci, and commands. [PERMANENT ARCHIVE DOI TO BE ADDED BY THE AUTHORS]
+Software, frozen evidence, public expression values, source manifests, and reproduction scripts are available at https://github.com/omixcore/phytoscope. The expression reads are available under PRJNA765494; the matched reference files use GCF_029865625.1 and annotation release GCF_029865625.1-RS_2026_09. Additional assemblies are GCF_009805555.1 and GCF_006381635.1. Supporting Information identifies versions, input checksums, selected loci, and commands. [PERMANENT ARCHIVE DOI TO BE ADDED BY THE AUTHORS]
 
 ## References
 
