@@ -9,6 +9,10 @@ Requires JDK 21. No external service is required while browsing local files.
 
 ![PhytoScope software overview and workflow](https://raw.githubusercontent.com/omixcore/phytoscope/dev/fig/Figure1.jpg)
 
+## Download for Windows
+
+Download the packaged Windows application: [PhytoScope-Windows.zip](https://github.com/omixcore/phytoscope/raw/refs/heads/dev/desktop_program/PhytoScope-Windows.zip) (about 97 MiB).
+
 ## Reference examples and real expression case
 
 | Example | Reference material | Assembly / annotation | Bundled scope |
