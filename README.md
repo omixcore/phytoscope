@@ -2,6 +2,14 @@
 
 <p align="center"><img src="fig/phytoscope_logo.png" alt="PhytoScope logo" width="180"></p>
 
+<p align="center">
+  <a href="https://github.com/omixcore/phytoscope"><img alt="Repository status: Active" src="https://img.shields.io/badge/repo%20status-Active-brightgreen"></a>
+  <a href="https://github.com/omixcore/phytoscope"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-PhytoScope-181717?logo=github"></a>
+  <a href="https://www.java.com/"><img alt="Java 21" src="https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white"></a>
+  <a href="https://openjfx.io/"><img alt="JavaFX" src="https://img.shields.io/badge/UI-JavaFX-3C78A9"></a>
+  <a href="https://github.com/omixcore/phytoscope/blob/dev/LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green"></a>
+</p>
+
 A local JavaFX desktop browser for plant gene structures. Import GFF3/GTF
 annotations, switch between sequences, inspect transcripts/exons/CDS/UTRs,
 attach a traceable expression matrix, compare multiple loci, and connect selected
