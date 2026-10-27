@@ -1,6 +1,6 @@
 # PhytoScope
 
-<p align="center">
+<p align="left">
   <a href="https://github.com/omixcore/phytoscope"><img alt="Repository status: Active" src="https://img.shields.io/badge/repo%20status-Active-brightgreen"></a>
   <a href="https://github.com/omixcore/phytoscope"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-PhytoScope-181717?logo=github"></a>
   <a href="https://www.java.com/"><img alt="Java 21" src="https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white"></a>
