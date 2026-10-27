@@ -9,6 +9,16 @@ python tools/package_desktop.py --jar target/phytoscope-0.2.0.jar
 
 The script also creates an OS/architecture-specific archive: `.tar.gz` on Linux/macOS (preserving executable permissions) or `.zip` on Windows. Unpack this archive before launching.
 
+## Packaged Windows application
+
+The Windows download `desktop_program/PhytoScope-Windows.zip` contains a ready-to-run application image with this layout:
+
+- `PhytoScope.exe` — launch PhytoScope by double-clicking this executable.
+- `app/` — application files and bundled libraries.
+- `runtime/` — the Java runtime required by the application.
+
+Extract the ZIP to a local folder and keep all three items together. No separate Java installation, JDK, or Maven setup is required. Start the program with `PhytoScope.exe` from the extracted folder.
+
 The `jpackage` application image contains a Java runtime; recipients do not need
 Maven or a separate JDK. Launch `PhytoScope` from the app image (`PhytoScope.exe`
 on Windows; the `.app` on macOS; `bin/PhytoScope` on Linux). Keep the complete
