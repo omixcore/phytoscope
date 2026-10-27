@@ -7,6 +7,8 @@ genes to promoter extraction, sample groups, sequence checks, protein similarity
 and domain mapping. Save portable projects and export TSV, PNG or editable SVG.
 Requires JDK 21. No external service is required while browsing local files.
 
+**License: MIT** · [View the full license](LICENSE)
+
 ![PhytoScope workflow and public-data validation overview](docs/images/phytoscope-overview.jpg)
 
 ## Reference examples and real expression case
