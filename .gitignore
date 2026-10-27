@@ -21,7 +21,7 @@ out/
 .classpath
 .project
 
-# ---- 系统 ----
+# ---- System files ----
 .DS_Store
 Thumbs.db
 desktop.ini
@@ -32,11 +32,11 @@ desktop.ini
 hs_err_pid*
 replay_pid*
 
-# ---- 运行产物 ----
+# ---- Runtime outputs ----
 /export/
 *.hprof
 
-# ---- 本地验证临时文件 ----
+# ---- Local validation temporary files ----
 tmpverify/
 _cliout/
 _cli2/
@@ -46,7 +46,7 @@ cp.txt
 screenshot.png
 _pairs.tmp
 
-# ---- 批量渲染输出 ----
+# ---- Batch rendering outputs ----
 phytoscope-exports/
 _shot_fixed.png
 

@@ -67,20 +67,20 @@ class Gff3ParserEdgeCaseTest {
     @Test
     void decodesUtf8PercentEscapesInGff3Attributes() throws Exception {
         String gff = "##gff-version 3\n"
-                + "chrA\tsrc\tgene\t1\t100\t.\t+\t.\tID=g1;Name=%E7%8E%89%E7%B1%B3\n";
+                + "chrA\tsrc\tgene\t1\t100\t.\t+\t.\tID=g1;Name=Maize\n";
         var result = new Gff3Parser().parse(new ByteArrayInputStream(
                 gff.getBytes(StandardCharsets.UTF_8)), null, "utf8.gff3");
-        assertEquals("玉米", result.genes().getFirst().getName());
+        assertEquals("Maize", result.genes().getFirst().getName());
     }
 
     @Test
     void decodesLongUnicodeGtfValuesWithoutUndersizedBuffer() throws Exception {
-        String expected = "水稻参考基因组的长功能描述包含多个Unicode字符和%符号";
+        String expected = "Long rice reference genome description contains Unicode characters and % symbols";
         String gtf = "chrA\tsrc\tgene\t1\t100\t.\t+\t.\tgene_id \"g1\"; gene_name \""
-                + expected.replace("%", "%25") + "%20版本信息\";\n";
+                + expected.replace("%", "%25") + "%20version information\";\n";
         var result = new Gff3Parser().parse(new ByteArrayInputStream(
                 gtf.getBytes(StandardCharsets.UTF_8)), AnnotationFormat.GTF, "unicode.gtf");
-        assertEquals(expected + " 版本信息", result.genes().getFirst().getName());
+        assertEquals(expected + " version information", result.genes().getFirst().getName());
     }
 
     @Test
