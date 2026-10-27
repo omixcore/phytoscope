@@ -1,5 +1,7 @@
 # PhytoScope
 
+<p align="center"><img src="fig/phytoscope_logo.png" alt="PhytoScope logo" width="180"></p>
+
 A local JavaFX desktop browser for plant gene structures. Import GFF3/GTF
 annotations, switch between sequences, inspect transcripts/exons/CDS/UTRs,
 attach a traceable expression matrix, compare multiple loci, and connect selected
