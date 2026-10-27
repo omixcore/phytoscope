@@ -120,17 +120,6 @@ retrieved in this evaluation environment, missing-input boundaries, and a
 matched objective comparator protocol. Do not present the candidate as a
 completed test.
 
-## Researcher-value study
-
-The protocol and blank data-collection template are in
-[researcher-value evaluation](researcher-value-study.md) and
-`benchmarks/researcher-value/task-log-template.tsv`. These files define a
-paired, counterbalanced comparison, task acceptance criteria, provenance scoring
-and reporting rules. They are instruments for a future study, **not user-study
-results**. No human task times or usability scores are claimed until actual
-participants complete the study.
-
-
 ## Recorded multi-platform result (2026-10-18)
 
 The exact observed timings, source-inventory counts and test outcomes for

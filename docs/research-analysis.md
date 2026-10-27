@@ -57,8 +57,8 @@ interval text, sequence input, protein FASTA, domain records, sample group
 assignments, parameters and the latest output. Results export as a two-column
 TSV (`Analysis`, `Result`); tabs and line breaks inside result text are escaped
 so each analysis remains one row. The modules do not alter the source annotation
-or expression matrix. See [the evidence package](annals-evidence.md) for
-validation coverage and remaining limits.
+or expression matrix. See [module validation](research-module-validation.md) for
+test coverage and input requirements.
 
 ## Genome-browser navigation
 

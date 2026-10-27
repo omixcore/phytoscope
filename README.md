@@ -7,7 +7,7 @@ genes to promoter extraction, sample groups, sequence checks, protein similarity
 and domain mapping. Save portable projects and export TSV, PNG or editable SVG.
 Requires JDK 21. No external service is required while browsing local files.
 
-![Real Arabidopsis RBCS structure and expression case](examples/arabidopsis-atlas/comparison.svg)
+![PhytoScope workflow and public-data validation overview](docs/images/phytoscope-overview.jpg)
 
 ## Reference examples and real expression case
 
@@ -32,12 +32,9 @@ The read genotype (IC426787) differs from the reference cultivar (VRB3), so
 this is data-import/ID-compatibility evidence, not genotype-matched biology;
 see the [full validation record](docs/non-model-portability-evidence.md).
 
-The [case-study guide](examples/arabidopsis-atlas/README.md) records the source,
-ENA runs, exact extracted values, reproduction commands and interpretation limits.
-The separate [case-study interpretation](docs/case-study-arabidopsis-rbcs.md)
-compares the observed family pattern with published genetic evidence and states
-what this known-pattern example can and cannot support.
-Historical illustrative expression fixtures are test-only and are not shipped.
+The [example guide](examples/arabidopsis-atlas/README.md) records data sources,
+import steps and reproducible commands. Data fixtures and provenance manifests
+support the bundled examples and automated regression tests.
 
 ## Run
 
@@ -190,46 +187,15 @@ mvn -Pui-tests -Dphytoscope.fullAnnotationDir=/path/to/cache verify
 Full genome archives are downloaded by the extraction script, not by unit tests.
 See the audit document for source URLs, checks and interpretation of parser counts.
 
-## Reproducibility and distribution
+## Documentation and distribution
 
-- [Scientific contribution, evidence status and remaining work](docs/annals-evidence.md)
-- [Annals submission-readiness audit (internal checklist)](docs/annals-submission-readiness.md)
-- [Current Annals Concise Report: one main figure](manuscript/annals/concise-report/manuscript.md)
-- [Supporting Information](manuscript/annals/concise-report/supporting-information.md)
-- [Download Concise Report submission package](manuscript/annals/concise-report/PhytoScope_Concise_Report_20261026.zip)
-- [Report files, Figure 1 and supplementary artwork](manuscript/annals/concise-report/) — Arial Regular 7 pt; black 0.5 pt strokes; editable and outlined vectors. Author metadata and declarations remain explicit placeholders. The earlier five-main-figure article is archived in the parent folder.
-- [Validation and source audit](docs/chromosome-validation.md)
-- [Validation, performance and comparison protocols](docs/validation-and-benchmarks.md)
-- [Non-model portability evidence, candidate public case and claim limits](docs/non-model-portability-evidence.md)
-- [Cross-species extraction results (2026-10-18)](benchmarks/results/2026-10-18/cross-species-extraction.md)
-- [Four-species RBCS family-level homology fixture](examples/cross-species-homology-gold-set/README.md)
-- [Cross-species homology comparison with BLASTP](benchmarks/results/2026-10-18/cross-species-homology.md)
-- [Researcher-value study protocol (planned; no participants yet)](docs/researcher-value-study.md)
+- [Research analysis](docs/research-analysis.md)
 - [Desktop packaging](docs/desktop-distribution.md)
-- [Real expression case](examples/arabidopsis-atlas/README.md)
-- [RBCS case interpretation and limitations](docs/case-study-arabidopsis-rbcs.md)
-- [Genome-wide isoform screen and independent peptide validation](examples/arabidopsis-isoform-validation/README.md)
-
-The scientific focus is a recoverable, locus-centered workflow with traceable
-inputs and outputs. The public RBCS example demonstrates integration and
-reproducibility of a known expression pattern. It does not establish a new
-biological discovery. CI checks eight strand-aware promoter intervals against
-bedtools and compares protein-similarity classifications with BLASTP for both a
-same-species panel and a small four-species mature-RBCS panel (Arabidopsis, rice,
-maize and soybean). Both panels agree on 20/20 non-self positive/negative pair
-classifications. The cross-species panel is a single-family smoke test, not a
-one-to-one orthology benchmark or module-wide precision/recall estimate. Broader
-multi-family/domain gold sets, expression compatibility across more species,
-controlled performance runs and a matched researcher task study remain
-necessary. The
-[researcher-value protocol](docs/researcher-value-study.md) is a plan,
-not evidence from participants.
-A separate fixed-rule screen of 48,002 complete Arabidopsis CDS models yielded
-16 domain-deletion records in 13 genes. The published peptide validation supports
-one CIPK15 junction in one original study; **none met the two-study validation
-threshold**. The case retains all failures and does not establish a novel
-biological discovery. Its 16 domain coordinate mappings are checked against
-independent Python calculations, with project restoration and TSV export tested.
+- [Annotation and reference validation](docs/chromosome-validation.md)
+- [Validation and benchmark commands](docs/validation-and-benchmarks.md)
+- [Non-model data compatibility](docs/non-model-portability-evidence.md)
+- [Research-module tests](docs/research-module-validation.md)
+- [Bundled expression example](examples/arabidopsis-atlas/README.md)
 
 Display-free comparison (does not initialize the JavaFX toolkit):
 
@@ -260,16 +226,6 @@ The right-hand Gene Details → Sequences section displays the gene genomic span
 
 The Arabidopsis TAIR10 example bundles the version-pinned Ensembl Plants release 62 genomic FASTA (src/main/resources/data/species/arabidopsis/TAIR10_genomic.fna.gz); its checksum and chromosome lengths are recorded in genome-sequence-provenance.json. Other species or assemblies can use File → Import genome FASTA. The genome FASTA must match the annotation assembly and sequence names. The extractor respects 1-based inclusive GFF3 coordinates, reverse-complements minus-strand loci, concatenates exons/CDS in transcription order, and translates CDS with the standard nuclear genetic code. If UTR features are absent, terminal exonic bases outside annotated CDS boundaries are labelled as inferred; missing transcript/CDS models are never fabricated.
 
+## License
 
-## Research evidence and evaluation
-
-- [Evidence status and publication claim boundaries](docs/annals-evidence.md)
-- [Validation and cross-species benchmarks](docs/validation-and-benchmarks.md)
-- [Researcher-value study protocol](docs/researcher-value-study.md)
-- [Research-module validation on real plant data](docs/research-module-validation.md)
-- [PIF6 known-positive literature control](docs/case-study-pif6-known-positive.md)
-- [Research-module validation results (2026-10-18)](benchmarks/results/2026-10-18/research-module-validation.md)
-
-The biological-discovery screen is reported with its negative validation outcome;
-a candidate is not presented as a new discovery unless it passes the stated
-independent-evidence criteria.
+See [LICENSE](LICENSE).
