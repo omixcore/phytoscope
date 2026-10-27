@@ -1,6 +1,8 @@
-# PhytoScope
+<div align="right">
+  <img src="fig/phytoscope_logo.png" alt="PhytoScope logo" width="112">
+</div>
 
-<p align="center"><img src="fig/phytoscope_logo.png" alt="PhytoScope logo" width="180"></p>
+# PhytoScope
 
 <p align="center">
   <a href="https://github.com/omixcore/phytoscope"><img alt="Repository status: Active" src="https://img.shields.io/badge/repo%20status-Active-brightgreen"></a>
