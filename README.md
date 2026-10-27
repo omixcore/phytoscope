@@ -7,7 +7,7 @@ genes to promoter extraction, sample groups, sequence checks, protein similarity
 and domain mapping. Save portable projects and export TSV, PNG or editable SVG.
 Requires JDK 21. No external service is required while browsing local files.
 
-![PhytoScope workflow and public-data validation overview](https://raw.githubusercontent.com/omixcore/phytoscope/dev/Fig/Figure1.jpg)
+![PhytoScope software overview and workflow](https://raw.githubusercontent.com/omixcore/phytoscope/dev/Fig/Figure1.jpg)
 
 ## Reference examples and real expression case
 
