@@ -1,7 +1,3 @@
-<div align="right">
-  <img src="fig/phytoscope_logo.png" alt="PhytoScope logo" width="112">
-</div>
-
 # PhytoScope
 
 <p align="center">
@@ -11,6 +7,8 @@
   <a href="https://openjfx.io/"><img alt="JavaFX" src="https://img.shields.io/badge/UI-JavaFX-3C78A9"></a>
   <a href="https://github.com/omixcore/phytoscope/blob/dev/LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green"></a>
 </p>
+
+<img align="right" src="fig/phytoscope_logo.png" alt="PhytoScope logo" width="120">
 
 A local JavaFX desktop browser for plant gene structures. Import GFF3/GTF
 annotations, switch between sequences, inspect transcripts/exons/CDS/UTRs,
