@@ -230,6 +230,10 @@ The right-hand Gene Details → Sequences section displays the gene genomic span
 
 The Arabidopsis TAIR10 example bundles the version-pinned Ensembl Plants release 62 genomic FASTA (src/main/resources/data/species/arabidopsis/TAIR10_genomic.fna.gz); its checksum and chromosome lengths are recorded in genome-sequence-provenance.json. Other species or assemblies can use File → Import genome FASTA. The genome FASTA must match the annotation assembly and sequence names. The extractor respects 1-based inclusive GFF3 coordinates, reverse-complements minus-strand loci, concatenates exons/CDS in transcription order, and translates CDS with the standard nuclear genetic code. If UTR features are absent, terminal exonic bases outside annotated CDS boundaries are labelled as inferred; missing transcript/CDS models are never fabricated.
 
+## Citation
+
+Song X, Chen P, Liang F. *PhytoScope for portable local queries of plant genome data.* Concise Report.
+
 ## License
 
 **MIT** · [View the full license](LICENSE)
