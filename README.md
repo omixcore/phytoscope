@@ -9,7 +9,7 @@ Requires JDK 21. No external service is required while browsing local files.
 
 **License: MIT** · [View the full license](LICENSE)
 
-![PhytoScope workflow and public-data validation overview](docs/images/phytoscope-overview.jpg)
+![PhytoScope workflow and public-data validation overview](Fig/Figure1.jpg)
 
 ## Reference examples and real expression case
 
