@@ -1,0 +1,540 @@
+##gff-version 3
+##species=Mentha spicata
+##assembly=MG256495 chloroplast, complete genome
+# Source: INSDC MG256495 (GenBank/ENA), plastid:chloroplast, 152132 bp
+# Source record: https://www.ebi.ac.uk/ena/browser/api/embl/MG256495?download=false
+# Source SHA-256: 6e5667adfd3f15f2b0f28b599f964eed347d48fe84fb1a75f6f5f1e91ae4e017
+# Feature coordinates, gene names and products are copied verbatim from the
+# INSDC feature table; this file only adds the gene/transcript/exon hierarchy.
+##sequence-region Pt 1 152132
+Pt	MG256495	gene	13	55	.	+	.	ID=gene:rps19;Name=rps19;gene=rps19;biotype=pseudogene;pseudogene=unknown
+Pt	MG256495	gene	66	139	.	-	.	ID=gene:trnH-GUG;Name=trnH-GUG;gene=trnH-GUG;biotype=tRNA;Note=tRNA-Gly
+Pt	MG256495	tRNA	66	139	.	-	.	ID=transcript:trnH-GUG.1;Parent=gene:trnH-GUG;Name=trnH-GUG.1;biotype=tRNA;Note=tRNA-Gly
+Pt	MG256495	exon	66	139	.	-	.	ID=exon:trnH-GUG.1.e1;Parent=transcript:trnH-GUG.1
+Pt	MG256495	gene	455	1513	.	-	.	ID=gene:psbA;Name=psbA;gene=psbA;biotype=protein_coding;Note=photosystem II protein D1
+Pt	MG256495	mRNA	455	1513	.	-	.	ID=transcript:psbA.1;Parent=gene:psbA;Name=psbA.1;biotype=protein_coding;Note=photosystem II protein D1
+Pt	MG256495	exon	455	1513	.	-	.	ID=exon:psbA.1.e1;Parent=transcript:psbA.1
+Pt	MG256495	CDS	455	1513	.	-	.	ID=cds:psbA.1.c1;Parent=transcript:psbA.1;protein_id=AVI16367.1;transl_table=11
+Pt	MG256495	gene	1734	4329	.	-	.	ID=gene:trnK-UUU;Name=trnK-UUU;gene=trnK-UUU;biotype=tRNA;Note=tRNA-Lys
+Pt	MG256495	tRNA	1734	4329	.	-	.	ID=transcript:trnK-UUU.1;Parent=gene:trnK-UUU;Name=trnK-UUU.1;biotype=tRNA;Note=tRNA-Lys
+Pt	MG256495	exon	1734	1768	.	-	.	ID=exon:trnK-UUU.1.e1;Parent=transcript:trnK-UUU.1
+Pt	MG256495	gene	2062	3591	.	-	.	ID=gene:matK;Name=matK;gene=matK;biotype=protein_coding;Note=maturase K
+Pt	MG256495	mRNA	2062	3591	.	-	.	ID=transcript:matK.1;Parent=gene:matK;Name=matK.1;biotype=protein_coding;Note=maturase K
+Pt	MG256495	exon	2062	3591	.	-	.	ID=exon:matK.1.e1;Parent=transcript:matK.1
+Pt	MG256495	CDS	2062	3591	.	-	.	ID=cds:matK.1.c1;Parent=transcript:matK.1;protein_id=AVI16368.1;transl_table=11
+Pt	MG256495	exon	4293	4329	.	-	.	ID=exon:trnK-UUU.1.e2;Parent=transcript:trnK-UUU.1
+Pt	MG256495	gene	4857	5998	.	-	.	ID=gene:rps16;Name=rps16;gene=rps16;biotype=protein_coding;Note=ribosomal protein S16
+Pt	MG256495	mRNA	4857	5998	.	-	.	ID=transcript:rps16.1;Parent=gene:rps16;Name=rps16.1;biotype=protein_coding;Note=ribosomal protein S16
+Pt	MG256495	exon	4857	5081	.	-	.	ID=exon:rps16.1.e1;Parent=transcript:rps16.1
+Pt	MG256495	CDS	4857	5081	.	-	.	ID=cds:rps16.1.c1;Parent=transcript:rps16.1;protein_id=AVI16369.1;transl_table=11
+Pt	MG256495	exon	5957	5998	.	-	.	ID=exon:rps16.1.e2;Parent=transcript:rps16.1
+Pt	MG256495	CDS	5957	5998	.	-	.	ID=cds:rps16.1.c2;Parent=transcript:rps16.1;protein_id=AVI16369.1;transl_table=11
+Pt	MG256495	gene	6961	7032	.	-	.	ID=gene:trnQ-UUG;Name=trnQ-UUG;gene=trnQ-UUG;biotype=tRNA;Note=tRNA-Gln
+Pt	MG256495	tRNA	6961	7032	.	-	.	ID=transcript:trnQ-UUG.1;Parent=gene:trnQ-UUG;Name=trnQ-UUG.1;biotype=tRNA;Note=tRNA-Gln
+Pt	MG256495	exon	6961	7032	.	-	.	ID=exon:trnQ-UUG.1.e1;Parent=transcript:trnQ-UUG.1
+Pt	MG256495	gene	7413	7598	.	+	.	ID=gene:psbK;Name=psbK;gene=psbK;biotype=protein_coding;Note=photosystem II protein K
+Pt	MG256495	mRNA	7413	7598	.	+	.	ID=transcript:psbK.1;Parent=gene:psbK;Name=psbK.1;biotype=protein_coding;Note=photosystem II protein K
+Pt	MG256495	exon	7413	7598	.	+	.	ID=exon:psbK.1.e1;Parent=transcript:psbK.1
+Pt	MG256495	CDS	7413	7598	.	+	.	ID=cds:psbK.1.c1;Parent=transcript:psbK.1;protein_id=AVI16370.1;transl_table=11
+Pt	MG256495	gene	7992	8102	.	+	.	ID=gene:psbI;Name=psbI;gene=psbI;biotype=protein_coding;Note=photosystem II protein I
+Pt	MG256495	mRNA	7992	8102	.	+	.	ID=transcript:psbI.1;Parent=gene:psbI;Name=psbI.1;biotype=protein_coding;Note=photosystem II protein I
+Pt	MG256495	exon	7992	8102	.	+	.	ID=exon:psbI.1.e1;Parent=transcript:psbI.1
+Pt	MG256495	CDS	7992	8102	.	+	.	ID=cds:psbI.1.c1;Parent=transcript:psbI.1;protein_id=AVI16371.1;transl_table=11
+Pt	MG256495	gene	8244	8331	.	-	.	ID=gene:trnS-GCU;Name=trnS-GCU;gene=trnS-GCU;biotype=tRNA;Note=tRNA-Ser
+Pt	MG256495	tRNA	8244	8331	.	-	.	ID=transcript:trnS-GCU.1;Parent=gene:trnS-GCU;Name=trnS-GCU.1;biotype=tRNA;Note=tRNA-Ser
+Pt	MG256495	exon	8244	8331	.	-	.	ID=exon:trnS-GCU.1.e1;Parent=transcript:trnS-GCU.1
+Pt	MG256495	gene	9010	9766	.	+	.	ID=gene:trnG-UCC;Name=trnG-UCC;gene=trnG-UCC;biotype=tRNA;Note=tRNA-Gly
+Pt	MG256495	tRNA	9010	9766	.	+	.	ID=transcript:trnG-UCC.1;Parent=gene:trnG-UCC;Name=trnG-UCC.1;biotype=tRNA;Note=tRNA-Gly
+Pt	MG256495	exon	9010	9032	.	+	.	ID=exon:trnG-UCC.1.e1;Parent=transcript:trnG-UCC.1
+Pt	MG256495	exon	9720	9766	.	+	.	ID=exon:trnG-UCC.1.e2;Parent=transcript:trnG-UCC.1
+Pt	MG256495	gene	9971	10042	.	+	.	ID=gene:trnR-UCU;Name=trnR-UCU;gene=trnR-UCU;biotype=tRNA;Note=tRNA-Arg
+Pt	MG256495	tRNA	9971	10042	.	+	.	ID=transcript:trnR-UCU.1;Parent=gene:trnR-UCU;Name=trnR-UCU.1;biotype=tRNA;Note=tRNA-Arg
+Pt	MG256495	exon	9971	10042	.	+	.	ID=exon:trnR-UCU.1.e1;Parent=transcript:trnR-UCU.1
+Pt	MG256495	gene	10151	11674	.	-	.	ID=gene:atpA;Name=atpA;gene=atpA;biotype=protein_coding;Note=ATP synthase CF1 alpha subunit
+Pt	MG256495	mRNA	10151	11674	.	-	.	ID=transcript:atpA.1;Parent=gene:atpA;Name=atpA.1;biotype=protein_coding;Note=ATP synthase CF1 alpha subunit
+Pt	MG256495	exon	10151	11674	.	-	.	ID=exon:atpA.1.e1;Parent=transcript:atpA.1
+Pt	MG256495	CDS	10151	11674	.	-	.	ID=cds:atpA.1.c1;Parent=transcript:atpA.1;protein_id=AVI16372.1;transl_table=11
+Pt	MG256495	gene	11768	13012	.	-	.	ID=gene:atpF;Name=atpF;gene=atpF;biotype=protein_coding;Note=ATP synthase CF0 B subunit
+Pt	MG256495	mRNA	11768	13012	.	-	.	ID=transcript:atpF.1;Parent=gene:atpF;Name=atpF.1;biotype=protein_coding;Note=ATP synthase CF0 B subunit
+Pt	MG256495	exon	11768	12178	.	-	.	ID=exon:atpF.1.e1;Parent=transcript:atpF.1
+Pt	MG256495	CDS	11768	12178	.	-	.	ID=cds:atpF.1.c1;Parent=transcript:atpF.1;protein_id=AVI16373.1;transl_table=11
+Pt	MG256495	exon	12869	13012	.	-	.	ID=exon:atpF.1.e2;Parent=transcript:atpF.1
+Pt	MG256495	CDS	12869	13012	.	-	.	ID=cds:atpF.1.c2;Parent=transcript:atpF.1;protein_id=AVI16373.1;transl_table=11
+Pt	MG256495	gene	13278	13523	.	-	.	ID=gene:atpH;Name=atpH;gene=atpH;biotype=protein_coding;Note=ATP synthase CF0 C chain
+Pt	MG256495	mRNA	13278	13523	.	-	.	ID=transcript:atpH.1;Parent=gene:atpH;Name=atpH.1;biotype=protein_coding;Note=ATP synthase CF0 C chain
+Pt	MG256495	exon	13278	13523	.	-	.	ID=exon:atpH.1.e1;Parent=transcript:atpH.1
+Pt	MG256495	CDS	13278	13523	.	-	.	ID=cds:atpH.1.c1;Parent=transcript:atpH.1;protein_id=AVI16374.1;transl_table=11
+Pt	MG256495	gene	14526	15269	.	-	.	ID=gene:atpI;Name=atpI;gene=atpI;biotype=protein_coding;Note=ATP synthase CF0 A chain
+Pt	MG256495	mRNA	14526	15269	.	-	.	ID=transcript:atpI.1;Parent=gene:atpI;Name=atpI.1;biotype=protein_coding;Note=ATP synthase CF0 A chain
+Pt	MG256495	exon	14526	15269	.	-	.	ID=exon:atpI.1.e1;Parent=transcript:atpI.1
+Pt	MG256495	CDS	14526	15269	.	-	.	ID=cds:atpI.1.c1;Parent=transcript:atpI.1;protein_id=AVI16375.1;transl_table=11
+Pt	MG256495	gene	15492	16202	.	-	.	ID=gene:rps2;Name=rps2;gene=rps2;biotype=protein_coding;Note=ribosomal protein S2
+Pt	MG256495	mRNA	15492	16202	.	-	.	ID=transcript:rps2.1;Parent=gene:rps2;Name=rps2.1;biotype=protein_coding;Note=ribosomal protein S2
+Pt	MG256495	exon	15492	16202	.	-	.	ID=exon:rps2.1.e1;Parent=transcript:rps2.1
+Pt	MG256495	CDS	15492	16202	.	-	.	ID=cds:rps2.1.c1;Parent=transcript:rps2.1;protein_id=AVI16376.1;transl_table=11
+Pt	MG256495	gene	16423	20622	.	-	.	ID=gene:rpoC2;Name=rpoC2;gene=rpoC2;biotype=protein_coding;Note=RNA polymerase beta subunit-2
+Pt	MG256495	mRNA	16423	20622	.	-	.	ID=transcript:rpoC2.1;Parent=gene:rpoC2;Name=rpoC2.1;biotype=protein_coding;Note=RNA polymerase beta subunit-2
+Pt	MG256495	exon	16423	20622	.	-	.	ID=exon:rpoC2.1.e1;Parent=transcript:rpoC2.1
+Pt	MG256495	CDS	16423	20622	.	-	.	ID=cds:rpoC2.1.c1;Parent=transcript:rpoC2.1;protein_id=AVI16377.1;transl_table=11
+Pt	MG256495	gene	20783	23615	.	-	.	ID=gene:rpoC1;Name=rpoC1;gene=rpoC1;biotype=protein_coding;Note=RNA polymerase beta' subunit
+Pt	MG256495	mRNA	20783	23615	.	-	.	ID=transcript:rpoC1.1;Parent=gene:rpoC1;Name=rpoC1.1;biotype=protein_coding;Note=RNA polymerase beta' subunit
+Pt	MG256495	exon	20783	22402	.	-	.	ID=exon:rpoC1.1.e1;Parent=transcript:rpoC1.1
+Pt	MG256495	CDS	20783	22402	.	-	.	ID=cds:rpoC1.1.c1;Parent=transcript:rpoC1.1;protein_id=AVI16378.1;transl_table=11
+Pt	MG256495	exon	23160	23615	.	-	.	ID=exon:rpoC1.1.e2;Parent=transcript:rpoC1.1
+Pt	MG256495	CDS	23160	23615	.	-	.	ID=cds:rpoC1.1.c2;Parent=transcript:rpoC1.1;protein_id=AVI16378.1;transl_table=11
+Pt	MG256495	gene	23621	26833	.	-	.	ID=gene:rpoB;Name=rpoB;gene=rpoB;biotype=protein_coding;Note=RNA polymerase beta subunit
+Pt	MG256495	mRNA	23621	26833	.	-	.	ID=transcript:rpoB.1;Parent=gene:rpoB;Name=rpoB.1;biotype=protein_coding;Note=RNA polymerase beta subunit
+Pt	MG256495	exon	23621	26833	.	-	.	ID=exon:rpoB.1.e1;Parent=transcript:rpoB.1
+Pt	MG256495	CDS	23621	26833	.	-	.	ID=cds:rpoB.1.c1;Parent=transcript:rpoB.1;protein_id=AVI16379.1;transl_table=11
+Pt	MG256495	gene	27974	28044	.	+	.	ID=gene:trnC-GCA;Name=trnC-GCA;gene=trnC-GCA;biotype=tRNA;Note=tRNA-Cys
+Pt	MG256495	tRNA	27974	28044	.	+	.	ID=transcript:trnC-GCA.1;Parent=gene:trnC-GCA;Name=trnC-GCA.1;biotype=tRNA;Note=tRNA-Cys
+Pt	MG256495	exon	27974	28044	.	+	.	ID=exon:trnC-GCA.1.e1;Parent=transcript:trnC-GCA.1
+Pt	MG256495	gene	28205	28294	.	+	.	ID=gene:petN;Name=petN;gene=petN;biotype=protein_coding;Note=cytochrome b6/f complex subunit VIII
+Pt	MG256495	mRNA	28205	28294	.	+	.	ID=transcript:petN.1;Parent=gene:petN;Name=petN.1;biotype=protein_coding;Note=cytochrome b6/f complex subunit VIII
+Pt	MG256495	exon	28205	28294	.	+	.	ID=exon:petN.1.e1;Parent=transcript:petN.1
+Pt	MG256495	CDS	28205	28294	.	+	.	ID=cds:petN.1.c1;Parent=transcript:petN.1;protein_id=AVI16380.1;transl_table=11
+Pt	MG256495	gene	29259	29363	.	-	.	ID=gene:psbM;Name=psbM;gene=psbM;biotype=protein_coding;Note=photosystem II M protein
+Pt	MG256495	mRNA	29259	29363	.	-	.	ID=transcript:psbM.1;Parent=gene:psbM;Name=psbM.1;biotype=protein_coding;Note=photosystem II M protein
+Pt	MG256495	exon	29259	29363	.	-	.	ID=exon:psbM.1.e1;Parent=transcript:psbM.1
+Pt	MG256495	CDS	29259	29363	.	-	.	ID=cds:psbM.1.c1;Parent=transcript:psbM.1;protein_id=AVI16381.1;transl_table=11
+Pt	MG256495	gene	29887	29960	.	-	.	ID=gene:trnD-GUC;Name=trnD-GUC;gene=trnD-GUC;biotype=tRNA;Note=tRNA-Asp
+Pt	MG256495	tRNA	29887	29960	.	-	.	ID=transcript:trnD-GUC.1;Parent=gene:trnD-GUC;Name=trnD-GUC.1;biotype=tRNA;Note=tRNA-Asp
+Pt	MG256495	exon	29887	29960	.	-	.	ID=exon:trnD-GUC.1.e1;Parent=transcript:trnD-GUC.1
+Pt	MG256495	gene	30071	30154	.	-	.	ID=gene:trnY-GUA;Name=trnY-GUA;gene=trnY-GUA;biotype=tRNA;Note=tRNA-Tyr
+Pt	MG256495	tRNA	30071	30154	.	-	.	ID=transcript:trnY-GUA.1;Parent=gene:trnY-GUA;Name=trnY-GUA.1;biotype=tRNA;Note=tRNA-Tyr
+Pt	MG256495	exon	30071	30154	.	-	.	ID=exon:trnY-GUA.1.e1;Parent=transcript:trnY-GUA.1
+Pt	MG256495	gene	30236	30308	.	-	.	ID=gene:trnE-UUC;Name=trnE-UUC;gene=trnE-UUC;biotype=tRNA;Note=tRNA-Glu
+Pt	MG256495	tRNA	30236	30308	.	-	.	ID=transcript:trnE-UUC.1;Parent=gene:trnE-UUC;Name=trnE-UUC.1;biotype=tRNA;Note=tRNA-Glu
+Pt	MG256495	exon	30236	30308	.	-	.	ID=exon:trnE-UUC.1.e1;Parent=transcript:trnE-UUC.1
+Pt	MG256495	gene	30879	30950	.	+	.	ID=gene:trnT-GGU;Name=trnT-GGU;gene=trnT-GGU;biotype=tRNA;Note=tRNA-Thr
+Pt	MG256495	tRNA	30879	30950	.	+	.	ID=transcript:trnT-GGU.1;Parent=gene:trnT-GGU;Name=trnT-GGU.1;biotype=tRNA;Note=tRNA-Thr
+Pt	MG256495	exon	30879	30950	.	+	.	ID=exon:trnT-GGU.1.e1;Parent=transcript:trnT-GGU.1
+Pt	MG256495	gene	32306	33367	.	+	.	ID=gene:psbD;Name=psbD;gene=psbD;biotype=protein_coding;Note=photosystem II protein D2
+Pt	MG256495	mRNA	32306	33367	.	+	.	ID=transcript:psbD.1;Parent=gene:psbD;Name=psbD.1;biotype=protein_coding;Note=photosystem II protein D2
+Pt	MG256495	exon	32306	33367	.	+	.	ID=exon:psbD.1.e1;Parent=transcript:psbD.1
+Pt	MG256495	CDS	32306	33367	.	+	.	ID=cds:psbD.1.c1;Parent=transcript:psbD.1;protein_id=AVI16382.1;transl_table=11
+Pt	MG256495	gene	33315	34736	.	+	.	ID=gene:psbC;Name=psbC;gene=psbC;biotype=protein_coding;Note=photosystem II 44 kDa protein
+Pt	MG256495	mRNA	33315	34736	.	+	.	ID=transcript:psbC.1;Parent=gene:psbC;Name=psbC.1;biotype=protein_coding;Note=photosystem II 44 kDa protein
+Pt	MG256495	exon	33315	34736	.	+	.	ID=exon:psbC.1.e1;Parent=transcript:psbC.1
+Pt	MG256495	CDS	33315	34736	.	+	.	ID=cds:psbC.1.c1;Parent=transcript:psbC.1;protein_id=AVI16383.1;transl_table=11
+Pt	MG256495	gene	34982	35074	.	-	.	ID=gene:trnS-UGA;Name=trnS-UGA;gene=trnS-UGA;biotype=tRNA;Note=tRNA-Ser
+Pt	MG256495	tRNA	34982	35074	.	-	.	ID=transcript:trnS-UGA.1;Parent=gene:trnS-UGA;Name=trnS-UGA.1;biotype=tRNA;Note=tRNA-Ser
+Pt	MG256495	exon	34982	35074	.	-	.	ID=exon:trnS-UGA.1.e1;Parent=transcript:trnS-UGA.1
+Pt	MG256495	gene	35425	35613	.	+	.	ID=gene:psbZ;Name=psbZ;gene=psbZ;biotype=protein_coding;Note=photosystem II protein z
+Pt	MG256495	mRNA	35425	35613	.	+	.	ID=transcript:psbZ.1;Parent=gene:psbZ;Name=psbZ.1;biotype=protein_coding;Note=photosystem II protein z
+Pt	MG256495	exon	35425	35613	.	+	.	ID=exon:psbZ.1.e1;Parent=transcript:psbZ.1
+Pt	MG256495	CDS	35425	35613	.	+	.	ID=cds:psbZ.1.c1;Parent=transcript:psbZ.1;protein_id=AVI16384.1;transl_table=11
+Pt	MG256495	gene	35885	35955	.	+	.	ID=gene:trnG-GCC;Name=trnG-GCC;gene=trnG-GCC;biotype=tRNA;Note=tRNA-Gly
+Pt	MG256495	tRNA	35885	35955	.	+	.	ID=transcript:trnG-GCC.1;Parent=gene:trnG-GCC;Name=trnG-GCC.1;biotype=tRNA;Note=tRNA-Gly
+Pt	MG256495	exon	35885	35955	.	+	.	ID=exon:trnG-GCC.1.e1;Parent=transcript:trnG-GCC.1
+Pt	MG256495	gene	36117	36190	.	-	.	ID=gene:trnfM-CAU;Name=trnfM-CAU;gene=trnfM-CAU;biotype=tRNA;Note=tRNA-Met
+Pt	MG256495	tRNA	36117	36190	.	-	.	ID=transcript:trnfM-CAU.1;Parent=gene:trnfM-CAU;Name=trnfM-CAU.1;biotype=tRNA;Note=tRNA-Met
+Pt	MG256495	exon	36117	36190	.	-	.	ID=exon:trnfM-CAU.1.e1;Parent=transcript:trnfM-CAU.1
+Pt	MG256495	gene	36340	36642	.	-	.	ID=gene:rps14;Name=rps14;gene=rps14;biotype=protein_coding;Note=ribosomal protein S14
+Pt	MG256495	mRNA	36340	36642	.	-	.	ID=transcript:rps14.1;Parent=gene:rps14;Name=rps14.1;biotype=protein_coding;Note=ribosomal protein S14
+Pt	MG256495	exon	36340	36642	.	-	.	ID=exon:rps14.1.e1;Parent=transcript:rps14.1
+Pt	MG256495	CDS	36340	36642	.	-	.	ID=cds:rps14.1.c1;Parent=transcript:rps14.1;protein_id=AVI16385.1;transl_table=11
+Pt	MG256495	gene	36770	38974	.	-	.	ID=gene:psaB;Name=psaB;gene=psaB;biotype=protein_coding;Note=photosystem I P700 apoprotein A2
+Pt	MG256495	mRNA	36770	38974	.	-	.	ID=transcript:psaB.1;Parent=gene:psaB;Name=psaB.1;biotype=protein_coding;Note=photosystem I P700 apoprotein A2
+Pt	MG256495	exon	36770	38974	.	-	.	ID=exon:psaB.1.e1;Parent=transcript:psaB.1
+Pt	MG256495	CDS	36770	38974	.	-	.	ID=cds:psaB.1.c1;Parent=transcript:psaB.1;protein_id=AVI16386.1;transl_table=11
+Pt	MG256495	gene	39000	41252	.	-	.	ID=gene:psaA;Name=psaA;gene=psaA;biotype=protein_coding;Note=photosystem I P700 apoprotein A1
+Pt	MG256495	mRNA	39000	41252	.	-	.	ID=transcript:psaA.1;Parent=gene:psaA;Name=psaA.1;biotype=protein_coding;Note=photosystem I P700 apoprotein A1
+Pt	MG256495	exon	39000	41252	.	-	.	ID=exon:psaA.1.e1;Parent=transcript:psaA.1
+Pt	MG256495	CDS	39000	41252	.	-	.	ID=cds:psaA.1.c1;Parent=transcript:psaA.1;protein_id=AVI16387.1;transl_table=11
+Pt	MG256495	gene	42016	43961	.	-	.	ID=gene:ycf3;Name=ycf3;gene=ycf3;biotype=protein_coding;Note=photosystem I assembly protein Ycf3
+Pt	MG256495	mRNA	42016	43961	.	-	.	ID=transcript:ycf3.1;Parent=gene:ycf3;Name=ycf3.1;biotype=protein_coding;Note=photosystem I assembly protein Ycf3
+Pt	MG256495	exon	42016	42168	.	-	.	ID=exon:ycf3.1.e1;Parent=transcript:ycf3.1
+Pt	MG256495	CDS	42016	42168	.	-	.	ID=cds:ycf3.1.c1;Parent=transcript:ycf3.1;protein_id=AVI16388.1;transl_table=11
+Pt	MG256495	exon	42905	43132	.	-	.	ID=exon:ycf3.1.e2;Parent=transcript:ycf3.1
+Pt	MG256495	CDS	42905	43132	.	-	.	ID=cds:ycf3.1.c2;Parent=transcript:ycf3.1;protein_id=AVI16388.1;transl_table=11
+Pt	MG256495	exon	43833	43961	.	-	.	ID=exon:ycf3.1.e3;Parent=transcript:ycf3.1
+Pt	MG256495	CDS	43833	43961	.	-	.	ID=cds:ycf3.1.c3;Parent=transcript:ycf3.1;protein_id=AVI16388.1;transl_table=11
+Pt	MG256495	gene	44806	44892	.	+	.	ID=gene:trnS-GGA;Name=trnS-GGA;gene=trnS-GGA;biotype=tRNA;Note=tRNA-Ser
+Pt	MG256495	tRNA	44806	44892	.	+	.	ID=transcript:trnS-GGA.1;Parent=gene:trnS-GGA;Name=trnS-GGA.1;biotype=tRNA;Note=tRNA-Ser
+Pt	MG256495	exon	44806	44892	.	+	.	ID=exon:trnS-GGA.1.e1;Parent=transcript:trnS-GGA.1
+Pt	MG256495	gene	45180	45785	.	-	.	ID=gene:rps4;Name=rps4;gene=rps4;biotype=protein_coding;Note=ribosomal protein S4
+Pt	MG256495	mRNA	45180	45785	.	-	.	ID=transcript:rps4.1;Parent=gene:rps4;Name=rps4.1;biotype=protein_coding;Note=ribosomal protein S4
+Pt	MG256495	exon	45180	45785	.	-	.	ID=exon:rps4.1.e1;Parent=transcript:rps4.1
+Pt	MG256495	CDS	45180	45785	.	-	.	ID=cds:rps4.1.c1;Parent=transcript:rps4.1;protein_id=AVI16389.1;transl_table=11
+Pt	MG256495	gene	46198	46270	.	-	.	ID=gene:trnT-UGU;Name=trnT-UGU;gene=trnT-UGU;biotype=tRNA;Note=tRNA-Thr
+Pt	MG256495	tRNA	46198	46270	.	-	.	ID=transcript:trnT-UGU.1;Parent=gene:trnT-UGU;Name=trnT-UGU.1;biotype=tRNA;Note=tRNA-Thr
+Pt	MG256495	exon	46198	46270	.	-	.	ID=exon:trnT-UGU.1.e1;Parent=transcript:trnT-UGU.1
+Pt	MG256495	gene	46918	47499	.	+	.	ID=gene:trnL-UAA;Name=trnL-UAA;gene=trnL-UAA;biotype=tRNA;Note=tRNA-Leu
+Pt	MG256495	tRNA	46918	47499	.	+	.	ID=transcript:trnL-UAA.1;Parent=gene:trnL-UAA;Name=trnL-UAA.1;biotype=tRNA;Note=tRNA-Leu
+Pt	MG256495	exon	46918	46955	.	+	.	ID=exon:trnL-UAA.1.e1;Parent=transcript:trnL-UAA.1
+Pt	MG256495	exon	47451	47499	.	+	.	ID=exon:trnL-UAA.1.e2;Parent=transcript:trnL-UAA.1
+Pt	MG256495	gene	47788	47860	.	+	.	ID=gene:trnF-GAA;Name=trnF-GAA;gene=trnF-GAA;biotype=tRNA;Note=tRNA-Phe
+Pt	MG256495	tRNA	47788	47860	.	+	.	ID=transcript:trnF-GAA.1;Parent=gene:trnF-GAA;Name=trnF-GAA.1;biotype=tRNA;Note=tRNA-Phe
+Pt	MG256495	exon	47788	47860	.	+	.	ID=exon:trnF-GAA.1.e1;Parent=transcript:trnF-GAA.1
+Pt	MG256495	gene	48514	48990	.	-	.	ID=gene:ndhJ;Name=ndhJ;gene=ndhJ;biotype=protein_coding;Note=NADH dehydrogenase subunit J
+Pt	MG256495	mRNA	48514	48990	.	-	.	ID=transcript:ndhJ.1;Parent=gene:ndhJ;Name=ndhJ.1;biotype=protein_coding;Note=NADH dehydrogenase subunit J
+Pt	MG256495	exon	48514	48990	.	-	.	ID=exon:ndhJ.1.e1;Parent=transcript:ndhJ.1
+Pt	MG256495	CDS	48514	48990	.	-	.	ID=cds:ndhJ.1.c1;Parent=transcript:ndhJ.1;protein_id=AVI16390.1;transl_table=11
+Pt	MG256495	gene	49101	49778	.	-	.	ID=gene:ndhK;Name=ndhK;gene=ndhK;biotype=protein_coding;Note=NADH dehydrogenase subunit K
+Pt	MG256495	mRNA	49101	49778	.	-	.	ID=transcript:ndhK.1;Parent=gene:ndhK;Name=ndhK.1;biotype=protein_coding;Note=NADH dehydrogenase subunit K
+Pt	MG256495	exon	49101	49778	.	-	.	ID=exon:ndhK.1.e1;Parent=transcript:ndhK.1
+Pt	MG256495	CDS	49101	49778	.	-	.	ID=cds:ndhK.1.c1;Parent=transcript:ndhK.1;protein_id=AVI16391.1;transl_table=11
+Pt	MG256495	gene	49830	50192	.	-	.	ID=gene:ndhC;Name=ndhC;gene=ndhC;biotype=protein_coding;Note=NADH dehydrogenase subunit 3
+Pt	MG256495	mRNA	49830	50192	.	-	.	ID=transcript:ndhC.1;Parent=gene:ndhC;Name=ndhC.1;biotype=protein_coding;Note=NADH dehydrogenase subunit 3
+Pt	MG256495	exon	49830	50192	.	-	.	ID=exon:ndhC.1.e1;Parent=transcript:ndhC.1
+Pt	MG256495	CDS	49830	50192	.	-	.	ID=cds:ndhC.1.c1;Parent=transcript:ndhC.1;protein_id=AVI16392.1;transl_table=11
+Pt	MG256495	gene	51141	51782	.	-	.	ID=gene:trnV-UAC;Name=trnV-UAC;gene=trnV-UAC;biotype=tRNA;Note=tRNA-Val
+Pt	MG256495	tRNA	51141	51782	.	-	.	ID=transcript:trnV-UAC.1;Parent=gene:trnV-UAC;Name=trnV-UAC.1;biotype=tRNA;Note=tRNA-Val
+Pt	MG256495	exon	51141	51177	.	-	.	ID=exon:trnV-UAC.1.e1;Parent=transcript:trnV-UAC.1
+Pt	MG256495	exon	51747	51782	.	-	.	ID=exon:trnV-UAC.1.e2;Parent=transcript:trnV-UAC.1
+Pt	MG256495	gene	51963	52035	.	+	.	ID=gene:trnM-CAU;Name=trnM-CAU;gene=trnM-CAU;biotype=tRNA;Note=tRNA-Met
+Pt	MG256495	tRNA	51963	52035	.	+	.	ID=transcript:trnM-CAU.1;Parent=gene:trnM-CAU;Name=trnM-CAU.1;biotype=tRNA;Note=tRNA-Met
+Pt	MG256495	exon	51963	52035	.	+	.	ID=exon:trnM-CAU.1.e1;Parent=transcript:trnM-CAU.1
+Pt	MG256495	gene	52246	52647	.	-	.	ID=gene:atpE;Name=atpE;gene=atpE;biotype=protein_coding;Note=ATP synthase CF1 epsilon subunit
+Pt	MG256495	mRNA	52246	52647	.	-	.	ID=transcript:atpE.1;Parent=gene:atpE;Name=atpE.1;biotype=protein_coding;Note=ATP synthase CF1 epsilon subunit
+Pt	MG256495	exon	52246	52647	.	-	.	ID=exon:atpE.1.e1;Parent=transcript:atpE.1
+Pt	MG256495	CDS	52246	52647	.	-	.	ID=cds:atpE.1.c1;Parent=transcript:atpE.1;protein_id=AVI16393.1;transl_table=11
+Pt	MG256495	gene	52644	54134	.	-	.	ID=gene:atpB;Name=atpB;gene=atpB;biotype=protein_coding;Note=ATP synthase CF1 beta subunit
+Pt	MG256495	mRNA	52644	54134	.	-	.	ID=transcript:atpB.1;Parent=gene:atpB;Name=atpB.1;biotype=protein_coding;Note=ATP synthase CF1 beta subunit
+Pt	MG256495	exon	52644	54134	.	-	.	ID=exon:atpB.1.e1;Parent=transcript:atpB.1
+Pt	MG256495	CDS	52644	54134	.	-	.	ID=cds:atpB.1.c1;Parent=transcript:atpB.1;protein_id=AVI16394.1;transl_table=11
+Pt	MG256495	gene	54920	56353	.	+	.	ID=gene:rbcL;Name=rbcL;gene=rbcL;biotype=protein_coding;Note=ribulose-1,5-bisphosphate carboxylase/oxygenase
+Pt	MG256495	mRNA	54920	56353	.	+	.	ID=transcript:rbcL.1;Parent=gene:rbcL;Name=rbcL.1;biotype=protein_coding;Note=ribulose-1,5-bisphosphate carboxylase/oxygenase
+Pt	MG256495	exon	54920	56353	.	+	.	ID=exon:rbcL.1.e1;Parent=transcript:rbcL.1
+Pt	MG256495	CDS	54920	56353	.	+	.	ID=cds:rbcL.1.c1;Parent=transcript:rbcL.1;protein_id=AVI16395.1;transl_table=11
+Pt	MG256495	gene	57049	58530	.	+	.	ID=gene:accD;Name=accD;gene=accD;biotype=protein_coding;Note=acetyl-CoA carboxylase beta subunit
+Pt	MG256495	mRNA	57049	58530	.	+	.	ID=transcript:accD.1;Parent=gene:accD;Name=accD.1;biotype=protein_coding;Note=acetyl-CoA carboxylase beta subunit
+Pt	MG256495	exon	57049	58530	.	+	.	ID=exon:accD.1.e1;Parent=transcript:accD.1
+Pt	MG256495	CDS	57049	58530	.	+	.	ID=cds:accD.1.c1;Parent=transcript:accD.1;protein_id=AVI16396.1;transl_table=11
+Pt	MG256495	gene	59001	59111	.	+	.	ID=gene:psaI;Name=psaI;gene=psaI;biotype=protein_coding;Note=photosystem I subunit VIII
+Pt	MG256495	mRNA	59001	59111	.	+	.	ID=transcript:psaI.1;Parent=gene:psaI;Name=psaI.1;biotype=protein_coding;Note=photosystem I subunit VIII
+Pt	MG256495	exon	59001	59111	.	+	.	ID=exon:psaI.1.e1;Parent=transcript:psaI.1
+Pt	MG256495	CDS	59001	59111	.	+	.	ID=cds:psaI.1.c1;Parent=transcript:psaI.1;protein_id=AVI16397.1;transl_table=11
+Pt	MG256495	gene	59559	60113	.	+	.	ID=gene:ycf4;Name=ycf4;gene=ycf4;biotype=protein_coding;Note=photosystem I assembly protein Ycf4
+Pt	MG256495	mRNA	59559	60113	.	+	.	ID=transcript:ycf4.1;Parent=gene:ycf4;Name=ycf4.1;biotype=protein_coding;Note=photosystem I assembly protein Ycf4
+Pt	MG256495	exon	59559	60113	.	+	.	ID=exon:ycf4.1.e1;Parent=transcript:ycf4.1
+Pt	MG256495	CDS	59559	60113	.	+	.	ID=cds:ycf4.1.c1;Parent=transcript:ycf4.1;protein_id=AVI16398.1;transl_table=11
+Pt	MG256495	gene	60766	61455	.	+	.	ID=gene:cemA;Name=cemA;gene=cemA;biotype=protein_coding;Note=envelope membrane protein
+Pt	MG256495	mRNA	60766	61455	.	+	.	ID=transcript:cemA.1;Parent=gene:cemA;Name=cemA.1;biotype=protein_coding;Note=envelope membrane protein
+Pt	MG256495	exon	60766	61455	.	+	.	ID=exon:cemA.1.e1;Parent=transcript:cemA.1
+Pt	MG256495	CDS	60766	61455	.	+	.	ID=cds:cemA.1.c1;Parent=transcript:cemA.1;protein_id=AVI16399.1;transl_table=11
+Pt	MG256495	gene	61670	62632	.	+	.	ID=gene:petA;Name=petA;gene=petA;biotype=protein_coding;Note=component of cytochrome b6/f complex
+Pt	MG256495	mRNA	61670	62632	.	+	.	ID=transcript:petA.1;Parent=gene:petA;Name=petA.1;biotype=protein_coding;Note=component of cytochrome b6/f complex
+Pt	MG256495	exon	61670	62632	.	+	.	ID=exon:petA.1.e1;Parent=transcript:petA.1
+Pt	MG256495	CDS	61670	62632	.	+	.	ID=cds:petA.1.c1;Parent=transcript:petA.1;protein_id=AVI16400.1;transl_table=11
+Pt	MG256495	gene	63653	63775	.	-	.	ID=gene:psbJ;Name=psbJ;gene=psbJ;biotype=protein_coding;Note=photosystem II protein J
+Pt	MG256495	mRNA	63653	63775	.	-	.	ID=transcript:psbJ.1;Parent=gene:psbJ;Name=psbJ.1;biotype=protein_coding;Note=photosystem II protein J
+Pt	MG256495	exon	63653	63775	.	-	.	ID=exon:psbJ.1.e1;Parent=transcript:psbJ.1
+Pt	MG256495	CDS	63653	63775	.	-	.	ID=cds:psbJ.1.c1;Parent=transcript:psbJ.1;protein_id=AVI16401.1;transl_table=11
+Pt	MG256495	gene	63910	64026	.	-	.	ID=gene:psbL;Name=psbL;gene=psbL;biotype=protein_coding;Note=photosystem II protein L
+Pt	MG256495	mRNA	63910	64026	.	-	.	ID=transcript:psbL.1;Parent=gene:psbL;Name=psbL.1;biotype=protein_coding;Note=photosystem II protein L
+Pt	MG256495	exon	63910	64026	.	-	.	ID=exon:psbL.1.e1;Parent=transcript:psbL.1
+Pt	MG256495	CDS	63910	64026	.	-	.	ID=cds:psbL.1.c1;Parent=transcript:psbL.1;protein_id=AVI16402.1;transl_table=11
+Pt	MG256495	gene	64050	64169	.	-	.	ID=gene:psbF;Name=psbF;gene=psbF;biotype=protein_coding;Note=photosystem II protein VI
+Pt	MG256495	mRNA	64050	64169	.	-	.	ID=transcript:psbF.1;Parent=gene:psbF;Name=psbF.1;biotype=protein_coding;Note=photosystem II protein VI
+Pt	MG256495	exon	64050	64169	.	-	.	ID=exon:psbF.1.e1;Parent=transcript:psbF.1
+Pt	MG256495	CDS	64050	64169	.	-	.	ID=cds:psbF.1.c1;Parent=transcript:psbF.1;protein_id=AVI16403.1;transl_table=11
+Pt	MG256495	gene	64184	64435	.	-	.	ID=gene:psbE;Name=psbE;gene=psbE;biotype=protein_coding;Note=photosystem II protein V
+Pt	MG256495	mRNA	64184	64435	.	-	.	ID=transcript:psbE.1;Parent=gene:psbE;Name=psbE.1;biotype=protein_coding;Note=photosystem II protein V
+Pt	MG256495	exon	64184	64435	.	-	.	ID=exon:psbE.1.e1;Parent=transcript:psbE.1
+Pt	MG256495	CDS	64184	64435	.	-	.	ID=cds:psbE.1.c1;Parent=transcript:psbE.1;protein_id=AVI16404.1;transl_table=11
+Pt	MG256495	gene	65313	65408	.	+	.	ID=gene:petL;Name=petL;gene=petL;biotype=protein_coding;Note=cytochrome b/f complex 3.5 kDa subunit
+Pt	MG256495	mRNA	65313	65408	.	+	.	ID=transcript:petL.1;Parent=gene:petL;Name=petL.1;biotype=protein_coding;Note=cytochrome b/f complex 3.5 kDa subunit
+Pt	MG256495	exon	65313	65408	.	+	.	ID=exon:petL.1.e1;Parent=transcript:petL.1
+Pt	MG256495	CDS	65313	65408	.	+	.	ID=cds:petL.1.c1;Parent=transcript:petL.1;protein_id=AVI16405.1;transl_table=11
+Pt	MG256495	gene	65578	65691	.	+	.	ID=gene:petG;Name=petG;gene=petG;biotype=protein_coding;Note=cytochrome b6/f complex subunit V
+Pt	MG256495	mRNA	65578	65691	.	+	.	ID=transcript:petG.1;Parent=gene:petG;Name=petG.1;biotype=protein_coding;Note=cytochrome b6/f complex subunit V
+Pt	MG256495	exon	65578	65691	.	+	.	ID=exon:petG.1.e1;Parent=transcript:petG.1
+Pt	MG256495	CDS	65578	65691	.	+	.	ID=cds:petG.1.c1;Parent=transcript:petG.1;protein_id=AVI16406.1;transl_table=11
+Pt	MG256495	gene	65811	65884	.	-	.	ID=gene:trnW-CCA;Name=trnW-CCA;gene=trnW-CCA;biotype=tRNA;Note=tRNA-Trp
+Pt	MG256495	tRNA	65811	65884	.	-	.	ID=transcript:trnW-CCA.1;Parent=gene:trnW-CCA;Name=trnW-CCA.1;biotype=tRNA;Note=tRNA-Trp
+Pt	MG256495	exon	65811	65884	.	-	.	ID=exon:trnW-CCA.1.e1;Parent=transcript:trnW-CCA.1
+Pt	MG256495	gene	66058	66131	.	-	.	ID=gene:trnP-UGG;Name=trnP-UGG;gene=trnP-UGG;biotype=tRNA;Note=tRNA-Pro
+Pt	MG256495	tRNA	66058	66131	.	-	.	ID=transcript:trnP-UGG.1;Parent=gene:trnP-UGG;Name=trnP-UGG.1;biotype=tRNA;Note=tRNA-Pro
+Pt	MG256495	exon	66058	66131	.	-	.	ID=exon:trnP-UGG.1.e1;Parent=transcript:trnP-UGG.1
+Pt	MG256495	gene	66408	66542	.	+	.	ID=gene:psaJ;Name=psaJ;gene=psaJ;biotype=protein_coding;Note=photosystem I subunit IX
+Pt	MG256495	mRNA	66408	66542	.	+	.	ID=transcript:psaJ.1;Parent=gene:psaJ;Name=psaJ.1;biotype=protein_coding;Note=photosystem I subunit IX
+Pt	MG256495	exon	66408	66542	.	+	.	ID=exon:psaJ.1.e1;Parent=transcript:psaJ.1
+Pt	MG256495	CDS	66408	66542	.	+	.	ID=cds:psaJ.1.c1;Parent=transcript:psaJ.1;protein_id=AVI16407.1;transl_table=11
+Pt	MG256495	gene	66997	67200	.	+	.	ID=gene:rpl33;Name=rpl33;gene=rpl33;biotype=protein_coding;Note=ribosomal protein L33
+Pt	MG256495	mRNA	66997	67200	.	+	.	ID=transcript:rpl33.1;Parent=gene:rpl33;Name=rpl33.1;biotype=protein_coding;Note=ribosomal protein L33
+Pt	MG256495	exon	66997	67200	.	+	.	ID=exon:rpl33.1.e1;Parent=transcript:rpl33.1
+Pt	MG256495	CDS	66997	67200	.	+	.	ID=cds:rpl33.1.c1;Parent=transcript:rpl33.1;protein_id=AVI16408.1;transl_table=11
+Pt	MG256495	gene	67371	67676	.	+	.	ID=gene:rps18;Name=rps18;gene=rps18;biotype=protein_coding;Note=ribosomal protein S18
+Pt	MG256495	mRNA	67371	67676	.	+	.	ID=transcript:rps18.1;Parent=gene:rps18;Name=rps18.1;biotype=protein_coding;Note=ribosomal protein S18
+Pt	MG256495	exon	67371	67676	.	+	.	ID=exon:rps18.1.e1;Parent=transcript:rps18.1
+Pt	MG256495	CDS	67371	67676	.	+	.	ID=cds:rps18.1.c1;Parent=transcript:rps18.1;protein_id=AVI16409.1;transl_table=11
+Pt	MG256495	gene	67910	68296	.	-	.	ID=gene:rpl20;Name=rpl20;gene=rpl20;biotype=protein_coding;Note=ribosomal protein L20
+Pt	MG256495	mRNA	67910	68296	.	-	.	ID=transcript:rpl20.1;Parent=gene:rpl20;Name=rpl20.1;biotype=protein_coding;Note=ribosomal protein L20
+Pt	MG256495	exon	67910	68296	.	-	.	ID=exon:rpl20.1.e1;Parent=transcript:rpl20.1
+Pt	MG256495	CDS	67910	68296	.	-	.	ID=cds:rpl20.1.c1;Parent=transcript:rpl20.1;protein_id=AVI16410.1;transl_table=11
+Pt	MG256495	gene	69095	97251	.	-	.	ID=gene:rps12;Name=rps12;gene=rps12;biotype=protein_coding;Note=ribosomal protein S12
+Pt	MG256495	gene	69095	138887	.	+	.	ID=gene:rps12_2;Name=rps12;gene=rps12;biotype=protein_coding;Note=ribosomal protein S12
+Pt	MG256495	mRNA	69095	97251	.	-	.	ID=transcript:rps12.1;Parent=gene:rps12;Name=rps12.1;biotype=protein_coding;Note=ribosomal protein S12
+Pt	MG256495	mRNA	69095	138887	.	+	.	ID=transcript:rps12_2.1;Parent=gene:rps12_2;Name=rps12_2.1;biotype=protein_coding;Note=ribosomal protein S12
+Pt	MG256495	exon	69095	69208	.	-	.	ID=exon:rps12.1.e3;Parent=transcript:rps12.1
+Pt	MG256495	exon	69095	69208	.	+	.	ID=exon:rps12_2.1.e1;Parent=transcript:rps12_2.1
+Pt	MG256495	CDS	69095	69208	.	-	.	ID=cds:rps12.1.c3;Parent=transcript:rps12.1;protein_id=AVI16366.1;transl_table=11
+Pt	MG256495	CDS	69095	69208	.	+	.	ID=cds:rps12_2.1.c1;Parent=transcript:rps12_2.1;protein_id=AVI16411.1;transl_table=11
+Pt	MG256495	gene	69335	71258	.	-	.	ID=gene:clpP;Name=clpP;gene=clpP;biotype=protein_coding;Note=ATP-dependent Clp protease proteolytic subunit
+Pt	MG256495	mRNA	69335	71258	.	-	.	ID=transcript:clpP.1;Parent=gene:clpP;Name=clpP.1;biotype=protein_coding;Note=ATP-dependent Clp protease proteolytic subunit
+Pt	MG256495	exon	69335	69562	.	-	.	ID=exon:clpP.1.e1;Parent=transcript:clpP.1
+Pt	MG256495	CDS	69335	69562	.	-	.	ID=cds:clpP.1.c1;Parent=transcript:clpP.1;protein_id=AVI16412.1;transl_table=11
+Pt	MG256495	exon	70177	70468	.	-	.	ID=exon:clpP.1.e2;Parent=transcript:clpP.1
+Pt	MG256495	CDS	70177	70468	.	-	.	ID=cds:clpP.1.c2;Parent=transcript:clpP.1;protein_id=AVI16412.1;transl_table=11
+Pt	MG256495	exon	71188	71258	.	-	.	ID=exon:clpP.1.e3;Parent=transcript:clpP.1
+Pt	MG256495	CDS	71188	71258	.	-	.	ID=cds:clpP.1.c3;Parent=transcript:clpP.1;protein_id=AVI16412.1;transl_table=11
+Pt	MG256495	gene	71710	73236	.	+	.	ID=gene:psbB;Name=psbB;gene=psbB;biotype=protein_coding;Note=PSII 47 kDa protein
+Pt	MG256495	mRNA	71710	73236	.	+	.	ID=transcript:psbB.1;Parent=gene:psbB;Name=psbB.1;biotype=protein_coding;Note=PSII 47 kDa protein
+Pt	MG256495	exon	71710	73236	.	+	.	ID=exon:psbB.1.e1;Parent=transcript:psbB.1
+Pt	MG256495	CDS	71710	73236	.	+	.	ID=cds:psbB.1.c1;Parent=transcript:psbB.1;protein_id=AVI16413.1;transl_table=11
+Pt	MG256495	gene	73426	73527	.	+	.	ID=gene:psbT;Name=psbT;gene=psbT;biotype=protein_coding;Note=photosystem II protein T
+Pt	MG256495	mRNA	73426	73527	.	+	.	ID=transcript:psbT.1;Parent=gene:psbT;Name=psbT.1;biotype=protein_coding;Note=photosystem II protein T
+Pt	MG256495	exon	73426	73527	.	+	.	ID=exon:psbT.1.e1;Parent=transcript:psbT.1
+Pt	MG256495	CDS	73426	73527	.	+	.	ID=cds:psbT.1.c1;Parent=transcript:psbT.1;protein_id=AVI16414.1;transl_table=11
+Pt	MG256495	gene	73596	73727	.	-	.	ID=gene:psbN;Name=psbN;gene=psbN;biotype=protein_coding;Note=photosystem II protein N
+Pt	MG256495	mRNA	73596	73727	.	-	.	ID=transcript:psbN.1;Parent=gene:psbN;Name=psbN.1;biotype=protein_coding;Note=photosystem II protein N
+Pt	MG256495	exon	73596	73727	.	-	.	ID=exon:psbN.1.e1;Parent=transcript:psbN.1
+Pt	MG256495	CDS	73596	73727	.	-	.	ID=cds:psbN.1.c1;Parent=transcript:psbN.1;protein_id=AVI16415.1;transl_table=11
+Pt	MG256495	gene	73833	74054	.	+	.	ID=gene:psbH;Name=psbH;gene=psbH;biotype=protein_coding;Note=photosystem II phosphoprotein
+Pt	MG256495	mRNA	73833	74054	.	+	.	ID=transcript:psbH.1;Parent=gene:psbH;Name=psbH.1;biotype=protein_coding;Note=photosystem II phosphoprotein
+Pt	MG256495	exon	73833	74054	.	+	.	ID=exon:psbH.1.e1;Parent=transcript:psbH.1
+Pt	MG256495	CDS	73833	74054	.	+	.	ID=cds:psbH.1.c1;Parent=transcript:psbH.1;protein_id=AVI16416.1;transl_table=11
+Pt	MG256495	gene	74180	75555	.	+	.	ID=gene:petB;Name=petB;gene=petB;biotype=protein_coding;Note=cytochrome b6
+Pt	MG256495	mRNA	74180	75555	.	+	.	ID=transcript:petB.1;Parent=gene:petB;Name=petB.1;biotype=protein_coding;Note=cytochrome b6
+Pt	MG256495	exon	74180	74185	.	+	.	ID=exon:petB.1.e1;Parent=transcript:petB.1
+Pt	MG256495	CDS	74180	74185	.	+	.	ID=cds:petB.1.c1;Parent=transcript:petB.1;protein_id=AVI16417.1;transl_table=11
+Pt	MG256495	exon	74914	75555	.	+	.	ID=exon:petB.1.e2;Parent=transcript:petB.1
+Pt	MG256495	CDS	74914	75555	.	+	.	ID=cds:petB.1.c2;Parent=transcript:petB.1;protein_id=AVI16417.1;transl_table=11
+Pt	MG256495	gene	75743	76929	.	+	.	ID=gene:petD;Name=petD;gene=petD;biotype=protein_coding;Note=cytochrome b6/f complex subunit IV
+Pt	MG256495	mRNA	75743	76929	.	+	.	ID=transcript:petD.1;Parent=gene:petD;Name=petD.1;biotype=protein_coding;Note=cytochrome b6/f complex subunit IV
+Pt	MG256495	exon	75743	75750	.	+	.	ID=exon:petD.1.e1;Parent=transcript:petD.1
+Pt	MG256495	CDS	75743	75750	.	+	.	ID=cds:petD.1.c1;Parent=transcript:petD.1;protein_id=AVI16418.1;transl_table=11
+Pt	MG256495	exon	76455	76929	.	+	.	ID=exon:petD.1.e2;Parent=transcript:petD.1
+Pt	MG256495	CDS	76455	76929	.	+	.	ID=cds:petD.1.c2;Parent=transcript:petD.1;protein_id=AVI16418.1;transl_table=11
+Pt	MG256495	gene	77112	78119	.	-	.	ID=gene:rpoA;Name=rpoA;gene=rpoA;biotype=protein_coding;Note=RNA polymerase alpha subunit
+Pt	MG256495	mRNA	77112	78119	.	-	.	ID=transcript:rpoA.1;Parent=gene:rpoA;Name=rpoA.1;biotype=protein_coding;Note=RNA polymerase alpha subunit
+Pt	MG256495	exon	77112	78119	.	-	.	ID=exon:rpoA.1.e1;Parent=transcript:rpoA.1
+Pt	MG256495	CDS	77112	78119	.	-	.	ID=cds:rpoA.1.c1;Parent=transcript:rpoA.1;protein_id=AVI16419.1;transl_table=11
+Pt	MG256495	gene	78191	78607	.	-	.	ID=gene:rps11;Name=rps11;gene=rps11;biotype=protein_coding;Note=ribosomal protein S11
+Pt	MG256495	mRNA	78191	78607	.	-	.	ID=transcript:rps11.1;Parent=gene:rps11;Name=rps11.1;biotype=protein_coding;Note=ribosomal protein S11
+Pt	MG256495	exon	78191	78607	.	-	.	ID=exon:rps11.1.e1;Parent=transcript:rps11.1
+Pt	MG256495	CDS	78191	78607	.	-	.	ID=cds:rps11.1.c1;Parent=transcript:rps11.1;protein_id=AVI16420.1;transl_table=11
+Pt	MG256495	gene	78717	78830	.	-	.	ID=gene:rpl36;Name=rpl36;gene=rpl36;biotype=protein_coding;Note=ribosomal protein L36
+Pt	MG256495	mRNA	78717	78830	.	-	.	ID=transcript:rpl36.1;Parent=gene:rpl36;Name=rpl36.1;biotype=protein_coding;Note=ribosomal protein L36
+Pt	MG256495	exon	78717	78830	.	-	.	ID=exon:rpl36.1.e1;Parent=transcript:rpl36.1
+Pt	MG256495	CDS	78717	78830	.	-	.	ID=cds:rpl36.1.c1;Parent=transcript:rpl36.1;protein_id=AVI16421.1;transl_table=11
+Pt	MG256495	gene	78926	79159	.	-	.	ID=gene:infA;Name=infA;gene=infA;biotype=protein_coding;Note=translation initiation factor 1
+Pt	MG256495	mRNA	78926	79159	.	-	.	ID=transcript:infA.1;Parent=gene:infA;Name=infA.1;biotype=protein_coding;Note=translation initiation factor 1
+Pt	MG256495	exon	78926	79159	.	-	.	ID=exon:infA.1.e1;Parent=transcript:infA.1
+Pt	MG256495	CDS	78926	79159	.	-	.	ID=cds:infA.1.c1;Parent=transcript:infA.1;protein_id=AVI16422.1;transl_table=11
+Pt	MG256495	gene	79284	79688	.	-	.	ID=gene:rps8;Name=rps8;gene=rps8;biotype=protein_coding;Note=ribosomal protein S8
+Pt	MG256495	mRNA	79284	79688	.	-	.	ID=transcript:rps8.1;Parent=gene:rps8;Name=rps8.1;biotype=protein_coding;Note=ribosomal protein S8
+Pt	MG256495	exon	79284	79688	.	-	.	ID=exon:rps8.1.e1;Parent=transcript:rps8.1
+Pt	MG256495	CDS	79284	79688	.	-	.	ID=cds:rps8.1.c1;Parent=transcript:rps8.1;protein_id=AVI16423.1;transl_table=11
+Pt	MG256495	gene	79872	80240	.	-	.	ID=gene:rpl14;Name=rpl14;gene=rpl14;biotype=protein_coding;Note=ribosomal protein L14
+Pt	MG256495	mRNA	79872	80240	.	-	.	ID=transcript:rpl14.1;Parent=gene:rpl14;Name=rpl14.1;biotype=protein_coding;Note=ribosomal protein L14
+Pt	MG256495	exon	79872	80240	.	-	.	ID=exon:rpl14.1.e1;Parent=transcript:rpl14.1
+Pt	MG256495	CDS	79872	80240	.	-	.	ID=cds:rpl14.1.c1;Parent=transcript:rpl14.1;protein_id=AVI16424.1;transl_table=11
+Pt	MG256495	gene	80372	81655	.	-	.	ID=gene:rpl16;Name=rpl16;gene=rpl16;biotype=protein_coding;Note=ribosomal protein L16
+Pt	MG256495	mRNA	80372	81655	.	-	.	ID=transcript:rpl16.1;Parent=gene:rpl16;Name=rpl16.1;biotype=protein_coding;Note=ribosomal protein L16
+Pt	MG256495	exon	80372	80770	.	-	.	ID=exon:rpl16.1.e1;Parent=transcript:rpl16.1
+Pt	MG256495	CDS	80372	80770	.	-	.	ID=cds:rpl16.1.c1;Parent=transcript:rpl16.1;protein_id=AVI16425.1;transl_table=11
+Pt	MG256495	exon	81647	81655	.	-	.	ID=exon:rpl16.1.e2;Parent=transcript:rpl16.1
+Pt	MG256495	CDS	81647	81655	.	-	.	ID=cds:rpl16.1.c2;Parent=transcript:rpl16.1;protein_id=AVI16425.1;transl_table=11
+Pt	MG256495	gene	81800	82462	.	-	.	ID=gene:rps3;Name=rps3;gene=rps3;biotype=protein_coding;Note=ribosomal protein S3
+Pt	MG256495	mRNA	81800	82462	.	-	.	ID=transcript:rps3.1;Parent=gene:rps3;Name=rps3.1;biotype=protein_coding;Note=ribosomal protein S3
+Pt	MG256495	exon	81800	82462	.	-	.	ID=exon:rps3.1.e1;Parent=transcript:rps3.1
+Pt	MG256495	CDS	81800	82462	.	-	.	ID=cds:rps3.1.c1;Parent=transcript:rps3.1;protein_id=AVI16426.1;transl_table=11
+Pt	MG256495	gene	82447	82914	.	-	.	ID=gene:rpl22;Name=rpl22;gene=rpl22;biotype=protein_coding;Note=ribosomal protein L22
+Pt	MG256495	mRNA	82447	82914	.	-	.	ID=transcript:rpl22.1;Parent=gene:rpl22;Name=rpl22.1;biotype=protein_coding;Note=ribosomal protein L22
+Pt	MG256495	exon	82447	82914	.	-	.	ID=exon:rpl22.1.e1;Parent=transcript:rpl22.1
+Pt	MG256495	CDS	82447	82914	.	-	.	ID=cds:rpl22.1.c1;Parent=transcript:rpl22.1;protein_id=AVI16427.1;transl_table=11
+Pt	MG256495	gene	82984	83262	.	-	.	ID=gene:rps19_2;Name=rps19;gene=rps19;biotype=protein_coding;Note=ribosomal protein S19
+Pt	MG256495	mRNA	82984	83262	.	-	.	ID=transcript:rps19_2.1;Parent=gene:rps19_2;Name=rps19_2.1;biotype=protein_coding;Note=ribosomal protein S19
+Pt	MG256495	exon	82984	83262	.	-	.	ID=exon:rps19_2.1.e1;Parent=transcript:rps19_2.1
+Pt	MG256495	CDS	82984	83262	.	-	.	ID=cds:rps19_2.1.c1;Parent=transcript:rps19_2.1;protein_id=AVI16428.1;transl_table=11
+Pt	MG256495	gene	83324	84813	.	-	.	ID=gene:rpl2;Name=rpl2;gene=rpl2;biotype=protein_coding;Note=ribosomal protein L2
+Pt	MG256495	mRNA	83324	84813	.	-	.	ID=transcript:rpl2.1;Parent=gene:rpl2;Name=rpl2.1;biotype=protein_coding;Note=ribosomal protein L2
+Pt	MG256495	exon	83324	83757	.	-	.	ID=exon:rpl2.1.e1;Parent=transcript:rpl2.1
+Pt	MG256495	CDS	83324	83757	.	-	.	ID=cds:rpl2.1.c1;Parent=transcript:rpl2.1;protein_id=AVI16429.1;transl_table=11
+Pt	MG256495	exon	84423	84813	.	-	.	ID=exon:rpl2.1.e2;Parent=transcript:rpl2.1
+Pt	MG256495	CDS	84423	84813	.	-	.	ID=cds:rpl2.1.c2;Parent=transcript:rpl2.1;protein_id=AVI16429.1;transl_table=11
+Pt	MG256495	gene	84832	85113	.	-	.	ID=gene:rpl23;Name=rpl23;gene=rpl23;biotype=protein_coding;Note=ribosomal protein L23
+Pt	MG256495	mRNA	84832	85113	.	-	.	ID=transcript:rpl23.1;Parent=gene:rpl23;Name=rpl23.1;biotype=protein_coding;Note=ribosomal protein L23
+Pt	MG256495	exon	84832	85113	.	-	.	ID=exon:rpl23.1.e1;Parent=transcript:rpl23.1
+Pt	MG256495	CDS	84832	85113	.	-	.	ID=cds:rpl23.1.c1;Parent=transcript:rpl23.1;protein_id=AVI16430.1;transl_table=11
+Pt	MG256495	gene	85279	85352	.	-	.	ID=gene:trnI-CAU;Name=trnI-CAU;gene=trnI-CAU;biotype=tRNA;Note=tRNA-Ile
+Pt	MG256495	tRNA	85279	85352	.	-	.	ID=transcript:trnI-CAU.1;Parent=gene:trnI-CAU;Name=trnI-CAU.1;biotype=tRNA;Note=tRNA-Ile
+Pt	MG256495	exon	85279	85352	.	-	.	ID=exon:trnI-CAU.1.e1;Parent=transcript:trnI-CAU.1
+Pt	MG256495	gene	85441	92235	.	+	.	ID=gene:ycf2;Name=ycf2;gene=ycf2;biotype=protein_coding;Note=hypothetical chloroplast RF2
+Pt	MG256495	mRNA	85441	92235	.	+	.	ID=transcript:ycf2.1;Parent=gene:ycf2;Name=ycf2.1;biotype=protein_coding;Note=hypothetical chloroplast RF2
+Pt	MG256495	exon	85441	92235	.	+	.	ID=exon:ycf2.1.e1;Parent=transcript:ycf2.1
+Pt	MG256495	CDS	85441	92235	.	+	.	ID=cds:ycf2.1.c1;Parent=transcript:ycf2.1;protein_id=AVI16431.1;transl_table=11
+Pt	MG256495	gene	92326	92574	.	+	.	ID=gene:ycf15;Name=ycf15;gene=ycf15;biotype=protein_coding;Note=Ycf15 protein
+Pt	MG256495	mRNA	92326	92574	.	+	.	ID=transcript:ycf15.1;Parent=gene:ycf15;Name=ycf15.1;biotype=protein_coding;Note=Ycf15 protein
+Pt	MG256495	exon	92326	92574	.	+	.	ID=exon:ycf15.1.e1;Parent=transcript:ycf15.1
+Pt	MG256495	CDS	92326	92574	.	+	.	ID=cds:ycf15.1.c1;Parent=transcript:ycf15.1;protein_id=AVI16432.1;transl_table=11
+Pt	MG256495	gene	92830	92910	.	-	.	ID=gene:trnL-CAA;Name=trnL-CAA;gene=trnL-CAA;biotype=tRNA;Note=tRNA-Leu
+Pt	MG256495	tRNA	92830	92910	.	-	.	ID=transcript:trnL-CAA.1;Parent=gene:trnL-CAA;Name=trnL-CAA.1;biotype=tRNA;Note=tRNA-Leu
+Pt	MG256495	exon	92830	92910	.	-	.	ID=exon:trnL-CAA.1.e1;Parent=transcript:trnL-CAA.1
+Pt	MG256495	gene	93471	95678	.	-	.	ID=gene:ndhB;Name=ndhB;gene=ndhB;biotype=protein_coding;Note=NADH dehydrogenase subunit 2
+Pt	MG256495	mRNA	93471	95678	.	-	.	ID=transcript:ndhB.1;Parent=gene:ndhB;Name=ndhB.1;biotype=protein_coding;Note=NADH dehydrogenase subunit 2
+Pt	MG256495	exon	93471	94226	.	-	.	ID=exon:ndhB.1.e1;Parent=transcript:ndhB.1
+Pt	MG256495	CDS	93471	94226	.	-	.	ID=cds:ndhB.1.c1;Parent=transcript:ndhB.1;protein_id=AVI16433.1;transl_table=11
+Pt	MG256495	exon	94902	95678	.	-	.	ID=exon:ndhB.1.e2;Parent=transcript:ndhB.1
+Pt	MG256495	CDS	94902	95678	.	-	.	ID=cds:ndhB.1.c2;Parent=transcript:ndhB.1;protein_id=AVI16433.1;transl_table=11
+Pt	MG256495	gene	95944	96411	.	-	.	ID=gene:rps7;Name=rps7;gene=rps7;biotype=protein_coding;Note=ribosomal protein S7
+Pt	MG256495	mRNA	95944	96411	.	-	.	ID=transcript:rps7.1;Parent=gene:rps7;Name=rps7.1;biotype=protein_coding;Note=ribosomal protein S7
+Pt	MG256495	exon	95944	96411	.	-	.	ID=exon:rps7.1.e1;Parent=transcript:rps7.1
+Pt	MG256495	CDS	95944	96411	.	-	.	ID=cds:rps7.1.c1;Parent=transcript:rps7.1;protein_id=AVI16434.1;transl_table=11
+Pt	MG256495	exon	96465	96490	.	-	.	ID=exon:rps12.1.e1;Parent=transcript:rps12.1
+Pt	MG256495	CDS	96465	96490	.	-	.	ID=cds:rps12.1.c1;Parent=transcript:rps12.1;protein_id=AVI16366.1;transl_table=11
+Pt	MG256495	exon	97020	97251	.	-	.	ID=exon:rps12.1.e2;Parent=transcript:rps12.1
+Pt	MG256495	CDS	97020	97251	.	-	.	ID=cds:rps12.1.c2;Parent=transcript:rps12.1;protein_id=AVI16366.1;transl_table=11
+Pt	MG256495	gene	98916	98987	.	+	.	ID=gene:trnV-GAC;Name=trnV-GAC;gene=trnV-GAC;biotype=tRNA;Note=tRNA-Val
+Pt	MG256495	tRNA	98916	98987	.	+	.	ID=transcript:trnV-GAC.1;Parent=gene:trnV-GAC;Name=trnV-GAC.1;biotype=tRNA;Note=tRNA-Val
+Pt	MG256495	exon	98916	98987	.	+	.	ID=exon:trnV-GAC.1.e1;Parent=transcript:trnV-GAC.1
+Pt	MG256495	gene	99214	100704	.	+	.	ID=gene:rrn16;Name=rrn16;gene=rrn16;biotype=rRNA;Note=16S ribosomal RNA
+Pt	MG256495	rRNA	99214	100704	.	+	.	ID=transcript:rrn16.1;Parent=gene:rrn16;Name=rrn16.1;biotype=rRNA;Note=16S ribosomal RNA
+Pt	MG256495	exon	99214	100704	.	+	.	ID=exon:rrn16.1.e1;Parent=transcript:rrn16.1
+Pt	MG256495	gene	101003	102020	.	+	.	ID=gene:trnI-GAU;Name=trnI-GAU;gene=trnI-GAU;biotype=tRNA;Note=tRNA-Ile
+Pt	MG256495	tRNA	101003	102020	.	+	.	ID=transcript:trnI-GAU.1;Parent=gene:trnI-GAU;Name=trnI-GAU.1;biotype=tRNA;Note=tRNA-Ile
+Pt	MG256495	exon	101003	101039	.	+	.	ID=exon:trnI-GAU.1.e1;Parent=transcript:trnI-GAU.1
+Pt	MG256495	exon	101986	102020	.	+	.	ID=exon:trnI-GAU.1.e2;Parent=transcript:trnI-GAU.1
+Pt	MG256495	gene	102090	102967	.	+	.	ID=gene:trnA-UGC;Name=trnA-UGC;gene=trnA-UGC;biotype=tRNA;Note=tRNA-Ala
+Pt	MG256495	tRNA	102090	102967	.	+	.	ID=transcript:trnA-UGC.1;Parent=gene:trnA-UGC;Name=trnA-UGC.1;biotype=tRNA;Note=tRNA-Ala
+Pt	MG256495	exon	102090	102127	.	+	.	ID=exon:trnA-UGC.1.e1;Parent=transcript:trnA-UGC.1
+Pt	MG256495	exon	102933	102967	.	+	.	ID=exon:trnA-UGC.1.e2;Parent=transcript:trnA-UGC.1
+Pt	MG256495	gene	103140	105950	.	+	.	ID=gene:rrn23;Name=rrn23;gene=rrn23;biotype=rRNA;Note=23S ribosomal RNA
+Pt	MG256495	rRNA	103140	105950	.	+	.	ID=transcript:rrn23.1;Parent=gene:rrn23;Name=rrn23.1;biotype=rRNA;Note=23S ribosomal RNA
+Pt	MG256495	exon	103140	105950	.	+	.	ID=exon:rrn23.1.e1;Parent=transcript:rrn23.1
+Pt	MG256495	gene	106049	106151	.	+	.	ID=gene:rrn4.5;Name=rrn4.5;gene=rrn4.5;biotype=rRNA;Note=4.5S ribosomal RNA
+Pt	MG256495	rRNA	106049	106151	.	+	.	ID=transcript:rrn4.5.1;Parent=gene:rrn4.5;Name=rrn4.5.1;biotype=rRNA;Note=4.5S ribosomal RNA
+Pt	MG256495	exon	106049	106151	.	+	.	ID=exon:rrn4.5.1.e1;Parent=transcript:rrn4.5.1
+Pt	MG256495	gene	106412	106532	.	+	.	ID=gene:rrn5;Name=rrn5;gene=rrn5;biotype=rRNA;Note=5S ribosomal RNA
+Pt	MG256495	rRNA	106412	106532	.	+	.	ID=transcript:rrn5.1;Parent=gene:rrn5;Name=rrn5.1;biotype=rRNA;Note=5S ribosomal RNA
+Pt	MG256495	exon	106412	106532	.	+	.	ID=exon:rrn5.1.e1;Parent=transcript:rrn5.1
+Pt	MG256495	gene	106776	106849	.	+	.	ID=gene:trnR-ACG;Name=trnR-ACG;gene=trnR-ACG;biotype=tRNA;Note=tRNA-Arg
+Pt	MG256495	tRNA	106776	106849	.	+	.	ID=transcript:trnR-ACG.1;Parent=gene:trnR-ACG;Name=trnR-ACG.1;biotype=tRNA;Note=tRNA-Arg
+Pt	MG256495	exon	106776	106849	.	+	.	ID=exon:trnR-ACG.1.e1;Parent=transcript:trnR-ACG.1
+Pt	MG256495	gene	107375	107446	.	-	.	ID=gene:trnN-GUU;Name=trnN-GUU;gene=trnN-GUU;biotype=tRNA;Note=tRNA-Asn
+Pt	MG256495	tRNA	107375	107446	.	-	.	ID=transcript:trnN-GUU.1;Parent=gene:trnN-GUU;Name=trnN-GUU.1;biotype=tRNA;Note=tRNA-Asn
+Pt	MG256495	exon	107375	107446	.	-	.	ID=exon:trnN-GUU.1.e1;Parent=transcript:trnN-GUU.1
+Pt	MG256495	gene	107776	108844	.	+	.	ID=gene:ycf1;Name=ycf1;gene=ycf1;biotype=pseudogene;pseudogene=unknown
+Pt	MG256495	gene	108800	111031	.	-	.	ID=gene:ndhF;Name=ndhF;gene=ndhF;biotype=protein_coding;Note=NADH dehydrogenase subunit 5
+Pt	MG256495	mRNA	108800	111031	.	-	.	ID=transcript:ndhF.1;Parent=gene:ndhF;Name=ndhF.1;biotype=protein_coding;Note=NADH dehydrogenase subunit 5
+Pt	MG256495	exon	108800	111031	.	-	.	ID=exon:ndhF.1.e1;Parent=transcript:ndhF.1
+Pt	MG256495	CDS	108800	111031	.	-	.	ID=cds:ndhF.1.c1;Parent=transcript:ndhF.1;protein_id=AVI16435.1;transl_table=11
+Pt	MG256495	gene	111506	111676	.	+	.	ID=gene:rpl32;Name=rpl32;gene=rpl32;biotype=protein_coding;Note=ribosomal protein L32
+Pt	MG256495	mRNA	111506	111676	.	+	.	ID=transcript:rpl32.1;Parent=gene:rpl32;Name=rpl32.1;biotype=protein_coding;Note=ribosomal protein L32
+Pt	MG256495	exon	111506	111676	.	+	.	ID=exon:rpl32.1.e1;Parent=transcript:rpl32.1
+Pt	MG256495	CDS	111506	111676	.	+	.	ID=cds:rpl32.1.c1;Parent=transcript:rpl32.1;protein_id=AVI16436.1;transl_table=11
+Pt	MG256495	gene	112424	112503	.	+	.	ID=gene:trnL-UAG;Name=trnL-UAG;gene=trnL-UAG;biotype=tRNA;Note=tRNA-Leu
+Pt	MG256495	tRNA	112424	112503	.	+	.	ID=transcript:trnL-UAG.1;Parent=gene:trnL-UAG;Name=trnL-UAG.1;biotype=tRNA;Note=tRNA-Leu
+Pt	MG256495	exon	112424	112503	.	+	.	ID=exon:trnL-UAG.1.e1;Parent=transcript:trnL-UAG.1
+Pt	MG256495	gene	112605	113582	.	+	.	ID=gene:ccsA;Name=ccsA;gene=ccsA;biotype=protein_coding;Note=cytochrome c biogenesis protein
+Pt	MG256495	mRNA	112605	113582	.	+	.	ID=transcript:ccsA.1;Parent=gene:ccsA;Name=ccsA.1;biotype=protein_coding;Note=cytochrome c biogenesis protein
+Pt	MG256495	exon	112605	113582	.	+	.	ID=exon:ccsA.1.e1;Parent=transcript:ccsA.1
+Pt	MG256495	CDS	112605	113582	.	+	.	ID=cds:ccsA.1.c1;Parent=transcript:ccsA.1;protein_id=AVI16437.1;transl_table=11
+Pt	MG256495	gene	113820	115349	.	-	.	ID=gene:ndhD;Name=ndhD;gene=ndhD;biotype=protein_coding;Note=NADH dehydrogenase subunit 4
+Pt	MG256495	mRNA	113820	115349	.	-	.	ID=transcript:ndhD.1;Parent=gene:ndhD;Name=ndhD.1;biotype=protein_coding;Note=NADH dehydrogenase subunit 4
+Pt	MG256495	exon	113820	115349	.	-	.	ID=exon:ndhD.1.e1;Parent=transcript:ndhD.1
+Pt	MG256495	CDS	113820	115349	.	-	.	ID=cds:ndhD.1.c1;Parent=transcript:ndhD.1;protein_id=AVI16438.1;transl_table=11
+Pt	MG256495	gene	115441	115686	.	-	.	ID=gene:psaC;Name=psaC;gene=psaC;biotype=protein_coding;Note=photosystem I subunit VII
+Pt	MG256495	mRNA	115441	115686	.	-	.	ID=transcript:psaC.1;Parent=gene:psaC;Name=psaC.1;biotype=protein_coding;Note=photosystem I subunit VII
+Pt	MG256495	exon	115441	115686	.	-	.	ID=exon:psaC.1.e1;Parent=transcript:psaC.1
+Pt	MG256495	CDS	115441	115686	.	-	.	ID=cds:psaC.1.c1;Parent=transcript:psaC.1;protein_id=AVI16439.1;transl_table=11
+Pt	MG256495	gene	115945	116250	.	-	.	ID=gene:ndhE;Name=ndhE;gene=ndhE;biotype=protein_coding;Note=NADH dehydrogenase subunit 4L
+Pt	MG256495	mRNA	115945	116250	.	-	.	ID=transcript:ndhE.1;Parent=gene:ndhE;Name=ndhE.1;biotype=protein_coding;Note=NADH dehydrogenase subunit 4L
+Pt	MG256495	exon	115945	116250	.	-	.	ID=exon:ndhE.1.e1;Parent=transcript:ndhE.1
+Pt	MG256495	CDS	115945	116250	.	-	.	ID=cds:ndhE.1.c1;Parent=transcript:ndhE.1;protein_id=AVI16440.1;transl_table=11
+Pt	MG256495	gene	116475	117005	.	-	.	ID=gene:ndhG;Name=ndhG;gene=ndhG;biotype=protein_coding;Note=NADH dehydrogenase subunit 6
+Pt	MG256495	mRNA	116475	117005	.	-	.	ID=transcript:ndhG.1;Parent=gene:ndhG;Name=ndhG.1;biotype=protein_coding;Note=NADH dehydrogenase subunit 6
+Pt	MG256495	exon	116475	117005	.	-	.	ID=exon:ndhG.1.e1;Parent=transcript:ndhG.1
+Pt	MG256495	CDS	116475	117005	.	-	.	ID=cds:ndhG.1.c1;Parent=transcript:ndhG.1;protein_id=AVI16441.1;transl_table=11
+Pt	MG256495	gene	117389	117895	.	-	.	ID=gene:ndhI;Name=ndhI;gene=ndhI;biotype=protein_coding;Note=NADH dehydrogenase subunit I
+Pt	MG256495	mRNA	117389	117895	.	-	.	ID=transcript:ndhI.1;Parent=gene:ndhI;Name=ndhI.1;biotype=protein_coding;Note=NADH dehydrogenase subunit I
+Pt	MG256495	exon	117389	117895	.	-	.	ID=exon:ndhI.1.e1;Parent=transcript:ndhI.1
+Pt	MG256495	CDS	117389	117895	.	-	.	ID=cds:ndhI.1.c1;Parent=transcript:ndhI.1;protein_id=AVI16442.1;transl_table=11
+Pt	MG256495	gene	117971	120063	.	-	.	ID=gene:ndhA;Name=ndhA;gene=ndhA;biotype=protein_coding;Note=NADH dehydrogenase subunit 1
+Pt	MG256495	mRNA	117971	120063	.	-	.	ID=transcript:ndhA.1;Parent=gene:ndhA;Name=ndhA.1;biotype=protein_coding;Note=NADH dehydrogenase subunit 1
+Pt	MG256495	exon	117971	118509	.	-	.	ID=exon:ndhA.1.e1;Parent=transcript:ndhA.1
+Pt	MG256495	CDS	117971	118509	.	-	.	ID=cds:ndhA.1.c1;Parent=transcript:ndhA.1;protein_id=AVI16443.1;transl_table=11
+Pt	MG256495	exon	119511	120063	.	-	.	ID=exon:ndhA.1.e2;Parent=transcript:ndhA.1
+Pt	MG256495	CDS	119511	120063	.	-	.	ID=cds:ndhA.1.c2;Parent=transcript:ndhA.1;protein_id=AVI16443.1;transl_table=11
+Pt	MG256495	gene	120065	121246	.	-	.	ID=gene:ndhH;Name=ndhH;gene=ndhH;biotype=protein_coding;Note=NADH dehydrogenase subunit 7
+Pt	MG256495	mRNA	120065	121246	.	-	.	ID=transcript:ndhH.1;Parent=gene:ndhH;Name=ndhH.1;biotype=protein_coding;Note=NADH dehydrogenase subunit 7
+Pt	MG256495	exon	120065	121246	.	-	.	ID=exon:ndhH.1.e1;Parent=transcript:ndhH.1
+Pt	MG256495	CDS	120065	121246	.	-	.	ID=cds:ndhH.1.c1;Parent=transcript:ndhH.1;protein_id=AVI16444.1;transl_table=11
+Pt	MG256495	gene	121341	121613	.	-	.	ID=gene:rps15;Name=rps15;gene=rps15;biotype=protein_coding;Note=ribosomal protein S15
+Pt	MG256495	mRNA	121341	121613	.	-	.	ID=transcript:rps15.1;Parent=gene:rps15;Name=rps15.1;biotype=protein_coding;Note=ribosomal protein S15
+Pt	MG256495	exon	121341	121613	.	-	.	ID=exon:rps15.1.e1;Parent=transcript:rps15.1
+Pt	MG256495	CDS	121341	121613	.	-	.	ID=cds:rps15.1.c1;Parent=transcript:rps15.1;protein_id=AVI16445.1;transl_table=11
+Pt	MG256495	gene	122018	127576	.	-	.	ID=gene:ycf1_2;Name=ycf1;gene=ycf1;biotype=protein_coding;Note=photosystem I assembly protein Ycf1
+Pt	MG256495	mRNA	122018	127576	.	-	.	ID=transcript:ycf1_2.1;Parent=gene:ycf1_2;Name=ycf1_2.1;biotype=protein_coding;Note=photosystem I assembly protein Ycf1
+Pt	MG256495	exon	122018	127576	.	-	.	ID=exon:ycf1_2.1.e1;Parent=transcript:ycf1_2.1
+Pt	MG256495	CDS	122018	127576	.	-	.	ID=cds:ycf1_2.1.c1;Parent=transcript:ycf1_2.1;protein_id=AVI16446.1;transl_table=11
+Pt	MG256495	gene	127906	127977	.	+	.	ID=gene:trnN-GUU_2;Name=trnN-GUU;gene=trnN-GUU;biotype=tRNA;Note=tRNA-Asn
+Pt	MG256495	tRNA	127906	127977	.	+	.	ID=transcript:trnN-GUU_2.1;Parent=gene:trnN-GUU_2;Name=trnN-GUU_2.1;biotype=tRNA;Note=tRNA-Asn
+Pt	MG256495	exon	127906	127977	.	+	.	ID=exon:trnN-GUU_2.1.e1;Parent=transcript:trnN-GUU_2.1
+Pt	MG256495	gene	128503	128576	.	-	.	ID=gene:trnR-ACG_2;Name=trnR-ACG;gene=trnR-ACG;biotype=tRNA;Note=tRNA-Arg
+Pt	MG256495	tRNA	128503	128576	.	-	.	ID=transcript:trnR-ACG_2.1;Parent=gene:trnR-ACG_2;Name=trnR-ACG_2.1;biotype=tRNA;Note=tRNA-Arg
+Pt	MG256495	exon	128503	128576	.	-	.	ID=exon:trnR-ACG_2.1.e1;Parent=transcript:trnR-ACG_2.1
+Pt	MG256495	gene	128820	128940	.	-	.	ID=gene:rrn5_2;Name=rrn5;gene=rrn5;biotype=rRNA;Note=5S ribosomal RNA
+Pt	MG256495	rRNA	128820	128940	.	-	.	ID=transcript:rrn5_2.1;Parent=gene:rrn5_2;Name=rrn5_2.1;biotype=rRNA;Note=5S ribosomal RNA
+Pt	MG256495	exon	128820	128940	.	-	.	ID=exon:rrn5_2.1.e1;Parent=transcript:rrn5_2.1
+Pt	MG256495	gene	129201	129303	.	-	.	ID=gene:rrn4.5_2;Name=rrn4.5;gene=rrn4.5;biotype=rRNA;Note=4.5S ribosomal RNA
+Pt	MG256495	rRNA	129201	129303	.	-	.	ID=transcript:rrn4.5_2.1;Parent=gene:rrn4.5_2;Name=rrn4.5_2.1;biotype=rRNA;Note=4.5S ribosomal RNA
+Pt	MG256495	exon	129201	129303	.	-	.	ID=exon:rrn4.5_2.1.e1;Parent=transcript:rrn4.5_2.1
+Pt	MG256495	gene	129402	132212	.	-	.	ID=gene:rrn23_2;Name=rrn23;gene=rrn23;biotype=rRNA;Note=23S ribosomal RNA
+Pt	MG256495	rRNA	129402	132212	.	-	.	ID=transcript:rrn23_2.1;Parent=gene:rrn23_2;Name=rrn23_2.1;biotype=rRNA;Note=23S ribosomal RNA
+Pt	MG256495	exon	129402	132212	.	-	.	ID=exon:rrn23_2.1.e1;Parent=transcript:rrn23_2.1
+Pt	MG256495	gene	132385	133262	.	-	.	ID=gene:trnA-UGC_2;Name=trnA-UGC;gene=trnA-UGC;biotype=tRNA;Note=tRNA-Ala
+Pt	MG256495	tRNA	132385	133262	.	-	.	ID=transcript:trnA-UGC_2.1;Parent=gene:trnA-UGC_2;Name=trnA-UGC_2.1;biotype=tRNA;Note=tRNA-Ala
+Pt	MG256495	exon	132385	132419	.	-	.	ID=exon:trnA-UGC_2.1.e1;Parent=transcript:trnA-UGC_2.1
+Pt	MG256495	exon	133225	133262	.	-	.	ID=exon:trnA-UGC_2.1.e2;Parent=transcript:trnA-UGC_2.1
+Pt	MG256495	gene	133332	134349	.	-	.	ID=gene:trnI-GAU_2;Name=trnI-GAU;gene=trnI-GAU;biotype=tRNA;Note=tRNA-Ile
+Pt	MG256495	tRNA	133332	134349	.	-	.	ID=transcript:trnI-GAU_2.1;Parent=gene:trnI-GAU_2;Name=trnI-GAU_2.1;biotype=tRNA;Note=tRNA-Ile
+Pt	MG256495	exon	133332	133366	.	-	.	ID=exon:trnI-GAU_2.1.e1;Parent=transcript:trnI-GAU_2.1
+Pt	MG256495	exon	134313	134349	.	-	.	ID=exon:trnI-GAU_2.1.e2;Parent=transcript:trnI-GAU_2.1
+Pt	MG256495	gene	134648	136138	.	-	.	ID=gene:rrn16_2;Name=rrn16;gene=rrn16;biotype=rRNA;Note=16S ribosomal RNA
+Pt	MG256495	rRNA	134648	136138	.	-	.	ID=transcript:rrn16_2.1;Parent=gene:rrn16_2;Name=rrn16_2.1;biotype=rRNA;Note=16S ribosomal RNA
+Pt	MG256495	exon	134648	136138	.	-	.	ID=exon:rrn16_2.1.e1;Parent=transcript:rrn16_2.1
+Pt	MG256495	gene	136365	136436	.	-	.	ID=gene:trnV-GAC_2;Name=trnV-GAC;gene=trnV-GAC;biotype=tRNA;Note=tRNA-Val
+Pt	MG256495	tRNA	136365	136436	.	-	.	ID=transcript:trnV-GAC_2.1;Parent=gene:trnV-GAC_2;Name=trnV-GAC_2.1;biotype=tRNA;Note=tRNA-Val
+Pt	MG256495	exon	136365	136436	.	-	.	ID=exon:trnV-GAC_2.1.e1;Parent=transcript:trnV-GAC_2.1
+Pt	MG256495	exon	138101	138332	.	+	.	ID=exon:rps12_2.1.e2;Parent=transcript:rps12_2.1
+Pt	MG256495	CDS	138101	138332	.	+	.	ID=cds:rps12_2.1.c2;Parent=transcript:rps12_2.1;protein_id=AVI16411.1;transl_table=11
+Pt	MG256495	exon	138862	138887	.	+	.	ID=exon:rps12_2.1.e3;Parent=transcript:rps12_2.1
+Pt	MG256495	CDS	138862	138887	.	+	.	ID=cds:rps12_2.1.c3;Parent=transcript:rps12_2.1;protein_id=AVI16411.1;transl_table=11
+Pt	MG256495	gene	138941	139408	.	+	.	ID=gene:rps7_2;Name=rps7;gene=rps7;biotype=protein_coding;Note=ribosomal protein S7
+Pt	MG256495	mRNA	138941	139408	.	+	.	ID=transcript:rps7_2.1;Parent=gene:rps7_2;Name=rps7_2.1;biotype=protein_coding;Note=ribosomal protein S7
+Pt	MG256495	exon	138941	139408	.	+	.	ID=exon:rps7_2.1.e1;Parent=transcript:rps7_2.1
+Pt	MG256495	CDS	138941	139408	.	+	.	ID=cds:rps7_2.1.c1;Parent=transcript:rps7_2.1;protein_id=AVI16447.1;transl_table=11
+Pt	MG256495	gene	139674	141881	.	+	.	ID=gene:ndhB_2;Name=ndhB;gene=ndhB;biotype=protein_coding;Note=NADH dehydrogenase subunit 2
+Pt	MG256495	mRNA	139674	141881	.	+	.	ID=transcript:ndhB_2.1;Parent=gene:ndhB_2;Name=ndhB_2.1;biotype=protein_coding;Note=NADH dehydrogenase subunit 2
+Pt	MG256495	exon	139674	140450	.	+	.	ID=exon:ndhB_2.1.e1;Parent=transcript:ndhB_2.1
+Pt	MG256495	CDS	139674	140450	.	+	.	ID=cds:ndhB_2.1.c1;Parent=transcript:ndhB_2.1;protein_id=AVI16448.1;transl_table=11
+Pt	MG256495	exon	141126	141881	.	+	.	ID=exon:ndhB_2.1.e2;Parent=transcript:ndhB_2.1
+Pt	MG256495	CDS	141126	141881	.	+	.	ID=cds:ndhB_2.1.c2;Parent=transcript:ndhB_2.1;protein_id=AVI16448.1;transl_table=11
+Pt	MG256495	gene	142442	142522	.	+	.	ID=gene:trnL-CAA_2;Name=trnL-CAA;gene=trnL-CAA;biotype=tRNA;Note=tRNA-Leu
+Pt	MG256495	tRNA	142442	142522	.	+	.	ID=transcript:trnL-CAA_2.1;Parent=gene:trnL-CAA_2;Name=trnL-CAA_2.1;biotype=tRNA;Note=tRNA-Leu
+Pt	MG256495	exon	142442	142522	.	+	.	ID=exon:trnL-CAA_2.1.e1;Parent=transcript:trnL-CAA_2.1
+Pt	MG256495	gene	142778	143026	.	-	.	ID=gene:ycf15_2;Name=ycf15;gene=ycf15;biotype=protein_coding;Note=Ycf15 protein
+Pt	MG256495	mRNA	142778	143026	.	-	.	ID=transcript:ycf15_2.1;Parent=gene:ycf15_2;Name=ycf15_2.1;biotype=protein_coding;Note=Ycf15 protein
+Pt	MG256495	exon	142778	143026	.	-	.	ID=exon:ycf15_2.1.e1;Parent=transcript:ycf15_2.1
+Pt	MG256495	CDS	142778	143026	.	-	.	ID=cds:ycf15_2.1.c1;Parent=transcript:ycf15_2.1;protein_id=AVI16449.1;transl_table=11
+Pt	MG256495	gene	143117	149911	.	-	.	ID=gene:ycf2_2;Name=ycf2;gene=ycf2;biotype=protein_coding;Note=hypothetical chloroplast RF2
+Pt	MG256495	mRNA	143117	149911	.	-	.	ID=transcript:ycf2_2.1;Parent=gene:ycf2_2;Name=ycf2_2.1;biotype=protein_coding;Note=hypothetical chloroplast RF2
+Pt	MG256495	exon	143117	149911	.	-	.	ID=exon:ycf2_2.1.e1;Parent=transcript:ycf2_2.1
+Pt	MG256495	CDS	143117	149911	.	-	.	ID=cds:ycf2_2.1.c1;Parent=transcript:ycf2_2.1;protein_id=AVI16450.1;transl_table=11
+Pt	MG256495	gene	150000	150073	.	+	.	ID=gene:trnI-CAU_2;Name=trnI-CAU;gene=trnI-CAU;biotype=tRNA;Note=tRNA-Ile
+Pt	MG256495	tRNA	150000	150073	.	+	.	ID=transcript:trnI-CAU_2.1;Parent=gene:trnI-CAU_2;Name=trnI-CAU_2.1;biotype=tRNA;Note=tRNA-Ile
+Pt	MG256495	exon	150000	150073	.	+	.	ID=exon:trnI-CAU_2.1.e1;Parent=transcript:trnI-CAU_2.1
+Pt	MG256495	gene	150239	150520	.	+	.	ID=gene:rpl23_2;Name=rpl23;gene=rpl23;biotype=protein_coding;Note=ribosomal protein L23
+Pt	MG256495	mRNA	150239	150520	.	+	.	ID=transcript:rpl23_2.1;Parent=gene:rpl23_2;Name=rpl23_2.1;biotype=protein_coding;Note=ribosomal protein L23
+Pt	MG256495	exon	150239	150520	.	+	.	ID=exon:rpl23_2.1.e1;Parent=transcript:rpl23_2.1
+Pt	MG256495	CDS	150239	150520	.	+	.	ID=cds:rpl23_2.1.c1;Parent=transcript:rpl23_2.1;protein_id=AVI16451.1;transl_table=11
+Pt	MG256495	gene	150539	152028	.	+	.	ID=gene:rpl2_2;Name=rpl2;gene=rpl2;biotype=protein_coding;Note=ribosomal protein L2
+Pt	MG256495	mRNA	150539	152028	.	+	.	ID=transcript:rpl2_2.1;Parent=gene:rpl2_2;Name=rpl2_2.1;biotype=protein_coding;Note=ribosomal protein L2
+Pt	MG256495	exon	150539	150929	.	+	.	ID=exon:rpl2_2.1.e1;Parent=transcript:rpl2_2.1
+Pt	MG256495	CDS	150539	150929	.	+	.	ID=cds:rpl2_2.1.c1;Parent=transcript:rpl2_2.1;protein_id=AVI16452.1;transl_table=11
+Pt	MG256495	exon	151595	152028	.	+	.	ID=exon:rpl2_2.1.e2;Parent=transcript:rpl2_2.1
+Pt	MG256495	CDS	151595	152028	.	+	.	ID=cds:rpl2_2.1.c2;Parent=transcript:rpl2_2.1;protein_id=AVI16452.1;transl_table=11
