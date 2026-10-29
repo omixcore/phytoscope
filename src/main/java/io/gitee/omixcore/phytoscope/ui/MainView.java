@@ -254,16 +254,21 @@ public class MainView extends BorderPane {
                 new FileChooser.ExtensionFilter("All files", "*.*"));
         File file = chooser.showOpenDialog(windowOrNull());
         if (file == null) return;
+        loadGenomeFasta(file.toPath());
+    }
+
+    /** Non-dialog FASTA load shared by the menu action and end-to-end tests. */
+    public void loadGenomeFasta(Path file) {
         pendingLoad = LoadingOperation.run(windowOrNull(), "Loading genome FASTA", () -> {
             GeneSequenceService next = new GeneSequenceService();
-            next.loadFromFile(file.toPath());
+            next.loadFromFile(file);
             return next;
         }, next -> {
             sequenceService.replaceWith(next);
             Gene gene = renderer.getSelectedGene();
             if (gene != null) detailPane.showGene(gene);
             statusLabel.setText("Genome FASTA loaded: " + sequenceService.getSequenceCount()
-                    + " sequences · " + file.getName()
+                    + " sequences · " + file.getFileName()
                     + ". Confirm assembly and chromosome names match the annotation.");
         }, this::loadFailed);
     }

@@ -50,18 +50,20 @@ class AdaptiveChromosomeUiTest {
             var count = (Label) scene.lookup("#sequence-count");
             var menuBar = (MenuBar) ((VBox) view.getTop()).getChildren().getFirst();
             var menu = menuBar.getMenus().stream().filter(m -> m.getText().equals("Chromosome")).findFirst().orElseThrow();
-            for (String id : List.of("soybean", "rice", "maize", "arabidopsis", "soybean")) {
+            for (String id : List.of("soybean", "rice", "maize", "arabidopsis", "soybean", "mint", "mint-plastid")) {
                 view.loadExampleData(ExampleDataset.byId(id));
                 int expected = switch (id) {
                     case "soybean" -> 20;
                     case "rice" -> 12;
                     case "maize" -> 10;
                     case "arabidopsis" -> 5;
+                    case "mint" -> 12;
+                    case "mint-plastid" -> 1;
 
                     default -> throw new IllegalArgumentException(id);
                 };
                 assertEquals(expected, selector.getItems().size(), id);
-                assertEquals(expected + " sequences", count.getText());
+                assertEquals(expected == 1 ? "1 sequence" : expected + " sequences", count.getText());
                 assertEquals(service.getChromosomes(), List.copyOf(selector.getItems()));
                 for (String seq : List.copyOf(selector.getItems())) {
                     selector.getSelectionModel().select(seq);
@@ -85,6 +87,9 @@ class AdaptiveChromosomeUiTest {
                 Files.createDirectories(output.getParent());
                 ImageIO.write(SwingFXUtils.fromFXImage(scene.snapshot(null), null), "png", output.toFile());
             }
+            // The navigation checks need at least two sequences; the mint
+            // plastid example above ships a single one.
+            view.loadExampleData(ExampleDataset.byId("soybean"));
             String targetSequence = selector.getItems().get(1);
             var targetGene = service.getGenesOn(targetSequence).getFirst();
             String locus = targetSequence + ":" + targetGene.getStart() + "-" + targetGene.getEnd();

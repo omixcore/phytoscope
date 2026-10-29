@@ -31,10 +31,17 @@ Download the packaged Windows application: [PhytoScope-Windows.zip](https://gith
 | Rice | Nipponbare | IRGSP-1.0 / Ensembl Plants 62 | Two real gene families per nuclear chromosome (12) |
 | Maize | B73 | NAM 5.0 / Ensembl Plants 62 | Two real gene families per nuclear chromosome (10) |
 | Soybean | Williams 82 | v2.1 / Ensembl Plants 62 | Two real gene families per nuclear chromosome (20) |
+| Mint | Horse mint CMEN585 | Mlong_CMEN585_v3.01b / WSU Mint Genome Resources (INSDC GCA_001642375.2) | Twelve chromosome-scale sequences, two real Maker gene families each |
+| Mint (plastid) | Spearmint | MG256495 / INSDC (GenBank, ENA) | Complete chloroplast genome, 152,132 bp, 134 genes |
+| Mint (complete) | Horsemint | Long3_HAP_v2 haplotype A / Lieberman, Henry & Comai 2025 | Complete annotation, 94,883 genes on 12 chromosomes, with a bundled leaf RNA-seq TPM panel |
 
 Assembly and annotation releases are recorded separately. Arabidopsis is split
-into five files without changing feature coordinates. Source URLs and checksums
-are in the per-reference manifests and
+into five files without changing feature coordinates. The complete mint example
+re-encodes the published Long3_HAP_v2 GTF as GFF3 against the haplotype-A
+chromosomes, and bundles a **94,883-gene × 4-leaf TPM expression matrix**
+quantified with minimap2 + featureCounts from four public *M. longifolia* leaf
+RNA-seq libraries on that very assembly. Source URLs and checksums are in the
+per-reference manifests and
 [data provenance](src/main/resources/data/reference-provenance.json).
 
 **The default Arabidopsis reference also bundles the measured transcriptome panel** used by the browser expression track: **32,833 genes** across six single-assay conditions from Expression Atlas **E-MTAB-7978**, with SHA-256 pinned inputs and a fully traceable extraction manifest. Select any measured gene to see a **six-column vertical TPM bar chart in the right Gene Details pane**. Genes without measured data show an explicit missing-data message rather than a wall of `NA` cells.

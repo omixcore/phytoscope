@@ -28,7 +28,24 @@ public record ExampleDataset(String id, String label, String commonName, String 
             new ExampleDataset("soybean", "Glycine max · 20 chromosomes",
                     "Soybean Williams 82", "Rosid · Fabaceae", "Glycine max", "Glycine_max_v2.1", Map.of(),
                     BASE + "soybean/soybean_chromosomes.gff3", AnnotationFormat.GFF3, null,
-                    "Ensembl Plants release 62: unmodified real gene families")
+                    "Ensembl Plants release 62: unmodified real gene families"),
+            new ExampleDataset("mint", "Mentha longifolia · 12 chromosomes · sample subset",
+                    "Horse mint CMEN585", "Asterid · Lamiaceae", "Mentha longifolia", "Mlong_CMEN585_v3.01b", Map.of(),
+                    BASE + "mint/mentha_longifolia_chromosomes.gff3", AnnotationFormat.GFF3, null,
+                    "WSU Mint Genome Resources, Mentha longifolia CMEN585 v3.01b (also INSDC GCA_001642375.2): "
+                            + "two real Maker gene families per chromosome-scale sequence"),
+            new ExampleDataset("mint-genome", "Mentha longifolia · 12 chromosomes · complete annotation · 94,883 genes",
+                    "Horsemint Long3", "Asterid · Lamiaceae", "Mentha longifolia", "Long3_HAP_v2 (haplotype A)", Map.of(),
+                    BASE + "mint/mentha_longifolia_horsemint.gff3", AnnotationFormat.GFF3,
+                    BASE + "mint/mentha_longifolia_expression.tsv",
+                    "Lieberman, Henry & Comai 2025, chromosome-scale diploid horsemint genome "
+                            + "(figshare 10.6084/m9.figshare.28457522): all 94,883 Braker3 gene models on "
+                            + "haplotype A, 102,705 transcripts, coordinates unmodified"),
+            new ExampleDataset("mint-plastid", "Mentha spicata · MG256495 chloroplast · 152 kb",
+                    "Spearmint", "Asterid · Lamiaceae", "Mentha spicata", "MG256495 chloroplast", Map.of(),
+                    BASE + "mint/mentha_spicata_chloroplast.gff3", AnnotationFormat.GFF3, null,
+                    "INSDC MG256495 (GenBank/ENA), Mentha spicata chloroplast complete genome, 152,132 bp: "
+                            + "feature coordinates re-encoded as GFF3 without alteration")
     );
 
     public static ExampleDataset byId(String id) {

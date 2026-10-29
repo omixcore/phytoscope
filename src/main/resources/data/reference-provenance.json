@@ -77,6 +77,112 @@
       "fixture_sha256": "34f081abefa1b6a1af4b5312890a4a26d682e6939ef462f1f5a9ee0467fde2e3",
       "verified_original_feature_rows": 839,
       "status": "PASS"
+    },
+    "mint-plastid": {
+      "species": "Mentha spicata",
+      "assembly": "MG256495 chloroplast, complete genome",
+      "assembly_accession": "MG256495",
+      "assembly_record": "https://www.ebi.ac.uk/ena/browser/view/MG256495",
+      "source": "https://www.ebi.ac.uk/ena/browser/api/embl/MG256495?download=false",
+      "source_provider": "INSDC via EBI ENA (GenBank MG256495)",
+      "source_release": "MG256495.1",
+      "sequence_count": 1,
+      "sequence_lengths": {
+        "Pt": 152132
+      },
+      "archive_sha256": "6e5667adfd3f15f2b0f28b599f964eed347d48fe84fb1a75f6f5f1e91ae4e017",
+      "fixture_sha256": "566b4c500211c92cd16e25234b5f4bab5d8a5584a59d136755860391eb9c9b9f",
+      "verified_original_feature_rows": 266,
+      "verified_feature_breakdown": {
+        "gene": 134,
+        "CDS": 87,
+        "tRNA": 37,
+        "rRNA": 8
+      },
+      "transformation": "Feature coordinates, gene names, products, protein IDs and genetic-code table are copied verbatim from the INSDC feature table; the bundled GFF3 only adds the gene/transcript/exon hierarchy and a ##sequence-region header. No feature is added, removed or moved.",
+      "generator": "tools/build_mint_example.py",
+      "annotation_scope": "complete plastid genome, single sequence Pt (152,132 bp)",
+      "expression_resource": null,
+      "notes": "No public M. spicata RNA-seq matrix is bundled; the browser shows an explicit missing-data state instead of unverified values.",
+      "status": "PASS"
+    },
+    "mint": {
+      "species": "Mentha longifolia",
+      "assembly": "Mlong_CMEN585_v3.01b chromosome-scale assembly",
+      "assembly_accession": "GCA_001642375.2 (CMEN585 v3)",
+      "assembly_record": "https://www.ebi.ac.uk/ena/browser/view/GCA_001642375",
+      "source": "http://langelabtools.wsu.edu/mgr/sites/default/files/downloads/Mlong585_v3.01b-maker.gff",
+      "source_provider": "WSU Mint Genome Resources (Lange lab); same assembly deposited at INSDC",
+      "source_release": "Mlong_CMEN585_v3.01b (WSU MGR download 2026-10-28)",
+      "sequence_count": 12,
+      "sequence_lengths": {
+        "Chr1": 46699537,
+        "Chr2": 45526029,
+        "Chr3": 45460755,
+        "Chr4": 44284954,
+        "Chr5": 43231337,
+        "Chr6": 37537474,
+        "Chr7": 36621300,
+        "Chr8": 36842082,
+        "Chr9": 33738042,
+        "Chr10": 33088173,
+        "Chr11": 29943784,
+        "Chr12": 29660084
+      },
+      "archive_sha256": "1da307a82d870b1be8468fd837c1b94ebcb4c3eb3d111fec85c4c07d377837e2",
+      "fixture_sha256": "edd9ae3583e153d3877952615639eeb7f0d86a0fd2bf83f027596c40c5812c08",
+      "verified_original_feature_rows": 377,
+      "verified_feature_breakdown": {
+        "gene": 24,
+        "mRNA": 24,
+        "exon": 157,
+        "CDS": 156,
+        "five_prime_UTR": 6,
+        "three_prime_UTR": 10
+      },
+      "transformation": "Gene coordinates, IDs and hierarchy rows are copied verbatim from the Maker GFF3. The first two gene families per chromosome-scale scaffold (file order) plus their full descendant closure are kept. Sequence names are mapped scaffold_N_length_L -> ChrN (N = 1..12, the embedded length is the true sequence length); the original scaffold names are preserved in the GFF3 header. The 417 unplaced scaffolds are excluded.",
+      "generator": "tools/build_mint_nuclear_example.py",
+      "annotation_scope": "12 chromosome-scale sequences (29.7-46.7 Mb), 24 Maker-predicted genes (2 real families per chromosome)",
+      "expression_resource": null,
+      "notes": "No verified expression matrix is bundled; the browser shows an explicit missing-data state.",
+      "status": "PASS"
+    },
+    "mint-genome": {
+      "species": "Mentha longifolia",
+      "assembly": "Long3_HAP_v2 (haplotype A)",
+      "assembly_accession": "figshare 10.6084/m9.figshare.28457522",
+      "assembly_record": "https://doi.org/10.6084/m9.figshare.28457522",
+      "source": "https://ndownloader.figshare.com/files/52521323",
+      "source_provider": "Lieberman, Henry & Comai 2025, figshare (CC BY 4.0)",
+      "source_release": "Braker3/AUGUSTUS annotation, 189,242 genes / 205,350 transcripts over both haplotypes",
+      "chromosome_count": 12,
+      "archive_sha256": "77f533801d618351befa8d3fec15441151e03038407ee9d91709c36f13a4ed9a",
+      "status": "PASS",
+      "annotation_scope": "complete haplotype-A nuclear Chr1-Chr12",
+      "annotation": "Braker3/AUGUSTUS + Omicsbox functional transfer",
+      "verified_feature_rows": 909424,
+      "verified_gene_like_features": 94883,
+      "verified_transcripts": 102705,
+      "chromosome_lengths": {
+        "Chr1": 39654341,
+        "Chr2": 33431807,
+        "Chr3": 30477260,
+        "Chr4": 36027104,
+        "Chr5": 36123134,
+        "Chr6": 36020440,
+        "Chr7": 27814177,
+        "Chr8": 22526085,
+        "Chr9": 25896222,
+        "Chr10": 27191066,
+        "Chr11": 26175852,
+        "Chr12": 25348185
+      },
+      "gff3_sha256": "ec2f2220a6a9a39901144a9014192605fb44f1fad63da0040fae8c13a9e67d4f",
+      "companion_files": {
+        "genome_fasta_gz": "Long3_HAP_v2_genomic.fa.gz sha256 7659e8807857b303a2cc2fdd6bbbf4c11ff01b104e5157efadd66f6817ed972e",
+        "functional_annotation_gz": "gene_functional_anno.tsv.gz sha256 809e320cf4ed9458f06e5d8c5f5b92ef539cc8c7bf6f693a3849d4a6292663b6"
+      },
+      "note": "Coordinates copied verbatim from the published GTF; this build only adds the gene/transcript/exon hierarchy and functional notes."
     }
   },
   "case_study_manifest": "data/case-studies/arabidopsis-atlas/manifest.json"
