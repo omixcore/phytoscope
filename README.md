@@ -15,13 +15,18 @@ annotations, switch between sequences, inspect transcripts/exons/CDS/UTRs,
 attach a traceable expression matrix, compare multiple loci, and connect selected
 genes to promoter extraction, sample groups, sequence checks, protein similarity
 and domain mapping. Save portable projects and export TSV, PNG or editable SVG.
-Requires JDK 21. No external service is required while browsing local files.
+No external service is required while browsing local files.
+
+## Download for Windows (no JDK required)
+
+Download the packaged Windows application (x64, about 105 MiB) from the releases page: [PhytoScope v0.2.0](https://github.com/omixcore/phytoscope/releases) — SHA-256 checksums in [desktop_program/SHA256SUMS.txt](desktop_program/SHA256SUMS.txt). The archive includes a slim jlink runtime, so nothing else has to be installed.
+
+1. Extract the ZIP to any local folder, keeping `PhytoScope.exe`, `app/` and `runtime/` together.
+2. Double-click `PhytoScope.exe` — a bundled Java runtime is included, so nothing else has to be installed.
+3. The browser opens with the Arabidopsis example. Pick another bundled species from the **dataset selector** (including the complete horsemint genome with a 4-leaf TPM panel), or use **File → Import annotation / Import expression matrix** for your own data.
+4. Click any gene to see its structure, sequence and expression profile; use **Export** to save PNG/SVG views or **File → Save project** for a portable `.phytoscope` file.
 
 ![PhytoScope software overview and workflow](https://raw.githubusercontent.com/omixcore/phytoscope/dev/fig/Figure1.jpg)
-
-## Download for Windows
-
-Download the packaged Windows application: [PhytoScope-Windows.zip](https://github.com/omixcore/phytoscope/raw/refs/heads/dev/desktop_program/PhytoScope-Windows.zip) (about 97 MiB).
 
 ## Reference examples and real expression case
 

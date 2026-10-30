@@ -173,10 +173,56 @@ public class ExpressionDataService {
             else unmatched.addAll(target.getValue());
         }
         unmatched.sort(String::compareTo);
+        List<String> diagnostics = new ArrayList<>(report.warnings());
+        diagnostics.addAll(matchingHints(unmatched, ids));
         int matched = annotationIds.size();
         report = new ImportReport(report.rows(), profiles.size(), report.missingCells(),
-                report.invalidCells(), matched, ids.size(), List.copyOf(unmatched), report.warnings());
+                report.invalidCells(), matched, ids.size(), List.copyOf(unmatched), List.copyOf(diagnostics));
         return report;
+    }
+
+    /**
+     * Turns unmatched identifiers into concrete, actionable hints by probing the
+     * annotation IDs (and their prefix-stripped forms) for near matches. Only
+     * the first few unmatched IDs are probed, each in one linear pass.
+     */
+    private static List<String> matchingHints(List<String> unmatched, List<String> annotationIds) {
+        List<String> hints = new ArrayList<>();
+        if (unmatched.isEmpty() || annotationIds.isEmpty()) {
+            return hints;
+        }
+        for (String inputId : unmatched.subList(0, Math.min(5, unmatched.size()))) {
+            String bare = inputId.replaceFirst("^(gene|transcript):", "").trim();
+            String base = bare.replaceFirst("\\.\\d+$", "");
+            String caseHit = null, versionHit = null;
+            for (String annotationId : annotationIds) {
+                String candidate = annotationId.trim();
+                String stripped = candidate.replaceFirst("^(gene|transcript):", "");
+                if (caseHit == null && candidate.equalsIgnoreCase(bare) && !candidate.equals(bare)) {
+                    caseHit = candidate;
+                }
+                if (caseHit == null && stripped.equalsIgnoreCase(bare) && !stripped.equals(bare)) {
+                    caseHit = candidate;
+                }
+                if (versionHit == null && !base.equals(bare) && stripped.equals(base)) {
+                    versionHit = candidate;
+                }
+                if (caseHit != null && versionHit != null) break;
+            }
+            if (caseHit != null) {
+                hints.add("'" + inputId + "' does not match exactly, but the annotation has '"
+                        + caseHit + "' — identifier case must match the annotation.");
+            }
+            if (versionHit != null) {
+                hints.add("'" + inputId + "' carries a version suffix; the annotation lists '"
+                        + versionHit + "' — match identifiers without the .version part.");
+            }
+        }
+        if (!hints.isEmpty()) {
+            hints.add("Checked the first " + Math.min(5, unmatched.size()) + " of "
+                    + unmatched.size() + " unmatched IDs for near matches.");
+        }
+        return hints;
     }
 
     /** Parse into a temporary object so failed imports never erase existing measurements. */

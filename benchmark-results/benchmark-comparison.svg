@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100.0" height="765.0" viewBox="0 0 1100.0 765.0">
+<title>PhytoScope gene structure and expression comparison</title>
+<rect x="0.0" y="0.0" width="1100.0" height="765.0" fill="#FFFFFF"/>
+<text x="24.0" y="29.0" fill="#244762" font-family="Arial,sans-serif" font-size="19.0">PhytoScope | Gene structure and expression</text>
+<text x="24.0" y="52.0" fill="#536878" font-family="Arial,sans-serif" font-size="12.0">Alignment: TRANSCRIPTION_START | Shared linear bp scale</text>
+<text x="24.0" y="73.0" fill="#536878" font-family="Arial,sans-serif" font-size="12.0">Exon: pale blue | CDS: blue | UTR: orange | gray: missing expression | coordinates: 1-based inclusive</text>
+<line x1="290.0" y1="135.0" x2="290.0" y2="720.0" stroke="#C7D4DF" stroke-width="1"/>
+<text x="290.0" y="128.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">0</text>
+<text x="850.0" y="128.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">6199 bp</text>
+<rect x="18.0" y="143.0" width="1064.0" height="43.0" fill="#F6F9FC"/>
+<text x="24.0" y="159.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g1.t1</text>
+<text x="24.0" y="175.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:1–3116 (-)</text>
+<line x1="290.0" y1="143.0" x2="290.0" y2="186.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="160.0" x2="601.6502661719633" y2="160.0" stroke="#8299AA" stroke-width="1"/>
+<text x="594.6502661719633" y="155.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="596.4494273269883" y="153.0" width="5.20083884497501" height="14.0" fill="#B4D7EA"/>
+<rect x="596.4494273269883" y="150.0" width="5.20083884497501" height="20.0" fill="#387FA4"/>
+<rect x="447.92547185029844" y="153.0" width="15.60251653492503" height="14.0" fill="#B4D7EA"/>
+<rect x="447.92547185029844" y="150.0" width="15.60251653492503" height="20.0" fill="#387FA4"/>
+<rect x="290.0" y="153.0" width="0.7001129214389152" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="150.0" width="0.7001129214389152" height="20.0" fill="#387FA4"/>
+<text x="24.0" y="204.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g2.t1</text>
+<text x="24.0" y="220.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:13460–14372 (+)</text>
+<line x1="290.0" y1="188.0" x2="290.0" y2="231.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="205.0" x2="381.3147281819648" y2="205.0" stroke="#8299AA" stroke-width="1"/>
+<text x="374.3147281819648" y="200.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="290.0" y="198.0" width="24.203903855460567" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="195.0" width="24.203903855460567" height="20.0" fill="#387FA4"/>
+<rect x="325.70575899338604" y="198.0" width="55.60896918857878" height="14.0" fill="#B4D7EA"/>
+<rect x="325.70575899338604" y="195.0" width="55.60896918857878" height="20.0" fill="#387FA4"/>
+<rect x="18.0" y="233.0" width="1064.0" height="43.0" fill="#F6F9FC"/>
+<text x="24.0" y="249.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g3.t1</text>
+<text x="24.0" y="265.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:20190–22608 (+)</text>
+<line x1="290.0" y1="233.0" x2="290.0" y2="276.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="250.0" x2="531.9390224229714" y2="250.0" stroke="#8299AA" stroke-width="1"/>
+<text x="524.9390224229714" y="245.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="290.0" y="243.0" width="9.801580900145211" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="240.0" width="9.801580900145211" height="20.0" fill="#387FA4"/>
+<rect x="391.6163897402807" y="243.0" width="13.70221003387644" height="14.0" fill="#B4D7EA"/>
+<rect x="391.6163897402807" y="240.0" width="13.70221003387644" height="20.0" fill="#387FA4"/>
+<rect x="432.52298757864173" y="243.0" width="0.9001451847071849" height="14.0" fill="#B4D7EA"/>
+<rect x="432.52298757864173" y="240.0" width="0.9001451847071849" height="20.0" fill="#387FA4"/>
+<rect x="441.4244232940797" y="243.0" width="90.51459912889175" height="14.0" fill="#B4D7EA"/>
+<rect x="441.4244232940797" y="240.0" width="90.51459912889175" height="20.0" fill="#387FA4"/>
+<text x="24.0" y="294.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g4.t1</text>
+<text x="24.0" y="310.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:25018–29955 (-)</text>
+<line x1="290.0" y1="278.0" x2="290.0" y2="321.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="295.0" x2="783.8796580093564" y2="295.0" stroke="#8299AA" stroke-width="1"/>
+<text x="776.8796580093564" y="290.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="775.378286820455" y="288.0" width="8.50137118890143" height="14.0" fill="#B4D7EA"/>
+<rect x="775.378286820455" y="285.0" width="8.50137118890143" height="20.0" fill="#387FA4"/>
+<rect x="756.7752863365059" y="288.0" width="9.201484110340402" height="14.0" fill="#B4D7EA"/>
+<rect x="756.7752863365059" y="285.0" width="9.201484110340402" height="20.0" fill="#387FA4"/>
+<rect x="700.8662687530248" y="288.0" width="8.301338925633104" height="14.0" fill="#B4D7EA"/>
+<rect x="700.8662687530248" y="285.0" width="8.301338925633104" height="20.0" fill="#387FA4"/>
+<rect x="563.4441038877238" y="288.0" width="7.901274399096678" height="14.0" fill="#B4D7EA"/>
+<rect x="563.4441038877238" y="285.0" width="7.901274399096678" height="20.0" fill="#387FA4"/>
+<rect x="500.9340216163897" y="288.0" width="22.803678012582736" height="14.0" fill="#B4D7EA"/>
+<rect x="500.9340216163897" y="285.0" width="22.803678012582736" height="20.0" fill="#387FA4"/>
+<rect x="471.42926278432003" y="288.0" width="10.20164542668175" height="14.0" fill="#B4D7EA"/>
+<rect x="471.42926278432003" y="285.0" width="10.20164542668175" height="20.0" fill="#387FA4"/>
+<rect x="448.9256331666398" y="288.0" width="13.602193902242277" height="14.0" fill="#B4D7EA"/>
+<rect x="448.9256331666398" y="285.0" width="13.602193902242277" height="20.0" fill="#387FA4"/>
+<rect x="406.8188417486691" y="288.0" width="5.00080658170674" height="14.0" fill="#B4D7EA"/>
+<rect x="406.8188417486691" y="285.0" width="5.00080658170674" height="20.0" fill="#387FA4"/>
+<rect x="318.7046297789966" y="288.0" width="19.603161800290366" height="14.0" fill="#B4D7EA"/>
+<rect x="318.7046297789966" y="285.0" width="19.603161800290366" height="20.0" fill="#387FA4"/>
+<rect x="301.901919664462" y="288.0" width="2.1003387643168026" height="14.0" fill="#B4D7EA"/>
+<rect x="301.901919664462" y="285.0" width="2.1003387643168026" height="20.0" fill="#387FA4"/>
+<rect x="290.0" y="288.0" width="0.8001290530730785" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="285.0" width="0.8001290530730785" height="20.0" fill="#387FA4"/>
+<rect x="18.0" y="323.0" width="1064.0" height="43.0" fill="#F6F9FC"/>
+<text x="24.0" y="339.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g5.t1</text>
+<text x="24.0" y="355.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:31375–34311 (+)</text>
+<line x1="290.0" y1="323.0" x2="290.0" y2="366.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="340.0" x2="583.7473786094531" y2="340.0" stroke="#8299AA" stroke-width="1"/>
+<text x="576.7473786094531" y="335.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="290.0" y="333.0" width="3.1005000806581506" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="330.0" width="3.1005000806581506" height="20.0" fill="#387FA4"/>
+<rect x="309.60316180029037" y="333.0" width="61.4099048233586" height="14.0" fill="#B4D7EA"/>
+<rect x="309.60316180029037" y="330.0" width="61.4099048233586" height="20.0" fill="#387FA4"/>
+<rect x="384.21519599935476" y="333.0" width="16.60267785126632" height="14.0" fill="#B4D7EA"/>
+<rect x="384.21519599935476" y="330.0" width="16.60267785126632" height="20.0" fill="#387FA4"/>
+<rect x="418.52072914986286" y="333.0" width="21.20341990643658" height="14.0" fill="#B4D7EA"/>
+<rect x="418.52072914986286" y="330.0" width="21.20341990643658" height="20.0" fill="#387FA4"/>
+<rect x="475.0298435231489" y="333.0" width="49.407969027262425" height="14.0" fill="#B4D7EA"/>
+<rect x="475.0298435231489" y="330.0" width="49.407969027262425" height="20.0" fill="#387FA4"/>
+<rect x="534.3394095821907" y="333.0" width="4.900790450072577" height="14.0" fill="#B4D7EA"/>
+<rect x="534.3394095821907" y="330.0" width="4.900790450072577" height="20.0" fill="#387FA4"/>
+<rect x="548.3416680109696" y="333.0" width="35.40571059848355" height="14.0" fill="#B4D7EA"/>
+<rect x="548.3416680109696" y="330.0" width="35.40571059848355" height="20.0" fill="#387FA4"/>
+<text x="24.0" y="384.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g5.t2</text>
+<text x="24.0" y="400.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:31375–34311 (+)</text>
+<line x1="290.0" y1="368.0" x2="290.0" y2="411.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="385.0" x2="583.7473786094531" y2="385.0" stroke="#8299AA" stroke-width="1"/>
+<text x="576.7473786094531" y="380.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="290.0" y="378.0" width="81.01306662364897" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="375.0" width="81.01306662364897" height="20.0" fill="#387FA4"/>
+<rect x="384.21519599935476" y="378.0" width="16.60267785126632" height="14.0" fill="#B4D7EA"/>
+<rect x="384.21519599935476" y="375.0" width="16.60267785126632" height="20.0" fill="#387FA4"/>
+<rect x="418.52072914986286" y="378.0" width="21.20341990643658" height="14.0" fill="#B4D7EA"/>
+<rect x="418.52072914986286" y="375.0" width="21.20341990643658" height="20.0" fill="#387FA4"/>
+<rect x="475.0298435231489" y="378.0" width="49.407969027262425" height="14.0" fill="#B4D7EA"/>
+<rect x="475.0298435231489" y="375.0" width="49.407969027262425" height="20.0" fill="#387FA4"/>
+<rect x="534.3394095821907" y="378.0" width="4.900790450072577" height="14.0" fill="#B4D7EA"/>
+<rect x="534.3394095821907" y="375.0" width="4.900790450072577" height="20.0" fill="#387FA4"/>
+<rect x="548.3416680109696" y="378.0" width="35.40571059848355" height="14.0" fill="#B4D7EA"/>
+<rect x="548.3416680109696" y="375.0" width="35.40571059848355" height="20.0" fill="#387FA4"/>
+<rect x="18.0" y="413.0" width="1064.0" height="43.0" fill="#F6F9FC"/>
+<text x="24.0" y="429.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g6.t1</text>
+<text x="24.0" y="445.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:35107–41305 (+)</text>
+<line x1="290.0" y1="413.0" x2="290.0" y2="456.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="430.0" x2="910.0" y2="430.0" stroke="#8299AA" stroke-width="1"/>
+<text x="903.0" y="425.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="290.0" y="423.0" width="226.2364897564123" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="420.0" width="226.2364897564123" height="20.0" fill="#387FA4"/>
+<rect x="537.4399096628489" y="423.0" width="175.52831101790605" height="14.0" fill="#B4D7EA"/>
+<rect x="537.4399096628489" y="420.0" width="175.52831101790605" height="20.0" fill="#387FA4"/>
+<rect x="724.9701564768511" y="423.0" width="63.81029198257784" height="14.0" fill="#B4D7EA"/>
+<rect x="724.9701564768511" y="420.0" width="63.81029198257784" height="20.0" fill="#387FA4"/>
+<rect x="802.8827230198419" y="423.0" width="56.30908211001781" height="14.0" fill="#B4D7EA"/>
+<rect x="802.8827230198419" y="420.0" width="56.30908211001781" height="20.0" fill="#387FA4"/>
+<rect x="897.4979835457332" y="423.0" width="12.502016454266823" height="14.0" fill="#B4D7EA"/>
+<rect x="897.4979835457332" y="420.0" width="12.502016454266823" height="20.0" fill="#387FA4"/>
+<text x="24.0" y="474.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g6.t2</text>
+<text x="24.0" y="490.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:35107–41305 (+)</text>
+<line x1="290.0" y1="458.0" x2="290.0" y2="501.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="475.0" x2="910.0" y2="475.0" stroke="#8299AA" stroke-width="1"/>
+<text x="903.0" y="470.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="290.0" y="468.0" width="226.2364897564123" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="465.0" width="226.2364897564123" height="20.0" fill="#387FA4"/>
+<rect x="537.4399096628489" y="468.0" width="175.52831101790605" height="14.0" fill="#B4D7EA"/>
+<rect x="537.4399096628489" y="465.0" width="175.52831101790605" height="20.0" fill="#387FA4"/>
+<rect x="724.9701564768511" y="468.0" width="21.90353282787555" height="14.0" fill="#B4D7EA"/>
+<rect x="724.9701564768511" y="465.0" width="21.90353282787555" height="20.0" fill="#387FA4"/>
+<rect x="756.87530246814" y="468.0" width="7.801258267462572" height="14.0" fill="#B4D7EA"/>
+<rect x="756.87530246814" y="465.0" width="7.801258267462572" height="20.0" fill="#387FA4"/>
+<rect x="18.0" y="503.0" width="1064.0" height="43.0" fill="#F6F9FC"/>
+<text x="24.0" y="519.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g7.t1</text>
+<text x="24.0" y="535.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:41436–43210 (-)</text>
+<line x1="290.0" y1="503.0" x2="290.0" y2="546.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="520.0" x2="467.52863365058886" y2="520.0" stroke="#8299AA" stroke-width="1"/>
+<text x="460.52863365058886" y="515.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="386.81561542184227" y="513.0" width="80.71301822874659" height="14.0" fill="#B4D7EA"/>
+<rect x="386.81561542184227" y="510.0" width="80.71301822874659" height="20.0" fill="#387FA4"/>
+<rect x="300.20164542668175" y="513.0" width="66.31069527343118" height="14.0" fill="#B4D7EA"/>
+<rect x="300.20164542668175" y="510.0" width="66.31069527343118" height="20.0" fill="#387FA4"/>
+<rect x="290.0" y="513.0" width="2.7004355541216114" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="510.0" width="2.7004355541216114" height="20.0" fill="#387FA4"/>
+<text x="24.0" y="564.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g8.t1</text>
+<text x="24.0" y="580.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:43265–44331 (-)</text>
+<line x1="290.0" y1="548.0" x2="290.0" y2="591.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="565.0" x2="396.7172124536215" y2="565.0" stroke="#8299AA" stroke-width="1"/>
+<text x="389.7172124536215" y="560.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="376.7139861267947" y="558.0" width="20.003226326826848" height="14.0" fill="#B4D7EA"/>
+<rect x="376.7139861267947" y="555.0" width="20.003226326826848" height="20.0" fill="#387FA4"/>
+<rect x="290.0" y="558.0" width="79.3127923858687" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="555.0" width="79.3127923858687" height="20.0" fill="#387FA4"/>
+<rect x="18.0" y="593.0" width="1064.0" height="43.0" fill="#F6F9FC"/>
+<text x="24.0" y="609.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g9.t1</text>
+<text x="24.0" y="625.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:44605–45063 (-)</text>
+<line x1="290.0" y1="593.0" x2="290.0" y2="636.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="610.0" x2="335.90740442006773" y2="610.0" stroke="#8299AA" stroke-width="1"/>
+<text x="328.90740442006773" y="605.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="290.0" y="603.0" width="45.907404420067735" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="600.0" width="45.907404420067735" height="20.0" fill="#387FA4"/>
+<text x="24.0" y="654.0" fill="#244762" font-family="Arial,sans-serif" font-size="12.0">transcript:g10.t1</text>
+<text x="24.0" y="670.0" fill="#536878" font-family="Arial,sans-serif" font-size="10.0">Chr1:45945–47135 (+)</text>
+<line x1="290.0" y1="638.0" x2="290.0" y2="681.0" stroke="#C7D4DF" stroke-width="1"/>
+<line x1="290.0" y1="655.0" x2="409.11921277625424" y2="655.0" stroke="#8299AA" stroke-width="1"/>
+<text x="402.11921277625424" y="650.0" fill="#244762" font-family="Arial,sans-serif" font-size="11.0">&gt;</text>
+<rect x="290.0" y="648.0" width="32.30521051782546" height="14.0" fill="#B4D7EA"/>
+<rect x="290.0" y="645.0" width="32.30521051782546" height="20.0" fill="#387FA4"/>
+<rect x="339.00790450072594" y="648.0" width="22.60364574931441" height="14.0" fill="#B4D7EA"/>
+<rect x="339.00790450072594" y="645.0" width="22.60364574931441" height="20.0" fill="#387FA4"/>
+<rect x="370.1129214389418" y="648.0" width="39.00629133731246" height="14.0" fill="#B4D7EA"/>
+<rect x="370.1129214389418" y="645.0" width="39.00629133731246" height="20.0" fill="#387FA4"/>
+<text x="24.0" y="720.0" fill="#536878" font-family="Arial,sans-serif" font-size="11.0">* = source CDS/UTR without an overlapping annotated exon; not counted as an exon.</text>
+<text x="24.0" y="740.0" fill="#536878" font-family="Arial,sans-serif" font-size="12.0">Selected loci are user-defined; alignment does not establish homology or causation. Full sample labels and source coordinates are in the TSV.</text>
+</svg>

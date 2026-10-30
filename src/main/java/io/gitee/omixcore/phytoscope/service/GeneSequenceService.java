@@ -95,6 +95,11 @@ public final class GeneSequenceService {
         return sequences.size();
     }
 
+    /** FASTA record names in file order, for cross-checking against an annotation. */
+    public List<String> getSequenceNames() {
+        return List.copyOf(sequences.keySet());
+    }
+
     public String getSourceLabel() {
         return sourceLabel;
     }

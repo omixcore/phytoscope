@@ -69,6 +69,32 @@ public class Gff3Parser {
     /** Format used when nothing better can be determined. */
     private static final AnnotationFormat DEFAULT_FORMAT = AnnotationFormat.GFF3;
 
+    /**
+     * Optional listener invoked on the reading thread every few thousand features
+     * so a UI can show a live "parsed N features" progress line. Never required.
+     */
+    private volatile java.util.function.IntConsumer progressListener;
+
+    /** Rows of the most recent parse that were malformed or unusable. */
+    private int skippedRows;
+
+    /** Malformed/unusable row count of the most recent parse, for the data-quality report. */
+    public int getLastSkippedRows() {
+        return skippedRows;
+    }
+
+    /** Registers a progress listener; pass {@code null} to remove one. */
+    public void setProgressListener(java.util.function.IntConsumer listener) {
+        this.progressListener = listener;
+    }
+
+    private void reportProgress(int featureCount) {
+        var listener = progressListener;
+        if (listener != null && featureCount % 25_000 == 0 && featureCount > 0) {
+            listener.accept(featureCount);
+        }
+    }
+
     // ------------------------------------------------------------------
     // Entry points
     // ------------------------------------------------------------------
@@ -174,6 +200,7 @@ public class Gff3Parser {
      * @param label  human-readable source name recorded in the metadata
      */
     public ParseResult parse(InputStream in, AnnotationFormat format, String label) throws IOException {
+        skippedRows = 0;
         java.io.BufferedInputStream buffered = new java.io.BufferedInputStream(in);
         buffered.mark(2); int first = buffered.read(), second = buffered.read(); buffered.reset();
         InputStream decoded = first == 0x1f && second == 0x8b ? new java.util.zip.GZIPInputStream(buffered) : buffered;
@@ -222,7 +249,8 @@ public class Gff3Parser {
 
                 String[] cols = line.split("\t", -1);
                 if (cols.length < 9) {
-                    continue; // Malformed row, skip
+                    skippedRows++; // Malformed row, skip but count it for the quality report
+                    continue;
                 }
                 if (detected[0] == null) {
                     detected[0] = header.declaredFormat != null
@@ -230,9 +258,11 @@ public class Gff3Parser {
                 }
                 RawFeature raw = RawFeature.fromColumns(cols, dialectOf(detected[0]));
                 if (raw == null) {
+                    skippedRows++; // Unusable coordinates or attributes
                     continue;
                 }
                 featureCount++;
+                reportProgress(featureCount);
 
                 if (!chromosomes.contains(raw.chromosome)) {
                     chromosomes.add(raw.chromosome);

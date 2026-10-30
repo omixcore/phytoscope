@@ -157,10 +157,15 @@ public class MainView extends BorderPane {
     public java.util.concurrent.CompletableFuture<?> getPendingLoad() { return pendingLoad; }
     public void loadInitialDataAsync() { startExampleLoad(ExampleDataset.defaultDataset(), false); }
     public java.util.concurrent.CompletableFuture<?> startExampleLoad(ExampleDataset dataset, boolean atlas) {
-        pendingLoad = LoadingOperation.run(windowOrNull(), "Loading " + dataset.species(), () -> {
-            GenomeDataService next = new GenomeDataService(); next.loadExample(dataset);
+        pendingLoad = LoadingOperation.run(windowOrNull(), "Loading " + dataset.species(), progress -> {
+            GenomeDataService next = new GenomeDataService();
+            next.setProgressListener(n -> progress.accept("Parsed " + String.format("%,d", n) + " annotation features…"));
+            next.loadExample(dataset);
+            next.setProgressListener(null);
+            progress.accept("Reading expression matrix…");
             ExpressionDataService measurements = new ExpressionDataService(); measurements.loadExample(dataset);
             measurements.reconcile(next);
+            progress.accept("Loading bundled sequences…");
             GeneSequenceService sequences = new GeneSequenceService();
             sequences.loadBundledForDataset(dataset.id());
             if (atlas) {
@@ -228,12 +233,21 @@ public class MainView extends BorderPane {
         if (file == null) {
             return;
         }
-        pendingLoad = LoadingOperation.run(windowOrNull(), "Importing annotation", () -> {
-            GenomeDataService next = new GenomeDataService(); next.loadFromFile(file.toPath()); return next;
+        pendingLoad = LoadingOperation.run(windowOrNull(), "Importing annotation", progress -> {
+            GenomeDataService next = new GenomeDataService();
+            next.setProgressListener(n -> progress.accept("Parsed " + String.format("%,d", n) + " annotation features…"));
+            next.loadFromFile(file.toPath());
+            next.setProgressListener(null);
+            return next;
         }, next -> {
             dataService.replaceWith(next); expressionService.clear(); sequenceService.clear(); comparisonPane.clear(); activeExample = null;
             loading = true; try { datasetSelector.getSelectionModel().clearSelection(); } finally { loading = false; }
             afterDatasetChanged();
+            int skipped = next.getSkippedRows();
+            if (skipped > 0) {
+                statusLabel.setText("Imported with warnings: " + String.format("%,d", skipped)
+                        + " malformed annotation rows were skipped. Check the source file if this is unexpected.");
+            }
         }, this::loadFailed);
     }
 
@@ -267,10 +281,53 @@ public class MainView extends BorderPane {
             sequenceService.replaceWith(next);
             Gene gene = renderer.getSelectedGene();
             if (gene != null) detailPane.showGene(gene);
-            statusLabel.setText("Genome FASTA loaded: " + sequenceService.getSequenceCount()
-                    + " sequences · " + file.getFileName()
-                    + ". Confirm assembly and chromosome names match the annotation.");
+            statusLabel.setText(describeFastaAlignment(next) + file.getFileName());
         }, this::loadFailed);
+    }
+
+    /**
+     * Cross-checks the imported FASTA record names against the chromosomes of
+     * the annotation currently loaded, so name mismatches surface immediately
+     * instead of as silent empty sequence views.
+     */
+    private String describeFastaAlignment(GeneSequenceService fasta) {
+        if (dataService.isEmpty()) {
+            return "Genome FASTA loaded: " + fasta.getSequenceCount() + " sequences · ";
+        }
+        java.util.List<String> fastaNames = fasta.getSequenceNames();
+        java.util.Set<String> normalizedFasta = new java.util.HashSet<>();
+        for (String name : fastaNames) {
+            normalizedFasta.add(normalizeSequenceName(name));
+            normalizedFasta.add(name);
+        }
+        java.util.List<String> missing = new java.util.ArrayList<>();
+        int matched = 0;
+        for (String chromosome : dataService.getChromosomes()) {
+            if (normalizedFasta.contains(chromosome)
+                    || normalizedFasta.contains(normalizeSequenceName(chromosome))) {
+                matched++;
+            } else {
+                missing.add(chromosome);
+            }
+        }
+        if (missing.isEmpty()) {
+            return "Genome FASTA loaded: " + fasta.getSequenceCount() + " sequences, all "
+                    + matched + " annotation chromosomes covered · ";
+        }
+        String preview = missing.stream().limit(3).reduce((a, b) -> a + ", " + b).orElse("");
+        return "Genome FASTA loaded: " + fasta.getSequenceCount() + " sequences · WARNING: "
+                + missing.size() + " of " + dataService.getChromosomes().size()
+                + " annotation chromosomes have no FASTA record (" + preview
+                + (missing.size() > 3 ? ", …" : "") + ") · ";
+    }
+
+    /** Case- and prefix-insensitive key so Chr1 / chr1 / 1 compare equal. */
+    private static String normalizeSequenceName(String name) {
+        String normalized = name.trim().toLowerCase();
+        if (normalized.startsWith("chr") && normalized.length() > 3) {
+            normalized = normalized.substring(3);
+        }
+        return normalized;
     }
 
     private void importExpression() {

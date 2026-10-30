@@ -72,7 +72,7 @@ class ResearchModuleGoldSetTest {
         // 1. Promoter windows: independently calculate coordinates and directly
         // slice/reverse-complement the pinned genomic FASTA for both strands.
         GenomeDataService chr1 = new GenomeDataService();
-        chr1.loadFromResource("/data/species/arabidopsis/Chr1.gff3", AnnotationFormat.GFF3);
+        chr1.loadFromResource("/data/species/arabidopsis/Chr1.gff3.gz", AnnotationFormat.GFF3);
         List<Gene> plusGenes = selectSpreadGenes(chr1, '+', chr1Sequence.length(), 4);
         List<Gene> minusGenes = selectSpreadGenes(chr1, '-', chr1Sequence.length(), 4);
         assertEquals(4, plusGenes.size());

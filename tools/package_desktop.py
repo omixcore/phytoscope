@@ -12,13 +12,23 @@ staging=Path('target/jpackage-input');staging.mkdir(parents=True,exist_ok=True)
 for old in staging.iterdir():
     if old.is_file():old.unlink()
 shutil.copy2(a.jar,staging/a.jar.name)
+# jpackage refuses to run when the destination image already exists; rebuild from scratch.
+existing=a.out/('PhytoScope.app' if sys.platform=='darwin' else 'PhytoScope')
+if existing.exists(): shutil.rmtree(existing)
 a.out.mkdir(parents=True,exist_ok=True)
 # macOS rejects bundle versions whose first component is zero, while the
 # Maven application version remains 0.2.0. Use a valid bundle-only version there.
 app_version = '1.0.0' if sys.platform == 'darwin' else '0.2.0'
 command=[str(jpackage),'--type','app-image','--name','PhytoScope','--app-version',app_version,'--vendor','omixcore',
          '--input',str(staging),'--main-jar',a.jar.name,'--dest',str(a.out),
-         '--add-modules','java.se,jdk.unsupported,jdk.crypto.ec','--java-options','-Xmx3g',
+         # Slim runtime: only the JDK modules the application actually uses.
+         # java.se would double the runtime size for modules never touched.
+         # JavaFX ships inside the fat jar (with its native libraries), so
+         # javafx.* must NOT be listed here: they are not JDK modules.
+         '--add-modules','java.base,java.logging,java.xml,java.sql,java.naming,java.management,'
+         'java.desktop,java.instrument,java.security.jgss,java.security.sasl,'
+         'jdk.unsupported,jdk.crypto.ec,jdk.zipfs',
+         '--java-options','-Xmx3g',
          '--description','Plant gene structure and expression comparison']
 subprocess.run(command,check=True)
 print('Application image:',a.out.resolve())

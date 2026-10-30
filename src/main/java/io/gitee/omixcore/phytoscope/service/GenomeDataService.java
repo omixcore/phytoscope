@@ -61,6 +61,24 @@ public class GenomeDataService {
 
     private final Gff3Parser parser = new Gff3Parser();
 
+    /**
+     * Optional progress hook for long parses: receives the running feature
+     * count every ~25,000 annotation rows, on the reading thread. Clear it
+     * with {@code null} when the load finishes.
+     */
+    public void setProgressListener(java.util.function.IntConsumer listener) {
+        parser.setProgressListener(listener);
+    }
+
+    /**
+     * Malformed or unusable annotation rows skipped by the most recent load.
+     * Part of the data-quality report: a non-zero count means the input file
+     * itself has problems the browser worked around.
+     */
+    public int getSkippedRows() {
+        return parser.getLastSkippedRows();
+    }
+
     // ------------------------------------------------------------------
     // Loading
     // ------------------------------------------------------------------

@@ -1,0 +1,32 @@
+{
+  "timestamp_utc" : "2026-10-30T03:01:22.892548800Z",
+  "java" : "21.0.6+8-LTS-188",
+  "os" : "Windows 11 amd64",
+  "available_processors" : 16,
+  "max_heap_bytes" : 3221225472,
+  "method" : "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
+  "import_ms" : 2162.2928,
+  "genes" : 94883,
+  "features" : 909424,
+  "sequences" : 12,
+  "sources" : [ {
+    "sha256" : "5c7d2fb3f7fdeb86dc84e4f383e0621211e270c2f3982e636adf9ba1ba37089f",
+    "source" : "/data/species/mint/mentha_longifolia_horsemint.gff3.gz"
+  } ],
+  "select_all_sequences_ms" : 3.5317,
+  "search_repetitions" : 100,
+  "search_query_ids" : [ "gene:g1", "gene:g2", "gene:g3", "gene:g4" ],
+  "search_median_ms" : 24.7289,
+  "search_p95_ms" : 32.2652,
+  "hierarchy_query_ids" : [ "gene:g1", "gene:g2", "gene:g3", "gene:g4" ],
+  "hierarchy_query_median_ms" : 0.0043,
+  "hierarchy_query_p95_ms" : 0.0089,
+  "hierarchy_records_visited_over_100_queries" : 4800,
+  "comparison_10_loci_layout_ms" : 89.648,
+  "comparison_svg_write_ms" : 22.1948,
+  "heap_pool_peaks_bytes" : {
+    "G1 Old Gen" : 899018608,
+    "G1 Survivor Space" : 44040192,
+    "G1 Eden Space" : 390070272
+  }
+}

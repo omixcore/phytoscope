@@ -31,7 +31,16 @@
         "Chr3": "323d22b86dd928be4b3ba0ec69a4358bcb2c13486c12428799f5a3fa575e8898",
         "Chr4": "e5b8683b657698ba74d675451338a5c367c578f7f9a3ca83a81b70d592004b93",
         "Chr5": "27b8e00179465b642835d798b77b7964301236b514d4f7668848fe13f37bd11a"
-      }
+      },
+      "bundled_resources": {
+        "arabidopsis\\Chr1.gff3.gz": "2b6b5ed92ef73ce54a15dd0b24093df9fc48e6e399920dc15d89e9f484af18c6",
+        "arabidopsis\\Chr2.gff3.gz": "dc095e384b422d9c38a8ec0fda78b5856492f9fabdd687b5ca4e1c77673fbec2",
+        "arabidopsis\\Chr3.gff3.gz": "8131f5a7e2aa4109be04c653347a8e41e4dcc35ed7ba6df565d2fd94300a8b82",
+        "arabidopsis\\Chr4.gff3.gz": "a61c4c3ce146895d4b4ccf792c11a28073265db3607edb1ba0acc5b8675d74bf",
+        "arabidopsis\\Chr5.gff3.gz": "ddbec8ec922a8ef6ed89420c281286b8f65c3bcc693762a0193cd73baa29f138",
+        "arabidopsis\\arabidopsis_chromosomes.gff3.gz": "2b908a63880cf446da035f116218906d348ac5c68e6d6ea64713377f2e199171"
+      },
+      "bundled_resources_note": "gzip of the GFF3 parts; the parser streams them transparently"
     },
     "rice": {
       "species": "Oryza sativa Japonica Group",
@@ -178,6 +187,9 @@
         "Chr12": 25348185
       },
       "gff3_sha256": "ec2f2220a6a9a39901144a9014192605fb44f1fad63da0040fae8c13a9e67d4f",
+      "bundled_resource": "data/species/mint/mentha_longifolia_horsemint.gff3.gz",
+      "bundled_resource_sha256": "5c7d2fb3f7fdeb86dc84e4f383e0621211e270c2f3982e636adf9ba1ba37089f",
+      "bundled_resource_note": "gzip of the GFF3 above; the parser streams it transparently",
       "companion_files": {
         "genome_fasta_gz": "Long3_HAP_v2_genomic.fa.gz sha256 7659e8807857b303a2cc2fdd6bbbf4c11ff01b104e5157efadd66f6817ed972e",
         "functional_annotation_gz": "gene_functional_anno.tsv.gz sha256 809e320cf4ed9458f06e5d8c5f5b92ef539cc8c7bf6f693a3849d4a6292663b6"

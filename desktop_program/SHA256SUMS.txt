@@ -1,0 +1,7 @@
+# PhytoScope 0.2.0 - Windows x64 packaged application (jpackage app-image)
+# Built from the v0.2.0 tag; includes the complete horsemint genome example
+# with its 4-leaf TPM expression panel and the slim jlink runtime.
+# Download from the GitHub Release page (attachments exceed the 100 MB
+# repository file limit, so the archive is published there, not in git).
+# Verify with:  sha256sum -c SHA256SUMS.txt
+763b1c42350872047f36eb6c944ea3ebfd10ffaaca7a1fb8a59645a2392b3cce  PhytoScope-Windows-AMD64.zip

@@ -7,31 +7,38 @@ sh mvnw -Pui-tests verify
 python tools/package_desktop.py --jar target/phytoscope-0.2.0.jar
 ```
 
-The script also creates an OS/architecture-specific archive: `.tar.gz` on Linux/macOS (preserving executable permissions) or `.zip` on Windows. Unpack this archive before launching.
+The script creates a `jpackage` application image plus an OS/architecture-specific
+archive: `.tar.gz` on Linux/macOS (preserving executable permissions) or `.zip`
+on Windows. Unpack this archive before launching.
 
-## Packaged Windows application
+## Packaged application layout
 
-The Windows download `desktop_program/PhytoScope-Windows.zip` contains a ready-to-run application image with this layout:
+| Item | Purpose |
+| --- | --- |
+| `PhytoScope.exe` (Windows) / `.app` (macOS) / `bin/PhytoScope` (Linux) | Launcher — double-click or run directly |
+| `app/` | Application JAR and bundled libraries |
+| `runtime/` | Bundled Java runtime — recipients need no JDK, Maven or separate Java install |
 
-- `PhytoScope.exe` — launch PhytoScope by double-clicking this executable.
-- `app/` — application files and bundled libraries.
-- `runtime/` — the Java runtime required by the application.
+Keep all items together inside the extracted folder. The image is
+OS/architecture specific and unsigned: it is an application image, not a signed
+installer or app-store distribution. Linux additionally requires its normal
+desktop graphics/font libraries.
 
-Extract the ZIP to a local folder and keep all three items together. No separate Java installation, JDK, or Maven setup is required. Start the program with `PhytoScope.exe` from the extracted folder.
+## Release checklist
 
-The `jpackage` application image contains a Java runtime; recipients do not need
-Maven or a separate JDK. Launch `PhytoScope` from the app image (`PhytoScope.exe`
-on Windows; the `.app` on macOS; `bin/PhytoScope` on Linux). Keep the complete
-image directory together. The image is OS/architecture specific and unsigned.
-Linux still requires its normal desktop graphics/font libraries. This is an
-application image, not a signed installer or an app-store distribution.
+- Compute and publish a SHA-256 checksum for every archive (see
+  `desktop_program/SHA256SUMS.txt` for the Windows package).
+- Tag the release commit; attach archives to a GitHub Release instead of
+  linking to branch files, so downloads stay stable across updates.
+- The `Validate and package PhytoScope` workflow builds images on Ubuntu,
+  Windows and macOS and uploads them as separate artifacts with test evidence.
+  Artifacts become available only after the corresponding job succeeds.
+  JavaFX tests use Monocle, so they do not certify OS-native dialogs, display
+  scaling, graphics drivers, signing/notarization or security prompts. A release
+  should record actual native launch/import/export checks on its target machines
+  separately (see `docs/desktop-verification.md`).
 
-The `Validate and package PhytoScope` workflow builds images on Ubuntu, Windows
-and macOS and uploads them as separate artifacts with test evidence. Artifacts
-become available only after the corresponding job succeeds. JavaFX tests use
-Monocle, so they do not certify OS-native dialogs, display scaling, graphics
-drivers, signing/notarization or security prompts. A release should record actual
-native launch/import/export checks on its target machines separately.
+## Portable projects
 
 Portable `.phytoscope` projects embed annotation sources and a canonical matrix
 snapshot. The original source label and the import report remain in the manifest;

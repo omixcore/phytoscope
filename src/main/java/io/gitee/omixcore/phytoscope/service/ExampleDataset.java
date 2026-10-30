@@ -15,7 +15,7 @@ public record ExampleDataset(String id, String label, String commonName, String 
     public static final List<ExampleDataset> CATALOGUE = List.of(
             new ExampleDataset("arabidopsis", "Arabidopsis thaliana · TAIR10 · Chr1–Chr5",
                     "Thale cress Col-0", "Rosid · Brassicaceae", "Arabidopsis thaliana", "TAIR10", Map.of(),
-                    BASE + "arabidopsis/Chr1.gff3", AnnotationFormat.GFF3, "/data/case-studies/arabidopsis-atlas/expression.tsv",
+                    BASE + "arabidopsis/Chr1.gff3.gz", AnnotationFormat.GFF3, "/data/case-studies/arabidopsis-atlas/expression.tsv",
                     "TAIR/Araport11 original June 2016 release; bundled Arabidopsis tissue transcriptome case: Expression Atlas E-MTAB-7978"),
             new ExampleDataset("rice", "Oryza sativa Japonica Group · 12 chromosomes",
                     "Rice Nipponbare", "Monocot · Poaceae", "Oryza sativa Japonica Group", "IRGSP-1.0", Map.of(),
@@ -36,7 +36,7 @@ public record ExampleDataset(String id, String label, String commonName, String 
                             + "two real Maker gene families per chromosome-scale sequence"),
             new ExampleDataset("mint-genome", "Mentha longifolia · 12 chromosomes · complete annotation · 94,883 genes",
                     "Horsemint Long3", "Asterid · Lamiaceae", "Mentha longifolia", "Long3_HAP_v2 (haplotype A)", Map.of(),
-                    BASE + "mint/mentha_longifolia_horsemint.gff3", AnnotationFormat.GFF3,
+                    BASE + "mint/mentha_longifolia_horsemint.gff3.gz", AnnotationFormat.GFF3,
                     BASE + "mint/mentha_longifolia_expression.tsv",
                     "Lieberman, Henry & Comai 2025, chromosome-scale diploid horsemint genome "
                             + "(figshare 10.6084/m9.figshare.28457522): all 94,883 Braker3 gene models on "
@@ -62,13 +62,13 @@ public record ExampleDataset(String id, String label, String commonName, String 
         if (annotationResource == null || annotationResource.isBlank()) {
             return List.of();
         }
-        if ("arabidopsis".equals(id) && annotationResource.equals(BASE + "arabidopsis/Chr1.gff3")) {
+        if ("arabidopsis".equals(id) && annotationResource.equals(BASE + "arabidopsis/Chr1.gff3.gz")) {
             return List.of(
-                    BASE + "arabidopsis/Chr1.gff3",
-                    BASE + "arabidopsis/Chr2.gff3",
-                    BASE + "arabidopsis/Chr3.gff3",
-                    BASE + "arabidopsis/Chr4.gff3",
-                    BASE + "arabidopsis/Chr5.gff3");
+                    BASE + "arabidopsis/Chr1.gff3.gz",
+                    BASE + "arabidopsis/Chr2.gff3.gz",
+                    BASE + "arabidopsis/Chr3.gff3.gz",
+                    BASE + "arabidopsis/Chr4.gff3.gz",
+                    BASE + "arabidopsis/Chr5.gff3.gz");
         }
         return List.of(annotationResource);
     }

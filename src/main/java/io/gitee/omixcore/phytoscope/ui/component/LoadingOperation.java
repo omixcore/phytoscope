@@ -12,7 +12,25 @@ import java.util.function.Consumer;
 /** Background staging with a modal, cancellable progress surface; commits only on the FX thread. */
 public final class LoadingOperation {
     private LoadingOperation() { }
+
+    /** Work that receives a progress publisher and may throw like a Callable. */
+    @FunctionalInterface
+    public interface ProgressWork<T> {
+        T apply(Consumer<String> progress) throws Exception;
+    }
+
     public static <T> CompletableFuture<T> run(Window owner, String title, Callable<T> work,
+                                              Consumer<T> commit, Consumer<Throwable> failure) {
+        return run(owner, title, progress -> work.call(), commit, failure);
+    }
+
+    /**
+     * Background staging with an optional progress line. The work function
+     * receives a consumer whose text is shown on the dialog, so long parses
+     * can report how far they have got.
+     */
+    public static <T> CompletableFuture<T> run(Window owner, String title,
+                                              ProgressWork<T> work,
                                               Consumer<T> commit, Consumer<Throwable> failure) {
         if (!Platform.isFxApplicationThread()) throw new IllegalStateException("Start loads on the FX thread");
         Dialog<Void> dialog = new Dialog<>(); if (owner != null) dialog.initOwner(owner);
@@ -21,7 +39,9 @@ public final class LoadingOperation {
         label.setWrapText(true); ProgressIndicator spinner = new ProgressIndicator(); spinner.setPrefSize(44,44);
         VBox body = new VBox(12, spinner, label); body.setPadding(new Insets(15)); body.setPrefWidth(420);
         dialog.getDialogPane().setContent(body); dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        AtomicBoolean cancelled = new AtomicBoolean(), finished = new AtomicBoolean();
+        java.util.concurrent.atomic.AtomicBoolean cancelled = new AtomicBoolean(), finished = new AtomicBoolean();
+        // Progress text is produced on the worker thread but must touch the label on the FX thread.
+        Consumer<String> publish = text -> Platform.runLater(() -> { if (!finished.get()) label.setText(text); });
         java.util.concurrent.atomic.AtomicReference<Thread> thread = new java.util.concurrent.atomic.AtomicReference<>();
         CompletableFuture<T> completion = new CompletableFuture<>() {
             @Override public boolean cancel(boolean interrupt) {
@@ -34,7 +54,7 @@ public final class LoadingOperation {
         };
         Thread worker = new Thread(() -> {
             try {
-                T value = work.call();
+                T value = work.apply(publish);
                 Platform.runLater(() -> {
                     if (cancelled.get()) { discard(value); return; }
                     finished.set(true); dialog.close();
