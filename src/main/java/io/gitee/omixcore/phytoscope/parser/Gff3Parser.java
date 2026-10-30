@@ -144,7 +144,11 @@ public class Gff3Parser {
                 if (in == null) {
                     throw new IOException("Classpath resource not found: " + resourcePath);
                 }
-                streams.add(in);
+                // Each part may be gzip-compressed on its own. Decompress per
+                // part before concatenating so the downstream parser sees plain
+                // UTF-8 text and the magic-byte sniffing in parse() only ever
+                // sees the first stream, not a second gzip header mid-stream.
+                streams.add(decompressPerPart(in));
             }
             Enumeration<InputStream> enumeration = Collections.enumeration(streams);
             return parse(new java.io.SequenceInputStream(enumeration), format,
@@ -160,6 +164,23 @@ public class Gff3Parser {
     /** Convenience overload for multiple resources with auto-detected format. */
     public ParseResult parseResources(List<String> resourcePaths) throws IOException {
         return parseResources(resourcePaths, null);
+    }
+
+    /**
+     * Wraps a single resource stream with gzip decompression when its first two
+     * bytes are the gzip magic number. Used by {@link #parseResources} and by
+     * {@code GenomeDataService.loadParts} so that each chromosome-sized part is
+     * decompressed independently before the parts are concatenated.
+     */
+    public static InputStream decompressPerPart(InputStream in) throws IOException {
+        java.io.BufferedInputStream buffered = new java.io.BufferedInputStream(in);
+        buffered.mark(2);
+        int first = buffered.read(), second = buffered.read();
+        buffered.reset();
+        if (first == 0x1f && second == 0x8b) {
+            return new java.util.zip.GZIPInputStream(buffered);
+        }
+        return buffered;
     }
 
     /**

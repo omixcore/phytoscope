@@ -168,7 +168,11 @@ public class GenomeDataService {
         List<java.io.InputStream> streams = new ArrayList<>();
         try {
             for (Path part : parts) {
-                streams.add(java.nio.file.Files.newInputStream(part));
+                // Each restored part is decompressed independently: the saved
+                // annotation keeps its original (possibly gzip) bytes, so a
+                // single concatenated stream would only have the first gzip
+                // header recognised by the parser.
+                streams.add(Gff3Parser.decompressPerPart(java.nio.file.Files.newInputStream(part)));
                 streams.add(new java.io.ByteArrayInputStream(new byte[]{10}));
             }
             try (var in = new java.io.SequenceInputStream(java.util.Collections.enumeration(streams))) {
