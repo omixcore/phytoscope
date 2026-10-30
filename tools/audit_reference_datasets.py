@@ -47,9 +47,12 @@ def main():
         assert bsd_sum(compressed) == (int(record[0]), int(record[1])), name + ': provider checksum mismatch'
         fixture = fixtures / (name + '.gff3')
         bundled = root / f'src/main/resources/data/species/{name}/{name}_chromosomes.gff3'
+        if not bundled.exists():
+            bundled = bundled.with_suffix(bundled.suffix + '.gz')
         raw = fixture.read_bytes()
         assert hashlib.sha256(raw).hexdigest() == meta['fixture_sha256'], name + ': fixture SHA-256 mismatch'
-        assert raw == bundled.read_bytes(), name + ': bundled data differ from verified fixture'
+        bundled_raw = gzip.decompress(bundled.read_bytes()) if bundled.suffix == '.gz' else bundled.read_bytes()
+        assert raw == bundled_raw, name + ': bundled data differ from verified fixture'
         remaining = {l for l in raw.decode().splitlines() if l and not l.startswith('#')}
         row_count = len(remaining)
         regions, accession, assembly = {}, None, None
