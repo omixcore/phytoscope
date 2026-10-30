@@ -37,13 +37,13 @@ class ExpressionDataServiceTest {
         }
     }
     @Test
-    void defaultExampleLoadsBundledTranscriptome() throws Exception {
+    void defaultArabidopsisExampleLoadsBundledTranscriptome() throws Exception {
         ExpressionDataService service = new ExpressionDataService();
         service.loadExample(ExampleDataset.defaultDataset());
         assertFalse(service.isEmpty());
-        assertTrue(service.getProfileCount() >= 90000);
+        assertTrue(service.getProfileCount() >= 20000);
         assertEquals("TPM", service.getValueUnit());
-        assertEquals("Bundled panel (Mentha longifolia)", service.getSource());
+        assertEquals("Bundled panel (Arabidopsis thaliana)", service.getSource());
     }
 
     @Test

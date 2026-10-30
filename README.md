@@ -23,7 +23,7 @@ Download the packaged Windows application (x64, about 105 MiB) from the releases
 
 1. Extract the ZIP to any local folder, keeping `PhytoScope.exe`, `app/` and `runtime/` together.
 2. Double-click `PhytoScope.exe` — a bundled Java runtime is included, so nothing else has to be installed.
-3. The browser opens with the complete horsemint genome (94,883 genes with a 4-leaf TPM panel). Pick another bundled species from the **dataset selector** — Arabidopsis, rice, maize, soybean and further mint references — or use **File → Import annotation / Import expression matrix** for your own data.
+3. The browser opens with the Arabidopsis example. Pick another bundled species from the **dataset selector** (including the complete horsemint genome with a 4-leaf TPM panel), or use **File → Import annotation / Import expression matrix** for your own data.
 4. Click any gene to see its structure, sequence and expression profile; use **Export** to save PNG/SVG views or **File → Save project** for a portable `.phytoscope` file.
 
 ![PhytoScope software overview and workflow](https://raw.githubusercontent.com/omixcore/phytoscope/dev/fig/Figure1.jpg)
