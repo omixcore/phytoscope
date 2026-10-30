@@ -13,6 +13,13 @@ public record ExampleDataset(String id, String label, String commonName, String 
     private static final String BASE = "/data/species/";
 
     public static final List<ExampleDataset> CATALOGUE = List.of(
+            new ExampleDataset("mint-genome", "Mentha longifolia · 12 chromosomes · complete annotation · 94,883 genes",
+                    "Horsemint Long3", "Asterid · Lamiaceae", "Mentha longifolia", "Long3_HAP_v2 (haplotype A)", Map.of(),
+                    BASE + "mint/mentha_longifolia_horsemint.gff3.gz", AnnotationFormat.GFF3,
+                    BASE + "mint/mentha_longifolia_expression.tsv",
+                    "Lieberman, Henry & Comai 2025, chromosome-scale diploid horsemint genome "
+                            + "(figshare 10.6084/m9.figshare.28457522): all 94,883 Braker3 gene models on "
+                            + "haplotype A, 102,705 transcripts, coordinates unmodified"),
             new ExampleDataset("arabidopsis", "Arabidopsis thaliana · TAIR10 · Chr1–Chr5",
                     "Thale cress Col-0", "Rosid · Brassicaceae", "Arabidopsis thaliana", "TAIR10", Map.of(),
                     BASE + "arabidopsis/Chr1.gff3.gz", AnnotationFormat.GFF3, "/data/case-studies/arabidopsis-atlas/expression.tsv",
@@ -34,13 +41,6 @@ public record ExampleDataset(String id, String label, String commonName, String 
                     BASE + "mint/mentha_longifolia_chromosomes.gff3", AnnotationFormat.GFF3, null,
                     "WSU Mint Genome Resources, Mentha longifolia CMEN585 v3.01b (also INSDC GCA_001642375.2): "
                             + "two real Maker gene families per chromosome-scale sequence"),
-            new ExampleDataset("mint-genome", "Mentha longifolia · 12 chromosomes · complete annotation · 94,883 genes",
-                    "Horsemint Long3", "Asterid · Lamiaceae", "Mentha longifolia", "Long3_HAP_v2 (haplotype A)", Map.of(),
-                    BASE + "mint/mentha_longifolia_horsemint.gff3.gz", AnnotationFormat.GFF3,
-                    BASE + "mint/mentha_longifolia_expression.tsv",
-                    "Lieberman, Henry & Comai 2025, chromosome-scale diploid horsemint genome "
-                            + "(figshare 10.6084/m9.figshare.28457522): all 94,883 Braker3 gene models on "
-                            + "haplotype A, 102,705 transcripts, coordinates unmodified"),
             new ExampleDataset("mint-plastid", "Mentha spicata · MG256495 chloroplast · 152 kb",
                     "Spearmint", "Asterid · Lamiaceae", "Mentha spicata", "MG256495 chloroplast", Map.of(),
                     BASE + "mint/mentha_spicata_chloroplast.gff3", AnnotationFormat.GFF3, null,
