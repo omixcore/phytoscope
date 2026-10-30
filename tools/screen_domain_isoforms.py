@@ -23,6 +23,35 @@ def sha256(path):
     return h.hexdigest()
 
 
+def content_sha256(path):
+    """Hash of the logical content.
+
+    The gzip migration turned the chromosome annotations into ``.gff3.gz``
+    while the frozen manifest records their *plaintext* hashes. The genome
+    FASTA has always been ``.fna.gz`` and keeps its compressed-byte hash.
+    So decompress only the chromosome annotations, and only when gzipped.
+    """
+    if path.name.startswith('Chr') and path.name.endswith('.gff3.gz'):
+        h = hashlib.sha256()
+        with gzip.open(path, 'rb') as handle:
+            for chunk in iter(lambda: handle.read(1024 * 1024), b''):
+                h.update(chunk)
+        return h.hexdigest()
+    return sha256(path)
+
+
+def open_text(path):
+    """Open a text file, transparently decompressing gzip when needed."""
+    opener = gzip.open if str(path).endswith('.gz') else open
+    return opener(path, 'rt')
+
+
+def gff3_part(directory, chromosome):
+    """Resolve a bundled chromosome annotation to its plain or gzip form."""
+    plain = directory / f'Chr{chromosome}.gff3'
+    return plain if plain.exists() else directory / f'Chr{chromosome}.gff3.gz'
+
+
 def fasta(path):
     result = {}
     opener = gzip.open if str(path).endswith('.gz') else open
@@ -59,7 +88,7 @@ def load_models(directory):
     genomes = fasta(directory / 'TAIR10_genomic.fna.gz')
     genes, models = {}, {}
     for chromosome in range(1, 6):
-        with (directory / f'Chr{chromosome}.gff3').open() as handle:
+        with open_text(gff3_part(directory, chromosome)) as handle:
             for line in handle:
                 if line.startswith('#') or not line.strip():
                     continue
@@ -230,7 +259,7 @@ def main():
     excerpt = ['##gff-version 3\n', '##species=Arabidopsis thaliana\n',
                '##assembly=TAIR10 / Araport11\n']
     for chromosome in range(1, 6):
-        with (args.reference / f'Chr{chromosome}.gff3').open() as handle:
+        with open_text(gff3_part(args.reference, chromosome)) as handle:
             for line in handle:
                 if line.startswith('#'):
                     continue
@@ -249,12 +278,17 @@ def main():
               'chromosome', 'strand', 'deletion_genomic_blocks', 'domain_genomic_blocks']
     write_tsv(args.out / 'candidates.tsv', candidates, fields)
     inputs = [args.protocol, args.uniprot, args.reference / 'TAIR10_genomic.fna.gz']
-    inputs.extend(args.reference / f'Chr{i}.gff3' for i in range(1, 6))
+    inputs.extend(gff3_part(args.reference, i) for i in range(1, 6))
+    def manifest_key(p):
+        # The frozen manifest records chromosome annotations under their
+        # plain ".gff3" name (the gzip form was introduced later) but keeps
+        # the ".fna.gz" suffix of the genome FASTA. Match that convention.
+        return p.name[:-3] if p.name.startswith('Chr') and p.name.endswith('.gff3.gz') else p.name
     report = {'protocol_version': 1, 'complete_cds_models': len(models),
               'rejected_cds': rejected, 'specificity_background_models': len(specificity),
               'screen_counts': dict(counts),
               'candidate_rows': len(candidates), 'candidate_genes': len({c['gene'] for c in candidates}),
-              'input_sha256': {p.name: sha256(p) for p in inputs},
+              'input_sha256': {manifest_key(p): content_sha256(p) for p in inputs},
               'candidate_sha256': sha256(args.out / 'candidates.json'),
               'validation_peptides_used_for_screening': False}
     (args.out / 'discovery-manifest.json').write_text(json.dumps(report, indent=2) + '\n')
