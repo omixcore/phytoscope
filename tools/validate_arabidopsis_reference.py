@@ -1,5 +1,5 @@
 """Validate complete bundled Arabidopsis TAIR10/Araport11 Chr1-Chr5 resources."""
-import argparse, hashlib, json
+import argparse, gzip, hashlib, json
 from pathlib import Path
 
 EXPECTED = {
@@ -22,8 +22,10 @@ def main():
     for c, expected in EXPECTED.items():
         length = expected["length"]
         p = args.directory / f"{c}.gff3"
+        if not p.exists():
+            p = p.with_suffix(p.suffix + ".gz")
         assert p.exists(), p
-        raw = p.read_bytes()
+        raw = gzip.decompress(p.read_bytes()) if p.suffix == ".gz" else p.read_bytes()
         lines = raw.decode("utf-8").splitlines()
         assert lines[0] == "##gff-version 3"
         assert any(x == f"##sequence-region {c} 1 {length}" for x in lines)
