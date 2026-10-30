@@ -49,6 +49,24 @@ class ReferenceDatasetIntegrityTest {
     }
 
     @Test
+    void arabidopsisMultiPartAnnotationLoadsAllFiveChromosomes() throws Exception {
+        // Regression: the gzip migration split Arabidopsis into five
+        // chromosome-sized .gff3.gz parts. Loading must decompress each part
+        // independently and surface all five sequences — an earlier bug
+        // concatenated the raw streams, so only Chr1 was parsed and every
+        // gene on Chr2-Chr5 (e.g. AT5G38410) vanished.
+        var genome = new GenomeDataService();
+        genome.loadExample(ExampleDataset.byId("arabidopsis"));
+        assertEquals(java.util.List.of("Chr1", "Chr2", "Chr3", "Chr4", "Chr5"),
+                genome.getChromosomes(), "all five chromosomes must load");
+        assertNotNull(genome.findGene("AT1G67090"), "Chr1 locus must be present");
+        assertNotNull(genome.findGene("AT5G38410"), "Chr5 locus must be present");
+        assertNotNull(genome.findGene("AT5G38420"), "Chr5 locus must be present");
+        assertNotNull(genome.findGene("AT5G38430"), "Chr5 locus must be present");
+        assertEquals("Chr5", genome.findGene("AT5G38410").getChromosome());
+    }
+
+    @Test
     void catalogueContainsOnlyReviewedReferences() {
         assertEquals(7, ExampleDataset.CATALOGUE.size());
         assertNotNull(ExampleDataset.byId("mint"));
