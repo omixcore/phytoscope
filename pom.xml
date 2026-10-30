@@ -87,6 +87,13 @@
                     -->
                     <mainClass>io.gitee.omixcore.phytoscope.PhytoScopeLauncher</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- JavaFX run plugin: mvn javafx:run starts the desktop interface -->

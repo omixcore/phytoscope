@@ -54,7 +54,13 @@ public class Gff3Parser {
     public record ParseResult(List<Gene> genes,
                               int featureCount,
                               AnnotationFormat format,
-                              GenomeMetadata metadata) {
+                              GenomeMetadata metadata,
+                              ParseDiagnostics diagnostics) {
+
+        /** Backward-compatible constructor for callers that have no diagnostics to report. */
+        public ParseResult(List<Gene> genes, int featureCount, AnnotationFormat format, GenomeMetadata metadata) {
+            this(genes, featureCount, format, metadata, ParseDiagnostics.empty());
+        }
 
         /** Convenience accessor kept for readability at call sites. */
         public List<String> chromosomes() {
@@ -78,9 +84,17 @@ public class Gff3Parser {
     /** Rows of the most recent parse that were malformed or unusable. */
     private int skippedRows;
 
+    /** Structured diagnostics of the most recent parse (skipped rows and orphan features). */
+    private ParseDiagnostics lastDiagnostics = ParseDiagnostics.empty();
+
     /** Malformed/unusable row count of the most recent parse, for the data-quality report. */
     public int getLastSkippedRows() {
         return skippedRows;
+    }
+
+    /** Structured diagnostics of the most recent parse, for the consistency health report. */
+    public ParseDiagnostics getLastDiagnostics() {
+        return lastDiagnostics;
     }
 
     /** Registers a progress listener; pass {@code null} to remove one. */
@@ -222,6 +236,8 @@ public class Gff3Parser {
      */
     public ParseResult parse(InputStream in, AnnotationFormat format, String label) throws IOException {
         skippedRows = 0;
+        List<ParseDiagnostics.SkippedRow> skippedDetails = new ArrayList<>();
+        List<ParseDiagnostics.OrphanFeature> orphans = new ArrayList<>();
         java.io.BufferedInputStream buffered = new java.io.BufferedInputStream(in);
         buffered.mark(2); int first = buffered.read(), second = buffered.read(); buffered.reset();
         InputStream decoded = first == 0x1f && second == 0x8b ? new java.util.zip.GZIPInputStream(buffered) : buffered;
@@ -241,12 +257,14 @@ public class Gff3Parser {
         List<String> chromosomes = new ArrayList<>();
         Map<String, int[]> chromosomeBounds = new LinkedHashMap<>();
         int featureCount = 0;
+        int lineNumber = 0;
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(decoded, StandardCharsets.UTF_8))) {
             String line;
             boolean inFasta = false;
             boolean firstLine = true;
             while ((line = reader.readLine()) != null) {
+                lineNumber++;
                 if (Thread.currentThread().isInterrupted()) throw new IOException("Annotation loading cancelled");
                 // Strip a UTF-8 BOM, otherwise the first directive is not recognised.
                 if (firstLine) {
@@ -271,15 +289,21 @@ public class Gff3Parser {
                 String[] cols = line.split("\t", -1);
                 if (cols.length < 9) {
                     skippedRows++; // Malformed row, skip but count it for the quality report
+                    if (skippedDetails.size() < ParseDiagnostics.MAX_RECORDS) {
+                        skippedDetails.add(new ParseDiagnostics.SkippedRow(lineNumber, line, ParseDiagnostics.SkipReason.FEWER_THAN_NINE_COLUMNS));
+                    }
                     continue;
                 }
                 if (detected[0] == null) {
                     detected[0] = header.declaredFormat != null
                             ? header.declaredFormat : detectFormat(cols[8]);
                 }
-                RawFeature raw = RawFeature.fromColumns(cols, dialectOf(detected[0]));
+                RawFeature raw = RawFeature.fromColumns(cols, dialectOf(detected[0]), lineNumber);
                 if (raw == null) {
                     skippedRows++; // Unusable coordinates or attributes
+                    if (skippedDetails.size() < ParseDiagnostics.MAX_RECORDS) {
+                        skippedDetails.add(new ParseDiagnostics.SkippedRow(lineNumber, line, ParseDiagnostics.SkipReason.UNUSABLE_COORDINATES_OR_ATTRIBUTES));
+                    }
                     continue;
                 }
                 featureCount++;
@@ -315,6 +339,9 @@ public class Gff3Parser {
         for (RawFeature raw : rawGenes) {
             Gene gene = new Gene(raw.id, raw.name, raw.chromosome, raw.start, raw.end, raw.strand);
             gene.setAttributes(raw.attributes);
+            gene.setLineNumber(raw.lineNumber);
+            gene.setScore(raw.score);
+            gene.setPhase(raw.phase);
             gene.setSpecies(header.species);
             gene.setLocusTag(raw.get("locus_tag", "gene_id", "gene"));
             gene.setDescription(raw.get("Note", "description", "product"));
@@ -329,10 +356,17 @@ public class Gff3Parser {
         for (RawFeature raw : rawTranscripts) {
             Gene gene = findGene(raw, geneById);
             if (gene == null) {
+                if (orphans.size() < ParseDiagnostics.MAX_RECORDS) {
+                    orphans.add(new ParseDiagnostics.OrphanFeature(raw.lineNumber, raw.id, raw.type,
+                            raw.getParents().stream().findFirst().orElse(null), ParseDiagnostics.OrphanTarget.GENE));
+                }
                 continue;
             }
             Transcript transcript = new Transcript(raw.id, raw.chromosome, raw.start, raw.end, raw.strand);
             transcript.setAttributes(raw.attributes);
+            transcript.setLineNumber(raw.lineNumber);
+            transcript.setScore(raw.score);
+            transcript.setPhase(raw.phase);
             transcript.setName(raw.name);
             transcript.setProteinId(raw.get("protein_id"));
             transcript.setSpecies(header.species);
@@ -348,30 +382,36 @@ public class Gff3Parser {
         }
 
         for (RawFeature raw : rawExons) {
-            for (Transcript parent : resolveTranscripts(raw, transcriptById)) {
+            for (Transcript parent : resolveTranscripts(raw, transcriptById, orphans)) {
                 Exon exon = new Exon(raw.id, raw.chromosome, raw.start, raw.end, raw.strand);
                 exon.setAttributes(raw.attributes);
+                exon.setLineNumber(raw.lineNumber);
+                exon.setScore(raw.score);
+                exon.setPhase(raw.phase);
                 exon.setName(raw.name);
                 parent.addExon(exon);
             }
         }
 
         for (RawFeature raw : rawCds) {
-            for (Transcript parent : resolveTranscripts(raw, transcriptById)) {
+            for (Transcript parent : resolveTranscripts(raw, transcriptById, orphans)) {
                 GenomicFeature cds = new GenomicFeature(raw.id, raw.chromosome, FeatureType.CDS,
                         raw.start, raw.end, raw.strand);
                 cds.setAttributes(raw.attributes);
+                cds.setLineNumber(raw.lineNumber);
+                cds.setScore(raw.score);
+                cds.setPhase(raw.phase);
                 if (parent.getProteinId() == null) parent.setProteinId(raw.get("protein_id"));
                 attachToExon(parent, cds);
             }
         }
-        attachCodons(rawStartCodons, transcriptById, FeatureType.START_CODON, true);
-        attachCodons(rawStopCodons, transcriptById, FeatureType.STOP_CODON, false);
+        attachCodons(rawStartCodons, transcriptById, FeatureType.START_CODON, true, orphans);
+        attachCodons(rawStopCodons, transcriptById, FeatureType.STOP_CODON, false, orphans);
         for (RawFeature raw : rawUtr5) {
-            attachUtr(raw, transcriptById, FeatureType.FIVE_UTR);
+            attachUtr(raw, transcriptById, FeatureType.FIVE_UTR, orphans);
         }
         for (RawFeature raw : rawUtr3) {
-            attachUtr(raw, transcriptById, FeatureType.THREE_UTR);
+            attachUtr(raw, transcriptById, FeatureType.THREE_UTR, orphans);
         }
 
         // Wrap up: order exons and flag the representative transcript.
@@ -391,7 +431,8 @@ public class Gff3Parser {
         });
 
         GenomeMetadata metadata = buildMetadata(header, label, chromosomes, chromosomeBounds);
-        return new ParseResult(genes, featureCount, usedFormat, metadata);
+        lastDiagnostics = new ParseDiagnostics(skippedDetails, skippedRows, orphans);
+        return new ParseResult(genes, featureCount, usedFormat, metadata, lastDiagnostics);
     }
 
     // ------------------------------------------------------------------
@@ -525,7 +566,8 @@ public class Gff3Parser {
             regions.merge(chromosome, observed, Gff3Parser::mergeRegions);
         }
         return GenomeMetadata.fromAnnotation(header.species, header.assembly,
-                header.description, label, new ArrayList<>(regions.values()));
+                header.description, label, new ArrayList<>(regions.values()),
+                header.regions);
     }
 
     private static SequenceRegion mergeRegions(SequenceRegion a, SequenceRegion b) {
@@ -566,22 +608,29 @@ public class Gff3Parser {
     // Hierarchy assembly helpers
     // ------------------------------------------------------------------
 
-    private void attachUtr(RawFeature raw, Map<String, Transcript> transcriptById, FeatureType type) {
-        for (Transcript parent : resolveTranscripts(raw, transcriptById)) {
+    private void attachUtr(RawFeature raw, Map<String, Transcript> transcriptById,
+                           FeatureType type, List<ParseDiagnostics.OrphanFeature> orphans) {
+        for (Transcript parent : resolveTranscripts(raw, transcriptById, orphans)) {
             GenomicFeature utr = new GenomicFeature(raw.id, raw.chromosome, type,
                     raw.start, raw.end, raw.strand);
             utr.setAttributes(raw.attributes);
+            utr.setLineNumber(raw.lineNumber);
+            utr.setScore(raw.score);
+            utr.setPhase(raw.phase);
             attachToExon(parent, utr);
         }
     }
 
     private void attachCodons(List<RawFeature> features, Map<String, Transcript> transcriptById,
-                              FeatureType type, boolean start) {
+                              FeatureType type, boolean start, List<ParseDiagnostics.OrphanFeature> orphans) {
         for (RawFeature raw : features) {
-            for (Transcript transcript : resolveTranscripts(raw, transcriptById)) {
+            for (Transcript transcript : resolveTranscripts(raw, transcriptById, orphans)) {
                 GenomicFeature codon = new GenomicFeature(raw.id, raw.chromosome, type,
                         raw.start, raw.end, raw.strand);
                 codon.setAttributes(raw.attributes);
+                codon.setLineNumber(raw.lineNumber);
+                codon.setScore(raw.score);
+                codon.setPhase(raw.phase);
                 if (start) transcript.addStartCodonSegment(codon);
                 else transcript.addStopCodonSegment(codon);
             }
@@ -607,10 +656,23 @@ public class Gff3Parser {
         transcript.addUnassignedSegment(segment);
     }
 
-    /** Locates the transcript via the Parent attribute. */
-    private List<Transcript> resolveTranscripts(RawFeature raw, Map<String, Transcript> transcriptById) {
-        return raw.getParents().stream().map(transcriptById::get)
-                .filter(java.util.Objects::nonNull).distinct().toList();
+    /**
+     * Locates the transcript via the Parent attribute. A Parent reference that
+     * does not resolve is recorded as an {@link OrphanFeature} instead of being
+     * silently dropped, so the health report can trace the exact source line.
+     */
+    private List<Transcript> resolveTranscripts(RawFeature raw, Map<String, Transcript> transcriptById,
+                                                List<ParseDiagnostics.OrphanFeature> orphans) {
+        List<Transcript> resolved = new ArrayList<>();
+        for (String parentId : raw.getParents()) {
+            Transcript transcript = transcriptById.get(parentId);
+            if (transcript != null) {
+                resolved.add(transcript);
+            } else if (orphans.size() < ParseDiagnostics.MAX_RECORDS) {
+                orphans.add(new ParseDiagnostics.OrphanFeature(raw.lineNumber, raw.id, raw.type, parentId, ParseDiagnostics.OrphanTarget.TRANSCRIPT));
+            }
+        }
+        return resolved.stream().distinct().toList();
     }
 
     /** Locates the gene via the Parent attribute, with graceful fallbacks. */
@@ -665,13 +727,16 @@ public class Gff3Parser {
         String type;
         int start;
         int end;
+        String score;
         char strand;
+        String phase;
         String attributes;
         String id;
         String name;
+        int lineNumber;
         private Map<String, String> attrMap;
 
-        static RawFeature fromColumns(String[] cols, AttributeDialect dialect) {
+        static RawFeature fromColumns(String[] cols, AttributeDialect dialect, int lineNumber) {
             try {
                 RawFeature f = new RawFeature();
                 f.chromosome = cols[0];
@@ -679,8 +744,11 @@ public class Gff3Parser {
                 f.type = cols[2];
                 f.start = Integer.parseInt(cols[3].trim());
                 f.end = Integer.parseInt(cols[4].trim());
+                f.score = cols[5];
                 f.strand = cols[6].isEmpty() ? '.' : cols[6].charAt(0);
+                f.phase = cols[7];
                 f.attributes = cols[8];
+                f.lineNumber = lineNumber;
                 f.attrMap = dialect == AttributeDialect.GTF
                         ? parseGtfAttributes(cols[8]) : parseGff3Attributes(cols[8]);
                 f.id = f.resolveId(dialect);

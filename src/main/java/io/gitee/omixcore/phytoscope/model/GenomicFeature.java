@@ -35,6 +35,15 @@ public class GenomicFeature {
     /** Raw GFF3 column-9 attribute string, kept for traceability. */
     private String attributes;
 
+    /** Source-file line number (1-based) of the row that produced this feature; 0 when unknown. */
+    private int lineNumber;
+
+    /** Raw GFF3 column-5 score string; {@code "."} means unknown and is kept verbatim. */
+    private String score;
+
+    /** Raw GFF3 column-7 phase string; {@code "."} means unknown and is kept verbatim. */
+    private String phase;
+
     public GenomicFeature() {
     }
 
@@ -136,6 +145,30 @@ public class GenomicFeature {
 
     public void setAttributes(String attributes) {
         this.attributes = attributes;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
     }
 
     @Override

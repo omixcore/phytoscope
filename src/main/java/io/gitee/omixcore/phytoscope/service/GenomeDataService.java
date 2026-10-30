@@ -5,6 +5,7 @@ import io.gitee.omixcore.phytoscope.model.GenomeMetadata;
 import io.gitee.omixcore.phytoscope.model.SequenceRegion;
 import io.gitee.omixcore.phytoscope.parser.AnnotationFormat;
 import io.gitee.omixcore.phytoscope.parser.Gff3Parser;
+import io.gitee.omixcore.phytoscope.parser.ParseDiagnostics;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class GenomeDataService {
             null, null, "", "No data loaded", List.of());
     private AnnotationFormat format = AnnotationFormat.GFF3;
     private int rawFeatureCount;
+    private ParseDiagnostics diagnostics = ParseDiagnostics.empty();
 
     /** Sequence currently selected in the chromosome selector; null when empty. */
     private String activeSequence;
@@ -76,7 +78,12 @@ public class GenomeDataService {
      * itself has problems the browser worked around.
      */
     public int getSkippedRows() {
-        return parser.getLastSkippedRows();
+        return diagnostics.skippedRowTotal();
+    }
+
+    /** Structured parser diagnostics (skipped rows and orphan features) of the most recent load. */
+    public ParseDiagnostics getDiagnostics() {
+        return diagnostics;
     }
 
     // ------------------------------------------------------------------
@@ -187,7 +194,8 @@ public class GenomeDataService {
     }
 
     public void replaceWith(GenomeDataService next) {
-        applyResult(new Gff3Parser.ParseResult(next.getGenes(), next.rawFeatureCount, next.format, next.metadata));
+        applyResult(new Gff3Parser.ParseResult(next.getGenes(), next.rawFeatureCount, next.format,
+                next.metadata, next.getDiagnostics()));
         sourceInputs = next.sourceInputs;
         activeSequence = next.activeSequence;
     }
@@ -212,6 +220,7 @@ public class GenomeDataService {
         this.metadata = result.metadata().withSequenceLengths(sequenceLengths);
         this.format = result.format();
         this.rawFeatureCount = result.featureCount();
+        this.diagnostics = result.diagnostics() == null ? ParseDiagnostics.empty() : result.diagnostics();
         // Prefer a populated sequence: headers may declare unannotated organelles
         // or scaffolds before the first nuclear gene. Keep them selectable.
         this.activeSequence = metadata.getSequenceNames().stream()

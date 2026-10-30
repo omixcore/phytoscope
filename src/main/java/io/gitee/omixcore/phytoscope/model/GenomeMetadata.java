@@ -26,9 +26,11 @@ public final class GenomeMetadata {
     private final String sourceLabel;
     private final List<SequenceRegion> sequenceRegions;
     private final Map<String, SequenceRegion> regionIndex;
+    private final Map<String, SequenceRegion> declaredRegionIndex;
 
     private GenomeMetadata(String species, String assembly, String description,
-                           String sourceLabel, List<SequenceRegion> sequenceRegions) {
+                           String sourceLabel, List<SequenceRegion> sequenceRegions,
+                           List<SequenceRegion> declaredRegions) {
         this.species = blankToUnknown(species);
         this.assembly = blankToUnknown(assembly);
         this.description = description == null ? "" : description.trim();
@@ -45,6 +47,21 @@ public final class GenomeMetadata {
         }
         this.sequenceRegions = List.copyOf(index.values());
         this.regionIndex = Map.copyOf(index);
+        // Header-declared regions are kept separate so coordinate validation can
+        // compare against the declared length, not the observed bounds which the
+        // normal region index merges in (and which would hide out-of-bounds rows).
+        Map<String, SequenceRegion> declared = new LinkedHashMap<>();
+        if (declaredRegions != null) {
+            for (SequenceRegion region : declaredRegions) {
+                if (region.id() == null || region.id().isBlank()
+                        || region.start() < 1 || region.end() < region.start()) {
+                    continue;
+                }
+                declared.merge(region.id(), region, (a, b) -> new SequenceRegion(a.id(),
+                        Math.min(a.start(), b.start()), Math.max(a.end(), b.end())));
+            }
+        }
+        this.declaredRegionIndex = Map.copyOf(declared);
     }
 
     // ------------------------------------------------------------------
@@ -63,7 +80,21 @@ public final class GenomeMetadata {
     public static GenomeMetadata fromAnnotation(String species, String assembly, String description,
                                                 String sourceLabel, List<SequenceRegion> sequenceRegions) {
         return new GenomeMetadata(species, assembly, description, sourceLabel,
-                sequenceRegions == null ? List.of() : sequenceRegions);
+                sequenceRegions == null ? List.of() : sequenceRegions, List.of());
+    }
+
+    /**
+     * Builds metadata carrying both the merged sequence regions and the raw
+     * header-declared regions. The declared regions are used for coordinate
+     * validation so that an observed out-of-bounds row is not masked by the
+     * observation itself.
+     */
+    public static GenomeMetadata fromAnnotation(String species, String assembly, String description,
+                                                String sourceLabel, List<SequenceRegion> sequenceRegions,
+                                                List<SequenceRegion> declaredRegions) {
+        return new GenomeMetadata(species, assembly, description, sourceLabel,
+                sequenceRegions == null ? List.of() : sequenceRegions,
+                declaredRegions == null ? List.of() : declaredRegions);
     }
 
     /**
@@ -85,7 +116,7 @@ public final class GenomeMetadata {
                 regions.add(new SequenceRegion(chromosome, 1, 1));
             }
         }
-        return new GenomeMetadata(null, null, "", sourceLabel, regions);
+        return new GenomeMetadata(null, null, "", sourceLabel, regions, List.of());
     }
 
     // ------------------------------------------------------------------
@@ -120,6 +151,11 @@ public final class GenomeMetadata {
     /** Looks up a declared region, or {@code null} when the id is unknown. */
     public SequenceRegion findRegion(String id) {
         return id == null ? null : regionIndex.get(id);
+    }
+
+    /** Looks up a header-declared region before observed bounds were merged in, or null. */
+    public SequenceRegion findDeclaredRegion(String id) {
+        return id == null ? null : declaredRegionIndex.get(id);
     }
 
     /** First declared region, used as the default view anchor; never null. */
@@ -195,7 +231,8 @@ public final class GenomeMetadata {
         if (!changed) {
             return this;
         }
-        return new GenomeMetadata(species, assembly, description, sourceLabel, updated);
+        return new GenomeMetadata(species, assembly, description, sourceLabel, updated,
+                new java.util.ArrayList<>(declaredRegionIndex.values()));
     }
 
     private static String blankToUnknown(String value) {
@@ -255,7 +292,7 @@ public final class GenomeMetadata {
         }
 
         public GenomeMetadata build() {
-            return new GenomeMetadata(species, assembly, description, sourceLabel, regions);
+            return new GenomeMetadata(species, assembly, description, sourceLabel, regions, List.of());
         }
     }
 }

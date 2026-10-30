@@ -381,6 +381,11 @@ public class ExpressionDataService {
         return input == null ? null : profiles.get(input);
     }
 
+    /** The original input identifier that reconciled to the given annotation ID, or null. */
+    public String getInputIdForAnnotation(String annotationId) {
+        return annotationId == null ? null : annotationIds.get(annotationId);
+    }
+
     public ExpressionProfile getProfile(String geneId) {
         return profiles.get(annotationIds.getOrDefault(geneId, geneId));
     }
@@ -409,6 +414,35 @@ public class ExpressionDataService {
 
     public boolean isEmpty() {
         return profiles.isEmpty();
+    }
+
+    /**
+     * Serializes the loaded matrix to the canonical TSV used by project save and
+     * by the reproducible-record exporter: {@code # unit=} / {@code # level=}
+     * header lines, a quoted identifier + sample header row, then one quoted row
+     * per profile with {@code NA} for missing cells. Output matches what
+     * {@code ProjectStore.save} embeds in a project.
+     */
+    public String serializeMatrix() {
+        StringBuilder tsv = new StringBuilder("# unit=" + valueUnit + "\n# level=" + level + "\n");
+        tsv.append(field(idColumnLabel));
+        for (String sample : tissues) {
+            tsv.append('\t').append(field(sample));
+        }
+        tsv.append('\n');
+        for (String id : getProfileIds()) {
+            tsv.append(field(id));
+            for (String sample : tissues) {
+                double value = getRawProfile(id).getTpm(sample);
+                tsv.append('\t').append(Double.isFinite(value) ? Double.toString(value) : "NA");
+            }
+            tsv.append('\n');
+        }
+        return tsv.toString();
+    }
+
+    private static String field(String s) {
+        return "\"" + s.replace("\"", "\"\"") + "\"";
     }
 
     /**

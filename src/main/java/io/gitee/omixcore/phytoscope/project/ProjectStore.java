@@ -1,6 +1,7 @@
 package io.gitee.omixcore.phytoscope.project;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.gitee.omixcore.phytoscope.BuildInfo;
 import io.gitee.omixcore.phytoscope.parser.AnnotationFormat;
 import io.gitee.omixcore.phytoscope.service.ExpressionDataService;
 import io.gitee.omixcore.phytoscope.service.GenomeDataService;
@@ -65,23 +66,10 @@ public final class ProjectStore {
                 }
                 Source matrix = null;
                 if (!expression.isEmpty()) {
-                    StringBuilder tsv = new StringBuilder("# unit=" + expression.getValueUnit()
-                            + "\n# level=" + expression.getLevel() + "\n");
-                    tsv.append(field(expression.getIdColumnLabel()));
-                    for (String sample : expression.getTissues()) tsv.append('\t').append(field(sample));
-                    tsv.append('\n');
-                    for (String id : expression.getProfileIds()) {
-                        tsv.append(field(id));
-                        for (String sample : expression.getTissues()) {
-                            double value = expression.getRawProfile(id).getTpm(sample);
-                            tsv.append('\t').append(Double.isFinite(value) ? Double.toString(value) : "NA");
-                        }
-                        tsv.append('\n');
-                    }
                     matrix = write(zip, "expression.tsv", expression.getSource(),
-                            new ByteArrayInputStream(tsv.toString().getBytes(StandardCharsets.UTF_8)));
+                            new ByteArrayInputStream(expression.serializeMatrix().getBytes(StandardCharsets.UTF_8)));
                 }
-                Manifest manifest = new Manifest(3, "0.2.0", genome.getFormat().name(), List.copyOf(sources), matrix, view, expression.getImportReport(), research);
+                Manifest manifest = new Manifest(3, BuildInfo.version(), genome.getFormat().name(), List.copyOf(sources), matrix, view, expression.getImportReport(), research);
                 zip.putNextEntry(new ZipEntry("project.json"));
                 zip.write(JSON.writerWithDefaultPrettyPrinter().writeValueAsBytes(manifest));
                 zip.closeEntry();
@@ -158,7 +146,6 @@ public final class ProjectStore {
         if (Thread.currentThread().isInterrupted()) throw new java.io.InterruptedIOException("Project operation cancelled");
     }
     private static MessageDigest sha() { try { return MessageDigest.getInstance("SHA-256"); } catch (NoSuchAlgorithmException ex) { throw new IllegalStateException(ex); } }
-    private static String field(String s) { return "\"" + s.replace("\"", "\"\"") + "\""; }
     private static void deleteTree(Path path) throws IOException {
         if (Files.exists(path)) try (var paths = Files.walk(path)) {
             for (Path p : paths.sorted(Comparator.reverseOrder()).toList()) Files.deleteIfExists(p);

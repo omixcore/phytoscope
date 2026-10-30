@@ -1,0 +1,52 @@
+sequenceDiagram
+    participant UI as MainView
+    participant GDS as GenomeDataService
+    participant P as Gff3Parser
+    participant M as GenomicFeature(模型)
+    participant AHS as AnnotationHealthService
+    participant ED as ExpressionDataService
+
+    UI->>GDS: loadFromFile(path)
+    GDS->>P: parseFile(path)
+    Note over P: Pass1 逐行：RawFeature.fromColumns(cols, dialect, lineNo)<br/>捕获 score/phase/lineNumber；<br/>cols<9 或 fromColumns 返回 null → 记 SkippedRow(封顶)
+    P->>M: 装配时 setLineNumber/setScore/setPhase
+    Note over P: Pass2 resolveTranscripts：Parent 未命中→记 OrphanFeature(不再 filter 丢弃)
+    P-->>GDS: ParseResult(genes, featureCount, format, metadata, diagnostics)
+    GDS->>GDS: applyResult：保存 genes + diagnostics
+    UI->>AHS: assess(genome, expression)
+    AHS->>GDS: getDiagnostics() → skippedRows/orphans → ERROR/逐行证据
+    AHS->>GDS: getGenes() → 遍历模型：坐标越界/倒置、CDS 非3倍数、phase 非法
+    AHS->>ED: getImportReport() → 表达 ID 不匹配 → WARNING
+    AHS-->>UI: HealthReport(errors/warnings/notices/notChecked)
+    UI->>UI: 对话框展示 toText()（错误/警告/提示/未检查 分段）
+
+    %% ===== 复现导出 =====
+    participant RE as ReproduceExporter
+    participant FS as FileSystem
+    UI->>RE: export(outDir, genome, expression, view, research)
+    RE->>RE: 目标目录 = outDir 或 <项目名>-reproduce/；已存在则抛 IOException(拒绝覆盖)
+    RE->>GDS: getSourceInputs() → 逐 part open() 读原始字节
+    RE->>FS: inputs/annotation.gff3 ← 逐 part 解压后拼接(与 loadParts 反向镜像)
+    RE->>ED: serializeMatrix() → inputs/expression.tsv(若有表达)
+    RE->>FS: SHA256SUMS.txt ← 对 inputs/ 每文件计算 SHA-256
+    RE->>FS: VERSION.txt ← BuildInfo.version()
+    RE->>RE: 判定路径：view.comparisonGenes 非空 → 比较路径，否则批渲染路径
+    RE->>RE: 映射 view→CLI 参数(见设计 4.2.1)
+    RE->>FS: reproduce.sh / reproduce.bat(真实命令，JAR 经 PHYTOSCOPE_JAR 环境变量)
+    RE->>RE: 汇总无 CLI 等价物 → UNCOVERED.md(ResearchState 非默认项 + 固定清单)
+    RE-->>UI: Result(directory, inputs, scripts, ...)
+
+    %% ===== 区间候选报告 =====
+    participant CGR as CandidateGeneReportService
+    participant I as IntervalAnalysisService
+    UI->>I: 解析 chr:start-end / 自定义区间 → GenomicInterval
+    UI->>CGR: report(interval, genome, expression)
+    CGR->>GDS: getGenesOn(sequence) → 候选基因(按坐标序)
+    loop 每个重叠基因
+        CGR->>CGR: Overlap.compute(完整/部分 + 重叠坐标)
+        CGR->>CGR: 逐转录本结构摘要(exonCount/cdsLength/UTR/起始终止密码子)
+        CGR->>ED: getProfileForAnnotation(geneId) → 有值/0/无记录 三态
+        CGR->>CGR: 来源追溯(基因行号+属性串+表达输入ID)
+    end
+    CGR-->>UI: CandidateGeneReport(只汇总不排名)
+    UI->>UI: 卡片列表渲染 + 导出 Markdown/CSV

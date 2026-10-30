@@ -2,6 +2,8 @@ package io.gitee.omixcore.phytoscope.ui;
 
 import io.gitee.omixcore.phytoscope.comparison.ComparisonFigure;
 import io.gitee.omixcore.phytoscope.project.ProjectStore;
+import io.gitee.omixcore.phytoscope.project.ReproduceExporter;
+import io.gitee.omixcore.phytoscope.service.AnnotationHealthService;
 import io.gitee.omixcore.phytoscope.ui.component.ComparisonPane;
 import io.gitee.omixcore.phytoscope.ui.component.LoadingOperation;
 import javafx.scene.control.Tab;
@@ -51,6 +53,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import org.springframework.stereotype.Component;
@@ -246,7 +249,10 @@ public class MainView extends BorderPane {
             int skipped = next.getSkippedRows();
             if (skipped > 0) {
                 statusLabel.setText("Imported with warnings: " + String.format("%,d", skipped)
-                        + " malformed annotation rows were skipped. Check the source file if this is unexpected.");
+                        + " malformed annotation rows were skipped. Check the source file if this is unexpected. "
+                        + "Run 'Annotation health report…' for a full consistency check.");
+            } else {
+                statusLabel.setText("Annotation imported. Run 'Annotation health report…' for a consistency check.");
             }
         }, this::loadFailed);
     }
@@ -378,6 +384,58 @@ public class MainView extends BorderPane {
         TextArea text = new TextArea(expressionService.getImportReport().summary());
         text.setEditable(false); text.setWrapText(true); text.setPrefSize(720, 400);
         report.getDialogPane().setContent(text); report.showAndWait();
+    }
+
+    /** Exports a self-contained reproducible record for the current snapshot. */
+    private void exportReproduce() {
+        if (dataService.isEmpty()) {
+            new Alert(Alert.AlertType.INFORMATION,
+                    "Load an annotation before exporting a reproducible record.").showAndWait();
+            return;
+        }
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("Choose the parent directory for the reproducible record");
+        File parent = chooser.showDialog(windowOrNull());
+        if (parent == null) {
+            return;
+        }
+        Path target = parent.toPath().resolve(ReproduceExporter.DEFAULT_DIRECTORY_NAME);
+        var view = captureViewState();
+        var research = researchPane.state();
+        pendingLoad = LoadingOperation.run(windowOrNull(), "Exporting reproducible record",
+                () -> new ReproduceExporter().export(target, dataService, expressionService, view, research),
+                result -> {
+                    statusLabel.setText("Exported reproducible record: " + result.directory());
+                    Alert info = new Alert(Alert.AlertType.INFORMATION);
+                    info.setTitle("Reproducible record");
+                    info.setHeaderText("Reproducible record exported");
+                    info.setContentText("Directory: " + result.directory() + "\n\n"
+                            + "reproduce.sh / reproduce.bat — rebuild the figures\n"
+                            + "inputs/ — real source bytes\n"
+                            + "SHA256SUMS.txt — input checksums\n"
+                            + "VERSION.txt — application version\n"
+                            + "UNCOVERED.md — snapshot state without a CLI equivalent");
+                    info.showAndWait();
+                }, this::loadFailed);
+    }
+
+    /** Runs the consistency health check and shows the human-readable report. */
+    private void showHealthReport() {
+        if (dataService.isEmpty()) {
+            new Alert(Alert.AlertType.INFORMATION,
+                    "Load an annotation before running the health report.").showAndWait();
+            return;
+        }
+        var report = new AnnotationHealthService().assess(dataService, expressionService);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Annotation health report");
+        alert.setHeaderText("Consistency check of the loaded annotation");
+        TextArea text = new TextArea(report.toText());
+        text.setEditable(false);
+        text.setWrapText(true);
+        text.setPrefSize(760, 480);
+        alert.getDialogPane().setContent(text);
+        alert.showAndWait();
     }
     public void loadAtlasCase() throws IOException {
         loadExample(ExampleDataset.byId("arabidopsis"));
@@ -636,7 +694,10 @@ public class MainView extends BorderPane {
         MenuItem openProject = new MenuItem("Open project…"); openProject.setOnAction(e -> chooseProject(false));
         MenuItem saveProject = new MenuItem("Save project…"); saveProject.setOnAction(e -> chooseProject(true));
         MenuItem quality = new MenuItem("Expression import report…"); quality.setOnAction(e -> showImportReport());
+        MenuItem reproduce = new MenuItem("Export reproducible record…"); reproduce.setOnAction(e -> exportReproduce());
+        MenuItem health = new MenuItem("Annotation health report…"); health.setOnAction(e -> showHealthReport());
         file.getItems().addAll(openProject, saveProject, new SeparatorMenuItem(), importAnnotationItem, importGenomeFastaItem, importExpressionItem, quality,
+                health, reproduce,
                 new SeparatorMenuItem(), exportPngItem, exportSvgItem,
                 new SeparatorMenuItem(), quit);
 

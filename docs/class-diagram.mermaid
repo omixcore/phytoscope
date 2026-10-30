@@ -1,0 +1,219 @@
+classDiagram
+    direction LR
+
+    class Gff3Parser {
+        -ParseDiagnostics lastDiagnostics
+        +ParseResult parse(InputStream, AnnotationFormat, String)
+        +int getLastSkippedRows()
+        +ParseDiagnostics getLastDiagnostics()
+    }
+    class ParseResult {
+        +List~Gene~ genes
+        +int featureCount
+        +AnnotationFormat format
+        +GenomeMetadata metadata
+        +ParseDiagnostics diagnostics
+        +ParseResult(genes, featureCount, format, metadata)
+        +List~String~ chromosomes()
+        +String species()
+    }
+    class ParseDiagnostics {
+        +List~SkippedRow~ skippedRows
+        +int skippedRowTotal
+        +List~OrphanFeature~ orphans
+        +static int MAX_RECORDS
+        +static ParseDiagnostics empty()
+    }
+    class SkippedRow {
+        +int lineNumber
+        +String rawLine
+        +SkipReason reason
+    }
+    class SkipReason {
+        <<enumeration>>
+        FEWER_THAN_NINE_COLUMNS
+        UNUSABLE_COORDINATES_OR_ATTRIBUTES
+    }
+    class OrphanFeature {
+        +int lineNumber
+        +String featureId
+        +String featureType
+        +String missingParentId
+        +OrphanTarget target
+    }
+    class OrphanTarget {
+        <<enumeration>>
+        TRANSCRIPT
+        GENE
+    }
+
+    class GenomicFeature {
+        +int lineNumber
+        +String score
+        +String phase
+        +int getLineNumber()
+        +String getScore()
+        +String getPhase()
+    }
+
+    class GenomeDataService {
+        -ParseDiagnostics diagnostics
+        +ParseDiagnostics getDiagnostics()
+        +int getSkippedRows()
+        +List~SourceInput~ getSourceInputs()
+    }
+
+    class BuildInfo {
+        +static String FALLBACK_VERSION
+        +static String version()
+    }
+
+    class ProjectStore {
+        +record Manifest(schemaVersion, applicationVersion, annotationFormat, annotations, expression, view, importReport, research)
+        +record ViewState(sequence, selectedGene, start, end, comparisonGenes, alignment, compressed, expressionScale, search)
+        +void save(...)
+        +Restored load(...)
+    }
+
+    class ReproduceExporter {
+        +Result export(Path, GenomeDataService, ExpressionDataService, ViewState, ResearchState)
+        +static String buildBatchCommand(...)
+        +static String buildComparisonCommand(...)
+        +static List~String~ uncoveredItems(...)
+    }
+    class ReproduceExporterResult {
+        +Path directory
+        +List~Path~ inputs
+        +Path scriptSh
+        +Path scriptBat
+        +Path checksums
+        +Path version
+        +Path uncovered
+    }
+
+    class AnnotationHealthService {
+        +HealthReport assess(GenomeDataService, ExpressionDataService)
+    }
+    class HealthReport {
+        +int errorCount
+        +int warningCount
+        +int noticeCount
+        +int notCheckedCount
+        +List~HealthIssue~ issues
+        +String toText()
+        +String toJson()
+    }
+    class HealthIssue {
+        +Severity severity
+        +IssueCode code
+        +String message
+        +Integer lineNumber
+        +String rawEvidence
+        +String geneId
+        +String transcriptId
+    }
+    class Severity {
+        <<enumeration>>
+        ERROR
+        WARNING
+        NOTICE
+        NOT_CHECKED
+    }
+    class IssueCode {
+        <<enumeration>>
+        ORPHAN_PARENT
+        COORDINATE_INVERTED
+        COORDINATE_OUT_OF_BOUNDS
+        CDS_INCOMPLETE
+        CDS_ANNOTATION_CONVENTION
+        CDS_TRUE_ANOMALY
+        INVALID_PHASE
+        EXPRESSION_ID_MISMATCH
+        ASSEMBLY_MATCH_UNVERIFIED
+    }
+
+    class CandidateGeneReportService {
+        +CandidateGeneReport report(GenomicInterval, GenomeDataService, ExpressionDataService)
+    }
+    class CandidateGeneReport {
+        +GenomicInterval query
+        +List~EvidenceCard~ cards
+        +String toMarkdown()
+        +String toCsv()
+    }
+    class EvidenceCard {
+        +String geneId
+        +String displayName
+        +String chromosome
+        +char strand
+        +Overlap overlap
+        +List~TranscriptEvidence~ transcripts
+        +ExpressionEvidence expression
+        +SourceEvidence source
+    }
+    class Overlap {
+        +OverlapKind kind
+        +int start
+        +int end
+        +int length
+        +static Overlap compute(qs, qe, fs, fe)
+    }
+    class OverlapKind {
+        <<enumeration>>
+        FULL
+        PARTIAL
+    }
+    class TranscriptEvidence {
+        +String transcriptId
+        +int exonCount
+        +int cdsLength
+        +boolean hasUtr
+        +boolean hasStartCodon
+        +boolean hasStopCodon
+        +Overlap overlap
+    }
+    class ExpressionEvidence {
+        +boolean present
+        +String inputId
+        +String unit
+        +List~SampleValue~ values
+    }
+    class SampleValue {
+        +String sample
+        +Double value
+        +boolean missing
+    }
+    class SourceEvidence {
+        +int geneLineNumber
+        +String annotationAttributes
+        +String expressionInputId
+    }
+
+    Gff3Parser "1" --> "1" ParseResult : returns
+    ParseResult "1" *-- "1" ParseDiagnostics
+    ParseDiagnostics "1" *-- "*" SkippedRow
+    ParseDiagnostics "1" *-- "*" OrphanFeature
+    SkippedRow --> SkipReason
+    OrphanFeature --> OrphanTarget
+    Gene ..|> GenomicFeature
+    Transcript ..|> GenomicFeature
+    Exon ..|> GenomicFeature
+    GenomeDataService --> ParseDiagnostics
+    ProjectStore --> BuildInfo : applicationVersion
+    ReproduceExporter --> BuildInfo : VERSION.txt
+    ReproduceExporter --> GenomeDataService : source inputs
+    ReproduceExporter --> ReproduceExporterResult
+    AnnotationHealthService --> GenomeDataService
+    AnnotationHealthService --> ExpressionDataService
+    AnnotationHealthService --> HealthReport
+    HealthReport "1" *-- "*" HealthIssue
+    HealthIssue --> Severity
+    HealthIssue --> IssueCode
+    CandidateGeneReportService --> CandidateGeneReport
+    CandidateGeneReport "1" *-- "*" EvidenceCard
+    EvidenceCard "1" *-- "1" Overlap
+    EvidenceCard "1" *-- "*" TranscriptEvidence
+    EvidenceCard "1" *-- "1" ExpressionEvidence
+    EvidenceCard "1" *-- "1" SourceEvidence
+    Overlap --> OverlapKind
+    ExpressionEvidence "1" *-- "*" SampleValue

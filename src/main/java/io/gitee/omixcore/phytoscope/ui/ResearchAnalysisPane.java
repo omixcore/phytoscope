@@ -24,6 +24,7 @@ public final class ResearchAnalysisPane extends BorderPane {
     private final TextField group = new TextField("group");
     private final TextArea qcSequence = new TextArea(), proteinFasta = new TextArea(), domains = new TextArea();
     private final TextArea result = new TextArea();
+    private CandidateGeneReportService.CandidateGeneReport lastCandidateReport;
     private final ComboBox<String> sample = new ComboBox<>();
     private final SampleGroupingService grouping = new SampleGroupingService();
     private final TextField species = new TextField("species A"), identity = new TextField("30");
@@ -38,7 +39,8 @@ public final class ResearchAnalysisPane extends BorderPane {
         domains.setId("research-domain-input"); result.setId("research-result");
         TabPane tabs = new TabPane();
         tabs.getTabs().addAll(tab("Intervals", intervalPane()), tab("Sample groups", groupsPane()),
-                tab("Sequence QC", qcPane()), tab("Homology", homologyPane()), tab("Domains", domainPane()));
+                tab("Sequence QC", qcPane()), tab("Homology", homologyPane()), tab("Domains", domainPane()),
+                tab("Candidate genes", candidatePane()));
         result.setEditable(false); result.setWrapText(true); result.setPrefRowCount(8);
         Button export = new Button("Export results…"); export.setOnAction(e -> export());
         setCenter(tabs); setBottom(new VBox(6, new Label("Analysis output"), result, export));
@@ -86,6 +88,48 @@ public final class ResearchAnalysisPane extends BorderPane {
         domains.setPromptText("One domain per line: protein_or_transcript_id<TAB>domain name<TAB>start_aa<TAB>end_aa"); domains.setPrefRowCount(5);
         Button map = new Button("Map domains to gene models"); map.setOnAction(e -> mapDomains());
         return box(new Label("Map amino-acid coordinates through annotated CDS exons onto genomic blocks."), domains, map);
+    }
+    private javafx.scene.Node candidatePane() {
+        TextField interval = new TextField(); interval.setId("candidate-interval");
+        interval.setPromptText("sequence:start-end, e.g. Chr1:1000-5000");
+        Button generate = new Button("Generate candidate report"); generate.setOnAction(e -> candidates(interval.getText()));
+        Button export = new Button("Export Markdown…"); export.setOnAction(e -> exportCandidateMarkdown());
+        return box(new Label("Enter a 1-based closed interval. Overlapping genes are summarised (not ranked) with structure, expression and source evidence."), interval, row(generate, export));
+    }
+    private void candidates(String query) {
+        try {
+            GenomicInterval interval = parseInterval(query);
+            lastCandidateReport = new CandidateGeneReportService().report(interval, genome, expression);
+            write("Candidate genes in " + interval.label(), lastCandidateReport.toMarkdown());
+        } catch (Exception ex) {
+            write("Candidate report failed", ex.getMessage());
+        }
+    }
+    private void exportCandidateMarkdown() {
+        if (lastCandidateReport == null) {
+            write("Input needed", "Generate a candidate report first.");
+            return;
+        }
+        FileChooser chooser = new FileChooser(); chooser.setTitle("Export candidate report");
+        chooser.setInitialFileName("candidate-genes.md");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Markdown (*.md)", "*.md"));
+        var file = chooser.showSaveDialog(getScene() == null ? null : getScene().getWindow()); if (file == null) return;
+        try {
+            Files.writeString(file.toPath(), lastCandidateReport.toMarkdown());
+        } catch (IOException ex) {
+            write("Export failed", ex.getMessage());
+        }
+    }
+    private static GenomicInterval parseInterval(String query) {
+        String trimmed = query == null ? "" : query.trim();
+        String[] parts = trimmed.split(":", 2);
+        if (parts.length != 2) throw new IllegalArgumentException("Use sequence:start-end");
+        String sequence = parts[0].trim();
+        String[] range = parts[1].split("-", 2);
+        if (range.length != 2) throw new IllegalArgumentException("Use sequence:start-end");
+        int start = Integer.parseInt(range[0].replace(",", "").trim());
+        int end = Integer.parseInt(range[1].replace(",", "").trim());
+        return new GenomicInterval(null, null, null, sequence, start, end, '.');
     }
     private void refreshSamples() { sample.setItems(FXCollections.observableArrayList(expression.getTissues())); }
     public void refresh() { refreshSamples(); }
