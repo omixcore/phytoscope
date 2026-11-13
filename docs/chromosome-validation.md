@@ -1,5 +1,19 @@
 # Adaptive chromosome validation
 
+> **Data-archiving notice (post-`8fd01ca`).** The complete reference data
+> (TAIR10 genome FASTA, Araport11 Chr1-Chr5, the 94,883-gene horsemint annotation
+> and its 4-leaf TPM matrix, and the 32,833-gene E-MTAB-7978 matrix) has been moved
+> out of this repository's current tree into the independent
+> `phytoscope-reference-data` repository - the local directory is ready, remote URLs
+> are pending user provision. The application ships only six KB-scale example
+> annotations, performs no download at runtime, and sequence extraction requires a
+> user-imported genome FASTA. Every MB-scale figure, table and count below is a
+> **historical v0.2.0 / `8fd01ca`-era measurement** recorded while the complete data
+> was bundled; reproducing it now requires the external data and it must not be read
+> as a current-tree benchmark. No numbers have been re-measured or invented. Git
+> history pack (~209 MiB) and fresh-clone size are unchanged; only the current
+> checkout and its build artifacts got smaller.
+
 Validated on 2026-10-15 with OpenJDK 21.0.12.1 and Maven 3.9.9.
 
 ## Behaviour
@@ -45,7 +59,7 @@ Source archives:
 
 ## Portable fixtures and visible examples
 
-`src/test/resources/chromosome-validation/` contains the portable validation fixtures for all four plants. Arabidopsis is additionally bundled in the application as complete nuclear Chr1–Chr5 resources; the other three examples remain deliberately small row-verified fixtures. Gene
+`src/test/resources/chromosome-validation/` contains the portable validation fixtures for all four plants. Arabidopsis was additionally bundled (v0.2.0, now archived externally) as complete nuclear Chr1–Chr5 resources; the other three examples remain deliberately small row-verified fixtures. Gene
 coordinates, IDs, hierarchy and sequence lengths are retained from the source.
 The extraction script excludes nonnumeric sequence IDs **only when creating
 these explicitly nuclear-chromosome fixtures**, never when users import data.
@@ -54,7 +68,7 @@ these explicitly nuclear-chromosome fixtures**, never when users import data.
 lengths and SHA-256 hashes of both downloaded archives and extracted fixtures.
 `expected.tsv` records the independently extracted expected coordinate extents.
 
-The bundled catalogue contains four reviewed references: Arabidopsis TAIR10 (complete nuclear Chr1–Chr5), rice (12), maize (10), and soybean v2.1 (20). Arabidopsis is split into five chromosome-sized resources solely to keep each Git object below GitHub's 100 MB file limit; the chromosome feature rows are retained from the pinned source archive. Sequence
+Historically the bundled catalogue contained four reviewed references: Arabidopsis TAIR10 (complete nuclear Chr1–Chr5), rice (12), maize (10), and soybean v2.1 (20). Arabidopsis was split into five chromosome-sized resources solely to keep each Git object below GitHub's 100 MB file limit; those complete files are now archived in the independent reference-data repository, and the current catalogue ships six KB-scale examples. Sequence
 IDs and lengths are retained from the source, without aliases or manual overrides.
 
 The older manually assembled excerpts and their untraceable expression values
@@ -111,7 +125,7 @@ Its machine-readable results are shipped in
 The reference-only catalogue passed the complete Java validation suite with 0 failures, 0 errors and 0 skipped, including all four full annotation imports, the four shipped-data
 integrity checks and actual JavaFX control tests. `clean verify` packaged the
 executable JAR from a clean output directory. Archive inspection also confirmed
-that none of the legacy fixtures or removed organelle examples were included in that application JAR. The new release separately includes the traceable E-MTAB-7978 matrix.
+that none of the legacy fixtures or removed organelle examples were included in that application JAR. The historical release separately included the traceable E-MTAB-7978 matrix (now archived externally).
 The UI test uses headless JavaFX,
 so it does not certify platform-specific native file dialogs.
 
@@ -151,4 +165,4 @@ feature types are counted in each report. Shared exon/CDS/UTR rows with multiple
 transcript parents are retained under every explicit parent. Measured expression
 has a separate manifest under `data/case-studies/arabidopsis-atlas`.
 
-The complete bundled Araport11 model contains 37,898 supported gene-like loci: 33,997 `gene`/`pseudogene` records plus 3,901 `transposable_element_gene` records. The source manifest field `total_gene_like_features` historically counts only the first two types; it is not the application total.
+The historical complete Araport11 model contained 37,898 supported gene-like loci: 33,997 `gene`/`pseudogene` records plus 3,901 `transposable_element_gene` records. The source manifest field `total_gene_like_features` historically counts only the first two types; it is not the application total.

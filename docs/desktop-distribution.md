@@ -1,5 +1,12 @@
 # Desktop distribution
 
+> **Data-archiving notice (post-`8fd01ca`).** The current application JAR/package
+> contains only six KB-scale example annotations. Complete reference data lives in the
+> independent `phytoscope-reference-data` repository (local directory ready, remote
+> URLs pending user provision) and is not packaged into the app image; there is no
+> in-app download. Only the current checkout and build artifacts got smaller - git
+> history pack (~209 MiB) and fresh-clone size are unchanged.
+
 Build with JDK 21 on each target OS:
 
 ```bash
@@ -26,6 +33,7 @@ desktop graphics/font libraries.
 
 ## Release checklist
 
+- The current JAR ships only six KB-scale examples; complete reference data is archived separately and is not packaged into the app image.
 - Compute and publish a SHA-256 checksum for every archive (see
   `desktop_program/SHA256SUMS.txt` for the Windows package).
 - Tag the release commit; attach archives to a GitHub Release instead of

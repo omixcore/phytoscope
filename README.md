@@ -19,37 +19,45 @@ No external service is required while browsing local files.
 
 ## Download for Windows (no JDK required)
 
-Download the packaged Windows application (x64, about 105 MiB) from the releases page: [PhytoScope v0.2.0](https://github.com/omixcore/phytoscope/releases) — SHA-256 checksums in [desktop_program/SHA256SUMS.txt](desktop_program/SHA256SUMS.txt). The archive includes a slim jlink runtime, so nothing else has to be installed.
+Download the packaged Windows application (x64) from the releases page: [PhytoScope v0.2.0](https://github.com/omixcore/phytoscope/releases) — SHA-256 checksums in [desktop_program/SHA256SUMS.txt](desktop_program/SHA256SUMS.txt). That released v0.2.0 archive predates the data-slimming change; it includes a slim jlink runtime, so nothing else has to be installed. For the current tree's freshly measured build sizes see [Build artifact size](#build-artifact-size).
 
 1. Extract the ZIP to any local folder, keeping `PhytoScope.exe`, `app/` and `runtime/` together.
 2. Double-click `PhytoScope.exe` — a bundled Java runtime is included, so nothing else has to be installed.
-3. The browser opens with the Arabidopsis example. Pick another bundled species from the **dataset selector** (including the complete horsemint genome with a 4-leaf TPM panel), or use **File → Import annotation / Import expression matrix** for your own data.
-4. Click any gene to see its structure, sequence and expression profile; use **Export** to save PNG/SVG views or **File → Save project** for a portable `.phytoscope` file.
+3. The browser opens with the Arabidopsis KB-scale chromosome-subset example. Pick another of the six small bundled examples from the **dataset selector**; the complete reference data has been moved to an independent repository (see [Complete reference data](#complete-reference-data)). Use **File → Import annotation / Import expression matrix / Import genome FASTA…** for your own or the archived data.
+4. Click any gene to see its structure and expression profile; sequence extraction needs a user-imported matching FASTA and expression tracks need an imported matrix. Use **Export** to save PNG/SVG views or **File → Save project** for a portable `.phytoscope` file.
 
 ![PhytoScope software overview and workflow](https://raw.githubusercontent.com/omixcore/phytoscope/dev/fig/Figure1.jpg)
 
-## Reference examples and real expression case
+## Reference examples (KB-scale bundled samples)
+
+PhytoScope ships six small, version-pinned annotation samples so the app stays
+self-contained and starts instantly. All complete reference data has been moved
+to an independent repository (see [Complete reference data](#complete-reference-data));
+no example bundles a measured expression matrix, and no genome FASTA is bundled.
 
 | Example | Reference material | Assembly / annotation | Bundled scope |
 | --- | --- | --- | --- |
-| Arabidopsis | Col-0 | TAIR10 / Araport11 original June 2016 | Complete nuclear Chr1–Chr5 |
+| Arabidopsis | Col-0 | TAIR10 / Araport11 original June 2016 | 5.5 KB chromosome-subset sample (10 genes / 24 transcripts), single gzipped GFF3 |
 | Rice | Nipponbare | IRGSP-1.0 / Ensembl Plants 62 | Two real gene families per nuclear chromosome (12) |
 | Maize | B73 | NAM 5.0 / Ensembl Plants 62 | Two real gene families per nuclear chromosome (10) |
 | Soybean | Williams 82 | v2.1 / Ensembl Plants 62 | Two real gene families per nuclear chromosome (20) |
 | Mint | Horse mint CMEN585 | Mlong_CMEN585_v3.01b / WSU Mint Genome Resources (INSDC GCA_001642375.2) | Twelve chromosome-scale sequences, two real Maker gene families each |
 | Mint (plastid) | Spearmint | MG256495 / INSDC (GenBank, ENA) | Complete chloroplast genome, 152,132 bp, 134 genes |
-| Mint (complete) | Horsemint | Long3_HAP_v2 haplotype A / Lieberman, Henry & Comai 2025 | Complete annotation, 94,883 genes on 12 chromosomes, with a bundled leaf RNA-seq TPM panel |
 
-Assembly and annotation releases are recorded separately. Arabidopsis is split
-into five files without changing feature coordinates. The complete mint example
-re-encodes the published Long3_HAP_v2 GTF as GFF3 against the haplotype-A
-chromosomes, and bundles a **94,883-gene × 4-leaf TPM expression matrix**
-quantified with minimap2 + featureCounts from four public *M. longifolia* leaf
-RNA-seq libraries on that very assembly. Source URLs and checksums are in the
-per-reference manifests and
+Assembly and annotation releases are recorded separately. Every example is now a
+single KB-scale file loaded through the same GFF3/GTF import path. The default
+Arabidopsis example uses a 5.5 KB subset with sequence names `1`–`5`; the
+complete nuclear Chr1–Chr5 annotation, the TAIR10 genome FASTA, the measured
+E-MTAB-7978 transcriptome panel and the complete horsemint annotation with its
+4-leaf TPM matrix are **no longer bundled** — they are archived in the
+independent reference-data repository (historical result, requires the external
+data to reproduce). Source URLs and checksums are retained as a traceability
+index in the per-reference manifests and
 [data provenance](src/main/resources/data/reference-provenance.json).
 
-**The default Arabidopsis reference also bundles the measured transcriptome panel** used by the browser expression track: **32,833 genes** across six single-assay conditions from Expression Atlas **E-MTAB-7978**, with SHA-256 pinned inputs and a fully traceable extraction manifest. Select any measured gene to see a **six-column vertical TPM bar chart in the right Gene Details pane**. Genes without measured data show an explicit missing-data message rather than a wall of `NA` cells.
+Expression tracks appear only after **File → Import expression matrix…**; without
+an imported matrix the Gene Details pane shows an explicit "No data loaded"
+state rather than a wall of `NA` cells.
 
 The rice-bean non-model validation now includes three public 5-DPA RNA-seq
 replicates re-quantified against RefSeq assembly GCF_029865625.1. All 34,914
@@ -59,8 +67,63 @@ this is data-import/ID-compatibility evidence, not genotype-matched biology;
 see the [full validation record](docs/non-model-portability-evidence.md).
 
 The [example guide](examples/arabidopsis-atlas/README.md) records data sources,
-import steps and reproducible commands. Data fixtures and provenance manifests
-support the bundled examples and automated regression tests.
+import steps and reproducible commands for the historical RBCS case; its
+`expression.tsv` is a standalone example file, not a classpath resource. Data
+fixtures and provenance manifests support the bundled examples and automated
+regression tests.
+
+## Complete reference data
+
+The complete reference data was removed from this repository's current tree with
+a plain `git rm` + one new commit at baseline `8fd01ca`; **git history was not
+rewritten**. It now lives in the independent `phytoscope-reference-data`
+repository: **the local directory is ready, remote URLs are pending user
+provision**. The application has no in-app download and never fetches a remote
+manifest.
+
+| Item | Value |
+| --- | --- |
+| Local directory | `G:/WorkBuddy/2026-10-27-22-02-43/phytoscope-reference-data/` (outside this working tree) |
+| Baseline commit | `8fd01ca` (removed from the current tree only; blobs remain in history) |
+| Contents | 9 files, 68,518,847 bytes — TAIR10 genome FASTA, Araport11 Chr1–Chr5 GFF3, complete horsemint GFF3 + 4-leaf TPM matrix, E-MTAB-7978 atlas matrix |
+| Authoritative manifest | `MANIFEST.json` (per-file bytes / re-computed SHA-256 / source / license) and `SHA256SUMS.txt` |
+| Mirrors | gitee + github, same commit, mutual mirrors — **remote addresses pending user provision** |
+| In this repository | `src/main/resources/data/reference-provenance.json` is an **index** (`storage: external` / `bundled`); all checksums retained |
+
+Verify before use:
+
+```bash
+cd phytoscope-reference-data
+sha256sum -c SHA256SUMS.txt                                  # 9/9 OK
+./scripts/verify-against-baseline.sh <app-repo-dir> 8fd01ca  # byte-identical to the historical blobs
+```
+
+To use an archived file, copy it out of `data/` and import it through
+**File → Import annotation… / Import expression matrix… / Import genome FASTA…**.
+Old `.phytoscope` projects still open (they embed their own annotation and
+expression bytes); only sequence extraction needs a freshly imported matching
+FASTA, and the app states this explicitly instead of silently showing nothing.
+
+## Build artifact size (measured)
+
+Measured on 2026-11-13 (Windows 11 x64, JDK 21.0.6) after `./mvnw clean package`
+and `python tools/package_desktop.py --jar target/phytoscope-0.2.0.jar`:
+
+| Artifact | Measured size |
+| --- | --- |
+| Executable JAR `target/phytoscope-0.2.0.jar` | **22,317,249 bytes (21.28 MiB)** |
+| jlink app-image ZIP `PhytoScope-Windows-AMD64.zip` | **46,146,746 bytes (44.01 MiB)** |
+
+The historical v0.2.0 README quoted "about 105 MiB" for its released Windows
+archive; that describes the old release **with the complete data bundled**, not
+the current tree. The two numbers above are freshly measured, not derived by
+subtracting 68.5 MB. `jar tf` confirms no archived file is packaged.
+
+**Scope of the reduction:** only the current checkout's working tree and its
+build artifacts (JAR / jlink ZIP) get smaller. Because the removal is a normal
+`git rm` in a new commit and history was never rewritten, the **git history pack
+(~209 MiB) and a fresh clone are unchanged** — there is no "smaller repository"
+or "faster clone" claim.
 
 ## Run
 
@@ -90,7 +153,7 @@ The first build downloads Maven and dependencies. JavaFX may print an
    Scroll to zoom, drag to pan, and click a gene to inspect its structure.
 4. Use **Fit all** to fit the loaded genes, **Focus selected** for a single locus,
    or **View → Show full chromosome** for the complete declared sequence extent.
-5. When the bundled or imported matrix matches the loaded annotation, sample-level expression appears as a per-gene bar chart in the right-hand Gene Details panel. Import a matching matrix when available, then use **Export** to save the current tracks as PNG or SVG.
+5. When an imported matrix matches the loaded annotation, sample-level expression appears as a per-gene bar chart in the right-hand Gene Details panel. No expression matrix is bundled; use **File → Import expression matrix…** to supply one, then use **Export** to save the current tracks as PNG or SVG.
 
 The toolbar counts **sequences present in the loaded file**, which may include
 scaffolds and organelles. It does not infer missing chromosomes from a species
@@ -206,7 +269,7 @@ mvn -Pui-tests test
 python tools/build_chromosome_fixtures.py --cache /path/to/cache --update-examples
 python tools/audit_reference_datasets.py --cache /path/to/cache
 
-# Validate the four complete annotations and build the executable JAR.
+# Optional full-annotation re-validation (needs the external reference data) and JAR build.
 mvn -Pui-tests -Dphytoscope.fullAnnotationDir=/path/to/cache verify
 ```
 
@@ -221,7 +284,7 @@ See the audit document for source URLs, checks and interpretation of parser coun
 - [Validation and benchmark commands](docs/validation-and-benchmarks.md)
 - [Non-model data compatibility](docs/non-model-portability-evidence.md)
 - [Research-module tests](docs/research-module-validation.md)
-- [Bundled expression example](examples/arabidopsis-atlas/README.md)
+- [Historical RBCS expression example (standalone files)](examples/arabidopsis-atlas/README.md)
 
 Display-free comparison (does not initialize the JavaFX toolkit):
 
@@ -248,9 +311,9 @@ Windows and macOS; actual native dialog/hardware checks are reported separately.
 
 ### Gene sequence details
 
-The right-hand Gene Details → Sequences section displays the gene genomic span and, for each annotated transcript, the spliced transcript, CDS, 5′ UTR, 3′ UTR and translated protein sequence. Each sequence has Copy sequence and Copy FASTA actions. Transcript IDs, protein IDs, exon counts, lengths, strand orientation, source FASTA and UTR provenance are shown where available.
+The right-hand Gene Details → Sequences section displays the gene genomic span and, for each annotated transcript, the spliced transcript, CDS, 5′ UTR, 3′ UTR and translated protein sequence — **but only after a genome FASTA is imported**. Each sequence then has Copy sequence and Copy FASTA actions. Transcript IDs, protein IDs, exon counts, lengths, strand orientation, source FASTA and UTR provenance are shown where available.
 
-The Arabidopsis TAIR10 example bundles the version-pinned Ensembl Plants release 62 genomic FASTA (src/main/resources/data/species/arabidopsis/TAIR10_genomic.fna.gz); its checksum and chromosome lengths are recorded in genome-sequence-provenance.json. Other species or assemblies can use File → Import genome FASTA. The genome FASTA must match the annotation assembly and sequence names. The extractor respects 1-based inclusive GFF3 coordinates, reverse-complements minus-strand loci, concatenates exons/CDS in transcription order, and translates CDS with the standard nuclear genetic code. If UTR features are absent, terminal exonic bases outside annotated CDS boundaries are labelled as inferred; missing transcript/CDS models are never fabricated.
+**No genome FASTA is bundled with any example.** With no FASTA loaded, this section (and the Research analysis promoter / interval extraction) shows an explicit empty state — it does not return an empty string, a placeholder sequence, or a sequence borrowed from another assembly. Use **File → Import genome FASTA…** to supply a genomic DNA FASTA (`*.fa`, `*.fasta`, `*.fna`, `*.gz`, gzip auto-detected) whose assembly version and sequence names match the current annotation; the status bar reports chromosome-name coverage and warnings. Switching datasets or opening a project clears the imported FASTA, so import it again. The extractor respects 1-based inclusive GFF3 coordinates, reverse-complements minus-strand loci, concatenates exons/CDS in transcription order, and translates CDS with the standard nuclear genetic code. If UTR features are absent, terminal exonic bases outside annotated CDS boundaries are labelled as inferred; missing transcript/CDS models are never fabricated. Checksums and chromosome lengths of the archived TAIR10 FASTA remain in `genome-sequence-provenance.json` as a traceability index.
 
 ## Citation
 

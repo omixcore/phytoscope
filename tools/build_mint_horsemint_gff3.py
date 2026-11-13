@@ -3,13 +3,21 @@
 Input : Long3_HAP_v2.gtf.gz  (Braker3/AUGUSTUS models, figshare 10.6084/m9.figshare.28457522)
 Output: gene -> mRNA -> exon/CDS hierarchy, one seqid per chromosome.
 
+The complete horsemint annotation was archived to the independent
+``phytoscope-reference-data`` repository and is no longer bundled in the
+application classpath. Point ``--out`` at that repository's
+``data/species/mint/`` directory; this repository now ships only a KB-scale
+mint example. No in-app download is provided.
+
 The GTF carries two haplotypes (Chr01_A_Long3HAP ... Chr12_B_Long3HAP). By
 default only the A haplotype is written, renamed Chr1..Chr12 so the app's
 chromosome selector reads naturally; --haplotypes AB writes both.
 
-Usage:
+Usage (output belongs to the external reference-data repository, NOT to
+src/main/resources of this repository):
     python tools/build_mint_horsemint_gff3.py --gtf Long3_HAP_v2.gtf.gz \
-        --out mentha_longifolia_horsemint.gff3 [--haplotypes AB] [--anno tsv.gz]
+        --out G:/.../phytoscope-reference-data/data/species/mint/mentha_longifolia_horsemint.gff3 \
+        [--haplotypes AB] [--anno tsv.gz]
 """
 from __future__ import annotations
 

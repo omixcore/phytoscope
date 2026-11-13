@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +30,9 @@ class SvgExporterTest {
 
     @BeforeAll
     static void setUp() throws Exception {
-        parseResult = new Gff3Parser().parseResources(ExampleDataset.defaultDataset().annotationResources(), ExampleDataset.defaultDataset().format());
+        // Every bundled example is single-file now, so parseResource() (with
+        // its per-file gzip magic sniff) is the semantically equivalent path.
+        parseResult = new Gff3Parser().parseResource(ExampleDataset.defaultDataset().annotationResource(), ExampleDataset.defaultDataset().format());
         // The exporters touch JavaFX colour classes, which may need the toolkit
         // initialised. Skip quietly when no graphics environment is available.
         try {
@@ -112,7 +115,7 @@ class SvgExporterTest {
     void shouldIncludeGenesWithoutExpressionTracks() throws Exception {
         org.junit.jupiter.api.Assumptions.assumeTrue(canvasAvailable(),
                 "Canvas requires a graphics toolkit; skipped in headless runs");
-        GeneTrackRendererStub stub = buildStub();
+        GeneTrackRendererStub stub = buildDenseStub();
 
         java.io.StringWriter out = new java.io.StringWriter();
         new SvgExporter(stub.renderer).export(out, 1200, 900);
@@ -154,6 +157,26 @@ class SvgExporterTest {
 
     private GeneTrackRendererStub buildStub() throws Exception {
         return new GeneTrackRendererStub(parseResult.genes());
+    }
+
+    /**
+     * Equivalent fixture for the bounded-track assertion. Before the slim-down
+     * the default example exposed 33,997 genes, so more than 100 loci were
+     * visible and {@code renderNotice()} was non-empty. The KB-scale default
+     * now has 10 genes, which would silently retire that coverage. A synthetic
+     * 120-locus overlap keeps the original six assertions (bounded to 100
+     * tracks, notice rendered into the SVG, no per-track expression caption)
+     * meaningful instead of weakening or deleting them.
+     */
+    private GeneTrackRendererStub buildDenseStub() throws Exception {
+        List<Gene> dense = new ArrayList<>();
+        for (int i = 0; i < 120; i++) {
+            // All loci share one overlapping window (1-1000) on sequence "1",
+            // so fitToAll() leaves 120 of them visible and the renderer must
+            // bound the drawn tracks to 100 and emit its notice.
+            dense.add(new Gene("dense-" + i, "Dense locus " + i, "1", 1 + i, 1000 + i, '+'));
+        }
+        return new GeneTrackRendererStub(dense);
     }
 
     private static long countOccurrences(String haystack, String needle) {

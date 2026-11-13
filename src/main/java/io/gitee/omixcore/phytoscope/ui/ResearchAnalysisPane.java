@@ -5,6 +5,7 @@ import io.gitee.omixcore.phytoscope.model.SequenceRegion;
 import io.gitee.omixcore.phytoscope.project.ProjectStore;
 import io.gitee.omixcore.phytoscope.research.*;
 import io.gitee.omixcore.phytoscope.service.*;
+import io.gitee.omixcore.phytoscope.ui.component.GeneDetailPane;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -141,6 +142,12 @@ public final class ResearchAnalysisPane extends BorderPane {
         return g;
     }
     private void promoter() {
+        // Second UI surface for sequence extraction: fail visibly when no FASTA
+        // is loaded instead of surfacing only a terse IOException from the service.
+        if (sequences == null || !sequences.isLoaded()) {
+            write("序列提取不可用", GeneDetailPane.FASTA_EMPTY_STATE_TEXT);
+            return;
+        }
         try {
             Gene g=resolveGene(); if(g==null)return;
             int u=Integer.parseInt(upstream.getText().trim()), d=Integer.parseInt(downstream.getText().trim());
@@ -152,6 +159,11 @@ public final class ResearchAnalysisPane extends BorderPane {
         } catch(Exception ex) { write("Promoter extraction failed", ex.getMessage()); }
     }
     private void customInterval() {
+        // Match the promoter path: the same single-source empty-state message.
+        if (sequences == null || !sequences.isLoaded()) {
+            write("序列提取不可用", GeneDetailPane.FASTA_EMPTY_STATE_TEXT);
+            return;
+        }
         try {
             String[] c=custom.getText().trim().split("\\s+");
             if(c.length<3)throw new IllegalArgumentException("Enter sequence, start, end and optional name/score/strand");

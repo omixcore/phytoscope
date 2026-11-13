@@ -4,7 +4,7 @@ import io.gitee.omixcore.phytoscope.parser.AnnotationFormat;
 import java.util.List;
 import java.util.Map;
 
-/** Version-pinned plant reference annotation examples. */
+/** Version-pinned plant reference annotation examples (KB-scale bundled samples only). */
 public record ExampleDataset(String id, String label, String commonName, String clade,
                              String species, String assembly,
                              Map<String, Integer> chromosomeLengths,
@@ -12,11 +12,21 @@ public record ExampleDataset(String id, String label, String commonName, String 
                              String expressionResource, String attribution) {
     private static final String BASE = "/data/species/";
 
+    /**
+     * Bundled examples. Every entry uses a single KB-scale annotation file; the
+     * complete reference data (TAIR10 genome FASTA, Chr1-Chr5 annotation, the
+     * E-MTAB-7978 atlas matrix and the complete horsemint case) was archived in
+     * the independent {@code phytoscope-reference-data} repository at baseline
+     * commit {@code 8fd01ca}. No bundled example carries a measured expression
+     * matrix; sequence extraction requires a user-supplied matching FASTA.
+     */
     public static final List<ExampleDataset> CATALOGUE = List.of(
-            new ExampleDataset("arabidopsis", "Arabidopsis thaliana · TAIR10 · Chr1–Chr5",
+            new ExampleDataset("arabidopsis", "Arabidopsis thaliana · TAIR10 · chromosome subset sample",
                     "Thale cress Col-0", "Rosid · Brassicaceae", "Arabidopsis thaliana", "TAIR10", Map.of(),
-                    BASE + "arabidopsis/Chr1.gff3.gz", AnnotationFormat.GFF3, "/data/case-studies/arabidopsis-atlas/expression.tsv",
-                    "TAIR/Araport11 original June 2016 release; bundled Arabidopsis tissue transcriptome case: Expression Atlas E-MTAB-7978"),
+                    BASE + "arabidopsis/arabidopsis_chromosomes.gff3.gz", AnnotationFormat.GFF3, null,
+                    "TAIR/Araport11 original June 2016 release; small version-pinned chromosome subset "
+                            + "(10 genes / 24 transcripts). Complete Chr1-Chr5 annotation and the E-MTAB-7978 "
+                            + "expression case have been archived to the independent reference-data repository."),
             new ExampleDataset("rice", "Oryza sativa Japonica Group · 12 chromosomes",
                     "Rice Nipponbare", "Monocot · Poaceae", "Oryza sativa Japonica Group", "IRGSP-1.0", Map.of(),
                     BASE + "rice/rice_chromosomes.gff3", AnnotationFormat.GFF3, null,
@@ -34,13 +44,6 @@ public record ExampleDataset(String id, String label, String commonName, String 
                     BASE + "mint/mentha_longifolia_chromosomes.gff3", AnnotationFormat.GFF3, null,
                     "WSU Mint Genome Resources, Mentha longifolia CMEN585 v3.01b (also INSDC GCA_001642375.2): "
                             + "two real Maker gene families per chromosome-scale sequence"),
-            new ExampleDataset("mint-genome", "Mentha longifolia · 12 chromosomes · complete annotation · 94,883 genes",
-                    "Horsemint Long3", "Asterid · Lamiaceae", "Mentha longifolia", "Long3_HAP_v2 (haplotype A)", Map.of(),
-                    BASE + "mint/mentha_longifolia_horsemint.gff3.gz", AnnotationFormat.GFF3,
-                    BASE + "mint/mentha_longifolia_expression.tsv",
-                    "Lieberman, Henry & Comai 2025, chromosome-scale diploid horsemint genome "
-                            + "(figshare 10.6084/m9.figshare.28457522): all 94,883 Braker3 gene models on "
-                            + "haplotype A, 102,705 transcripts, coordinates unmodified"),
             new ExampleDataset("mint-plastid", "Mentha spicata · MG256495 chloroplast · 152 kb",
                     "Spearmint", "Asterid · Lamiaceae", "Mentha spicata", "MG256495 chloroplast", Map.of(),
                     BASE + "mint/mentha_spicata_chloroplast.gff3", AnnotationFormat.GFF3, null,
@@ -57,18 +60,14 @@ public record ExampleDataset(String id, String label, String commonName, String 
         return CATALOGUE.getFirst();
     }
 
-    /** All classpath parts of a bundled annotation. */
+    /**
+     * The single classpath resource of a bundled annotation; every example is
+     * single-file now. Signature is unchanged for existing callers
+     * ({@code GenomeDataService.loadExample} and the integrity tests).
+     */
     public List<String> annotationResources() {
         if (annotationResource == null || annotationResource.isBlank()) {
             return List.of();
-        }
-        if ("arabidopsis".equals(id) && annotationResource.equals(BASE + "arabidopsis/Chr1.gff3.gz")) {
-            return List.of(
-                    BASE + "arabidopsis/Chr1.gff3.gz",
-                    BASE + "arabidopsis/Chr2.gff3.gz",
-                    BASE + "arabidopsis/Chr3.gff3.gz",
-                    BASE + "arabidopsis/Chr4.gff3.gz",
-                    BASE + "arabidopsis/Chr5.gff3.gz");
         }
         return List.of(annotationResource);
     }

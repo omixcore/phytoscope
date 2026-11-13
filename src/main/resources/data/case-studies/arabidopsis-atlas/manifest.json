@@ -52,9 +52,18 @@
     "Chr5": "27b8e00179465b642835d798b77b7964301236b514d4f7668848fe13f37bd11a"
   },
   "outputs": {
-    "expression.tsv": "bc4945fc578f2a339c50e84def5586c31be156c6f241eb968f3bc53a394aca85",
+    "expression.tsv": {
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null,
+      "external_path": "data/case-studies/arabidopsis-atlas/expression.tsv",
+      "sha256": "bc4945fc578f2a339c50e84def5586c31be156c6f241eb968f3bc53a394aca85",
+      "bytes": 845431,
+      "note": "Complete E-MTAB-7978 matrix archived to phytoscope-reference-data at baseline commit 8fd01ca; no longer bundled. The 24 pinned source cells and six single-assay groups remain verifiable through samples.tsv / source-values.tsv below."
+    },
     "samples.tsv": "f36044524bf8449a4a07b2fee27bae798e836449680a60630eefff806a7069fd",
     "source-values.tsv": "80effd78a7cb1be8db0500d9ac4fe92477ad8c88d4f99e6eed2176e9734b63b7",
     "annotation.gff3": "6a59a49a2bcf4889cb858075aae0eb89ae1d3a1a3dc379ad1c5c4942a41e8471"
-  }
+  },
+  "external_note": "Local archive directory ready; gitee/github remote addresses pending user provision. No in-app download is provided."
 }

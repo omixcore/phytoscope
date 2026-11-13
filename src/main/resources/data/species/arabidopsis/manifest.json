@@ -6,7 +6,11 @@
   "source_release": "Araport11 original release, June 2016",
   "assembly": "TAIR10",
   "annotation": "Araport11",
-  "scope": "complete nuclear Chr1-Chr5",
+  "scope": "complete nuclear Chr1-Chr5 (historical index only)",
+  "storage": "external",
+  "repository": null,
+  "moved_at_commit": null,
+  "archived_note": "The complete Chr1-Chr5 Araport11 annotation was archived to phytoscope-reference-data at baseline commit 8fd01ca. This repository now bundles only the 5.5 KB arabidopsis_chromosomes.gff3.gz subset (10 genes / 24 mRNAs / 5 sequence-regions). All chromosome entries and SHA-256 values below are preserved verbatim as a traceability index; remote URL pending user provision.",
   "chromosomes": {
     "Chr1": {
       "length": 30427671,

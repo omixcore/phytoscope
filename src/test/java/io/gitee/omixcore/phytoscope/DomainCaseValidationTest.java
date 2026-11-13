@@ -8,6 +8,7 @@ import io.gitee.omixcore.phytoscope.research.DomainLinkService;
 import io.gitee.omixcore.phytoscope.service.ExpressionDataService;
 import io.gitee.omixcore.phytoscope.service.GeneSequenceService;
 import io.gitee.omixcore.phytoscope.service.GenomeDataService;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,11 +20,25 @@ class DomainCaseValidationTest {
     private static final Path CASE = Path.of("examples/arabidopsis-isoform-validation");
     private static final ObjectMapper JSON = new ObjectMapper();
 
+    private static Path referenceDataDir() {
+        String dir = System.getProperty("phytoscope.referenceDataDir");
+        Assumptions.assumeTrue(dir != null && !dir.isBlank(),
+                "依赖已外迁的完整参考数据：TAIR10 全基因组 FASTA 已迁移至独立数据仓库，"
+                        + "需设置 -Dphytoscope.referenceDataDir=<独立数据仓库目录> 以复现 13 个候选的蛋白序列验证");
+        return Path.of(dir);
+    }
+
     @Test void frozenIsoformsAndDomainBlocksMatchTheApplicationAndRestore() throws Exception {
+        // examples/arabidopsis-isoform-validation/* remains in this repository
+        // (out of scope, §0.4); only the genome FASTA moved to the external
+        // repository. All 16-candidate / 13-gene / protein / domain / project
+        // round-trip assertions below are preserved verbatim.
+        Path referenceRoot = referenceDataDir();
         var genome = new GenomeDataService();
         genome.loadFromFile(CASE.resolve("annotation.gff3"));
         var sequence = new GeneSequenceService();
-        sequence.loadBundledForDataset("arabidopsis");
+        sequence.loadFromFile(referenceRoot.resolve(
+                "data/species/arabidopsis/TAIR10_genomic.fna.gz"));
         var mapping = new DomainLinkService();
         JsonNode candidates = JSON.readTree(CASE.resolve("candidates.json").toFile());
         assertEquals(16, candidates.size());

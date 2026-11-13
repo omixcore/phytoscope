@@ -6,6 +6,7 @@ import io.gitee.omixcore.phytoscope.ui.MainView;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.embed.swing.SwingFXUtils;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import javax.imageio.ImageIO;
@@ -17,13 +18,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class ComparisonWorkflowUiTest {
     @SuppressWarnings("unchecked")
     @Test void realAtlasComparisonProjectRoundTripAndVectorRasterExports() throws Exception {
+        // Conditional skip must happen OUTSIDE the FX FutureTask: a TestAbortedException
+        // thrown inside it would be wrapped as ExecutionException and counted as an error.
+        Path archivedRoot = requireReferenceData();
         CountDownLatch ready = new CountDownLatch(1);
         try { Platform.startup(ready::countDown); } catch (IllegalStateException started) { Platform.runLater(ready::countDown); }
         assertTrue(ready.await(20, TimeUnit.SECONDS));
         FutureTask<Void> task = new FutureTask<>(() -> {
             var genome = new GenomeDataService(); var expression = new ExpressionDataService();
             var view = new MainView(genome, expression); var scene = new Scene(view, 1550, 900);
-            view.loadAtlasCase(); view.applyCss(); view.layout();
+            loadArchivedAtlasCase(view, genome, expression, archivedRoot);
+            view.applyCss(); view.layout();
             assertTrue(expression.getImportReport().matchedIds() >= 30000);
             assertEquals(4, view.getComparisonPane().geneIds().size());
             assertEquals(17494, expression.getProfile("AT1G67090").getTpm("Rosette_leaf_8"));
@@ -259,5 +264,46 @@ class ComparisonWorkflowUiTest {
             view.closeProjectResources(); return null;
         });
         Platform.runLater(task); task.get(240, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Conditional opt-in (K9). Q5 removed the in-app atlas entry entirely, so
+     * the full historical case can only be reproduced from the independent
+     * reference-data repository. All workflow assertions above are preserved
+     * verbatim and run once the archive is supplied via
+     * {@code -Dphytoscope.referenceDataDir=<archive-root>}.
+     */
+    private static Path requireReferenceData() {
+        String dir = System.getProperty("phytoscope.referenceDataDir");
+        Assumptions.assumeTrue(dir != null && !dir.isBlank(),
+                "依赖已外迁的完整参考数据：历史 atlas 端到端工作流需 -Dphytoscope.referenceDataDir=<独立数据仓库目录> "
+                        + "提供完整 Chr1–Chr5 注释、E-MTAB-7978 表达矩阵与 TAIR10 基因组 FASTA；"
+                        + "Q5 已从应用内彻底移除该入口，断言体原样保留供复跑");
+        return Path.of(dir);
+    }
+
+    /**
+     * Rebuilds the archived full case from external files using public APIs
+     * only. These paths are external pointers for conditional reproduction,
+     * never classpath resources (G3 category: 外迁指针 / 条件跳过注释).
+     */
+    private static void loadArchivedAtlasCase(MainView view, GenomeDataService genome,
+                                              ExpressionDataService expression,
+                                              Path root) throws Exception {
+        java.util.List<Path> parts = new java.util.ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            parts.add(root.resolve("data/species/arabidopsis/Chr" + i + ".gff3.gz"));
+        }
+        genome.loadParts(parts, io.gitee.omixcore.phytoscope.parser.AnnotationFormat.GFF3);
+        expression.loadFromFile(root.resolve(
+                "data/case-studies/arabidopsis-atlas/expression.tsv"));
+        expression.reconcile(genome);
+        view.loadGenomeFasta(root.resolve(
+                "data/species/arabidopsis/TAIR10_genomic.fna.gz"));
+        for (String id : java.util.List.of("AT1G67090", "AT5G38410", "AT5G38420", "AT5G38430")) {
+            view.getComparisonPane().add(genome.findGene(id));
+        }
+        view.applyCss();
+        view.layout();
     }
 }

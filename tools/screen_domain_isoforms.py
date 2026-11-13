@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 """Screen Araport11 isoforms without looking at peptide validation outcomes.
 
-Uses the bundled genomic reference and a frozen UniProt TSV snapshot. All
-coordinates in output tables are 1-based, inclusive. Standard library only.
+Uses a frozen UniProt TSV snapshot plus the complete TAIR10 genome FASTA and
+Chr1-Chr5 annotation. Those large reference files were archived to the
+independent ``phytoscope-reference-data`` repository and are no longer bundled;
+``--reference`` must point at that repository's
+``data/species/arabidopsis/`` directory (or an equivalent restored copy, see
+scripts/restore-to-app.sh). All coordinates in output tables are 1-based,
+inclusive. Standard library only; no in-app download is provided.
 """
 import argparse
 import csv
@@ -178,7 +183,10 @@ def write_tsv(path, rows, fields):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--reference', type=Path, required=True)
+    parser.add_argument('--reference', type=Path, required=True,
+                        help='Directory holding the archived TAIR10_genomic.fna.gz and '
+                             'Chr1-Chr5 GFF3 parts (phytoscope-reference-data/data/species/arabidopsis); '
+                             'no bundled classpath copy exists any more')
     parser.add_argument('--uniprot', type=Path, required=True)
     parser.add_argument('--protocol', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)

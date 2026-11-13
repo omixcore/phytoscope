@@ -8,6 +8,31 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GeneSequenceServiceTest {
 
+    /**
+     * A 7-record, KB-scale FASTA fixture that mirrors the TAIR10 record names
+     * (1-5, Mt, Pt). The complete TAIR10 genome was archived in the independent
+     * reference-data repository, so this test no longer reads a bundled MB-scale
+     * resource. Headers include "chromosome N" descriptions to exercise the same
+     * alias resolution (Chr1 -&gt; 1) as the archived data.
+     */
+    private static final String SMALL_FASTA = smallFasta();
+    private static final String SMALL_FASTA_LABEL = "small 7-record fixture";
+
+    private static String smallFasta() {
+        String bases = "ACGT".repeat(15); // 60 bp
+        StringBuilder fasta = new StringBuilder();
+        for (int i = 1; i <= 5; i++) {
+            fasta.append('>').append(i)
+                    .append(" chromosome ").append(i)
+                    .append(" dna:chromosome chromosome:TAIR10:").append(i)
+                    .append(":1:1000:1\n")
+                    .append(bases).append('\n');
+        }
+        fasta.append(">Mt mitochondrion\n").append(bases).append('\n');
+        fasta.append(">Pt chloroplast\n").append(bases).append('\n');
+        return fasta.toString();
+    }
+
     @Test
     void extractsSplicedTranscriptCdsUtrsAndProteinInTranscriptionOrientation() throws Exception {
         String annotation = """
@@ -45,10 +70,17 @@ class GeneSequenceServiceTest {
         assertEquals("", GeneSequenceService.translateCds(""));
     }
 
+    /**
+     * Replaces the archived TAIR10 resource test with an equivalent small
+     * fixture: 7 records, alias resolution, strand-aware reverse complement,
+     * and a user-supplied source label. The four assertions of the original
+     * (loaded state, record count, +/- strand reciprocity, source label) are
+     * preserved with the same structure.
+     */
     @Test
-    void bundledTair10ReferenceResolvesChrAliasesAndReturnsRealGenomicBases() throws Exception {
+    void smallFixtureResolvesChrAliasesAndReturnsRealGenomicBases() throws Exception {
         GeneSequenceService sequences = new GeneSequenceService();
-        sequences.loadFromResource(GeneSequenceService.ARABIDOPSIS_TAIR10_RESOURCE);
+        sequences.loadFromContent(SMALL_FASTA, SMALL_FASTA_LABEL);
         assertTrue(sequences.isLoaded());
         assertEquals(7, sequences.getSequenceCount());
         var forward = sequences.extract(new io.gitee.omixcore.phytoscope.model.Gene(
@@ -58,7 +90,26 @@ class GeneSequenceServiceTest {
         assertEquals(60, forward.genomicSpanSequence().length());
         assertEquals(GeneSequenceService.reverseComplement(forward.genomicSpanSequence()),
                 reverse.genomicSpanSequence());
-        assertTrue(forward.sourceLabel().contains("TAIR10_genomic.fna.gz"));
+        assertEquals(SMALL_FASTA_LABEL, forward.sourceLabel());
+    }
+
+    /** AC-3: without a user-supplied FASTA the service fails loudly and never fabricates a sequence. */
+    @Test
+    void unloadedFastaFailsLoudlyInsteadOfReturningPlaceholderSequence() {
+        GeneSequenceService sequences = new GeneSequenceService();
+        assertFalse(sequences.isLoaded());
+        assertEquals(0, sequences.getSequenceCount());
+        assertNull(sequences.getSourceLabel());
+        var gene = new io.gitee.omixcore.phytoscope.model.Gene(
+                "test", "test", "1", 1, 10, '+');
+        java.io.IOException extractError = assertThrows(java.io.IOException.class,
+                () -> sequences.extract(gene));
+        assertTrue(extractError.getMessage().contains(GeneSequenceService.NO_FASTA_MESSAGE));
+        java.io.IOException intervalError = assertThrows(java.io.IOException.class,
+                () -> sequences.extractInterval("1", 1, 10, '+'));
+        assertTrue(intervalError.getMessage().contains(GeneSequenceService.NO_FASTA_MESSAGE));
+        assertTrue(GeneSequenceService.NO_FASTA_MESSAGE.contains("Import genome FASTA"));
+        assertTrue(GeneSequenceService.NO_FASTA_MESSAGE.contains("*.gz"));
     }
 
     @Test

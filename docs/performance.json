@@ -4,6 +4,8 @@
   "os" : "Windows 11 amd64",
   "available_processors" : 16,
   "max_heap_bytes" : 3221225472,
+  "reproduce_requires" : "phytoscope-reference-data (complete 94,883-gene horsemint annotation archived outside this repository)",
+  "result_status" : "historical 2026-10-30 measurement; reproducing requires the external data; not a current-tree benchmark; no values re-measured",
   "method" : "One cold-process import, followed by warm queries; repeat in fresh JVMs for distributions. Heap pool peaks are not RSS.",
   "import_ms" : 2162.2928,
   "genes" : 94883,

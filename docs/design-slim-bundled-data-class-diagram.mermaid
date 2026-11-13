@@ -1,0 +1,129 @@
+classDiagram
+    %% PhytoScope 增量类图：剥离内置完整数据、独立存储参考数据
+    %% 基线 dev @ 8fd01ca；只描述变更，未提及的类沿用既有设计
+    %% 状态标注：MODIFIED=本次修改 / NEW=本次新增 / UNCHANGED=核对后不动
+    class ExampleDataset {
+        <<record>>
+        +String id
+        +String label
+        +String annotationResource
+        +AnnotationFormat format
+        +String expressionResource
+        +String attribution
+        +List~ExampleDataset~ CATALOGUE
+        +byId(String id) ExampleDataset
+        +defaultDataset() ExampleDataset
+        +annotationResources() List~String~
+        +fullLabel() String
+    }
+    class GeneSequenceService {
+        <<service>>
+        +String NO_FASTA_MESSAGE
+        -Map~String,String~ sequences
+        -String sourceLabel
+        +isLoaded() boolean
+        +getSequenceCount() int
+        +getSequenceNames() List~String~
+        +getSourceLabel() String
+        +clear() void
+        +replaceWith(GeneSequenceService other) void
+        +loadFromResource(String path) void
+        +loadFromFile(Path path) void
+        +loadFromContent(String fasta, String label) void
+        +extract(Gene gene) GeneSequences
+        +extractInterval(String chr, int start, int end, char strand) String
+    }
+    class GenomeDataService {
+        <<service>>
+        +loadExample(ExampleDataset dataset) void
+    }
+    class Gff3Parser {
+        <<parser>>
+        +parseResource(String path, AnnotationFormat fmt) ParseResult
+        +parse(InputStream in, AnnotationFormat fmt, String label) ParseResult
+    }
+    class ExpressionDataService {
+        <<service>>
+        +loadExample(ExampleDataset dataset) void
+        +loadFromResource(String path, String label) void
+        +clear() void
+        +isEmpty() boolean
+    }
+    class GeneDetailPane {
+        <<component>>
+        +String FASTA_EMPTY_STATE_TEXT
+        -GeneSequenceService sequenceService
+        +setSequenceService(GeneSequenceService s) void
+        +showGene(Gene gene) void
+        +clear() void
+        -buildSequenceSection(Gene gene) VBox
+    }
+    class ResearchAnalysisPane {
+        <<ui>>
+        -GeneSequenceService sequences
+        +refresh() void
+    }
+    class MainView {
+        <<ui>>
+        -GeneSequenceService sequenceService
+        -GeneDetailPane detailPane
+        -ResearchAnalysisPane researchPane
+        +loadInitialDataAsync() void
+        +startExampleLoad(ExampleDataset dataset) CompletableFuture
+        +loadGenomeFasta(Path file) void
+        +sequenceStatusText() String
+        +applyRestoredProject(Restored next) void
+        -afterDatasetChanged() void
+        -describeFastaAlignment(GeneSequenceService fasta) String
+    }
+    class ProjectStore {
+        <<project>>
+        +load(Path source) Restored
+    }
+    class BundledResourceGuardTest {
+        <<test>>
+        +everyCatalogueResourceExistsAndIsSmall() void
+        +noExternalDataIsBundled() void
+    }
+    class ReferenceDataManifest {
+        <<json>>
+        +String schema_version
+        +String baseline_commit
+        +String migration_commit
+        +MirrorRepositories mirror_repositories
+        +List~ManifestFile~ files
+    }
+    class ManifestFile {
+        <<json>>
+        +String path
+        +long bytes
+        +String sha256
+        +String source_url
+        +String license
+        +String license_status
+        +String provenance_ref
+    }
+
+    note for ExampleDataset "MODIFIED: CATALOGUE 7 to 6, arabidopsis 改用 5.5KB 子集, expressionResource=null, annotationResources 删除 Chr1-Chr5 分支（签名不变）"
+    note for GeneSequenceService "MODIFIED: 删除 ARABIDOPSIS_TAIR10_RESOURCE 与 loadBundledForDataset(String)；新增 NO_FASTA_MESSAGE；用户自带 FASTA 的既有能力全部保留"
+    note for Gff3Parser "UNCHANGED: 单文件 .gz 走 parse():243 的 gzip magic sniff；不进入 parseResources 多文件串联路径"
+    note for ExpressionDataService "UNCHANGED: expressionResource=null 时 clear()，表达面板显示既有显式缺失状态"
+    note for GeneDetailPane "MODIFIED: Sequences 空状态承载点 buildSequenceSection():165-171；FASTA_EMPTY_STATE_TEXT 为文案单一来源"
+    note for ResearchAnalysisPane "MODIFIED: 第二处序列提取 UI，提取前加 isLoaded() 短路并显示同一空状态文案"
+    note for MainView "MODIFIED: 删除 loadAtlasCase / pinAtlasGenes / atlas 菜单 / Loaded.sequences / atlas 参数；afterDatasetChanged 追加 detailPane 刷新；R8 清空 FASTA 并给提示"
+    note for ProjectStore "UNCHANGED: 项目 zip 内嵌注释与表达字节，旧 .phytoscope 天然可开，不按 origin 重载"
+    note for BundledResourceGuardTest "NEW: 遍历 CATALOGUE 断言资源存在且单文件小于 256KB，外迁文件名不得回到 CATALOGUE"
+    note for ReferenceDataManifest "NEW: 数据仓库 MANIFEST.json 权威清单，files 共 9 条，SHA-256 必须重算"
+
+    MainView "1" *-- "1" GeneSequenceService : holds / clears
+    MainView "1" *-- "1" GeneDetailPane : refreshes on dataset change
+    MainView "1" *-- "1" ResearchAnalysisPane : injects sequenceService
+    MainView ..> ExampleDataset : CATALOGUE / defaultDataset
+    MainView ..> ProjectStore : openProject
+    GenomeDataService ..> ExampleDataset : loadExample(dataset)
+    GenomeDataService "1" --> "1" Gff3Parser : parseResource (single gz)
+    ExpressionDataService ..> ExampleDataset : loadExample(dataset) / null to clear
+    GeneDetailPane ..> GeneSequenceService : isLoaded() / extract()
+    ResearchAnalysisPane ..> GeneSequenceService : isLoaded() / extractInterval()
+    BundledResourceGuardTest ..> ExampleDataset : iterate + assert resources
+    ReferenceDataManifest "1" *-- "9" ManifestFile

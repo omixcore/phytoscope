@@ -1,0 +1,100 @@
+sequenceDiagram
+    %% PhytoScope 增量时序图（单图，rect 分段）
+    %% 基线 dev @ 8fd01ca
+    %% 覆盖 4 段：① 备份校验门禁 ② 启动加载默认示例 ③ 未加载 FASTA（AC-3） ④ 用户导入 FASTA
+    autonumber
+    actor U as 用户
+    actor E as 工程师/QA
+    participant DR as 数据仓库目录
+    participant V as verify 脚本
+    participant G as 主仓库 git (8fd01ca)
+    participant App as PhytoScopeApplication
+    participant MV as MainView
+    participant LO as LoadingOperation
+    participant GDS as GenomeDataService
+    participant P as Gff3Parser
+    participant EDS as ExpressionDataService
+    participant GSS as GeneSequenceService
+    participant DP as GeneDetailPane
+    participant RP as ResearchAnalysisPane
+    participant FC as FileChooser
+
+    rect rgb(253, 232, 215)
+    Note over E,G: ① T01 → T02 门禁：先备份校验，再允许 git rm 9 个文件
+    E->>DR: 复制 9 个文件到 data/（保持原相对路径）
+    E->>DR: 重算 SHA-256 → SHA256SUMS.txt / MANIFEST.json（不照抄 provenance）
+    E->>V: verify.sh → sha256sum -c
+    V-->>E: 9/9 OK
+    E->>V: verify-against-baseline.sh <app-repo> 8fd01ca
+    V->>G: git show 8fd01ca:<path> | sha256sum（读历史 blob，非工作树）
+    G-->>V: 9 个基准哈希
+    V->>DR: 逐文件比对 data/<rel>
+    V-->>E: 9/9 OK，退出码 0（唯一放行条件）
+    E->>G: 才允许 git rm 9 文件 + 新提交 + 普通 push（无 --force）
+    Note over G: 历史未改写；误删可 git restore --source=8fd01ca -- <path>
+    end
+
+    rect rgb(232, 244, 248)
+    Note over U,DP: ② 启动加载默认示例（改后：6 条 CATALOGUE / arabidopsis 5.5KB 子集）
+    U->>App: 启动应用
+    App->>MV: loadInitialDataAsync()
+    MV->>MV: startExampleLoad(defaultDataset())（单参，无 atlas）
+    MV->>LO: run("Loading Arabidopsis thaliana", task, onSuccess, onError)
+    LO->>GDS: loadExample(arabidopsis 小示例)
+    GDS->>GDS: annotationResources() -> List.of(单个 5.5KB .gz)
+    GDS->>P: parseResource(path, GFF3)
+    P->>P: parse():243 gzip magic sniff -> GZIPInputStream
+    P-->>GDS: ParseResult(5 sequence-region, 10 genes, +/- strand, phase)
+    LO->>EDS: loadExample(dataset)
+    EDS->>EDS: expressionResource == null -> clear()（显式无测量数据状态）
+    Note over LO,GSS: 已删除 "Loading bundled sequences..." 与 loadBundledForDataset()
+    LO-->>MV: Loaded(genome, expression)（2 字段）
+    MV->>GSS: clear()（启动/切换一律清空 FASTA）
+    MV->>MV: afterDatasetChanged()
+    MV->>DP: showGene(selectedGene) 或 clear()（新增：刷新空状态）
+    DP->>GSS: isLoaded() -> false
+    DP-->>U: Gene Details → Sequences 显示 FASTA_EMPTY_STATE_TEXT（无任何序列）
+    MV-->>U: 状态栏显示物种/组装元数据（既有 :1239，不改）
+    end
+
+    rect rgb(240, 240, 248)
+    Note over U,RP: ③ 序列提取：未加载 FASTA（AC-3 主路径，不静默失败）
+    U->>MV: 点击基因 / 切换基因
+    MV->>DP: showGene(gene) -> buildSequenceSection(gene)
+    DP->>GSS: isLoaded()
+    GSS-->>DP: false
+    DP-->>U: FASTA_EMPTY_STATE_TEXT（入口/格式/组装匹配/不伪造序列），不创建 TextArea
+    Note over DP,GSS: 不调用 extract()；不返回空串/占位序列；不借用其他组装
+    U->>RP: 研究模块 promoter / interval 提取
+    RP->>GSS: isLoaded()
+    GSS-->>RP: false
+    RP-->>U: write("序列提取不可用", FASTA_EMPTY_STATE_TEXT)（新增短路，第二处 UI 面）
+    U->>MV: 切换数据集 / 打开项目
+    MV->>GSS: clear()
+    MV->>MV: afterDatasetChanged() -> showGene/clear()
+    DP->>GSS: isLoaded() -> false
+    DP-->>U: 空状态即时刷新（不残留上一次的序列视图）
+    end
+
+    rect rgb(233, 246, 233)
+    Note over U,RP: ④ 用户导入 FASTA（AC-3 验证路径，复用既有能力）
+    U->>MV: File → Import genome FASTA…（菜单已存在 :681）
+    MV->>FC: showOpenDialog(*.fa/*.fasta/*.fna/*.gz)
+    FC-->>MV: Path（自带 TAIR10 FASTA，record id 1..5）
+    MV->>MV: loadGenomeFasta(path)
+    MV->>LO: run("Loading genome FASTA", ...)
+    LO->>GSS: new GeneSequenceService().loadFromFile(path)
+    GSS->>GSS: load():165 gzip sniff -> sequences/aliases/sourceLabel
+    LO-->>MV: next
+    MV->>MV: sequenceService.replaceWith(next)
+    MV->>MV: describeFastaAlignment(next)（既有染色体名覆盖/警告，保留）
+    MV->>MV: statusLabel.setText(sequenceStatusText())
+    MV->>DP: showGene(selectedGene)（既有 :289）
+    DP->>GSS: isLoaded() -> true
+    DP->>GSS: extract(gene)
+    GSS-->>DP: GeneSequences(sourceLabel = FASTA 路径, 转录本/CDS/UTR/蛋白)
+    DP-->>U: 来源 + 全部序列 + Copy 按钮
+    U->>RP: promoter / interval 提取
+    RP->>GSS: extractInterval(...) -> 正常返回序列
+    Note over MV,GSS: 组装/序列名不匹配时 WARNING 仍生效，extract() 抛明确 IOException
+    end

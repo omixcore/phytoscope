@@ -92,6 +92,31 @@ public class MainView extends BorderPane {
     private static final Pattern LOCUS_QUERY = Pattern.compile("^([^:]+):([0-9][0-9,]*)-([0-9][0-9,]*)$");
     private static final Pattern LOCUS_PREFIX = Pattern.compile("^[^:]+:.*$");
 
+    /** Fallback status-bar text; the first line of the empty state is preferred. */
+    private static final String NO_FASTA_STATUS =
+            "未加载基因组 FASTA — 序列提取需通过 File → Import genome FASTA… 自行导入匹配的 FASTA";
+
+    /**
+     * Shown as a tooltip when opening a legacy .phytoscope project whose source
+     * metadata still names archived bundled data. The project file embeds its
+     * annotation/expression bytes and therefore still opens; only the genome
+     * FASTA is not stored and must be supplied by the user (R8).
+     */
+    private static final String LEGACY_PROJECT_HINT =
+            "数据已外迁：此项目保存时的完整参考数据已迁至独立数据仓库，注释/表达字节仍内嵌在项目文件中、可正常打开；"
+                    + "序列需自行通过 File → Import genome FASTA… 导入与当前注释组装版本匹配的 FASTA，"
+                    + "应用不会按旧 classpath 重新加载或伪造序列。";
+
+    /**
+     * 外迁指针 / 遗留登记：仅供旧 .phytoscope 项目来源元数据识别使用，
+     * 绝不会作为 loadFromResource / getResourceAsStream / parseResource / Files.newInputStream
+     * 的实参，也不是任何有效的加载路径。完整数据已迁至独立数据仓库。
+     */
+    private static final List<String> ARCHIVED_DATA_MARKERS = List.of(
+            "TAIR10_genomic", "Chr1.gff3.gz", "Chr2.gff3.gz", "Chr3.gff3.gz",
+            "Chr4.gff3.gz", "Chr5.gff3.gz", "mentha_longifolia_horsemint",
+            "mentha_longifolia_expression", "arabidopsis-atlas/expression");
+
     private final GenomeDataService dataService;
     private final ExpressionDataService expressionService;
     private final GeneSequenceService sequenceService = new GeneSequenceService();
@@ -158,8 +183,16 @@ public class MainView extends BorderPane {
 
     public void loadExampleData(ExampleDataset dataset) { loadExample(dataset); }
     public java.util.concurrent.CompletableFuture<?> getPendingLoad() { return pendingLoad; }
-    public void loadInitialDataAsync() { startExampleLoad(ExampleDataset.defaultDataset(), false); }
-    public java.util.concurrent.CompletableFuture<?> startExampleLoad(ExampleDataset dataset, boolean atlas) {
+    public void loadInitialDataAsync() { startExampleLoad(ExampleDataset.defaultDataset()); }
+
+    /**
+     * Loads one bundled example dataset asynchronously. Switching datasets
+     * always clears any user-imported genome FASTA: an assembly that matched the
+     * previous dataset must never be reused for the new one (shared rule K4).
+     * No genome FASTA is bundled any more, so sequence extraction stays in its
+     * explicit empty state until the user imports a matching FASTA.
+     */
+    public java.util.concurrent.CompletableFuture<?> startExampleLoad(ExampleDataset dataset) {
         pendingLoad = LoadingOperation.run(windowOrNull(), "Loading " + dataset.species(), progress -> {
             GenomeDataService next = new GenomeDataService();
             next.setProgressListener(n -> progress.accept("Parsed " + String.format("%,d", n) + " annotation features…"));
@@ -168,24 +201,16 @@ public class MainView extends BorderPane {
             progress.accept("Reading expression matrix…");
             ExpressionDataService measurements = new ExpressionDataService(); measurements.loadExample(dataset);
             measurements.reconcile(next);
-            progress.accept("Loading bundled sequences…");
-            GeneSequenceService sequences = new GeneSequenceService();
-            sequences.loadBundledForDataset(dataset.id());
-            if (atlas) {
-                measurements.loadFromResource("/data/case-studies/arabidopsis-atlas/expression.tsv", "Expression Atlas E-MTAB-7978 (single-assay conditions)");
-                measurements.reconcile(next);
-            }
-            return new Loaded(next, measurements, sequences);
+            return new Loaded(next, measurements);
         }, next -> {
-            dataService.replaceWith(next.genome()); expressionService.replaceWith(next.expression()); sequenceService.clear(); sequenceService.replaceWith(next.sequences());
+            dataService.replaceWith(next.genome()); expressionService.replaceWith(next.expression()); sequenceService.clear();
             activeExample = dataset; datasetSelector.setTooltip(new Tooltip(dataset.label() + "\n" + dataset.attribution())); loading = true;
             try { datasetSelector.getSelectionModel().select(dataset); } finally { loading = false; }
             comparisonPane.clear(); afterDatasetChanged();
-            if (atlas) pinAtlasGenes();
         }, this::loadFailed);
         return pendingLoad;
     }
-    private record Loaded(GenomeDataService genome, ExpressionDataService expression, GeneSequenceService sequences) { }
+    private record Loaded(GenomeDataService genome, ExpressionDataService expression) { }
     private void loadFailed(Throwable ex) {
         loading = true;
         try { datasetSelector.getSelectionModel().select(activeExample); } finally { loading = false; }
@@ -204,7 +229,9 @@ public class MainView extends BorderPane {
         try {
             loading = true;
             dataService.loadExample(dataset);
-            sequenceService.loadBundledForDataset(dataset.id());
+            // No built-in FASTA exists any more; always clear the shared service
+            // so a stale assembly can never leak into the new dataset.
+            sequenceService.clear();
             expressionService.loadExample(dataset);
             expressionService.reconcile(dataService);
             activeExample = dataset;
@@ -287,8 +314,21 @@ public class MainView extends BorderPane {
             sequenceService.replaceWith(next);
             Gene gene = renderer.getSelectedGene();
             if (gene != null) detailPane.showGene(gene);
-            statusLabel.setText(describeFastaAlignment(next) + file.getFileName());
+            statusLabel.setText(sequenceStatusText());
         }, this::loadFailed);
+    }
+
+    /**
+     * Status-bar text used after a FASTA import (and by UI tests). When nothing
+     * is loaded it reuses the single-source empty-state constant's first line;
+     * when loaded it reports the chromosome-name coverage/warnings plus the
+     * FASTA source label. Keeps the alignment WARNING intact.
+     */
+    public String sequenceStatusText() {
+        if (!sequenceService.isLoaded()) {
+            return GeneDetailPane.FASTA_EMPTY_STATE_TEXT.lines().findFirst().orElse(NO_FASTA_STATUS);
+        }
+        return describeFastaAlignment(sequenceService) + sequenceService.getSourceLabel();
     }
 
     /**
@@ -437,20 +477,6 @@ public class MainView extends BorderPane {
         alert.getDialogPane().setContent(text);
         alert.showAndWait();
     }
-    public void loadAtlasCase() throws IOException {
-        loadExample(ExampleDataset.byId("arabidopsis"));
-        expressionService.loadFromResource("/data/case-studies/arabidopsis-atlas/expression.tsv", "Expression Atlas E-MTAB-7978 (single-assay conditions)");
-        expressionService.reconcile(dataService); afterDatasetChanged();
-        pinAtlasGenes();
-    }
-    private void pinAtlasGenes() {
-        for (String id : List.of("AT1G67090", "AT5G38410", "AT5G38420", "AT5G38430")) {
-            Gene gene = dataService.findGene(id);
-            if (gene == null) throw new IllegalStateException("Case-study gene absent: " + id);
-            comparisonPane.add(gene);
-        }
-        workspaceTabs.getSelectionModel().select(1);
-    }
     public ComparisonPane getComparisonPane() { return comparisonPane; }
     public ResearchAnalysisPane getResearchPane() { return researchPane; }
     public void saveProject(Path target) throws IOException {
@@ -471,6 +497,14 @@ public class MainView extends BorderPane {
         var settings = new ComparisonFigure.Settings(ComparisonFigure.Alignment.valueOf(state.alignment()), state.compressed(),
                 ComparisonFigure.Scale.valueOf(state.expressionScale()), true);
         dataService.replaceWith(next.genome()); expressionService.replaceWith(next.expression());
+        // R8: project files embed annotation/expression bytes and therefore open
+        // fine, but they never store a genome FASTA. Clear it and give an
+        // explicit, non-silent hint when the saved source metadata still names
+        // archived (external) reference data.
+        sequenceService.clear();
+        if (namesArchivedData(next)) {
+            statusLabel.setTooltip(new Tooltip(LEGACY_PROJECT_HINT));
+        }
         var previous = restoredProject; restoredProject = next; activeExample = null;
         boolean before = loading; loading = true;
         try { datasetSelector.getSelectionModel().clearSelection(); } finally { loading = before; }
@@ -538,6 +572,35 @@ public class MainView extends BorderPane {
         showActiveChromosome();
         comparisonPane.refresh();
         researchPane.refresh();
+        // C14: the detail pane was never rebuilt here, so switching datasets
+        // could leave a stale sequence view from a previously imported FASTA.
+        // Rebuild it now so the empty state appears immediately (K4).
+        Gene selected = renderer.getSelectedGene();
+        if (selected != null) detailPane.showGene(selected);
+        else detailPane.clear();
+    }
+
+    /** True when a restored project's source metadata names archived external data (R8). */
+    private static boolean namesArchivedData(ProjectStore.Restored restored) {
+        if (restored == null || restored.manifest() == null) {
+            return false;
+        }
+        ProjectStore.Manifest manifest = restored.manifest();
+        java.util.List<String> origins = new java.util.ArrayList<>();
+        if (manifest.annotations() != null) {
+            for (ProjectStore.Source source : manifest.annotations()) {
+                if (source != null && source.origin() != null) origins.add(source.origin());
+            }
+        }
+        if (manifest.expression() != null && manifest.expression().origin() != null) {
+            origins.add(manifest.expression().origin());
+        }
+        for (String origin : origins) {
+            for (String marker : ARCHIVED_DATA_MARKERS) {
+                if (origin.contains(marker)) return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -702,16 +765,15 @@ public class MainView extends BorderPane {
                 new SeparatorMenuItem(), quit);
 
         // One entry per bundled species, so the panel is one click away.
+        // The archived "Real expression case" entry and its separator are gone:
+        // the complete atlas data is no longer bundled and must not leave a dead path.
         Menu examples = new Menu("Example datasets");
         for (ExampleDataset dataset : ExampleDataset.CATALOGUE) {
             MenuItem item = new MenuItem(dataset.fullLabel());
-            item.setOnAction(e -> startExampleLoad(dataset, false));
+            item.setOnAction(e -> startExampleLoad(dataset));
             examples.getItems().add(item);
         }
 
-        MenuItem atlas = new MenuItem("Real expression case: Arabidopsis RBCS atlas…");
-        atlas.setOnAction(e -> startExampleLoad(ExampleDataset.byId("arabidopsis"), true));
-        examples.getItems().addAll(new SeparatorMenuItem(), atlas);
         MenuItem fitAllItem = new MenuItem("Fit all genes");
         fitAllItem.setOnAction(e -> {
             renderer.fitToAll();
@@ -813,7 +875,7 @@ public class MainView extends BorderPane {
         });
         datasetSelector.getSelectionModel().selectedItemProperty().addListener((obs, old, dataset) -> {
             if (!loading && dataset != null) {
-                startExampleLoad(dataset, false);
+                startExampleLoad(dataset);
             }
         });
 

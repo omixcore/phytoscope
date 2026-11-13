@@ -1,5 +1,19 @@
 # Portability, reproducibility and evidence
 
+> **Data-archiving notice (post-`8fd01ca`).** The complete reference data
+> (TAIR10 genome FASTA, Araport11 Chr1-Chr5, the 94,883-gene horsemint annotation
+> and its 4-leaf TPM matrix, and the 32,833-gene E-MTAB-7978 matrix) has been moved
+> out of this repository's current tree into the independent
+> `phytoscope-reference-data` repository - the local directory is ready, remote URLs
+> are pending user provision. The application ships only six KB-scale example
+> annotations, performs no download at runtime, and sequence extraction requires a
+> user-imported genome FASTA. Every MB-scale figure, table and count below is a
+> **historical v0.2.0 / `8fd01ca`-era measurement** recorded while the complete data
+> was bundled; reproducing it now requires the external data and it must not be read
+> as a current-tree benchmark. No numbers have been re-measured or invented. Git
+> history pack (~209 MiB) and fresh-clone size are unchanged; only the current
+> checkout and its build artifacts got smaller.
+
 This document states what PhytoScope's local, bring-your-own-data workflow can
 do today, with the evidence that supports each claim, and what is deliberately
 listed as future work. It avoids "first/only" claims: other tools also address
@@ -10,7 +24,7 @@ per-species web database, no data upload.
 
 ## 1. Portability matrix: one pipeline, many species
 
-Every bundled dataset goes through the same import → browse → query → export
+Every bundled KB-scale example goes through the same import → browse → query → export
 pipeline with zero species-specific code. Species entries are data, not code.
 
 | Dataset | Species | Format | Size | Import | Browse/query | Expression panel | Export | Evidence |
@@ -78,14 +92,16 @@ On import, PhytoScope reports rather than hides input problems:
 ## 5. Performance evidence
 
 Measured with the built-in benchmark runner (cold process, one import then
-warm queries; heap pool peaks, not RSS). Reproduce with:
+warm queries; heap pool peaks, not RSS). Reproduce (historical; the `mint-genome` example id no longer exists because the complete data was moved to `phytoscope-reference-data`):
 
 ```bash
-java -jar phytoscope-0.2.0.jar --benchmark --example mint-genome --out benchmark-results
+# Historical v0.2.0 command (the example id and its data are now external).
+# Reproduce by importing the archived annotation, then benchmarking that import.
+# java -jar phytoscope-0.2.0.jar --benchmark --example mint-genome --out benchmark-results
 ```
 
 Machine: Windows 11, amd64, 16 processors, JDK 21.0.6, `-Xmx3g`. Raw JSON:
-`docs/performance.json` (2026-10-30 run).
+`docs/performance.json` (2026-10-30 historical run; see `reproduce_requires` there).
 
 | Metric | Value |
 | --- | --- |

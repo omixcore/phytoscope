@@ -1,5 +1,19 @@
 # Validation and benchmarks
 
+> **Data-archiving notice (post-`8fd01ca`).** The complete reference data
+> (TAIR10 genome FASTA, Araport11 Chr1-Chr5, the 94,883-gene horsemint annotation
+> and its 4-leaf TPM matrix, and the 32,833-gene E-MTAB-7978 matrix) has been moved
+> out of this repository's current tree into the independent
+> `phytoscope-reference-data` repository - the local directory is ready, remote URLs
+> are pending user provision. The application ships only six KB-scale example
+> annotations, performs no download at runtime, and sequence extraction requires a
+> user-imported genome FASTA. Every MB-scale figure, table and count below is a
+> **historical v0.2.0 / `8fd01ca`-era measurement** recorded while the complete data
+> was bundled; reproducing it now requires the external data and it must not be read
+> as a current-tree benchmark. No numbers have been re-measured or invented. Git
+> history pack (~209 MiB) and fresh-clone size are unchanged; only the current
+> checkout and its build artifacts got smaller.
+
 ## Claims and evidence
 
 PhytoScope is a local gene-structure and expression comparison workflow. Sequence
@@ -33,7 +47,7 @@ python tools/run_validation.py --jar target/phytoscope-0.2.0.jar
 # Optional: add --full-dir /path/to/cache containing arabidopsis/rice/maize/soybean.gff3.gz
 ```
 
-The default run covers the complete bundled Araport11 Chr1–Chr5 and the three
+The historical default run covered the complete bundled Araport11 Chr1–Chr5 and the three
 other bundled source excerpts. Every run creates `performance.json`, the complete
 `parsed-structure.tsv`, an SVG and `structure-validation.json`. Use fresh JVMs
 for multiple cold-import measurements. Preserve raw results, versions, input

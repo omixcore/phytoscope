@@ -36,27 +36,58 @@ class ExpressionDataServiceTest {
             Files.deleteIfExists(file);
         }
     }
+
+    /**
+     * The default example no longer bundles the E-MTAB-7978 atlas matrix.
+     * AC-3 requires a visible, explicit empty state instead of the silent
+     * downgrade that the removed resource would otherwise cause.
+     */
     @Test
-    void defaultArabidopsisExampleLoadsBundledTranscriptome() throws Exception {
+    void defaultArabidopsisExampleHasExplicitEmptyExpressionState() throws Exception {
         ExpressionDataService service = new ExpressionDataService();
         service.loadExample(ExampleDataset.defaultDataset());
-        assertFalse(service.isEmpty());
-        assertTrue(service.getProfileCount() >= 20000);
-        assertEquals("TPM", service.getValueUnit());
-        assertEquals("Bundled panel (Arabidopsis thaliana)", service.getSource());
+        assertNull(ExampleDataset.defaultDataset().expressionResource());
+        assertTrue(service.isEmpty());
+        assertEquals("No data loaded", service.getSource());
+        assertEquals(0, service.getProfileCount());
+        assertTrue(service.getTissues().isEmpty());
     }
 
+    /**
+     * Equivalent replacement for the archived atlas matrix test: an inline
+     * six-column TPM fixture keeps the same assertion structure (six sample
+     * groups, declared unit, exact numeric values, per-gene profile lookup and
+     * finite-value checks). No real measurement is fabricated or asserted here;
+     * the numbers belong to this synthetic fixture only.
+     */
     @Test
-    void bundledArabidopsisTranscriptomeLoadsWithSixTissueGroups() throws Exception {
-        ExpressionDataService service = new ExpressionDataService();
-        service.loadFromResource("/data/case-studies/arabidopsis-atlas/expression.tsv", "Expression Atlas E-MTAB-7978");
-        assertEquals(java.util.List.of("Root", "Rosette_leaf_1", "Rosette_leaf_8", "Cauline_leaf", "Dry_seed", "Pollen"), service.getTissues());
-        assertEquals("TPM", service.getValueUnit());
-        assertEquals(32833, service.getProfileCount());
-        assertEquals(17494.0, service.getProfile("AT1G67090").getTpm("Rosette_leaf_8"));
-        assertEquals(0.0, service.getProfile("AT5G38430").getTpm("Pollen"));
-        assertNotNull(service.getProfile("AT1G01860"));
-        assertTrue(java.util.Arrays.stream(new double[]{service.getProfile("AT1G01860").getTpm("Root"), service.getProfile("AT1G01860").getTpm("Rosette_leaf_1"), service.getProfile("AT1G01860").getTpm("Rosette_leaf_8"), service.getProfile("AT1G01860").getTpm("Cauline_leaf"), service.getProfile("AT1G01860").getTpm("Dry_seed"), service.getProfile("AT1G01860").getTpm("Pollen")}).allMatch(Double::isFinite));
+    void inlineSixTissueFixtureLoadsWithExactValuesAndProfileQueries() throws Exception {
+        String fixture = "# unit=TPM\n"
+                + "GeneID\tRoot\tRosette_leaf_1\tRosette_leaf_8\tCauline_leaf\tDry_seed\tPollen\n"
+                + "AT1G67090\t8.0\t17.0\t17494.0\t16.0\t3.0\t2.0\n"
+                + "AT5G38430\t0.0\t0.0\t0.0\t0.0\t0.0\t0.0\n"
+                + "AT1G01860\t8.0\t17.0\t15.0\t16.0\t3.0\t2.0\n";
+        Path file = Files.createTempFile("phytoscope-six-tissue-", ".tsv");
+        try {
+            Files.writeString(file, fixture);
+            ExpressionDataService service = new ExpressionDataService();
+            service.loadFromFile(file);
+            assertEquals(java.util.List.of("Root", "Rosette_leaf_1", "Rosette_leaf_8",
+                    "Cauline_leaf", "Dry_seed", "Pollen"), service.getTissues());
+            assertEquals("TPM", service.getValueUnit());
+            assertEquals(3, service.getProfileCount(), "one profile per fixture row");
+            assertEquals(17494.0, service.getProfile("AT1G67090").getTpm("Rosette_leaf_8"));
+            assertEquals(0.0, service.getProfile("AT5G38430").getTpm("Pollen"));
+            assertNotNull(service.getProfile("AT1G01860"));
+            assertTrue(java.util.Arrays.stream(new double[]{
+                    service.getProfile("AT1G01860").getTpm("Root"),
+                    service.getProfile("AT1G01860").getTpm("Rosette_leaf_1"),
+                    service.getProfile("AT1G01860").getTpm("Rosette_leaf_8"),
+                    service.getProfile("AT1G01860").getTpm("Cauline_leaf"),
+                    service.getProfile("AT1G01860").getTpm("Dry_seed"),
+                    service.getProfile("AT1G01860").getTpm("Pollen")}).allMatch(Double::isFinite));
+        } finally {
+            Files.deleteIfExists(file);
+        }
     }
-
 }

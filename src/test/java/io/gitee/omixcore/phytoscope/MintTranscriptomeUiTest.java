@@ -2,7 +2,6 @@ package io.gitee.omixcore.phytoscope;
 
 import io.gitee.omixcore.phytoscope.model.ExpressionProfile;
 import io.gitee.omixcore.phytoscope.model.Gene;
-import io.gitee.omixcore.phytoscope.service.ExampleDataset;
 import io.gitee.omixcore.phytoscope.service.ExpressionDataService;
 import io.gitee.omixcore.phytoscope.service.GenomeDataService;
 import io.gitee.omixcore.phytoscope.ui.MainView;
@@ -14,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.WritableImage;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
@@ -63,6 +63,9 @@ class MintTranscriptomeUiTest {
 
     @Test
     void mintGenomeLeafExpressionPanelIsFullyBrowsable() throws Exception {
+        // Conditional skip must be outside the FX FutureTask, otherwise the
+        // TestAbortedException is wrapped as ExecutionException (counted as error).
+        Path archivedRoot = requireReferenceData();
         var ready = new CountDownLatch(1);
         try {
             Platform.startup(ready::countDown);
@@ -76,7 +79,13 @@ class MintTranscriptomeUiTest {
             var expression = new ExpressionDataService();
             var view = new MainView(service, expression);
             var scene = new Scene(view, 1440, 900);
-            view.loadExampleData(ExampleDataset.byId("mint-genome"));
+            // The complete horsemint annotation + 4-leaf TPM panel were
+            // archived. Rebuild the same corpus from the external repository
+            // so every UI assertion below stays intact and reproducible.
+            view.loadAnnotation(archivedRoot.resolve(
+                    "data/species/mint/mentha_longifolia_horsemint.gff3.gz"));
+            view.loadExpression(archivedRoot.resolve(
+                    "data/species/mint/mentha_longifolia_expression.tsv"));
             view.applyCss();
             view.layout();
 
@@ -160,5 +169,20 @@ class MintTranscriptomeUiTest {
         });
         Platform.runLater(task);
         task.get(600, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Conditional opt-in (K9). The complete horsemint annotation and its 4-leaf
+     * TPM panel were archived in the independent reference-data repository; the
+     * end-to-end UI assertions above are preserved verbatim and run once the
+     * archive is supplied via {@code -Dphytoscope.referenceDataDir=<archive-root>}.
+     */
+    private static Path requireReferenceData() {
+        String dir = System.getProperty("phytoscope.referenceDataDir");
+        Assumptions.assumeTrue(dir != null && !dir.isBlank(),
+                "依赖已外迁的完整参考数据：完整 horsemint 注释与 4 叶 TPM 矩阵需 "
+                        + "-Dphytoscope.referenceDataDir=<独立数据仓库目录> 才能复跑端到端 UI 流程；"
+                        + "断言体原样保留供复跑");
+        return Path.of(dir);
     }
 }

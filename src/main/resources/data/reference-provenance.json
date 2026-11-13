@@ -1,6 +1,19 @@
 {
   "audit_date": "2026-10-16",
-  "scope": "Reference structure annotations; measured E-MTAB-7978 expression case has a separate manifest under data/case-studies/arabidopsis-atlas",
+  "scope": "INDEX ONLY: KB-scale example fixtures remain bundled; complete reference data is archived in the independent phytoscope-reference-data repository (local directory ready, remote URL pending user provision).",
+  "scope_history": "Reference structure annotations; measured E-MTAB-7978 expression case has a separate manifest under data/case-studies/arabidopsis-atlas",
+  "storage_model": {
+    "bundled": "file present under src/main/resources/data in this repository (KB-scale example only)",
+    "external": "file removed from the current tree by git rm; authoritative copy + recomputed SHA-256 in phytoscope-reference-data/MANIFEST.json"
+  },
+  "baseline_commit": "8fd01ca",
+  "migration_commit": null,
+  "external_repository": {
+    "name": "phytoscope-reference-data",
+    "gitee": null,
+    "github": null,
+    "note": "两个空仓库地址待用户提供；本地目录已就绪，远端地址待用户提供"
+  },
   "datasets": {
     "arabidopsis": {
       "species": "Arabidopsis thaliana",
@@ -32,6 +45,9 @@
         "Chr4": "e5b8683b657698ba74d675451338a5c367c578f7f9a3ca83a81b70d592004b93",
         "Chr5": "27b8e00179465b642835d798b77b7964301236b514d4f7668848fe13f37bd11a"
       },
+      "storage": "bundled",
+      "bundled_example": "arabidopsis_chromosomes.gff3.gz (5.5 KB, 10 genes / 24 mRNAs / 5 sequence-regions)",
+      "archived_note": "The complete nuclear Chr1-Chr5 Araport11 annotation and the TAIR10 genome FASTA were archived to phytoscope-reference-data; see top-level external_resources.",
       "bundled_resources": {
         "arabidopsis\\Chr1.gff3.gz": "2b6b5ed92ef73ce54a15dd0b24093df9fc48e6e399920dc15d89e9f484af18c6",
         "arabidopsis\\Chr2.gff3.gz": "dc095e384b422d9c38a8ec0fda78b5856492f9fabdd687b5ca4e1c77673fbec2",
@@ -40,7 +56,7 @@
         "arabidopsis\\Chr5.gff3.gz": "ddbec8ec922a8ef6ed89420c281286b8f65c3bcc693762a0193cd73baa29f138",
         "arabidopsis\\arabidopsis_chromosomes.gff3.gz": "2b908a63880cf446da035f116218906d348ac5c68e6d6ea64713377f2e199171"
       },
-      "bundled_resources_note": "gzip of the GFF3 parts; the parser streams them transparently"
+      "bundled_resources_note": "SHA-256 index only. The five Chr*.gff3.gz entries are now external (see external_resources); only arabidopsis_chromosomes.gff3.gz remains bundled. Original hashes are preserved verbatim for traceability."
     },
     "rice": {
       "species": "Oryza sativa Japonica Group",
@@ -55,6 +71,7 @@
       "archive_sha256": "7b30126babf87e65426598e0acf1ec1540f09b0235ebfe8a799ee39dab7e1075",
       "fixture_sha256": "0b81520bb1d9ca973dea8a68a1f1e17f0ff32b110dfb5a1d54617ff3ae66f20e",
       "verified_original_feature_rows": 347,
+      "storage": "bundled",
       "status": "PASS"
     },
     "maize": {
@@ -70,6 +87,7 @@
       "archive_sha256": "cb8ca4d0607d3363e717f911db3a77c77cf882183850f188ff164d6cd130ab56",
       "fixture_sha256": "975f0ada1eadcca585a67ba60964358b7311d799735399bf075e746debbd3734",
       "verified_original_feature_rows": 377,
+      "storage": "bundled",
       "status": "PASS"
     },
     "soybean": {
@@ -85,6 +103,7 @@
       "archive_sha256": "e7fb0788d891f1b5d7da5c7634fa564af90bf8b97f7a5a03d81d361f4022f387",
       "fixture_sha256": "34f081abefa1b6a1af4b5312890a4a26d682e6939ef462f1f5a9ee0467fde2e3",
       "verified_original_feature_rows": 839,
+      "storage": "bundled",
       "status": "PASS"
     },
     "mint-plastid": {
@@ -113,6 +132,7 @@
       "annotation_scope": "complete plastid genome, single sequence Pt (152,132 bp)",
       "expression_resource": null,
       "notes": "No public M. spicata RNA-seq matrix is bundled; the browser shows an explicit missing-data state instead of unverified values.",
+      "storage": "bundled",
       "status": "PASS"
     },
     "mint": {
@@ -154,6 +174,7 @@
       "annotation_scope": "12 chromosome-scale sequences (29.7-46.7 Mb), 24 Maker-predicted genes (2 real families per chromosome)",
       "expression_resource": null,
       "notes": "No verified expression matrix is bundled; the browser shows an explicit missing-data state.",
+      "storage": "bundled",
       "status": "PASS"
     },
     "mint-genome": {
@@ -189,12 +210,89 @@
       "gff3_sha256": "ec2f2220a6a9a39901144a9014192605fb44f1fad63da0040fae8c13a9e67d4f",
       "bundled_resource": "data/species/mint/mentha_longifolia_horsemint.gff3.gz",
       "bundled_resource_sha256": "5c7d2fb3f7fdeb86dc84e4f383e0621211e270c2f3982e636adf9ba1ba37089f",
-      "bundled_resource_note": "gzip of the GFF3 above; the parser streams it transparently",
+      "bundled_resource_note": "SHA-256 index only: this file is no longer bundled. See top-level external_resources / phytoscope-reference-data/MANIFEST.json.",
       "companion_files": {
         "genome_fasta_gz": "Long3_HAP_v2_genomic.fa.gz sha256 7659e8807857b303a2cc2fdd6bbbf4c11ff01b104e5157efadd66f6817ed972e",
         "functional_annotation_gz": "gene_functional_anno.tsv.gz sha256 809e320cf4ed9458f06e5d8c5f5b92ef539cc8c7bf6f693a3849d4a6292663b6"
       },
-      "note": "Coordinates copied verbatim from the published GTF; this build only adds the gene/transcript/exon hierarchy and functional notes."
+      "note": "Coordinates copied verbatim from the published GTF; this build only adds the gene/transcript/exon hierarchy and functional notes.",
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null
+    }
+  },
+  "external_resources": {
+    "species/arabidopsis/TAIR10_genomic.fna.gz": {
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null,
+      "external_path": "data/species/arabidopsis/TAIR10_genomic.fna.gz",
+      "sha256": "80a13166003333ba4982b57abdb3d2b62037bc831f4da29ea378c1b776fff8e2",
+      "bytes": 36462703
+    },
+    "species/arabidopsis/Chr1.gff3.gz": {
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null,
+      "external_path": "data/species/arabidopsis/Chr1.gff3.gz",
+      "sha256": "2b6b5ed92ef73ce54a15dd0b24093df9fc48e6e399920dc15d89e9f484af18c6",
+      "bytes": 4491636
+    },
+    "species/arabidopsis/Chr2.gff3.gz": {
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null,
+      "external_path": "data/species/arabidopsis/Chr2.gff3.gz",
+      "sha256": "dc095e384b422d9c38a8ec0fda78b5856492f9fabdd687b5ca4e1c77673fbec2",
+      "bytes": 2755680
+    },
+    "species/arabidopsis/Chr3.gff3.gz": {
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null,
+      "external_path": "data/species/arabidopsis/Chr3.gff3.gz",
+      "sha256": "8131f5a7e2aa4109be04c653347a8e41e4dcc35ed7ba6df565d2fd94300a8b82",
+      "bytes": 3382640
+    },
+    "species/arabidopsis/Chr4.gff3.gz": {
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null,
+      "external_path": "data/species/arabidopsis/Chr4.gff3.gz",
+      "sha256": "a61c4c3ce146895d4b4ccf792c11a28073265db3607edb1ba0acc5b8675d74bf",
+      "bytes": 2620794
+    },
+    "species/arabidopsis/Chr5.gff3.gz": {
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null,
+      "external_path": "data/species/arabidopsis/Chr5.gff3.gz",
+      "sha256": "ddbec8ec922a8ef6ed89420c281286b8f65c3bcc693762a0193cd73baa29f138",
+      "bytes": 3820663
+    },
+    "species/mint/mentha_longifolia_horsemint.gff3.gz": {
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null,
+      "external_path": "data/species/mint/mentha_longifolia_horsemint.gff3.gz",
+      "sha256": "5c7d2fb3f7fdeb86dc84e4f383e0621211e270c2f3982e636adf9ba1ba37089f",
+      "bytes": 10744463
+    },
+    "species/mint/mentha_longifolia_expression.tsv": {
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null,
+      "external_path": "data/species/mint/mentha_longifolia_expression.tsv",
+      "sha256": "8000e27d6b37d695c62b2ce0d261b65ecf9eece171405b4815faf58b685ee7f1",
+      "bytes": 3394837
+    },
+    "case-studies/arabidopsis-atlas/expression.tsv": {
+      "storage": "external",
+      "repository": null,
+      "moved_at_commit": null,
+      "external_path": "data/case-studies/arabidopsis-atlas/expression.tsv",
+      "sha256": "bc4945fc578f2a339c50e84def5586c31be156c6f241eb968f3bc53a394aca85",
+      "bytes": 845431
     }
   },
   "case_study_manifest": "data/case-studies/arabidopsis-atlas/manifest.json"

@@ -30,7 +30,7 @@ class BackgroundLoadingUiTest {
         fx(() -> null); assertFalse(committed.get()); assertTrue(failure.get() instanceof CancellationException);
         var genome = new GenomeDataService(); var expression = new ExpressionDataService();
         MainView view = fx(() -> new MainView(genome,expression));
-        var loading = fx(() -> view.startExampleLoad(ExampleDataset.byId("rice"),false));
+        var loading = fx(() -> view.startExampleLoad(ExampleDataset.byId("rice")));
         loading.get(60,TimeUnit.SECONDS);
         fx(() -> { assertEquals(12,genome.getChromosomes().size()); assertEquals(24,genome.getGeneCount()); return null; });
     }

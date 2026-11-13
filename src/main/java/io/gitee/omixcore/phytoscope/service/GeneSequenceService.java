@@ -37,8 +37,19 @@ import java.util.zip.GZIPInputStream;
  */
 public final class GeneSequenceService {
 
-    public static final String ARABIDOPSIS_TAIR10_RESOURCE =
-            "/data/species/arabidopsis/TAIR10_genomic.fna.gz";
+    /**
+     * Shared, user-visible message used whenever sequence extraction is
+     * attempted without a genome FASTA. Kept in the service layer (English,
+     * UI-independent) so every current and future caller fails loudly instead
+     * of silently returning an empty/placeholder sequence. Its four points
+     * mirror {@code GeneDetailPane.FASTA_EMPTY_STATE_TEXT}: the not-loaded
+     * state, the import entry point, the accepted formats, and the requirement
+     * that the assembly/sequence names match with no fabricated sequence.
+     */
+    public static final String NO_FASTA_MESSAGE =
+            "No genome FASTA loaded. Use File -> Import genome FASTA... to supply a genomic DNA FASTA "
+            + "(*.fa, *.fasta, *.fna, *.gz). It must match the annotation assembly and sequence names; "
+            + "no sequence is shown or fabricated until a matching FASTA is imported.";
 
     private static final Pattern CHROMOSOME_WORD =
             Pattern.compile("(?i)\\bchromosome\\s+([0-9]+|[a-z]+)\\b");
@@ -118,23 +129,11 @@ public final class GeneSequenceService {
     }
 
     /**
-     * Loads the bundled TAIR10 genome for the Arabidopsis example when present.
-     * Other examples intentionally require the user to provide the matching
-     * genome FASTA rather than silently borrowing a different assembly.
+     * Generic classpath helper retained for tests and embedded snippets. The
+     * application's normal flow never calls it: no built-in genome FASTA is
+     * shipped any more, so loading is always an explicit user action via
+     * {@link #loadFromFile(Path)} / {@link #loadFromContent(String, String)}.
      */
-    public void loadBundledForDataset(String datasetId) throws IOException {
-        clear();
-        if (!"arabidopsis".equals(datasetId)) {
-            return;
-        }
-        try (InputStream check = GeneSequenceService.class.getResourceAsStream(ARABIDOPSIS_TAIR10_RESOURCE)) {
-            if (check == null) {
-                return;
-            }
-        }
-        loadFromResource(ARABIDOPSIS_TAIR10_RESOURCE);
-    }
-
     public void loadFromResource(String resourcePath) throws IOException {
         try (InputStream input = GeneSequenceService.class.getResourceAsStream(resourcePath)) {
             if (input == null) {
@@ -235,7 +234,7 @@ public final class GeneSequenceService {
 
     public GeneSequences extract(Gene gene) throws IOException {
         Objects.requireNonNull(gene, "gene");
-        if (!isLoaded()) throw new IOException("No genome FASTA loaded. Import a FASTA matching the annotation assembly.");
+        if (!isLoaded()) throw new IOException(NO_FASTA_MESSAGE);
         String chromosomeId = resolveSequenceId(gene.getChromosome());
         String chromosomeSequence = sequences.get(chromosomeId);
         String geneSequence = extractInterval(chromosomeSequence, gene.getStart(), gene.getEnd(),
@@ -251,7 +250,7 @@ public final class GeneSequenceService {
     /** Extract a 1-based closed genomic interval in the requested transcription orientation. */
     public String extractInterval(String chromosome, int start, int end, char strand) throws IOException {
         if (start < 1 || end < start) throw new IOException("Interval must be 1-based, closed, and non-empty");
-        if (!isLoaded()) throw new IOException("No genome FASTA loaded.");
+        if (!isLoaded()) throw new IOException(NO_FASTA_MESSAGE);
         String id = resolveSequenceId(chromosome);
         return extractInterval(sequences.get(id), start, end, chromosome, strand);
     }

@@ -1,5 +1,19 @@
 # Research-module validation on real plant data
 
+> **Data-archiving notice (post-`8fd01ca`).** The complete reference data
+> (TAIR10 genome FASTA, Araport11 Chr1-Chr5, the 94,883-gene horsemint annotation
+> and its 4-leaf TPM matrix, and the 32,833-gene E-MTAB-7978 matrix) has been moved
+> out of this repository's current tree into the independent
+> `phytoscope-reference-data` repository - the local directory is ready, remote URLs
+> are pending user provision. The application ships only six KB-scale example
+> annotations, performs no download at runtime, and sequence extraction requires a
+> user-imported genome FASTA. Every MB-scale figure, table and count below is a
+> **historical v0.2.0 / `8fd01ca`-era measurement** recorded while the complete data
+> was bundled; reproducing it now requires the external data and it must not be read
+> as a current-tree benchmark. No numbers have been re-measured or invented. Git
+> history pack (~209 MiB) and fresh-clone size are unchanged; only the current
+> checkout and its build artifacts got smaller.
+
 ## Purpose
 
 This regression suite checks whether selected PhytoScope research-module outputs
@@ -10,7 +24,7 @@ benchmark and the existing isoform/domain-coordinate case.
 
 ## Inputs
 
-- Genome: bundled TAIR10 genomic FASTA, SHA-256 recorded in
+- Genome (now external): the TAIR10 genomic FASTA was moved to the independent `phytoscope-reference-data` repository; import it via File → Import genome FASTA… to reproduce. Its SHA-256 is recorded in
   `src/main/resources/data/species/arabidopsis/genome-sequence-provenance.json`.
 - Annotation: Araport11 chromosome 1 and the frozen four-locus RBCS annotation
   excerpt in `examples/arabidopsis-atlas/annotation.gff3`.
@@ -44,12 +58,12 @@ classifications and observed runtimes.
 With JDK 21:
 
 ```bash
-sh mvnw -B -Pui-tests -Dtest=ResearchModuleGoldSetTest test
+sh mvnw -B -Pui-tests -Dtest=ResearchModuleGoldSetTest -Dphytoscope.referenceDataDir=/path/to/phytoscope-reference-data test
 python tools/check_isoform_case.py
-sh mvnw -B -Pui-tests -Dtest=DomainCaseValidationTest test
+sh mvnw -B -Pui-tests -Dtest=DomainCaseValidationTest -Dphytoscope.referenceDataDir=/path/to/phytoscope-reference-data test
 ```
 
-The full validation workflow runs these tests along with parser, project
+Without `-Dphytoscope.referenceDataDir` these gold-set/domain tests are conditionally skipped (`Assumptions.assumeTrue` with a Chinese reason), with their assertion bodies intact. The full validation workflow runs these tests along with parser, project
 restoration, UI and packaging regressions.
 
 ## Interpretation and limits

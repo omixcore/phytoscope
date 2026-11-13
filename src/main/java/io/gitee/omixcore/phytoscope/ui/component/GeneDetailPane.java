@@ -36,6 +36,21 @@ import java.util.List;
  */
 public class GeneDetailPane extends ScrollPane {
 
+    /**
+     * Single source of truth for the "no genome FASTA loaded" empty state.
+     * Shared by {@link #buildSequenceSection(Gene)}, ResearchAnalysisPane and
+     * MainView's status bar so the wording never drifts. Four required points:
+     * the not-loaded state, the import entry point, the accepted formats, and
+     * the assembly / sequence-name matching requirement with no fabricated
+     * sequence. Switching datasets clears the FASTA, so re-import is required.
+     */
+    public static final String FASTA_EMPTY_STATE_TEXT =
+            "未加载基因组 FASTA — 当前不显示任何序列（不返回空串、占位序列或借用其他组装的序列）。\n"
+          + "请通过 File → Import genome FASTA… 导入与当前注释组装版本匹配的基因组 DNA FASTA。\n"
+          + "支持格式：*.fa / *.fasta / *.fna / *.gz（gzip 自动识别）。\n"
+          + "FASTA 的序列名（如 1、2、3、4、5 或 Chr1…）必须与注释的染色体名一致或可归一匹配；"
+          + "导入后状态栏会提示匹配情况与警告。切换数据集后需重新导入。";
+
     private final VBox content = new VBox(10);
 
     /** Expression profile supplier, injected by the main view. */
@@ -163,7 +178,9 @@ public class GeneDetailPane extends ScrollPane {
     private VBox buildSequenceSection(Gene gene) {
         VBox section = new VBox(8);
         if (sequenceService == null || !sequenceService.isLoaded()) {
-            Label hint = new Label("Import a matching genomic DNA FASTA from File → Import genome FASTA to view and copy genomic span, spliced transcript, CDS, 5′/3′ UTR and protein sequences. The genome assembly must match the annotation.");
+            // Explicit, user-visible empty state: no extract() call, no TextArea,
+            // no sequence text (not even an empty string or a placeholder).
+            Label hint = new Label(FASTA_EMPTY_STATE_TEXT);
             hint.setWrapText(true);
             hint.setStyle("-fx-text-fill: #778596; -fx-font-size: 11px;");
             section.getChildren().add(hint);

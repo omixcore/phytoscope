@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,22 +58,40 @@ class ResearchModuleGoldSetTest {
     private record ReferenceAlignment(int matches, int length, int querySpan,
                                       int targetSpan, int score) {}
 
+    /**
+     * Uniform opt-in switch (K9). The complete TAIR10 genome FASTA, the Chr1
+     * annotation and the E-MTAB-7978 matrix were archived in the independent
+     * reference-data repository; every gold-set assertion below is preserved
+     * verbatim and runs as soon as the archive is supplied:
+     * {@code ./mvnw -Pui-tests test -Dphytoscope.referenceDataDir=<archive-root>}.
+     */
+    private static Path referenceRoot() {
+        String dir = System.getProperty("phytoscope.referenceDataDir");
+        Assumptions.assumeTrue(dir != null && !dir.isBlank(),
+                "依赖已外迁的完整参考数据：需设置 -Dphytoscope.referenceDataDir=<独立数据仓库目录> "
+                        + "并提供 TAIR10 基因组 FASTA / Chr1.gff3.gz / E-MTAB-7978 表达矩阵，"
+                        + "以复现研究模块 gold-set 数值断言");
+        return Path.of(dir);
+    }
+
     @Test
     void realArabidopsisInputsMatchIndependentResearchModuleCalculations() throws Exception {
+        Path root = referenceRoot();
         Path output = Path.of("target/research-validation");
         Files.createDirectories(output);
 
         GeneSequenceService sequences = new GeneSequenceService();
-        sequences.loadBundledForDataset("arabidopsis");
+        sequences.loadFromFile(root.resolve("data/species/arabidopsis/TAIR10_genomic.fna.gz"));
         assertTrue(sequences.isLoaded(), "Pinned TAIR10 genome must be available in the test runtime");
-        Map<String, FastaRecord> fasta = readBundledFasta();
+        Map<String, FastaRecord> fasta = readBundledFasta(root);
         String chr1Sequence = resolveSequence(fasta, "Chr1");
         assertNotNull(chr1Sequence, "The independent FASTA reader must resolve TAIR10 Chr1");
 
         // 1. Promoter windows: independently calculate coordinates and directly
         // slice/reverse-complement the pinned genomic FASTA for both strands.
         GenomeDataService chr1 = new GenomeDataService();
-        chr1.loadFromResource("/data/species/arabidopsis/Chr1.gff3.gz", AnnotationFormat.GFF3);
+        chr1.loadFromFile(root.resolve("data/species/arabidopsis/Chr1.gff3.gz"),
+                AnnotationFormat.GFF3);
         List<Gene> plusGenes = selectSpreadGenes(chr1, '+', chr1Sequence.length(), 4);
         List<Gene> minusGenes = selectSpreadGenes(chr1, '-', chr1Sequence.length(), 4);
         assertEquals(4, plusGenes.size());
@@ -252,8 +271,8 @@ class ResearchModuleGoldSetTest {
         // 4. Expression grouping: source values are pinned single-assay Atlas
         // measurements. The grouping is descriptive arithmetic, not replication.
         ExpressionDataService expression = new ExpressionDataService();
-        expression.loadFromResource("/data/case-studies/arabidopsis-atlas/expression.tsv",
-                "Expression Atlas E-MTAB-7978");
+        expression.loadFromFile(root.resolve(
+                "data/case-studies/arabidopsis-atlas/expression.tsv"));
         expression.reconcile(chr1);
         SampleGroupingService groups = makeAtlasGroups();
         var ordinaryMean = groups.summarize(expression, "AT1G01860", SampleGroupingService.Statistic.MEAN);
@@ -608,9 +627,15 @@ class ResearchModuleGoldSetTest {
         return List.copyOf(proteins);
     }
 
-    private static Map<String, FastaRecord> readBundledFasta() throws IOException {
-        InputStream resource = ResearchModuleGoldSetTest.class
-                .getResourceAsStream(GeneSequenceService.ARABIDOPSIS_TAIR10_RESOURCE);
+    /**
+     * Reads the archived full genome FASTA from the independent reference-data
+     * repository (never from the application classpath). The full record set and
+     * the independent-oracle logic below are unchanged, so the gold-set numbers
+     * can be reproduced byte-for-byte once the archive is available.
+     */
+    private static Map<String, FastaRecord> readBundledFasta(Path root) throws IOException {
+        InputStream resource = Files.newInputStream(
+                root.resolve("data/species/arabidopsis/TAIR10_genomic.fna.gz"));
         if (resource == null) throw new IOException("Missing pinned TAIR10 genomic FASTA resource");
         Map<String, FastaRecord> records = new LinkedHashMap<>();
         try (InputStream raw = resource;
