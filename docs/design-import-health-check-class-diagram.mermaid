@@ -1,0 +1,145 @@
+classDiagram
+    %% 状态标注：NEW=本次新增 / MODIFIED=本次修改 / UNCHANGED=核对后不动
+    class IntakeHealthCheck {
+        <<service>>
+        +IntakeReport check(Path fasta, Path gff3, Path expression)
+        -checkSingleFileIntegrity(Path, Kind) IntakeFileResult
+        -checkSeqidSubset(GeneSequenceService, GenomeDataService) List~IntakeIssue~
+        -checkExpressionMatch(GenomeDataService, ExpressionDataService) List~IntakeIssue~
+        -detectAliasCandidates(GeneSequenceService, GenomeDataService) List~AliasMapping~
+    }
+    class IntakeReport {
+        <<record>>
+        +List~IntakeFileResult~ files
+        +List~IntakeIssue~ issues
+        +String summary
+        +boolean pass
+        +toJson() String
+        +toMarkdown() String
+        +errorCount() int
+    }
+    class IntakeIssue {
+        <<record>>
+        +IntakeSeverity severity
+        +String code
+        +String message
+        +String file
+        +String lineOrCoord
+        +String suggestion
+    }
+    class IntakeSeverity {
+        <<enum>>
+        ERROR
+        WARNING
+        INFO
+    }
+    class IntakeFileResult {
+        <<record>>
+        +String path
+        +String kind
+        +String sha256
+        +long bytes
+        +boolean ok
+        +String error
+    }
+    class AliasMapping {
+        <<record>>
+        +String from
+        +String to
+        +String confirmedBy
+    }
+    class IntakeManifestMeta {
+        <<record>>
+        +String specVersion
+        +Assembly assembly
+        +AnnotationMeta annotation
+        +List~IntakeFileResult~ files
+        +List~AliasMapping~ aliasMap
+    }
+    class Assembly {
+        <<record>>
+        +String id
+        +String source
+        +List~String~ sequences
+    }
+    class AnnotationMeta {
+        <<record>>
+        +String format
+        +String version
+        +String source
+    }
+    class ImportGenomeWizard {
+        <<ui>>
+        +openImportWizard(MainView host)
+        -chooseFiles() void
+        -runCheckAndShowReport() void
+        -confirmAliases(List~AliasMapping~) List~AliasMapping~
+        -exportReport(Path, Format) void
+        -loadProject(AliasMapping[]) void
+    }
+    class GeneSequenceService {
+        <<service>>
+        +normalizeSequenceName(String) String  %% MODIFIED: private -> public static
+        +addAliases(Map~String,String~) void   %% NEW
+        +getSequenceNames() List~String~
+        +loadFromFile(Path) void
+        +resolveSequenceId(String) String
+    }
+    class GenomeDataService {
+        <<service>>
+        +loadFromFile(Path) void
+        +getChromosomes() List~String~
+        +getGenes() List~Gene~
+        +getDiagnostics() ParseDiagnostics
+        +getSourceInputs() List~SourceInput~
+    }
+    class ExpressionDataService {
+        <<service>>
+        +loadFromFile(Path) void
+        +reconcile(GenomeDataService) ImportReport
+        +getImportReport() ImportReport
+    }
+    class ProjectStore {
+        <<project>>
+        +save(Path, GenomeDataService, ExpressionDataService, ViewState, ResearchState) void  %% MODIFIED: 填 manifest v2
+        +load(Path) Restored  %% MODIFIED: schemaVersion 1-4
+        -Manifest Manifest(record 扩展 specVersion/assembly/annotation/files/aliasMap)
+    }
+    class AnnotationHealthService {
+        <<service>>
+        +assess(GenomeDataService, ExpressionDataService) HealthReport  %% UNCHANGED
+    }
+    class ParseDiagnostics {
+        <<parser>>
+        +MAX_RECORDS = 10000  %% UNCHANGED
+        +List~SkippedRow~ skippedRows
+        +List~OrphanFeature~ orphans
+    }
+    class MainView {
+        <<ui>>
+        +openImportWizard() void  %% NEW 菜单入口
+    }
+
+    note for IntakeHealthCheck "NEW: 协调器，复用 GenomeDataService/GeneSequenceService/ExpressionDataService 解析，不重写算法"
+    note for IntakeSeverity "NEW: 独立枚举，不扩展 AnnotationHealthService.Severity（避免 Q1 口径冲突）"
+    note for ImportGenomeWizard "NEW: 独立向导入口，与 Example datasets 分流"
+    note for GeneSequenceService "MODIFIED: normalizeSequenceName 提升 public static；新增 addAliases 支持项目级别名还原"
+    note for ProjectStore "MODIFIED: Manifest 扩展 v2 字段；schemaVersion 3->4；load 接受 1-4"
+    note for AnnotationHealthService "UNCHANGED: 导入后体检四级模型不动"
+    note for ParseDiagnostics "UNCHANGED: 行号缺口见 §1.5（v1 接受精度边界）"
+    note for MainView "MODIFIED: File 菜单新增独立入口，不耦合既有 import* 方法"
+
+    ImportGenomeWizard ..> IntakeHealthCheck : check()
+    ImportGenomeWizard ..> MainView : 注入 dataService/expressionService/sequenceService
+    IntakeHealthCheck ..> GeneSequenceService : loadFromFile / getSequenceNames
+    IntakeHealthCheck ..> GenomeDataService : loadFromFile / getGenes / getDiagnostics
+    IntakeHealthCheck ..> ExpressionDataService : loadFromFile / reconcile
+    IntakeHealthCheck ..> IntakeReport : 组装
+    IntakeReport "1" *-- "many" IntakeIssue
+    IntakeReport "1" *-- "many" IntakeFileResult
+    IntakeManifestMeta "1" *-- "many" AliasMapping
+    IntakeManifestMeta "1" *-- "1" Assembly
+    IntakeManifestMeta "1" *-- "1" AnnotationMeta
+    ProjectStore ..> IntakeManifestMeta : 序列化 manifest v2
+    ImportGenomeWizard ..> GeneSequenceService : addAliases(aliasMap)
+    MainView "1" *-- "1" ImportGenomeWizard : 启动

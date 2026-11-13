@@ -1,0 +1,76 @@
+%% 增量时序图（3 个核心流程），不覆盖既有全量 docs/sequence-diagram.mermaid
+
+sequenceDiagram
+    autonumber
+    actor U as 用户
+    participant MV as MainView
+    participant W as ImportGenomeWizard
+    participant HC as IntakeHealthCheck
+    participant GSS as GeneSequenceService(temp)
+    participant GDS as GenomeDataService(temp)
+    participant EDS as ExpressionDataService(temp)
+    participant R as IntakeReport
+
+    Note over U,R: 流程① 用户选文件 → 解析 → 联合体检 → 展示报告 → 放行/放弃
+    U->>MV: File → Import your own genome…
+    MV->>W: openImportWizard(this)
+    W->>U: 选 FASTA / GFF3 / 表达(.gz 均可，表达可选)
+    U-->>W: Path fasta, gff3, expression
+    W->>HC: check(fasta, gff3, expression)
+    HC->>GSS: new + loadFromFile(fasta)
+    alt FASTA 解析失败
+        GSS-->>HC: IOException
+        HC->>R: Issue(ERROR, FASTA_PARSE_ERROR, lineOrCoord=null)
+    else 成功
+        GSS-->>HC: getSequenceNames() + sha256/bytes
+    end
+    HC->>GDS: new + loadFromFile(gff3)
+    alt GFF3 解析失败
+        GDS-->>HC: IOException
+        HC->>R: Issue(ERROR, GFF3_PARSE_ERROR)
+    else 成功
+        GDS-->>HC: getChromosomes()/getGenes()(带 lineNumber)/getDiagnostics()
+    end
+    opt 表达提供
+        HC->>EDS: new + loadFromFile(expression) + reconcile(GDS)
+        EDS-->>HC: ImportReport.unmatchedIds
+    end
+    HC->>HC: checkSeqidSubset(GSS,GDS)   %% seqid⊆FASTA，缺失→ERROR(定位 gene 行)
+    HC->>HC: checkExpressionMatch(GDS,EDS)  %% 不匹配→WARNING / 独立表达→INFO
+    HC->>HC: 序列名覆盖 + detectAliasCandidates  %% 差异→WARNING
+    HC->>R: 组装 IntakeReport(pass = errorCount==0)
+    HC-->>W: IntakeReport
+    W->>W: 渲染报告表格(严重度/文件/行号/信息/建议) + 导出按钮
+    W-->>U: 展示报告
+    alt pass == true（无 ERROR）
+        U->>W: 点击「加载项目」
+        W->>MV: 注入 dataService/expressionService/sequenceService(+addAliases)
+        MV->>MV: afterDatasetChanged()
+        MV-->>U: 项目加载完成
+    else pass == false（有 ERROR）
+        W-->>U: 「加载项目」禁用，提示先修正文件
+    end
+
+    Note over U,R: 流程② 序列名差异 → 别名映射确认 → 写入项目
+    W->>HC: detectAliasCandidates(GSS, GDS)
+    HC-->>W: List~AliasMapping~(auto-normalize + user 候选)
+    W->>U: 展示候选对(Chr1↔1 自动勾选；其余待确认)
+    U->>W: 逐对确认/手填 → 最终 aliasMap
+    U->>W: 点击「加载项目」
+    W->>MV: sequenceService.addAliases(aliasMap)
+    MV->>GSS: replaceWith + addAliases(aliasMap)
+    Note over GSS: resolveSequenceId() 经扩展别名表命中
+    U->>MV: File → Save project…
+    MV->>MV: ProjectStore.save(target, ..., aliasMap)
+    MV-->>U: .phytoscope 已保存（含别名映射，schemaVersion=4）
+
+    Note over U,R: 流程③ 报告导出 JSON + Markdown
+    U->>W: 点击「导出报告」
+    W->>W: 选择目录(DirectoryChooser)
+    W->>R: toJson()
+    R-->>W: json 字符串(Jackson)
+    W->>W: 写 intake-health-report.json
+    W->>R: toMarkdown()
+    R-->>W: markdown 字符串
+    W->>W: 写 intake-health-report.md
+    W-->>U: 两份产物已导出（CI 可消费 JSON）
