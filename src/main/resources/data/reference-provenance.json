@@ -7,12 +7,12 @@
     "external": "file removed from the current tree by git rm; authoritative copy + recomputed SHA-256 in phytoscope-reference-data/MANIFEST.json"
   },
   "baseline_commit": "8fd01ca",
-  "migration_commit": null,
+  "migration_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b",
   "external_repository": {
     "name": "phytoscope-reference-data",
-    "gitee": null,
-    "github": null,
-    "note": "两个空仓库地址待用户提供；本地目录已就绪，远端地址待用户提供"
+    "gitee": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+    "github": "git@github-w1996jy:omixcore/phytoscope-reference-data.git",
+    "note": "完整参考数据已迁移至独立数据仓库，gitee 与 github 同名、互为镜像、同一提交。本地目录 G:/WorkBuddy/2026-10-27-22-02-43/phytoscope-reference-data/ 已 git init 并推送。"
   },
   "datasets": {
     "arabidopsis": {
@@ -217,79 +217,79 @@
       },
       "note": "Coordinates copied verbatim from the published GTF; this build only adds the gene/transcript/exon hierarchy and functional notes.",
       "storage": "external",
-      "repository": null,
-      "moved_at_commit": null
+      "repository": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+      "moved_at_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b"
     }
   },
   "external_resources": {
     "species/arabidopsis/TAIR10_genomic.fna.gz": {
       "storage": "external",
-      "repository": null,
-      "moved_at_commit": null,
+      "repository": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+      "moved_at_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b",
       "external_path": "data/species/arabidopsis/TAIR10_genomic.fna.gz",
       "sha256": "80a13166003333ba4982b57abdb3d2b62037bc831f4da29ea378c1b776fff8e2",
       "bytes": 36462703
     },
     "species/arabidopsis/Chr1.gff3.gz": {
       "storage": "external",
-      "repository": null,
-      "moved_at_commit": null,
+      "repository": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+      "moved_at_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b",
       "external_path": "data/species/arabidopsis/Chr1.gff3.gz",
       "sha256": "2b6b5ed92ef73ce54a15dd0b24093df9fc48e6e399920dc15d89e9f484af18c6",
       "bytes": 4491636
     },
     "species/arabidopsis/Chr2.gff3.gz": {
       "storage": "external",
-      "repository": null,
-      "moved_at_commit": null,
+      "repository": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+      "moved_at_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b",
       "external_path": "data/species/arabidopsis/Chr2.gff3.gz",
       "sha256": "dc095e384b422d9c38a8ec0fda78b5856492f9fabdd687b5ca4e1c77673fbec2",
       "bytes": 2755680
     },
     "species/arabidopsis/Chr3.gff3.gz": {
       "storage": "external",
-      "repository": null,
-      "moved_at_commit": null,
+      "repository": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+      "moved_at_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b",
       "external_path": "data/species/arabidopsis/Chr3.gff3.gz",
       "sha256": "8131f5a7e2aa4109be04c653347a8e41e4dcc35ed7ba6df565d2fd94300a8b82",
       "bytes": 3382640
     },
     "species/arabidopsis/Chr4.gff3.gz": {
       "storage": "external",
-      "repository": null,
-      "moved_at_commit": null,
+      "repository": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+      "moved_at_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b",
       "external_path": "data/species/arabidopsis/Chr4.gff3.gz",
       "sha256": "a61c4c3ce146895d4b4ccf792c11a28073265db3607edb1ba0acc5b8675d74bf",
       "bytes": 2620794
     },
     "species/arabidopsis/Chr5.gff3.gz": {
       "storage": "external",
-      "repository": null,
-      "moved_at_commit": null,
+      "repository": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+      "moved_at_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b",
       "external_path": "data/species/arabidopsis/Chr5.gff3.gz",
       "sha256": "ddbec8ec922a8ef6ed89420c281286b8f65c3bcc693762a0193cd73baa29f138",
       "bytes": 3820663
     },
     "species/mint/mentha_longifolia_horsemint.gff3.gz": {
       "storage": "external",
-      "repository": null,
-      "moved_at_commit": null,
+      "repository": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+      "moved_at_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b",
       "external_path": "data/species/mint/mentha_longifolia_horsemint.gff3.gz",
       "sha256": "5c7d2fb3f7fdeb86dc84e4f383e0621211e270c2f3982e636adf9ba1ba37089f",
       "bytes": 10744463
     },
     "species/mint/mentha_longifolia_expression.tsv": {
       "storage": "external",
-      "repository": null,
-      "moved_at_commit": null,
+      "repository": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+      "moved_at_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b",
       "external_path": "data/species/mint/mentha_longifolia_expression.tsv",
       "sha256": "8000e27d6b37d695c62b2ce0d261b65ecf9eece171405b4815faf58b685ee7f1",
       "bytes": 3394837
     },
     "case-studies/arabidopsis-atlas/expression.tsv": {
       "storage": "external",
-      "repository": null,
-      "moved_at_commit": null,
+      "repository": "https://gitee.com/omixcore/phytoscope-reference-data.git",
+      "moved_at_commit": "8cef0c828d00e1132f433d7298bafda30e387a7b",
       "external_path": "data/case-studies/arabidopsis-atlas/expression.tsv",
       "sha256": "bc4945fc578f2a339c50e84def5586c31be156c6f241eb968f3bc53a394aca85",
       "bytes": 845431
