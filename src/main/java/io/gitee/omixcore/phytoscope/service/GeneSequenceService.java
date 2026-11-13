@@ -175,7 +175,9 @@ public final class GeneSequenceService {
                     addRecord(id, description, sequence, nextSequences, nextAliases, label);
                     String header = line.substring(1).trim();
                     if (header.isEmpty()) throw new IOException("FASTA contains an empty header");
-                    int space = header.indexOf(' ');
+                    int space = 0;
+                    while (space < header.length() && !Character.isWhitespace(header.charAt(space))) space++;
+                    if (space == header.length()) space = -1;
                     id = space < 0 ? header : header.substring(0, space);
                     description = space < 0 ? "" : header.substring(space + 1);
                     sequence.setLength(0);
@@ -220,7 +222,10 @@ public final class GeneSequenceService {
 
     private static void addAlias(Map<String, String> aliases, String alias, String recordId) {
         String key = normalizeSequenceName(alias);
-        if (!key.isEmpty()) aliases.putIfAbsent(key, recordId);
+        if (!key.isEmpty()) {
+            aliases.merge(key, recordId, (existing, candidate) ->
+                    existing.equals(candidate) ? existing : "");
+        }
     }
 
     private static String normalizeSequenceName(String value) {
@@ -362,9 +367,12 @@ public final class GeneSequenceService {
     }
 
     private String resolveSequenceId(String chromosome) throws IOException {
-        String exact = sequences.keySet().stream().filter(id -> id.equalsIgnoreCase(chromosome)).findFirst().orElse(null);
-        if (exact != null) return exact;
+        if (sequences.containsKey(chromosome)) return chromosome;
         String resolved = aliases.get(normalizeSequenceName(chromosome));
+        if ("".equals(resolved)) {
+            throw new IOException("Ambiguous FASTA sequence name " + chromosome
+                    + "; use an exact sequence ID from the reference FASTA.");
+        }
         if (resolved == null) {
             throw new IOException("FASTA source " + sourceLabel + " has no sequence matching annotation chromosome "
                     + chromosome + ". Confirm that the genome assembly and chromosome naming match the annotation.");

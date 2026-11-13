@@ -122,6 +122,17 @@ class GeneSequenceServiceTest {
     }
 
     @Test
+    void fastaHeadersUseAnyWhitespaceAndAmbiguousAliasesAreRejected() throws Exception {
+        GeneSequenceService service = new GeneSequenceService();
+        service.loadFromContent(">Chr1\tdescription\nAAAA\n>1 another\nCCCC\n", "reference");
+        assertEquals("AAAA", service.extractInterval("Chr1", 1, 4, '+'));
+        assertEquals("CCCC", service.extractInterval("1", 1, 4, '+'));
+        var error = assertThrows(java.io.IOException.class,
+                () -> service.extractInterval("chr1", 1, 4, '+'));
+        assertTrue(error.getMessage().contains("Ambiguous FASTA"));
+    }
+
+    @Test
     void reportsAssemblyChromosomeMismatchInsteadOfReturningWrongSequence() throws Exception {
         String annotation = """
                 ##gff-version 3
