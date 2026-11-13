@@ -1,0 +1,21 @@
+name: FASTA sequence regression
+on:
+  pull_request:
+    paths:
+      - 'src/main/java/io/gitee/omixcore/phytoscope/service/GeneSequenceService.java'
+      - 'src/test/java/io/gitee/omixcore/phytoscope/GeneSequenceServiceTest.java'
+      - '.github/workflows/fasta-regression.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Run FASTA regression tests
+        run: mvn -B -ntp -Dtest=GeneSequenceServiceTest test
