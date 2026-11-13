@@ -1,0 +1,52 @@
+##gff-version 3
+##sequence-region Chr1 1 2600
+##sequence-region Chr2 1 2600
+##sequence-region Chr3 1 2600
+Chr1	source	gene	200	499	.	-	.	ID=A_0001;Name=A_0001
+Chr1	source	mRNA	200	499	.	-	.	ID=A_0001.t1;Parent=A_0001
+Chr1	source	exon	200	499	.	-	.	Parent=A_0001.t1
+Chr1	source	CDS	200	499	.	-	0	Parent=A_0001.t1
+Chr1	source	gene	800	1099	.	+	.	ID=A_0002;Name=A_0002
+Chr1	source	mRNA	800	1099	.	+	.	ID=A_0002.t1;Parent=A_0002
+Chr1	source	exon	800	1099	.	+	.	Parent=A_0002.t1
+Chr1	source	CDS	800	1099	.	+	0	Parent=A_0002.t1
+Chr1	source	gene	1400	1699	.	-	.	ID=A_0003;Name=A_0003
+Chr1	source	mRNA	1400	1699	.	-	.	ID=A_0003.t1;Parent=A_0003
+Chr1	source	exon	1400	1699	.	-	.	Parent=A_0003.t1
+Chr1	source	CDS	1400	1699	.	-	0	Parent=A_0003.t1
+Chr1	source	gene	2000	2299	.	+	.	ID=A_0004;Name=A_0004
+Chr1	source	mRNA	2000	2299	.	+	.	ID=A_0004.t1;Parent=A_0004
+Chr1	source	exon	2000	2299	.	+	.	Parent=A_0004.t1
+Chr1	source	CDS	2000	2299	.	+	0	Parent=A_0004.t1
+Chr2	source	gene	200	499	.	-	.	ID=A_0005;Name=A_0005
+Chr2	source	mRNA	200	499	.	-	.	ID=A_0005.t1;Parent=A_0005
+Chr2	source	exon	200	499	.	-	.	Parent=A_0005.t1
+Chr2	source	CDS	200	499	.	-	0	Parent=A_0005.t1
+Chr2	source	gene	800	1099	.	+	.	ID=A_0006;Name=A_0006
+Chr2	source	mRNA	800	1099	.	+	.	ID=A_0006.t1;Parent=A_0006
+Chr2	source	exon	800	1099	.	+	.	Parent=A_0006.t1
+Chr2	source	CDS	800	1099	.	+	0	Parent=A_0006.t1
+Chr2	source	gene	1400	1699	.	-	.	ID=A_0007;Name=A_0007
+Chr2	source	mRNA	1400	1699	.	-	.	ID=A_0007.t1;Parent=A_0007
+Chr2	source	exon	1400	1699	.	-	.	Parent=A_0007.t1
+Chr2	source	CDS	1400	1699	.	-	0	Parent=A_0007.t1
+Chr2	source	gene	2000	2299	.	+	.	ID=A_0008;Name=A_0008
+Chr2	source	mRNA	2000	2299	.	+	.	ID=A_0008.t1;Parent=A_0008
+Chr2	source	exon	2000	2299	.	+	.	Parent=A_0008.t1
+Chr2	source	CDS	2000	2299	.	+	0	Parent=A_0008.t1
+Chr3	source	gene	200	499	.	-	.	ID=A_0009;Name=A_0009
+Chr3	source	mRNA	200	499	.	-	.	ID=A_0009.t1;Parent=A_0009
+Chr3	source	exon	200	499	.	-	.	Parent=A_0009.t1
+Chr3	source	CDS	200	499	.	-	0	Parent=A_0009.t1
+Chr3	source	gene	800	1099	.	+	.	ID=A_0010;Name=A_0010
+Chr3	source	mRNA	800	1099	.	+	.	ID=A_0010.t1;Parent=A_0010
+Chr3	source	exon	800	1099	.	+	.	Parent=A_0010.t1
+Chr3	source	CDS	800	1099	.	+	0	Parent=A_0010.t1
+Chr3	source	gene	1400	1699	.	-	.	ID=A_0011;Name=A_0011
+Chr3	source	mRNA	1400	1699	.	-	.	ID=A_0011.t1;Parent=A_0011
+Chr3	source	exon	1400	1699	.	-	.	Parent=A_0011.t1
+Chr3	source	CDS	1400	1699	.	-	0	Parent=A_0011.t1
+Chr3	source	gene	2000	2299	.	+	.	ID=A_0012;Name=A_0012
+Chr3	source	mRNA	2000	2299	.	+	.	ID=A_0012.t1;Parent=A_0012
+Chr3	source	exon	2000	2299	.	+	.	Parent=A_0012.t1
+Chr3	source	CDS	2000	2299	.	+	0	Parent=A_0012.t1

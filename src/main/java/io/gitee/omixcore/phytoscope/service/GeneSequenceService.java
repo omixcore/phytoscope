@@ -129,6 +129,37 @@ public final class GeneSequenceService {
     }
 
     /**
+     * Injects project-level sequence-name aliases persisted in a manifest v2.
+     *
+     * <p>Each {@code from -> to} entry maps an annotation/query sequence name to an
+     * actual FASTA sequence id. Keys are stored under their normalised form, so a
+     * user mapping {@code 1 -> Chr1} makes {@link #resolveSequenceId(String)}
+     * resolve {@code 1} to {@code Chr1} after a project is restored (AC-2). The
+     * existing parsing-time aliases are preserved; injected entries are only added
+     * when no mapping already exists for the normalised key.</p>
+     *
+     * @param aliasMap annotation-side name to FASTA id mappings, nullable/empty
+     */
+    public void addAliases(Map<String, String> aliasMap) {
+        if (aliasMap == null || aliasMap.isEmpty()) {
+            return;
+        }
+        Map<String, String> next = new LinkedHashMap<>(aliases);
+        for (Map.Entry<String, String> entry : aliasMap.entrySet()) {
+            if (entry.getKey() == null || entry.getValue() == null) {
+                continue;
+            }
+            next.putIfAbsent(normalizeSequenceName(entry.getKey()), entry.getValue());
+        }
+        aliases = Map.copyOf(next);
+    }
+
+    /** Current sequence-name alias table (copy); useful for restore verification. */
+    public Map<String, String> getAliases() {
+        return aliases;
+    }
+
+    /**
      * Generic classpath helper retained for tests and embedded snippets. The
      * application's normal flow never calls it: no built-in genome FASTA is
      * shipped any more, so loading is always an explicit user action via
@@ -223,7 +254,15 @@ public final class GeneSequenceService {
         if (!key.isEmpty()) aliases.putIfAbsent(key, recordId);
     }
 
-    private static String normalizeSequenceName(String value) {
+    /**
+     * Normalises a sequence name for cross-format comparison: lower-cased,
+     * stripped of everything but letters/digits, and with a leading {@code chr}
+     * prefix removed. This is the single authoritative normalisation used both at
+     * parse time and by the import-time alias detection, so that {@code Chr1},
+     * {@code chr1} and {@code 1} all compare equal. The import wizard and
+     * {@code IntakeHealthCheck} reuse it rather than re-implementing it.
+     */
+    public static String normalizeSequenceName(String value) {
         if (value == null) return "";
         String normalized = value.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]", "");
         if (normalized.startsWith("chr") && normalized.length() > 3) {

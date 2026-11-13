@@ -1,0 +1,66 @@
+##gff-version 3
+##sequence-region scaffold_1 1 1700
+##sequence-region scaffold_2 1 1700
+##sequence-region scaffold_3 1 1700
+##sequence-region scaffold_4 1 1700
+##sequence-region scaffold_5 1 1700
+scaffold_1	source	gene	150	399	.	+	.	ID=S_0001;Name=S_0001
+scaffold_1	source	mRNA	150	399	.	+	.	ID=S_0001.t1;Parent=S_0001
+scaffold_1	source	exon	150	399	.	+	.	Parent=S_0001.t1
+scaffold_1	source	CDS	150	399	.	+	0	Parent=S_0001.t1
+scaffold_1	source	gene	650	899	.	+	.	ID=S_0002;Name=S_0002
+scaffold_1	source	mRNA	650	899	.	+	.	ID=S_0002.t1;Parent=S_0002
+scaffold_1	source	exon	650	899	.	+	.	Parent=S_0002.t1
+scaffold_1	source	CDS	650	899	.	+	0	Parent=S_0002.t1
+scaffold_1	source	gene	1150	1399	.	-	.	ID=S_0003;Name=S_0003
+scaffold_1	source	mRNA	1150	1399	.	-	.	ID=S_0003.t1;Parent=S_0003
+scaffold_1	source	exon	1150	1399	.	-	.	Parent=S_0003.t1
+scaffold_1	source	CDS	1150	1399	.	-	0	Parent=S_0003.t1
+scaffold_2	source	gene	150	399	.	+	.	ID=S_0004;Name=S_0004
+scaffold_2	source	mRNA	150	399	.	+	.	ID=S_0004.t1;Parent=S_0004
+scaffold_2	source	exon	150	399	.	+	.	Parent=S_0004.t1
+scaffold_2	source	CDS	150	399	.	+	0	Parent=S_0004.t1
+scaffold_2	source	gene	650	899	.	+	.	ID=S_0005;Name=S_0005
+scaffold_2	source	mRNA	650	899	.	+	.	ID=S_0005.t1;Parent=S_0005
+scaffold_2	source	exon	650	899	.	+	.	Parent=S_0005.t1
+scaffold_2	source	CDS	650	899	.	+	0	Parent=S_0005.t1
+scaffold_2	source	gene	1150	1399	.	-	.	ID=S_0006;Name=S_0006
+scaffold_2	source	mRNA	1150	1399	.	-	.	ID=S_0006.t1;Parent=S_0006
+scaffold_2	source	exon	1150	1399	.	-	.	Parent=S_0006.t1
+scaffold_2	source	CDS	1150	1399	.	-	0	Parent=S_0006.t1
+scaffold_3	source	gene	150	399	.	+	.	ID=S_0007;Name=S_0007
+scaffold_3	source	mRNA	150	399	.	+	.	ID=S_0007.t1;Parent=S_0007
+scaffold_3	source	exon	150	399	.	+	.	Parent=S_0007.t1
+scaffold_3	source	CDS	150	399	.	+	0	Parent=S_0007.t1
+scaffold_3	source	gene	650	899	.	+	.	ID=S_0008;Name=S_0008
+scaffold_3	source	mRNA	650	899	.	+	.	ID=S_0008.t1;Parent=S_0008
+scaffold_3	source	exon	650	899	.	+	.	Parent=S_0008.t1
+scaffold_3	source	CDS	650	899	.	+	0	Parent=S_0008.t1
+scaffold_3	source	gene	1150	1399	.	-	.	ID=S_0009;Name=S_0009
+scaffold_3	source	mRNA	1150	1399	.	-	.	ID=S_0009.t1;Parent=S_0009
+scaffold_3	source	exon	1150	1399	.	-	.	Parent=S_0009.t1
+scaffold_3	source	CDS	1150	1399	.	-	0	Parent=S_0009.t1
+scaffold_4	source	gene	150	399	.	+	.	ID=S_0010;Name=S_0010
+scaffold_4	source	mRNA	150	399	.	+	.	ID=S_0010.t1;Parent=S_0010
+scaffold_4	source	exon	150	399	.	+	.	Parent=S_0010.t1
+scaffold_4	source	CDS	150	399	.	+	0	Parent=S_0010.t1
+scaffold_4	source	gene	650	899	.	+	.	ID=S_0011;Name=S_0011
+scaffold_4	source	mRNA	650	899	.	+	.	ID=S_0011.t1;Parent=S_0011
+scaffold_4	source	exon	650	899	.	+	.	Parent=S_0011.t1
+scaffold_4	source	CDS	650	899	.	+	0	Parent=S_0011.t1
+scaffold_4	source	gene	1150	1399	.	-	.	ID=S_0012;Name=S_0012
+scaffold_4	source	mRNA	1150	1399	.	-	.	ID=S_0012.t1;Parent=S_0012
+scaffold_4	source	exon	1150	1399	.	-	.	Parent=S_0012.t1
+scaffold_4	source	CDS	1150	1399	.	-	0	Parent=S_0012.t1
+scaffold_5	source	gene	150	399	.	+	.	ID=S_0013;Name=S_0013
+scaffold_5	source	mRNA	150	399	.	+	.	ID=S_0013.t1;Parent=S_0013
+scaffold_5	source	exon	150	399	.	+	.	Parent=S_0013.t1
+scaffold_5	source	CDS	150	399	.	+	0	Parent=S_0013.t1
+scaffold_5	source	gene	650	899	.	+	.	ID=S_0014;Name=S_0014
+scaffold_5	source	mRNA	650	899	.	+	.	ID=S_0014.t1;Parent=S_0014
+scaffold_5	source	exon	650	899	.	+	.	Parent=S_0014.t1
+scaffold_5	source	CDS	650	899	.	+	0	Parent=S_0014.t1
+scaffold_5	source	gene	1150	1399	.	-	.	ID=S_0015;Name=S_0015
+scaffold_5	source	mRNA	1150	1399	.	-	.	ID=S_0015.t1;Parent=S_0015
+scaffold_5	source	exon	1150	1399	.	-	.	Parent=S_0015.t1
+scaffold_5	source	CDS	1150	1399	.	-	0	Parent=S_0015.t1

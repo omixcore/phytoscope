@@ -1,0 +1,13 @@
+##gff-version 3
+##sequence-region Chr1 1 2000
+Chr1	source	gene	200	599	.	+	.	ID=G_0001;Name=G_0001
+Chr1	source	mRNA	200	599	.	+	.	ID=G_0001.t1;Parent=G_0001
+Chr1	source	exon	200	599	.	+	.	Parent=G_0001.t1
+Chr1	source	CDS	200	599	.	+	0	Parent=G_0001.t1
+Chr1	source	gene	200	599	.	+
+Chr1	source	gene	900	800	.	+	.	ID=G_BAD1
+Chr1	source	gene	abc	def	.	+	.	ID=G_BAD2
+Chr1	source	gene	1200	1599	.	-	.	ID=G_0002;Name=G_0002
+Chr1	source	mRNA	1200	1599	.	-	.	ID=G_0002.t1;Parent=G_0002
+Chr1	source	exon	1200	1599	.	-	.	Parent=G_0002.t1
+Chr1	source	CDS	1200	1599	.	-	0	Parent=G_0002.t1

@@ -1,0 +1,27 @@
+##gff-version 3
+##sequence-region chrM 1 1300
+##sequence-region chrC 1 1300
+chrM	source	gene	120	319	.	+	.	ID=O_0001;Name=O_0001
+chrM	source	mRNA	120	319	.	+	.	ID=O_0001.t1;Parent=O_0001
+chrM	source	exon	120	319	.	+	.	Parent=O_0001.t1
+chrM	source	CDS	120	319	.	+	0	Parent=O_0001.t1
+chrM	source	gene	520	719	.	-	.	ID=O_0002;Name=O_0002
+chrM	source	mRNA	520	719	.	-	.	ID=O_0002.t1;Parent=O_0002
+chrM	source	exon	520	719	.	-	.	Parent=O_0002.t1
+chrM	source	CDS	520	719	.	-	0	Parent=O_0002.t1
+chrM	source	gene	920	1119	.	+	.	ID=O_0003;Name=O_0003
+chrM	source	mRNA	920	1119	.	+	.	ID=O_0003.t1;Parent=O_0003
+chrM	source	exon	920	1119	.	+	.	Parent=O_0003.t1
+chrM	source	CDS	920	1119	.	+	0	Parent=O_0003.t1
+chrC	source	gene	120	319	.	-	.	ID=O_0004;Name=O_0004
+chrC	source	mRNA	120	319	.	-	.	ID=O_0004.t1;Parent=O_0004
+chrC	source	exon	120	319	.	-	.	Parent=O_0004.t1
+chrC	source	CDS	120	319	.	-	0	Parent=O_0004.t1
+chrC	source	gene	520	719	.	+	.	ID=O_0005;Name=O_0005
+chrC	source	mRNA	520	719	.	+	.	ID=O_0005.t1;Parent=O_0005
+chrC	source	exon	520	719	.	+	.	Parent=O_0005.t1
+chrC	source	CDS	520	719	.	+	0	Parent=O_0005.t1
+chrC	source	gene	920	1119	.	-	.	ID=O_0006;Name=O_0006
+chrC	source	mRNA	920	1119	.	-	.	ID=O_0006.t1;Parent=O_0006
+chrC	source	exon	920	1119	.	-	.	Parent=O_0006.t1
+chrC	source	CDS	920	1119	.	-	0	Parent=O_0006.t1

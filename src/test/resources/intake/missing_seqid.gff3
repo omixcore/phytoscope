@@ -1,0 +1,11 @@
+##gff-version 3
+##sequence-region Chr1 1 2200
+##sequence-region Chr2 1 2200
+Chr1	source	gene	200	499	.	+	.	ID=P_0001;Name=P_0001
+Chr1	source	mRNA	200	499	.	+	.	ID=P_0001.t1;Parent=P_0001
+Chr1	source	exon	200	499	.	+	.	Parent=P_0001.t1
+Chr1	source	CDS	200	499	.	+	0	Parent=P_0001.t1
+Chr2	source	gene	200	499	.	-	.	ID=P_0002;Name=P_0002
+Chr2	source	mRNA	200	499	.	-	.	ID=P_0002.t1;Parent=P_0002
+Chr2	source	exon	200	499	.	-	.	Parent=P_0002.t1
+Chr2	source	CDS	200	499	.	-	0	Parent=P_0002.t1

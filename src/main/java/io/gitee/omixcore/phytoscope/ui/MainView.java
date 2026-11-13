@@ -19,6 +19,11 @@ import io.gitee.omixcore.phytoscope.service.ExampleDataset;
 import io.gitee.omixcore.phytoscope.service.ExpressionDataService;
 import io.gitee.omixcore.phytoscope.service.GenomeDataService;
 import io.gitee.omixcore.phytoscope.service.GeneSequenceService;
+import io.gitee.omixcore.phytoscope.intake.AliasMapping;
+import io.gitee.omixcore.phytoscope.intake.AnnotationMeta;
+import io.gitee.omixcore.phytoscope.intake.Assembly;
+import io.gitee.omixcore.phytoscope.intake.IntakeFileResult;
+import io.gitee.omixcore.phytoscope.intake.IntakeManifestMeta;
 import io.gitee.omixcore.phytoscope.ui.component.GeneDetailPane;
 import io.gitee.omixcore.phytoscope.ui.component.GeneTrackRenderer;
 import io.gitee.omixcore.phytoscope.ui.component.ImageExporter;
@@ -62,7 +67,9 @@ import java.io.File;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -126,6 +133,18 @@ public class MainView extends BorderPane {
     private ComparisonPane comparisonPane;
     private ResearchAnalysisPane researchPane;
     private ProjectStore.Restored restoredProject;
+
+    /**
+     * Confirmed sequence-name aliases carried out of the "Import your own genome"
+     * wizard (and restored from a v2 project). The project does not embed the
+     * genome FASTA, so this map is the only cross-session record of the
+     * annotation-seqid -> FASTA-id mapping; it is re-applied every time a FASTA is
+     * (re)imported for the current assembly (AC-2).
+     */
+    private List<AliasMapping> pendingAliasMap = List.of();
+
+    /** Manifest v2 metadata captured by the import wizard, used by project save. */
+    private IntakeManifestMeta pendingIntakeMeta;
     private final TabPane workspaceTabs = new TabPane();
     private final GeneDetailPane detailPane = new GeneDetailPane();
 
@@ -204,6 +223,7 @@ public class MainView extends BorderPane {
             return new Loaded(next, measurements);
         }, next -> {
             dataService.replaceWith(next.genome()); expressionService.replaceWith(next.expression()); sequenceService.clear();
+            pendingAliasMap = List.of(); pendingIntakeMeta = null;
             activeExample = dataset; datasetSelector.setTooltip(new Tooltip(dataset.label() + "\n" + dataset.attribution())); loading = true;
             try { datasetSelector.getSelectionModel().select(dataset); } finally { loading = false; }
             comparisonPane.clear(); afterDatasetChanged();
@@ -232,6 +252,7 @@ public class MainView extends BorderPane {
             // No built-in FASTA exists any more; always clear the shared service
             // so a stale assembly can never leak into the new dataset.
             sequenceService.clear();
+            pendingAliasMap = List.of(); pendingIntakeMeta = null;
             expressionService.loadExample(dataset);
             expressionService.reconcile(dataService);
             activeExample = dataset;
@@ -271,6 +292,7 @@ public class MainView extends BorderPane {
             return next;
         }, next -> {
             dataService.replaceWith(next); expressionService.clear(); sequenceService.clear(); comparisonPane.clear(); activeExample = null;
+            pendingAliasMap = List.of(); pendingIntakeMeta = null;
             loading = true; try { datasetSelector.getSelectionModel().clearSelection(); } finally { loading = false; }
             afterDatasetChanged();
             int skipped = next.getSkippedRows();
@@ -309,6 +331,11 @@ public class MainView extends BorderPane {
         pendingLoad = LoadingOperation.run(windowOrNull(), "Loading genome FASTA", () -> {
             GeneSequenceService next = new GeneSequenceService();
             next.loadFromFile(file);
+            // Re-apply any wizard-confirmed (or project-restored) seqid aliases so
+            // the new assembly resolves annotation IDs correctly (AC-2).
+            if (pendingAliasMap != null && !pendingAliasMap.isEmpty()) {
+                next.addAliases(aliasMapToMap(pendingAliasMap));
+            }
             return next;
         }, next -> {
             sequenceService.replaceWith(next);
@@ -316,6 +343,72 @@ public class MainView extends BorderPane {
             if (gene != null) detailPane.showGene(gene);
             statusLabel.setText(sequenceStatusText());
         }, this::loadFailed);
+    }
+
+    /** Collapses the wizard's alias records into a plain from->to map. */
+    private static Map<String, String> aliasMapToMap(List<AliasMapping> list) {
+        Map<String, String> map = new LinkedHashMap<>();
+        if (list != null) {
+            for (AliasMapping mapping : list) {
+                if (mapping != null && mapping.from() != null && mapping.to() != null) {
+                    map.put(mapping.from(), mapping.to());
+                }
+            }
+        }
+        return map;
+    }
+
+    /**
+     * Opens the independent "Import your own genome" wizard. It is intentionally
+     * decoupled from the Example datasets flow: the wizard runs the import-time
+     * health-check, lets the user confirm sequence-name aliases, and only then
+     * hands the parsed services back through {@link #applyImportedGenome}.
+     */
+    private void openImportWizard() {
+        ImportGenomeWizard wizard = new ImportGenomeWizard(
+                this::applyImportedGenome, windowOrNull());
+        wizard.show();
+    }
+
+    /**
+     * Receives the parsed services from the import wizard and injects them into
+     * the running application. Confirmed aliases are recorded on the shared
+     * {@code GeneSequenceService} (so sequence extraction works immediately) and
+     * stashed as {@link #pendingAliasMap} for later FASTA reloads and project
+     * saves. The health-check in the wizard already blocked ERROR findings, so
+     * this method is only ever reached for a passing report.
+     */
+    public void applyImportedGenome(GeneSequenceService fasta, GenomeDataService genome,
+                                    ExpressionDataService expression,
+                                    List<AliasMapping> aliasMap, IntakeManifestMeta meta) {
+        if (genome == null) {
+            showLoadError("import genome", new IOException("The import wizard produced no annotation."));
+            return;
+        }
+        dataService.replaceWith(genome);
+        if (expression != null) {
+            expressionService.replaceWith(expression);
+        } else {
+            expressionService.clear();
+        }
+        if (fasta != null) {
+            if (aliasMap != null && !aliasMap.isEmpty()) {
+                fasta.addAliases(aliasMapToMap(aliasMap));
+            }
+            sequenceService.replaceWith(fasta);
+        }
+        pendingAliasMap = aliasMap == null ? List.of() : List.copyOf(aliasMap);
+        pendingIntakeMeta = meta;
+        activeExample = null;
+        loading = true;
+        try {
+            datasetSelector.getSelectionModel().clearSelection();
+        } finally {
+            loading = false;
+        }
+        comparisonPane.clear();
+        afterDatasetChanged();
+        statusLabel.setText("Imported genome via wizard. " + sequenceStatusText());
     }
 
     /**
@@ -482,6 +575,21 @@ public class MainView extends BorderPane {
     public void saveProject(Path target) throws IOException {
         new ProjectStore().save(target, dataService, expressionService, captureViewState(), researchPane.state());
     }
+
+    /**
+     * Saves the project in manifest v2, embedding the import health-check metadata
+     * (spec version, assembly, annotation metadata, per-file results and the
+     * confirmed sequence-name alias map). Used by the import-wizard flow so the
+     * alias map survives a reopen (AC-2).
+     */
+    public void saveProject(Path target, IntakeManifestMeta meta) throws IOException {
+        new ProjectStore().save(target, dataService, expressionService, captureViewState(), researchPane.state(), meta);
+    }
+
+    /** Test/headless hook returning the alias map held for the current assembly. */
+    public List<AliasMapping> getPendingAliasMap() {
+        return pendingAliasMap;
+    }
     private ProjectStore.ViewState captureViewState() {
         Gene selected = renderer.getSelectedGene(); var settings = comparisonPane.settings();
         return new ProjectStore.ViewState(dataService.getActiveSequence(), selected == null ? null : selected.getId(),
@@ -502,6 +610,15 @@ public class MainView extends BorderPane {
         // explicit, non-silent hint when the saved source metadata still names
         // archived (external) reference data.
         sequenceService.clear();
+        // AC-2: re-apply the seqid alias map persisted in the v2 manifest so
+        // expression/sequence extraction keeps resolving after the (non-embedded)
+        // FASTA is re-imported. Also carry the v2 metadata so a re-save keeps the
+        // schema at 4 instead of downgrading to 3.
+        ProjectStore.Manifest manifest = next.manifest();
+        List<AliasMapping> restoredAliases = manifest.aliasMap() == null ? List.of() : List.copyOf(manifest.aliasMap());
+        pendingAliasMap = restoredAliases;
+        pendingIntakeMeta = new IntakeManifestMeta(manifest.specVersion(), manifest.assembly(),
+                manifest.annotationMeta(), manifest.files() == null ? List.of() : manifest.files(), restoredAliases);
         if (namesArchivedData(next)) {
             statusLabel.setTooltip(new Tooltip(LEGACY_PROJECT_HINT));
         }
@@ -547,8 +664,15 @@ public class MainView extends BorderPane {
         if (file == null) return;
         if (save) {
             var state = captureViewState();
+            IntakeManifestMeta meta = pendingIntakeMeta;
             pendingLoad = LoadingOperation.run(windowOrNull(), "Saving project", () -> {
-                new ProjectStore().save(file.toPath(), dataService, expressionService, state); return file;
+                ProjectStore store = new ProjectStore();
+                if (meta != null) {
+                    store.save(file.toPath(), dataService, expressionService, state, researchPane.state(), meta);
+                } else {
+                    store.save(file.toPath(), dataService, expressionService, state);
+                }
+                return file;
             }, done -> statusLabel.setText("Saved project: " + done), this::loadFailed);
         } else pendingLoad = LoadingOperation.run(windowOrNull(), "Restoring project", () -> new ProjectStore().load(file.toPath()), next -> {
             try { applyRestoredProject(next); statusLabel.setText("Restored project: " + file); }
@@ -744,6 +868,11 @@ public class MainView extends BorderPane {
         MenuItem importGenomeFastaItem = new MenuItem("Import genome FASTA\u2026");
         importGenomeFastaItem.setOnAction(e -> importGenomeFasta());
 
+        // Independent guided import flow: separate from Example datasets and from
+        // the single-file import menu actions. Runs the health-check before load.
+        MenuItem importWizardItem = new MenuItem("Import your own genome\u2026");
+        importWizardItem.setOnAction(e -> openImportWizard());
+
         MenuItem exportPngItem = new MenuItem("Export view as PNG\u2026");
         exportPngItem.setOnAction(e -> exportPng());
 
@@ -759,8 +888,9 @@ public class MainView extends BorderPane {
         MenuItem quality = new MenuItem("Expression import report…"); quality.setOnAction(e -> showImportReport());
         MenuItem reproduce = new MenuItem("Export reproducible record…"); reproduce.setOnAction(e -> exportReproduce());
         MenuItem health = new MenuItem("Annotation health report…"); health.setOnAction(e -> showHealthReport());
-        file.getItems().addAll(openProject, saveProject, new SeparatorMenuItem(), importAnnotationItem, importGenomeFastaItem, importExpressionItem, quality,
-                health, reproduce,
+        file.getItems().addAll(openProject, saveProject, new SeparatorMenuItem(), importAnnotationItem, importGenomeFastaItem, importExpressionItem,
+                new SeparatorMenuItem(), importWizardItem,
+                quality, health, reproduce,
                 new SeparatorMenuItem(), exportPngItem, exportSvgItem,
                 new SeparatorMenuItem(), quit);
 
