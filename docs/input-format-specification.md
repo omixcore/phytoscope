@@ -12,17 +12,17 @@ annotation conventions have been validated.
 The application derives sequence names and features from the supplied data,
 without assuming a species, chromosome count, ploidy, or identifier prefix.
 Existing annotation-only browsing, supported annotation and expression formats,
-and project schema versions 1–3 remain readable. Annotation is required for the
+and project schema versions 1–4 remain readable. Annotation is required for the
 existing gene-structure workspace; a matching genome FASTA is required for
 sequence-dependent operations. Expression and tracks are optional.
 
 | Input | Format | Coordinate convention |
 | --- | --- | --- |
 | Reference | FASTA; gzip accepted | Sequence positions |
-| Annotation | GFF3 or supported GTF; gzip accepted | 1-based, closed |
+| Annotation | GFF3 or supported GTF; legacy GFF2 accepted via the same importer (not separately validated); gzip accepted | 1-based, closed |
 | Expression | Delimited text with header | Gene or transcript ID |
-| Intervals | BED3 or BED6 *(deferred — not yet implemented)* | 0-based, half-open |
-| Signal | bedGraph *(deferred — not yet implemented)* | 0-based, half-open |
+| Intervals | BED3 or BED6 *(deferred — v2 target, not yet implemented)* | 0-based, half-open |
+| Signal | bedGraph *(deferred — v2 target, not yet implemented)* | 0-based, half-open |
 | Saved project | .phytoscope | Record the convention of each source |
 
 ## Reference FASTA
@@ -42,9 +42,14 @@ user's confirmation of the matching assembly.
 Parse GFF3 as nine tab-delimited columns with 1-based inclusive coordinates,
 honoring escaped attributes and ID/Parent relationships, including multiple
 parents and discontinuous features. Parse GTF using its gene_id and
-transcript_id attributes under the existing importer. Preserve source feature
-types, coordinates, sequence identifiers, strand and CDS phase. Do not assume
-all genes have protein-coding transcripts or complete CDS models.
+transcript_id attributes under the existing importer. Legacy GFF2 is accepted
+through the same importer for compatibility, but has no dedicated fixture or
+validation claim in this release; validated coverage is GFF3 and GTF only.
+Preserve source feature types, coordinates, sequence identifiers, strand (`+` /
+`-`) and CDS phase. Minus-strand loci are reversed and reverse-complemented for
+sequence extraction (see the README "Gene sequence details"); the input spec
+records strand verbatim. Do not assume all genes have protein-coding transcripts
+or complete CDS models.
 
 Report malformed records, and coordinates that fall outside the FASTA contig
 length (out-of-bounds; an import-blocking ERROR) where a reference FASTA is
@@ -77,10 +82,10 @@ mapping require an explicit user-supplied, confirmed mapping.
 
 ## Interval and signal tracks
 
-> **Deferred (out of scope for this release).** BED3/BED6 and bedGraph track
-> parsing, validation and display are **not** implemented in the current
-> genome-import health-check. The descriptions below record the intended
-> contract for a later version and are not yet enforced.
+> **Deferred (out of scope for this release; targeted for a future v2).**
+> BED3/BED6 and bedGraph track parsing, validation and display are **not**
+> implemented in the current genome-import health-check. The descriptions below
+> record the intended contract for a later version and are not yet enforced.
 
 The intended first implementation supports BED3 and BED6, and four-column
 bedGraph. Columns are tab-separated. BED3 is chrom, start, end. BED6 adds name,
@@ -127,12 +132,15 @@ remain cancellable and expose progress.
 
 ## Project persistence and FASTA rebinding
 
-Maintain backward compatibility with existing project schemas. A future schema
-records the role, original path, relative path where applicable, SHA-256,
-source and user-supplied assembly/version for external inputs. Hash the exact
-file bytes on disk, including compression. Preserve confirmed aliases, track
-settings, diagnostics and analysis state. A missing field in an older project
-is recorded as unknown; never invent provenance.
+Maintain backward compatibility with existing project schemas. Manifest v2
+(schemaVersion 4) records the specification version, assembly identity,
+annotation metadata (format/version/source), per-file integrity results and the
+user-confirmed sequence-name alias map in addition to the historical fields;
+schema versions 1–4 remain readable and older manifests without the v2 fields
+load with those fields recorded as unknown. Hash the exact file bytes on disk,
+including compression. Preserve confirmed aliases, track settings, diagnostics
+and analysis state. A missing field in an older project is recorded as unknown;
+never invent provenance.
 
 On reopening, resolve the recorded reference path or let the user locate it.
 Verify the stored hash before automatic rebinding. If a hash is unavailable or
@@ -154,7 +162,9 @@ annotation and expression data remain usable when an external FASTA is absent.
   modified references. Confirm checksum and alias behavior.
 - Verify expression missingness, measured zeros, duplicate detection, exact and
   ambiguous ID matching, and preservation of pre-existing supported formats.
-- Test nonstandard genetic codes and organellar models before claiming correct
-  translation for them. Display the genetic code used for translation.
+- Nonstandard genetic codes and organellar translation are **deferred** (not
+  implemented): translation currently uses the standard nuclear genetic code
+  only. Test such cases before claiming correct translation for them. Display
+  the genetic code used for translation.
 - Report tested species and file conventions. General species independence is
   a design goal; validation claims are limited to tested inputs and features.

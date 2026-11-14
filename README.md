@@ -19,7 +19,7 @@ No external service is required while browsing local files.
 
 ## Download for Windows (no JDK required)
 
-Download the packaged Windows application (x64) from the releases page: [PhytoScope v0.2.0](https://github.com/omixcore/phytoscope/releases) — SHA-256 checksums in [desktop_program/SHA256SUMS.txt](desktop_program/SHA256SUMS.txt). That released v0.2.0 archive predates the data-slimming change; it includes a slim jlink runtime, so nothing else has to be installed. For the current tree's freshly measured build sizes see [Build artifact size](#build-artifact-size).
+Download the packaged Windows application (x64) from the releases page: [PhytoScope v0.2.0](https://github.com/omixcore/phytoscope/releases) — SHA-256 checksums in [desktop_program/SHA256SUMS.txt](desktop_program/SHA256SUMS.txt). That released v0.2.0 archive predates the data-slimming change and includes a slim jlink runtime, so nothing else has to be installed. **No new Release has been published yet for the current tree** (the data-slimming, import health-check and manifest-v2 changes); v0.2.0 remains the latest published archive. For the current tree's freshly measured build sizes see [Build artifact size](#build-artifact-size).
 
 1. Extract the ZIP to any local folder, keeping `PhytoScope.exe`, `app/` and `runtime/` together.
 2. Double-click `PhytoScope.exe` — a bundled Java runtime is included, so nothing else has to be installed.
@@ -77,9 +77,9 @@ regression tests.
 The complete reference data was removed from this repository's current tree with
 a plain `git rm` + one new commit at baseline `8fd01ca`; **git history was not
 rewritten**. It now lives in the independent `phytoscope-reference-data`
-repository: **the local directory is ready, remote URLs are pending user
-provision**. The application has no in-app download and never fetches a remote
-manifest.
+repository, which is published as two mutual mirrors at the same commit
+(`acac2cf`): gitee and github. The application has no in-app download and never
+fetches a remote manifest.
 
 | Item | Value |
 | --- | --- |
@@ -87,7 +87,7 @@ manifest.
 | Baseline commit | `8fd01ca` (removed from the current tree only; blobs remain in history) |
 | Contents | 9 files, 68,518,847 bytes — TAIR10 genome FASTA, Araport11 Chr1–Chr5 GFF3, complete horsemint GFF3 + 4-leaf TPM matrix, E-MTAB-7978 atlas matrix |
 | Authoritative manifest | `MANIFEST.json` (per-file bytes / re-computed SHA-256 / source / license) and `SHA256SUMS.txt` |
-| Mirrors | gitee + github, same commit, mutual mirrors — **remote addresses pending user provision** |
+| Mirrors | gitee <https://gitee.com/omixcore/phytoscope-reference-data.git> + github `git@github-w1996jy:omixcore/phytoscope-reference-data.git` — same commit `acac2cf`, mutual mirrors |
 | In this repository | `src/main/resources/data/reference-provenance.json` is an **index** (`storage: external` / `bundled`); all checksums retained |
 
 Verify before use:
@@ -208,8 +208,9 @@ expression values, checksums, selected loci, coordinate window, search and
 comparison settings in one `.phytoscope` ZIP. The project is portable and does not
 need the original annotation file. Research inputs, parameters, sample-group
 assignments and the latest analysis output are included. All recorded sources
-are verified before the live dataset is replaced. New projects use schema
-version 3; versions 1 and 2 remain readable. Maximum 2 GB expanded input.
+are verified before the live dataset is replaced. New projects use manifest v2
+(schema version 4); schema versions 1–4 remain readable. Maximum 2 GB expanded
+input.
 
 User-triggered imports and project restoration run in background workers with
 progress and cancellation. Failed or cancelled loads keep the previous analysis.
