@@ -25,8 +25,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Validate bundled full annotation
-        run: python tools/validate_arabidopsis_reference.py --directory src/main/resources/data/species/arabidopsis
+      - name: Fetch complete reference data from reference-data repository
+        shell: bash
+        run: |
+          git clone --depth 1 https://gitee.com/omixcore/phytoscope-reference-data.git target/reference-data
+          python - <<'PY'
+          import json, pathlib
+          src = pathlib.Path("src/main/resources/data/species/arabidopsis/manifest.json")
+          dst = pathlib.Path("target/reference-data/data/species/arabidopsis/manifest.json")
+          manifest = json.loads(src.read_text(encoding="utf-8"))
+          manifest["scope"] = "complete nuclear Chr1-Chr5"
+          dst.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+      - name: Validate complete Arabidopsis annotation (fetched from reference-data)
+        run: python tools/validate_arabidopsis_reference.py --directory target/reference-data/data/species/arabidopsis
       - name: Isoform analysis boundary cases
         run: python tools/test_isoform_case.py
       - name: Reconcile PIF6 candidate with published beta isoform
@@ -43,7 +55,7 @@ jobs:
       - name: Compare promoter extraction with bedtools
         if: runner.os == 'Linux'
         shell: bash
-        run: python tools/compare_promoters_bedtools.py --report target/research-validation/research-module-gold-set.json --genome src/main/resources/data/species/arabidopsis/TAIR10_genomic.fna.gz --out target/research-validation/bedtools-promoter-comparison.json
+        run: python tools/compare_promoters_bedtools.py --report target/research-validation/research-module-gold-set.json --genome target/reference-data/data/species/arabidopsis/TAIR10_genomic.fna.gz --out target/research-validation/bedtools-promoter-comparison.json
       - name: Compare homology candidates with BLASTP
         if: runner.os == 'Linux'
         shell: bash
@@ -58,7 +70,7 @@ jobs:
         run: sh mvnw -B -Dtest=NonModelVignaReferenceTest -Dphytoscope.vignaReferenceDir=target/non-model/vigna-umbellata test
       - name: Compare same rice bean task with gffutils
         if: runner.os == 'Linux'
-        run: python tools/compare_public_case.py --jar target/phytoscope-0.2.0.jar --annotation target/non-model/vigna-umbellata/GCF_029865625.1_genomic.gff.gz --gene-ids gene-LOC124833352 --out target/non-model-comparison --trials 3
+        run: python tools/compare_public_case.py --jar target/phytoscope-0.3.0.jar --annotation target/non-model/vigna-umbellata/GCF_029865625.1_genomic.gff.gz --gene-ids gene-LOC124833352 --out target/non-model-comparison --trials 3
       - name: Fetch additional RefSeq annotations with NCBI checksum verification
         if: runner.os == 'Linux'
         run: python tools/fetch_additional_nonmodel_refs.py --directory target/additional-nonmodel
@@ -67,12 +79,12 @@ jobs:
         run: sh mvnw -B -Dtest=AdditionalNonModelReferenceTest -Dphytoscope.additionalReferenceDir=target/additional-nonmodel test
       - name: Four-species matched extraction benchmark
         shell: bash
-        run: python tools/run_cross_species_extraction_benchmark.py --jar target/phytoscope-0.2.0.jar --out target/cross-species-extraction --trials 3
+        run: python tools/run_cross_species_extraction_benchmark.py --jar target/phytoscope-0.3.0.jar --out target/cross-species-extraction --trials 3
       - name: Real case, no display required
         shell: bash
         run: |
-          java -Xmx3g -jar target/phytoscope-0.2.0.jar --compare --example arabidopsis --expression examples/arabidopsis-atlas/expression.tsv --loci AT1G67090,AT5G38410,AT5G38420,AT5G38430 --out target/case-study --project target/case-study.phytoscope
-          java -Xmx3g -jar target/phytoscope-0.2.0.jar --benchmark --example rice --out target/benchmark-rice
+          java -Xmx3g -jar target/phytoscope-0.3.0.jar --compare --example arabidopsis --expression examples/arabidopsis-atlas/expression.tsv --loci AT1G67090,AT5G38410,AT5G38420,AT5G38430 --out target/case-study --project target/case-study.phytoscope
+          java -Xmx3g -jar target/phytoscope-0.3.0.jar --benchmark --example rice --out target/benchmark-rice
           python tools/validate_structure_inventory.py --source src/main/resources/data/species/rice/rice_chromosomes.gff3 --parsed target/benchmark-rice/parsed-structure.tsv --out target/benchmark-rice/structure-validation.json
       - name: Full official annotations and independent coordinate validation
         if: runner.os == 'Linux'
@@ -80,9 +92,9 @@ jobs:
         run: |
           python tools/fetch_validation_archives.py --cache target/full-archives
           sh mvnw -B -Dtest=FullAnnotationValidationTest -Dphytoscope.fullAnnotationDir=target/full-archives test
-          python tools/run_validation.py --jar target/phytoscope-0.2.0.jar --full-dir target/full-archives
+          python tools/run_validation.py --jar target/phytoscope-0.3.0.jar --full-dir target/full-archives
       - name: Build standalone application image
-        run: python tools/package_desktop.py --jar target/phytoscope-0.2.0.jar
+        run: python tools/package_desktop.py --jar target/phytoscope-0.3.0.jar
       - uses: actions/upload-artifact@v4
         if: always()
         with:
