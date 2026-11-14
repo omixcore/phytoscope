@@ -154,8 +154,11 @@ The old "Figure 2 = cross-species gold / Figure 4 = comparison" mapping is retir
 3. **Reproducibility**: save/reopen, checksum-mismatch abort, alias recovery, schema 1–4 backward
    compatibility.
 4. **Tool comparison** (Figure S1, supplementary): gffutils/Biopython frozen historical quantitative
-   baselines; JBrowse2/IGV/TBtools **qualitative comparison based on public documentation, not
-   on-machine measurements** (`docs/fcs-tool-comparison-final.md`). No faster/better claim.
+   baselines; JBrowse2/IGV/TBtools **qualitative functional comparison only, based on public
+   documentation, not on-machine measurements** (`docs/fcs-tool-comparison-final.md`). **No same-task
+   wall-clock benchmark was performed** against these three GUI/web tools (no identical-task timing,
+   no task-completion measurement) — the environment has no GUI session and none of the three could be
+   installed and scripted onto an identical task sequence. No faster/better claim.
 
 **Evidence**: CI results cited from `docs/research-module-validation.md` §"Observed results from CI";
 `docs/chromosome-validation.md` §"Full public annotation validation" + "Reference acceptance audit";
@@ -174,10 +177,18 @@ The old "Figure 2 = cross-species gold / Figure 4 = comparison" mapping is retir
   local BYOD (privacy, upload-free) vs web browsers (zero install, shared sessions).
 - Limitations list (verbatim from evidence): genotype mismatch in rice-bean expression; 5 loci/species
   not genome-wide; expression = single assay, not DE analysis; standard nuclear code only; BED/bedGraph
-  deferred; non-model browser/IGV comparisons unexecuted; license status of 8/9 reference files
-  unresolved (mint TPM source unknown).
+  deferred; **GUI-peer comparison with JBrowse2/IGV/TBtools is qualitative-functional only — no
+  same-task wall-clock benchmark was performed**; license status of 8/9 reference files unresolved
+  (mint TPM source unknown).
 - Future work: multi-experiment/time-course expression, interval/signal tracks, larger multi-family
-  gold sets, a participant user study (explicitly not performed).
+  gold sets, a same-task quantitative/timed comparison against GUI peers (JBrowse2/IGV/TBtools) in a
+  GUI-capable environment, a participant user study (explicitly not performed).
+
+> **Comparison scope — fixed wording (do not soften).** JBrowse2 / IGV / TBtools comparisons are
+> **qualitative functional comparisons** derived from public documentation. **No same-task wall-clock
+> benchmark was performed**; no timing/memory/throughput figure exists for these three and none may be
+> added from memory or estimate. Quantitative comparison in Figure S1 is limited to gffutils and
+> Biopython (frozen `historical_measured_not_new` baselines).
 
 **Evidence**: the "Interpretation and limits" / "Remaining evidence gaps" sections of
 `docs/research-module-validation.md` and `docs/non-model-portability-evidence.md`.
@@ -239,7 +250,7 @@ See §6 below.
 | **Figure 3** | Core-module golden-standard agreement | (a) panel of module-vs-baseline agreement: promoter 8/8 (bedtools), homology 20/20 (BLASTP, two families), domain 16/16, sequence QC 4/4, expression grouping; (b) one worked homology example (RBCS + CYP71A panels) with BLASTP vs PhytoScope classification matrix | `docs/research-module-validation.md` §"Observed results from CI"; `research-validation/research-module-gold-set.json`; `blastp-comparison.json` | matplotlib (Python) |
 | **Figure 4** | Multi-species data validation and correctness | (a) imported gene counts for 4 model (Ensembl r62) + 3 non-model (RefSeq) assemblies; (b) CDS length vs protein aa for 3 full-gold loci; (c) byte-exact agreement grid (span/transcript/CDS/protein = independent gold / RefSeq protein) + 25 source-derived coding transcripts (5 loci × 3 species) | `docs/chromosome-validation.md` (four-species table); `docs/non-model-portability-evidence.md`; `src/test/resources/non-model/additional-nonmodel-manifest.json`; `src/test/resources/non-model/vigna-umbellata/manifest.json`; `src/test/resources/non-model/multi-locus-sequence-gold.tsv` | matplotlib (Python) bar/heatmap + SVG |
 | **Figure 5** | Reproducibility: provenance and self-contained projects | (a) manifest v2 (schemaVersion 4) recording per-file SHA-256, alias map, provenance; (b) round-trip: save → reopen → verify stored hash; a checksum mismatch aborts a stale restore; (c) independent reference-data dual-mirror + `sha256sum -c` 9/9 OK | `docs/portability-and-reproducibility.md` §2; `docs/input-format-specification.md` §"Project persistence"; `phytoscope-reference-data/MANIFEST.json` + `README.md` §2 | SVG schematic (hand/Inkscape) |
-| **Figure S1 (supplementary)** | Fair comparison with existing tools: shared-task agreement + design differences | (a) quantitative: gffutils 0.13 vs PhytoScope structure-tuple identity (8/8, 3 alternating trials; timings reported separately, labelled "different storage designs"); Biopython 1.88 SeqIO vs PhytoScope byte-exact sequence/strand identity (3 loci × 6 products); (b) qualitative capability matrix (PhytoScope vs JBrowse2/IGV/TBtools), no superiority claim | `docs/fcs-phase3-comparison-plan.md` §3/§4.1; **`docs/paper-figures/data/gffutils-summary.json`**; **`docs/paper-figures/data/biopython-summary.json`** (frozen, `historical_measured_not_new`); `tools/compare_public_case.py`; `tools/compare_biopython_seqio.py` | matplotlib (Python) matrix + bar; SVG for capability matrix |
+| **Figure S1 (supplementary)** | Fair comparison with existing tools: shared-task agreement + design differences | (a) quantitative: gffutils 0.13 vs PhytoScope structure-tuple identity (8/8, 3 alternating trials; timings reported separately, labelled "different storage designs"); Biopython 1.88 SeqIO vs PhytoScope byte-exact sequence/strand identity (3 loci × 6 products); (b) qualitative **functional** capability matrix (PhytoScope vs JBrowse2/IGV/TBtools) — **no same-task wall-clock benchmark performed against these three**, no timing/memory/throughput panel, no superiority claim | `docs/fcs-phase3-comparison-plan.md` §3/§4.1; **`docs/paper-figures/data/gffutils-summary.json`**; **`docs/paper-figures/data/biopython-summary.json`** (frozen, `historical_measured_not_new`); `tools/compare_public_case.py`; `tools/compare_biopython_seqio.py` | matplotlib (Python) matrix + bar; SVG for capability matrix |
 
 ---
 

@@ -52,10 +52,19 @@
 
 ---
 
-## 4. 结果回收后的填写口径（当前全部 `not_collected`）
+## 4. 结果回收后的填写口径（**已部分回填，见 `README.md` §1 / §1.1**）
+
+> **2026-11-14 追加**：本节原是「回收前」的填写口径说明，现已**部分执行**。
+> 远端实测已取得（run `43605656726` / commit `49a5fac`）：
+> `validation (windows-latest)` success、`validation (macos-latest)` success、
+> `validation (ubuntu-latest)` **failure**（步骤 `Java and JavaFX regressions`，14 个 JavaFX UI 测试
+> 无头 latch 超时）、`public-data-validation` fail（外部网络类）。
+> 各平台 `job-summary.md` 的 `status_transition` 已按实填写；`run_id` / `commit_sha` /
+> `collected_at_utc` 已回填。**仍未回收**：逐类 surefire 明细、Linux 三个 JSON、artifact、job id。
+> 本文件作为**基线留档不改**，当前状态一律以 `README.md` §1.1 为准。
 
 - 各平台 `job-summary.md` 的 `status_transition` 由 `"pending"` 填为 **`failure → success`**（或如实
   `failure → failure`），并填 `skipped_after`（须 < 12）、`goldset_executed`、`python_consumers`、
   `artifacts` 实际路径。
-- 汇总 `README.md` 的 `run_id` / `commit_sha` / `trigger` / `collected_at_utc` 由主理人经远端 API 回收后填。
-- **结果真实回收前，任何字段不得写 `pass` / success**。
+- 汇总 `README.md` 的 `run_id` / `commit_sha` / `trigger` / `collected_at_utc` 经远端 API 回收后填。
+- **未取得实测的字段不得写 `pass` / success**；已取得的 job 结论不得退回 `not_collected`。

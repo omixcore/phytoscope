@@ -48,7 +48,7 @@
 |---|--------|------|------|-------------|
 | 18 | 金标准验证总览 | ✅ | `docs/validation-and-benchmarks.md`：4 层验证（源身份 / 独立 Python 坐标核对 / JavaFX 行为 / 性能）、gffutils 0.13 同数据提取基线、四物种匹配提取基准、bedtools/BLASTP 模块级核对、PIF6 异构体身份门 | 文档自述大量 MB 级数字为 `8fd01ca` 时代**历史值**，当前树复现需外迁数据。 |
 | 19 | 染色体验证 | ✅ | `docs/chromosome-validation.md`：Arabidopsis/Rice/Maize/Soybean 四物种 Ensembl Plants release 62 完整 GFF3 导入（核染色体 5/12/10/20，特征 79.1万~132.9万）、参考验收审计（assembly accession 表）、`AdaptiveChromosomeTest`/`AdaptiveChromosomeUiTest`/`FullAnnotationValidationTest` | `FullAnnotationValidationTest` 需 `-Dphytoscope.fullAnnotationDir` 才真正跑全注释（0 个 `@Test` 注解，条件门控）；默认小夹具可离线跑。 |
-| 20 | 非模式物种可移植性 | ✅ | `docs/non-model-portability-evidence.md`：rice bean *Vigna umbellata* GCF_029865625.1 完整 GFF3/GTF + 5 位点序列金标 + Salmon 2.8.0 重定量（34,914 基因，0 未匹配 ID）；另 2 个 RefSeq（Andrographis、Hibiscus）；25 条多基因座金标 | 自认边界清晰：表达验证 genotype（IC426787）≠ 参考栽培种（VRB3）；金标覆盖 5 位点/物种非全基因组；manual/IGV/JBrowse 同任务对比**未执行**。 |
+| 20 | 非模式物种可移植性 | ✅ | `docs/non-model-portability-evidence.md`：rice bean *Vigna umbellata* GCF_029865625.1 完整 GFF3/GTF + 5 位点序列金标 + Salmon 2.8.0 重定量（34,914 基因，0 未匹配 ID）；另 2 个 RefSeq（Andrographis、Hibiscus）；25 条多基因座金标 | 自认边界清晰：表达验证 genotype（IC426787）≠ 参考栽培种（VRB3）；金标覆盖 5 位点/物种非全基因组；**三款 GUI / 浏览器同类软件（JBrowse2 / IGV / TBtools）的同任务实机对照未执行 —— 论文仅作定性功能比较（no same-task wall-clock benchmark was performed），无计时/内存/吞吐量数据，见 §7.3**。 |
 | 21 | 研究模块金标准 | ✅ | `docs/research-module-validation.md`：7 模块（启动子/QC/同源/跨物种/表达分组/domain-CDS）显式参考计算 + `ResearchModuleGoldSetTest` + CI 三平台通过记录 | 自认「单一家族烟雾测试」，非普适精度/召回；表达仅单 assay，非生物学结论。 |
 | 22 | 可移植性与可复现 | ✅ | `docs/portability-and-reproducibility.md`：可移植矩阵（8 数据集）、可复现 `.phytoscope` 项目（schemaVersion/SHA-256/导入报告）、表达关联、数据质量报告表、性能证据表 | 性能数字为历史值（mint-genome 已外迁）；「未来工作」明确列多实验分组/时间序列未实现。 |
 | 23 | 独立金标准工具链 | ✅ | `tools/`：`compare_gffutils.py`、`validate_structure_inventory.py`、`compare_homology_blastp.py`（BLASTP 2.12.0+）、`compare_promoters_bedtools.py`（bedtools 2.31.1）、`compare_public_case.py`、`build_nonmodel_sequence_gold.py`、`validate_pif6_isoform_identity.py` | 工具链完整；`benchmarks/results/2026-10-18/` 有 cross-species-extraction/homology/research-module-validation 三份报告落地。 |
@@ -69,11 +69,21 @@
 
 ## 六、核心结论
 
+> **阅读提示（2026-11-14 追加，不改上方原文）**：§一–§六 是 `8b6bf0b` 时代的只读盘点，
+> 其中若干状态**已被后续动作覆盖**，按下列口径读：
+> - ②「tag/Release 严重滞后」→ **已消除**：`v0.3.0` tag 指向 `3e8b83c`，GitHub Release 已公开发布
+>   （`PhytoScope-Windows-0.3.0.zip` 46,185,790 B + `SHA256SUMS.txt` 1,547 B），
+>   https://github.com/omixcore/phytoscope/releases/tag/v0.3.0 。
+> - ①「软件 DOI 缺失」→ **仍未解决**，`zenodo_state = not_published`，DOI 未取得。
+> - ③「许可全待确认」→ **仍未解决**（1/9 确认，8 项 `needs_confirmation`），且这是
+>   **Zenodo 归档与 DOI 回填的前置条件**：许可未落定前 **Deposit B 不得公开**。
+> - 「CI 三平台通过」类表述 → **不得使用**，见 §7.1（远端已实跑但非全绿）。
+
 1. **已基本就绪、只需复核（约 20/30）**：输入规范（#1）、版本一致性（#2/#3）、LICENSE（#7）、Windows 打包与实测（#11/#12）、参考数据机读清单（#14/#15/#17）、六份验证文档（#18–#23）、7 个分析模块实现+金标准（#24–#30）均已落地且有**具体文件/提交/测试类可查**。这些属于「材料齐、待作者复核措辞与许可」。
 
 2. **明确缺口、需补齐（4 项）**：① **软件 DOI 缺失（#6）**——需挂 Zenodo/DataCite 并版本化；② **tag/Release 严重滞后（#4/#5）**——HEAD 领先 v0.2.0 共 16 提交，当前树（瘦身+intake）无新 tag、无新版发布附件；③ **许可全待确认（#16）**——9 个数据文件 `license_status` 全为 `needs_confirmation`，薄荷 TPM 甚至无来源 URL，投稿前必须逐条落定；④ **CHANGELOG 未回填（#8）** 与 **README「remote URLs pending」表述过时（#9）**。
 
-3. **需新增实测（⏳/🟡 类，约 6 项）**：macOS/Linux 桌面原生启动实测（#13）、当前 HEAD 的 CI 三平台实跑结果落地（#10）、BED/bedGraph 规范项（#1 内 deferred，如需宣称则需实现+测试）、非标准遗传密码/细胞器翻译（#1 验收项，尚未实现）、更大规模的多家族/负例金标准（#25/#26 的泛化）、以及对比实验与用户研究（#20 自认的 manual/IGV/JBrowse 同任务对比未执行）。
+3. **需新增实测（⏳/🟡 类，约 6 项）**：macOS/Linux 桌面原生启动实测（#13）、~~当前 HEAD 的 CI 三平台实跑结果落地（#10）~~（**已回填，见 §7.1：远端已实跑但非全绿**）、BED/bedGraph 规范项（#1 内 deferred，如需宣称则需实现+测试）、非标准遗传密码/细胞器翻译（#1 验收项，尚未实现）、更大规模的多家族/负例金标准（#25/#26 的泛化）、以及对比实验与用户研究（#20 自认的 GUI 同类软件同任务对照**未执行**，论文仅作**定性功能比较**，见 §7.3）。
 
 4. **执行优先级建议（相对当前任务面板）**：把「阶段1」内 **tag + Release + DOI + 许可** 四项提为 P0（投稿硬门槛、纯物料操作、不涉代码）；**CHANGELOG 回填 + README 表述统一** 为 P1（低成本消除不一致）；**macOS/Linux 原生实测、当前树 CI 绿、BED/bedGraph 决策** 为 P2（需要运行时或实现投入）；**用户研究/更大金标准/对比实验**维持阶段6/7，不阻塞投稿但需在文中如实标注「未执行」而非留白。
 
@@ -87,20 +97,28 @@
 > 状态值全部保留、不改、不外推为当前实测**（设计 §7.3 / PRD §8 第 5 条）。补注只做两件事：
 > ① 为 #10 标「**待远端回收**」；② 声明论文图表述的唯一权威图号。
 
-### 7.1 #10「CI 三平台工作流」状态：待远端回收
+### 7.1 #10「CI 三平台工作流」状态：远端已实跑，**非全绿**
 
 - 上方 #10 的 🟡 与「待运行时验证」是 **HEAD `8b6bf0b` 时代的只读盘点结论**，保留原样。
-- **当前状态：待远端回收**。三平台报告骨架已建于 `docs/ci-reports/v0.3.0/`
-  （汇总 `README.md` + `c79034e-baseline.md` 对照基线 + 逐平台 `job-summary.md`），
-  所有状态初值 `not_collected` / `collection_state = materials_ready_pending_remote`。
-  **结果真实回收前不得写 pass / success，不预填任何 surefire / JSON 内容**。
-- 回收执行主体固定「**主理人（GitHub Actions REST API artifact download）**」；本机不生成、
-  不伪造报告。三平台由 failure 转 success 属 **R2 远端实跑的目标态，不计入本机 A 类闭环**。
-- `public-data-validation`（PMC/PastDB/ENA 外网依赖）单列为
+- **当前状态（远端实测已回填）**：run **`43605656726`**（`event=push`、`head_branch=dev`、
+  `run_started_at=2026-11-14T14:35:25Z`、`updated_at=2026-11-14T14:41:50Z`）/ commit **`49a5fac`**。
+  `validation (windows-latest)` **success**（job `132479612528`）、
+  `validation (macos-latest)` **success**（job `132479612388`）、
+  `validation (ubuntu-latest)` **failure**（job `132479612471`，失败于
+  **step 10 `Java and JavaFX regressions`**，**14 个 JavaFX UI 测试在无头环境
+  `Platform.startup` latch 超时**）。
+- **不得写「CI 三平台通过 / CI 全绿」**。ubuntu 的修复**已提交但尚未经远端重跑确认**；
+  重跑确认前保持 failure 口径。
+- **金标准链路已在远端确认实跑（`Skipped: 0`）**：`ResearchModuleGoldSetTest 1/0/0/0`、
+  `DomainCaseValidationTest 1/0/0/0`、`Gff2ParserSupportTest 5/0/0/0`、
+  `ComparisonWorkflowUiTest 1/0/0/0`。**本地通过记录（`216 / 0 / 0 / 7`）不能替代远端结果**，
+  两者口径不同；`c79034e` 基线的「金标准 `Skipped: 1`」问题已在远端被证伪修复。
+- `public-data-validation`（PMC/PastDB/ENA 外网依赖，job `132479612205`，失败于
+  **step 5 `Audit public Arabidopsis splicing and proteomics resources`**）单独归类为
   `failure_category = external_network`、`counts_in_platform_matrix = false`，
   **不并入三平台矩阵、不据此判定代码失败**（Q13）。
-- 汇总落点：`docs/fcs-phase2-verification-report.md`（T06）；本机 A 类留痕：
-  `docs/fcs-ci-goldset-fix-report.md`（B01/B01b，全量 `216 / 0 / 0 / 7` 绿、金标准非 skipped）。
+- 汇总落点：`docs/ci-reports/v0.3.0/README.md`（含 §1.1 按 job 的实测表）+ 逐平台
+  `job-summary.md`；仍待回收：`surefire-reports/` 明细、Linux 三个 JSON、artifact、job id。
 - **证据链脚注（非失败项，设计 §11.2）**：B01 → B01b 的 `ComparisonWorkflowUiTest` 既有 FX
   缺陷修复（`ca8743e`，测试侧两阶段 FX 重构、断言 verbatim、`src/main/java` 零改动）
   只作脚注，**不并入 `c79034e` 基线 / 外部网络类 / failure → success 矩阵、不判代码失败**。
@@ -116,3 +134,43 @@
   `target/phase3-comparison/*.json`（运行时产物）。增补 PRD §4 修订说明见
   `docs/prd-fcs-submission.md` §4，正文/大纲对齐见
   `docs/fcs-paper-outline.md` §4 与 `docs/fcs-paper-manuscript-draft.md` §3.1–3.5。
+
+### 7.3 三款 GUI / 浏览器同类软件的同任务对照：**未执行**，论文仅作**定性功能比较**
+
+**结论（如实）**：与 **JBrowse 2 / IGV / TBtools** 的**同任务实机计时对照（same-task wall-clock
+benchmark）未执行**。论文中与这三款软件的全部比较**只作定性功能比较（qualitative functional
+comparison）**，依据公开文档，不含任何计时、内存或吞吐量数据，也不与 PhytoScope 做数值比较。
+
+**原因（可核验的环境事实，不是回避）**：
+
+1. 本机为 **Windows，无可用 GUI 会话**，无法完成需要人工交互的桌面 GUI 任务流程；
+   CI 运行器为无头（headless）环境，同样不能驱动 GUI 任务。
+2. **JBrowse 2 未安装**；**IGV 2.19.3** 与 **TBtools-II** 是桌面 GUI，在本环境下
+   **没有可脚本化的 headless 快照通道**，无法被编排成与 PhytoScope 完全一致的任务序列。
+3. 「同任务」要求冻结同一批输入文件、同一基因座清单、同一操作序列与同一输出要求；
+   在无法安装/脚本化上述三款软件的前提下，任何计时都不可比，**宁可不做也不虚报**。
+
+**已做的是什么（避免被误读为「什么都没做」）**：
+
+- 与 **gffutils 0.13**（结构导入）与 **Biopython 1.88**（序列重建）做了**定量**对照 ——
+  这两者可在本环境以脚本方式跑同一冻结输入、同一任务（`tools/compare_public_case.py`、
+  `tools/compare_biopython_seqio.py`），结果冻结于
+  `docs/paper-figures/data/gffutils-summary.json` / `biopython-summary.json`
+  （`measurement_class = historical_measured_not_new`）。
+- 与 JBrowse 2 / IGV / TBtools 做了**定性功能比较矩阵**（Supplementary Table 3 /
+  Figure S1 sub-panel (b)），只列共享任务与设计差异，**不排名、不判优劣**。
+
+**论文必须保留的固定表述**（不得删改软化）：
+
+> “No same-task wall-clock benchmark was performed against JBrowse 2, IGV or TBtools.”
+
+**后续可选工作（不阻塞投稿）**：
+
+1. 在具备 GUI 的机器上安装三款软件，固定同一输入与同一任务序列，做 ≥3 次交替冷启动计时，
+   记录任务完成时间与峰值内存（RSS），并声明硬件；
+2. 补一份任务脚本/操作手册与截图留痕，使对照可复现；
+3. 若同时招募 ≥3 名参与者，可并入 `docs/fcs-user-study-protocol.md` 的用户研究，
+   但**该研究当前亦未执行**，不得与计时对照混为一谈。
+
+> **禁止**：把上述「后续可选工作」写成「已完成」；在未取得实测数据前，**不得**在正文、
+> 图注、摘要或回复审稿人时给出任何针对这三款软件的定量优势表述。

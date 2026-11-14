@@ -249,8 +249,11 @@ set, and output requirements, we compare only *shared* tasks; design differences
 separately and are not ranked as better/worse. Quantitative baselines (gffutils, Biopython) run as
 three fresh-process trials in alternating order; setup time (index build / import) is reported
 separately from task time (selected-locus query). Qualitative comparisons (JBrowse 2, IGV, TBtools)
-are capability/design comparisons based on public documentation, not on-machine timings. No
-usability, time-saving, or discovery-rate claim is made
+are capability/design comparisons based on public documentation, not on-machine timings.
+**No same-task wall-clock benchmark was performed against JBrowse 2, IGV or TBtools**: none of the
+three could be installed and driven through an identical task sequence in this environment, so no
+timing, throughput or memory figure is reported for them, and none is compared numerically with
+PhytoScope. No usability, time-saving, or discovery-rate claim is made
 (`docs/non-model-portability-evidence.md` §"Fair alternatives comparison",
 `docs/fcs-phase3-comparison-plan.md`).
 
@@ -294,8 +297,12 @@ claim. (`docs/fcs-phase3-comparison-plan.md` §3.2.)
 
 **Qualitative tools.** JBrowse 2 [12] was not installed in the environment; IGV 2.19.3 [13] and
 TBtools-II [14] are desktop GUIs without a scriptable headless snapshot in this environment. All three
-are therefore reported as qualitative capability/design comparisons only
-(`docs/fcs-phase3-comparison-plan.md` §4).
+are therefore reported as **qualitative capability/design comparisons only**
+(`docs/fcs-phase3-comparison-plan.md` §4). **No same-task wall-clock benchmark was performed**
+(no same-task on-machine timing, no controlled task-completion measurement): the machines used here
+have no GUI session, and installing and scripting JBrowse 2 / IGV / TBtools to execute an identical
+task sequence was out of scope. Consequently this work makes **no quantitative claim** about them —
+only a qualitative functional comparison, with design differences listed without ranking.
 
 **Environment.** gffutils/Biopython trials ran on Windows 11 amd64, Python 3.13.12, gffutils 0.13,
 Biopython 1.88, Java 21 (OpenJDK 21.0.6). bedtools (2.31.1) and the BLASTP 2.12.0+ module checks were
@@ -393,13 +400,16 @@ all three non-model species, with correct strand handling on the two minus-stran
 Hibiscus) and the one plus-strand locus (Andrographis)
 (`docs/fcs-phase3-comparison-plan.md` §3.2; frozen `docs/paper-figures/data/biopython-summary.json`).
 
-**JBrowse 2 / IGV / TBtools — qualitative, based on public documentation, not on-machine
-measurements.** JBrowse 2 was not installed in the environment; IGV and TBtools are desktop GUIs
-without a scriptable headless snapshot. They were therefore compared on shared tasks only, from
-public documentation, with **no on-machine timings** (`docs/fcs-tool-comparison-final.md`,
-Supplementary Table 3). All three can locate genes and display structure tracks; the matrix-level
-sample-grouping semantics, native multi-locus aligned comparison figure, and self-contained project
-restore are PhytoScope-specific capabilities, while the three browsers provide broader coverage of
+**JBrowse 2 / IGV / TBtools — qualitative functional comparison only, based on public documentation,
+not on-machine measurements.** JBrowse 2 was not installed in the environment; IGV and TBtools are
+desktop GUIs without a scriptable headless snapshot. They were therefore compared on shared tasks
+only, from public documentation, as a **qualitative functional comparison** with **no on-machine
+timings** (`docs/fcs-tool-comparison-final.md`, Supplementary Table 3). **No same-task wall-clock
+benchmark was performed** (no same-task on-machine timing and no task-completion measurement), so
+Figure S1 reports no timing, memory or throughput comparison for these three tools. All three can
+locate genes and display structure tracks; the matrix-level sample-grouping semantics, native
+multi-locus aligned comparison figure, and self-contained project restore are PhytoScope-specific
+capabilities, while the three browsers provide broader coverage of
 alignment/variant/quantitative tracks that PhytoScope does not attempt. These are design differences
 listed without ranking; no faster / better / easier-to-use claim is made.
 
@@ -463,8 +473,8 @@ To prevent misreading, we state the boundaries explicitly:
    easier-to-use, or discovery-rate claim is made. A participant study is explicitly listed as
    future work (§4.4), with a protocol and an explicitly unexecuted results template in
    `docs/fcs-user-study-protocol.md` / `docs/fcs-user-study-results.md`. JBrowse 2 / IGV / TBtools
-   are qualitative design comparisons based on public documentation, not on-machine measurements
-   (`docs/fcs-tool-comparison-final.md`).
+   are **qualitative functional comparisons only**, based on public documentation; **no same-task
+   wall-clock benchmark was performed** against them (`docs/fcs-tool-comparison-final.md`).
 5. **Not unqualified species-independence.** Generality is demonstrated on the tested cohort;
    BED/bedGraph tracks and non-standard genetic codes are out of scope, and "species-agnostic" means
    the same code path, not that every assembly or annotation dialect is supported
@@ -485,9 +495,12 @@ To prevent misreading, we state the boundaries explicitly:
   `historical` — are in `docs/fcs-performance-benchmark.md`; this manuscript hard-codes no number
   (R10 pointer). Historical v0.2.0 / `8fd01ca` numbers in
   `docs/portability-and-reproducibility.md` §5 are archived and must not be read as current.
-- **Comparison scope.** JBrowse 2 / IGV / TBtools are **not measured on-machine** (qualitative
-  comparison from public documentation; `docs/fcs-tool-comparison-final.md`); external on-machine
-  comparison and participant user studies were **not performed**.
+- **Comparison scope.** JBrowse 2 / IGV / TBtools are **not measured on-machine**: the comparison is
+  **qualitative and functional only**, from public documentation (`docs/fcs-tool-comparison-final.md`).
+  **No same-task wall-clock benchmark was performed** — no identical-task timing, no controlled
+  task-completion measurement — because this environment provides no GUI session and none of the three
+  tools could be installed and scripted onto an identical task sequence. External on-machine comparison
+  and participant user studies were likewise **not performed**.
 - **Data licensing.** License status is resolved for only **1 of 9** reference files (horsemint
   CC BY 4.0); the remaining **8** items, including a mint TPM matrix whose source is not yet
   established, require author confirmation before redistribution
@@ -498,9 +511,11 @@ To prevent misreading, we state the boundaries explicitly:
 Multi-experiment/time-course expression browsing, BED/bedGraph interval and signal tracks,
 non-standard genetic-code and organellar translation, broader multi-family and negative-set gold
 standards, declared-hardware cross-platform benchmarking, native macOS/Linux desktop verification,
-external on-machine tool comparison, and a **participant user study** are all documented as future
+**a same-task wall-clock comparison against GUI peers (JBrowse 2 / IGV / TBtools) in a GUI-capable
+environment**, and a **participant user study** are all documented as future
 work and are not claimed here (`docs/portability-and-reproducibility.md` §3,
-`docs/input-format-specification.md`). **We did not conduct a user study**; the protocol
+`docs/input-format-specification.md`). **We did not conduct a user study**, and **we did not run a
+same-task timed comparison against any GUI peer**; the protocol
 (`docs/fcs-user-study-protocol.md`) and the explicitly unexecuted results template
 (`docs/fcs-user-study-results.md`) are provided for a later study requiring ≥3 recruited
 participants. Native macOS/Linux verification is likewise unexecuted
