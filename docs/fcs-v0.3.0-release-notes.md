@@ -36,7 +36,7 @@
 - **tag 修正（主理人裁定，覆盖设计原文）**：`v0.3.0` 是 annotated tag，当前指向
   `edae8433`（tag 对象）/ 落后于 HEAD 多个提交，且**无 Release 附件关联**，故
   **禁止**用 `git archive v0.3.0` 生成源码包（会漏掉本次全部改动）。
-  Deposit A 一律用 **`git archive HEAD`（最终 commit SHA）**；`v0.3.0` tag 由主理人在
+  Deposit A 一律用 **`git archive e920a12`（B05 主 commit 显式 SHA，归档源固定）**；`v0.3.0` tag 由主理人在
   推送阶段前移到最终提交并同步两远端，工程师**不动 tag**。
 
 ## 2. 瘦身说明（沿用 B03 口径）
@@ -72,8 +72,8 @@ git 历史 pack 与 fresh-clone 大小未变；只有当前 checkout 与构建�
 | `../dist/PhytoScope-Windows-0.3.0.zip` | 46,185,790 | `8f7953eba6c04922be9b2faf21b717ff3fe36cc15a5bd1f3393b38da7716bfa6` | **本批新构建（唯一权威发布名）** |
 | `../dist/PhytoScope-Windows-AMD64.zip` | 113,094,544 | `927b000219cd9b1d08f577c4fb315ff86538656cfc11451872f05c7e4911aa2c` | `historical`，字节不动 |
 | `../dist/PhytoScope-Windows-0.2.0.zip` | 110,405,267 | `763b1c42350872047f36eb6c944ea3ebfd10ffaaca7a1fb8a59645a2392b3cce` | `historical`，字节不动 |
-| `../dist/phytoscope-v0.3.0-source.zip` | 11,589,747 | 见 `docs/fcs-zenodo-handoff.md` | Deposit A（`git archive HEAD`） |
-| `../dist/phytoscope-reference-data-v0.3.0.zip` | 64,329,519 | 见 `docs/fcs-zenodo-handoff.md` | Deposit B（数据仓库 B04 HEAD） |
+| `../dist/phytoscope-v0.3.0-source.zip` | **11,636,868** | `e8ca52b88451d207673f6be1f1c62fed0f1c7ca5a515c25ebd502a3109e17b6a` | Deposit A（`git archive e920a12`，B05 主 commit / 归档源固定，已含 B05 全部实质产物） |
+| `../dist/phytoscope-reference-data-v0.3.0.zip` | 64,329,519 | `c7eb904c1e8a7977bb751f9b412ec9386d977d6062a4a179e3b4aac7f1361e9b` | Deposit B（数据仓库 B04 HEAD `249e771`） |
 
 > 新包约 **44 MiB**，**不是** 110 MB 历史 v0.2.0 包（瘦身生效）。两个历史 ZIP
 > **字节未动、未删除、未重建**。
@@ -86,7 +86,7 @@ git 历史 pack 与 fresh-clone 大小未变；只有当前 checkout 与构建�
 
 | Deposit | 归档源 | 包内必含项校验 |
 | --- | --- | --- |
-| A（软件源码） | `git archive HEAD`（最终 commit SHA，**不用 tag**） | `README.md` / `CITATION.cff` / `pom.xml` / `docs/**` / `src/**` / `tools/**` |
+| A（软件源码） | `git archive e920a12`（B05 主 commit 显式 SHA，归档源固定，**不用 tag**） | `README.md` / `CITATION.cff` / `pom.xml` / `docs/**` / `src/**` / `tools/**` |
 | B（参考数据） | 数据仓库 **B04 定稿后实际 HEAD `249e771`** | `MANIFEST.json` / `SHA256SUMS.txt` / `LICENSES.md` / `scripts/**`；且 `LICENSES.md` 含 B04 §0 三选一结论表、`MANIFEST.json` 含 `license_decision` 字段 |
 
 `unzip -t` 两包均 OK（`DEP_A_ZIP_OK` / `DEP_B_ZIP_OK`）；`unzip -l` 留痕见

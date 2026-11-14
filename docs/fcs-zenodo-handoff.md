@@ -52,21 +52,36 @@
 
 | 文件（`../dist/`，工作区根、主仓上一级） | 大小（B） | 归档源 | 产出批次 |
 |---|---|---|---|
-| `phytoscope-v0.3.0-source.zip` | 11,589,747 | **`git archive HEAD`**（B05 最终 commit SHA，见 §3.1） | B05 |
+| `phytoscope-v0.3.0-source.zip` | **11,636,868** | **`git archive e920a12`**（B05 主 commit，归档源固定，见 §3.1） | B05 |
 | `PhytoScope-Windows-0.3.0.zip` | 46,185,790 | 本机构建（jpackage）+ 重命名 | B05 |
-| `phytoscope-reference-data-v0.3.0.zip` | 64,329,519 | 数据仓库 **B04 定稿后实际 HEAD** | B05 |
+| `phytoscope-reference-data-v0.3.0.zip` | 64,329,519 | 数据仓库 **B04 定稿后实际 HEAD** `249e771` | B05 |
 | `desktop_program/SHA256SUMS.txt`（主仓内） | — | 0.3.0 包校验和（M02 上传资产之一） | B05 |
+
+两包 SHA-256（B05 定稿后实测，上传时供作者核对）：
+- `phytoscope-v0.3.0-source.zip` = `e8ca52b88451d207673f6be1f1c62fed0f1c7ca5a515c25ebd502a3109e17b6a`
+- `phytoscope-reference-data-v0.3.0.zip` = `c7eb904c1e8a7977bb751f9b412ec9386d977d6062a4a179e3b4aac7f1361e9b`
 
 ### 3.1 归档源 SHA（记录；`v0.3.0` tag 不用）
 
-- **Deposit A（软件源码）**：用 **`git archive HEAD`（或最终 commit SHA）** 生成，
+- **Deposit A（软件源码）**：用 **`git archive e920a12`（B05 主 commit 显式 SHA）** 生成，
   **禁止** `git archive v0.3.0` —— 该 annotated tag 指向 `edae8433`（tag 对象）、
   落后当前 HEAD 多个提交且**无 Release 附件关联**，会漏掉本次全部改动。
   `v0.3.0` tag 由**主理人**在推送阶段前移到最终提交并同步两远端，工程师**不动 tag**。
-  - Deposit A 归档 SHA（B05 commit 前的 HEAD，首次生成时）：`7eead0e032edbbe4b370c827733794d9e47ac94a`。
-  - **B05 commit 后需用最终 HEAD 重新生成一次**（使包内含 B05 的 release-notes /
-    performance / desktop / 本 handoff 等文档）；最终 SHA 记入 B05 回执与
-    `docs/fcs-final-push-checklist.md` 第 2/11 项，由主理人 push 前核对。
+  - **B05 主 commit（Deposit A 归档源，固定）= `e920a1211904709dc61776bf091322a73f7d2010`**
+    （team-lead 续作指令要求登记）。Deposit A 已用 `git archive e920a12` **生成**，
+    包内含 B05 的 `fcs-v0.3.0-release-notes.md` /
+    `fcs-performance-benchmark.md` / `benchmarks/results/2026-11-14-v0.3.0/**` /
+    架构师 3 份设计文档（`unzip -l` 已核对）。已实测 `git archive e920a12` 与交付 ZIP
+    **逐字节一致**（`cmp` BYTE_IDENTICAL=YES），归档可确定复现。
+  - 首次生成时 HEAD 为 `7eead0e032edbbe4b370c827733794d9e47ac94a`（B05 commit 前），
+    已被 `e920a12` 归档版覆盖；**不得**把首次生成的 `7eead0e` 当作归档源。
+  - **归档源固定为 `e920a12`，不随其后 HEAD 前移**：本文件的归档源 SHA / 两包校验和
+    登记由 **B05 收尾 commit** 写入；归档快照无法包含其自身的 SHA 登记，故该收尾
+    commit **不纳入 Deposit A**，但 `e920a12` 已含 B05 全部实质产物（代码 / 文档 /
+    性能实测 / 设计定稿），满足「不用 `v0.3.0` tag、不漏改动」的裁定要求。
+    主理人 push 前用 `git cat-file -t e920a1211904709dc61776bf091322a73f7d2010`
+    与 `git archive e920a12 | sha256sum` 复现核对归档源；第 2/11 项**推送闭环**的
+    三方 HEAD 比对（另一动作）见 `docs/fcs-final-push-checklist.md`。
 - **Deposit B（参考数据）**：用 `git -C ../phytoscope-reference-data rev-parse HEAD`
   取 **B04 定稿后实际 HEAD = `249e771a09b28312f46df0f1a02eb7d34f14897f`**，
   使包内 `LICENSES.md` / `MANIFEST.json` 含最终三选一许可结论（与 Zenodo dataset

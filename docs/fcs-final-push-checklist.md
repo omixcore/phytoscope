@@ -64,9 +64,14 @@
   **第 13 项（M02 Release 上传）仍不可由工程师执行**，`release_state` 保持
   `pending_release`。第 12 项状态为「B05 已产出（待主理人核对）」，不等于 M02 已启动。
 - **B05 归档源 SHA（team-lead 续作指令要求登记）**：
-  - Deposit A（软件源码）：`git archive HEAD`，**不用** `v0.3.0` tag（指向 `edae8433`、
-    落后多提交、无 Release 附件）。B05 commit 前的 HEAD = `7eead0e032edbbe4b370c827733794d9e47ac94a`；
-    **B05 commit 后须用最终 HEAD 重新生成**并把最终 SHA 填入第 2/11 项（由主理人 push 前核对）。
+  - Deposit A（软件源码）：`git archive e920a12`，**不用** `v0.3.0` tag（指向 `edae8433`、
+    落后多提交、无 Release 附件）。**B05 主 commit（Deposit A 归档源，固定）=
+    `e920a1211904709dc61776bf091322a73f7d2010`**；Deposit A 已用该显式 SHA 生成，
+    `unzip -l` 核对含 B05 全部实质文档与最终设计文档，`cmp` 复现逐字节一致。
+    **归档源固定、不随其后 HEAD 前移**：本清单的 SHA 登记由 B05 收尾 commit 写入，
+    该收尾 commit 不纳入归档快照（快照无法自含 SHA 登记）。主理人 push 前用
+    `git cat-file -t e920a12` 复现核对归档源；第 2/11 项的**推送闭环**三方 HEAD
+    比对是另一动作，实际 SHA 仍待主理人填写。
   - Deposit B（参考数据）：数据仓库 **B04 定稿后实际 HEAD =
     `249e771a09b28312f46df0f1a02eb7d34f14897f`**，包内含最终 `LICENSES.md` / `MANIFEST.json`。
   - 两包 `unzip -l` / `unzip -t` 留痕见 `docs/fcs-zenodo-handoff.md` §3.2 与
