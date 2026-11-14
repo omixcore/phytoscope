@@ -230,4 +230,30 @@ class ImportGenomeWizardUiTest {
                         .anyMatch(a -> "Chr2".equals(a.from()) && "Chr1".equals(a.to())),
                 "the manual alias must be delivered to the handler: " + result.aliasMap());
     }
+
+    // ---- D6c: the TSV report is written with the documented columns --------
+    @Test
+    void exportWritesTsvReport(@TempDir Path temp) throws Exception {
+        startPlatform();
+        AtomicReference<Captured> captured = new AtomicReference<>();
+        ImportGenomeWizard wizard = newWizard(captured);
+        fx(() -> {
+            wizard.setSelectedFiles(fixture("missing_seqid.fa"), fixture("missing_seqid.gff3"), null);
+            return null;
+        });
+        fx(() -> wizard.runHealthCheck());
+        fx(() -> {
+            wizard.exportReportTsv(temp);
+            return null;
+        });
+        Path tsv = temp.resolve("intake-health-report.tsv");
+        assertTrue(Files.exists(tsv), "the TSV report must be written");
+        List<String> lines = Files.readAllLines(tsv);
+        assertFalse(lines.isEmpty(), "the TSV report must have a header line");
+        assertEquals("severity\tcode\tfile\tlineOrCoord\tmessage", lines.get(0),
+                "the TSV header must match the documented columns exactly");
+        String body = String.join("\n", lines.subList(1, lines.size()));
+        assertTrue(body.contains("SEQID_NOT_IN_FASTA"),
+                "the TSV body must carry the issue code(s): " + body);
+    }
 }

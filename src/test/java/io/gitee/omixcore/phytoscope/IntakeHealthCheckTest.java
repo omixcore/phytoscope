@@ -211,4 +211,30 @@ class IntakeHealthCheckTest {
         assertTrue(hasCodeWithSeverity(report, "COORDINATE_OUT_OF_BOUNDS", IntakeSeverity.ERROR),
                 "a feature exceeding the FASTA contig length must be an ERROR: " + report.issues());
     }
+
+    // ---- D4: a manual alias whose target is absent must NOT suppress the error
+    @Test
+    void invalidAliasTargetStillReportsSeqidError() {
+        // missing_seqid: the FASTA carries only Chr1, but the GFF3 also references
+        // Chr2, so a SEQID_NOT_IN_FASTA ERROR is expected.
+        IntakeReport report = IntakeHealthCheck.check(
+                fixture("missing_seqid.fa"), fixture("missing_seqid.gff3"), null,
+                Map.of("Chr2", "NonExistentId"));
+        assertFalse(report.pass(),
+                "a bogus manual alias must not suppress the seqid error: " + report.summary());
+        boolean stillMissing = report.issues().stream()
+                .anyMatch(i -> "SEQID_NOT_IN_FASTA".equals(i.code())
+                        && i.severity() == IntakeSeverity.ERROR);
+        assertTrue(stillMissing,
+                "the invalid alias target must keep the SEQID_NOT_IN_FASTA ERROR (D4): "
+                        + report.issues());
+        // The bogus target itself must also be surfaced as an ERROR so the user
+        // knows the declared mapping is unusable.
+        boolean targetRejected = report.issues().stream()
+                .anyMatch(i -> "SEQID_NOT_IN_FASTA".equals(i.code())
+                        && i.severity() == IntakeSeverity.ERROR
+                        && i.message() != null && i.message().contains("NonExistentId"));
+        assertTrue(targetRejected,
+                "the unknown alias target 'NonExistentId' must be reported (D4): " + report.issues());
+    }
 }
