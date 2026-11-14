@@ -14,9 +14,9 @@
 
 | 字段 | 含义 | 初值 |
 |---|---|---|
-| `push_state` | git push（M01，**A 类**本机动作） | `not_pushed`（未推送） |
-| `release_state` | `v0.3.0` Release 资产上传（M02，主理人） | **`pending_release`（待发布）** |
-| `zenodo_state` | Zenodo 两个 deposit 发布（作者 A1，B 类） | `not_published`（未发布） |
+| `push_state` | git push（M01，**A 类**本机动作） | **`pushed`（已推送，2026-11-14 主理人执行）** |
+| `release_state` | `v0.3.0` Release 资产上传（M02，主理人） | **`published`（已发布，2026-11-14 主理人执行）** |
+| `zenodo_state` | Zenodo 两个 deposit 发布（作者 A1，B 类） | `not_published`（未发布，待作者执行） |
 
 > **「推送凭证可用」≠「已推送」≠「已发布」**（PRD §8 第 4/5 条）。
 > 当前 GitHub Release **只有 `v0.2.0`**，禁止写成「已发布 v0.3.0」。
@@ -28,28 +28,33 @@
 
 | # | 核对项 | 命令 | 期望 / 失败口径 | 状态 |
 |---|---|---|---|---|
-| 1 | 主仓工作区干净 | `git status --porcelain` | 输出为空（须先 `git add` 全部新增文档） | ☐ 待主理人核对 |
-| 2 | HEAD | `git rev-parse HEAD` | 与汇总文档 `docs/ci-reports/v0.3.0/README.md` / 本清单记录一致 | ☐ 待主理人核对 |
-| 3 | tag | `git tag -l v0.3.0` + `git rev-parse v0.3.0^{commit}` | 存在且指向预期提交；**`v0.2.0` 保留不删** | ☐ 待主理人核对 |
-| 4 | 版本口径 | `grep -m1 '<version>' pom.xml` | 应用版本 **0.3.0**；**3.2.5 = Spring Boot 父 POM，非应用版本**（README 已显式澄清） | ☐ 待主理人核对 |
-| 5 | 两远端一致性 | `git ls-remote origin HEAD` / `git ls-remote github HEAD` | 指向同一 SHA | ☐ 待主理人核对 |
-| 6 | 数据双镜像一致性 | 两数据仓库远端 `git ls-remote ... HEAD` | 同一提交 | ☐ 待主理人核对 |
-| 7 | 数据仓库工作区 | `git -C <reference-data> status --porcelain` | 输出为空 | ☐ 待主理人核对 |
-| 8 | 数据校验 | `sha256sum -c SHA256SUMS.txt`（数据仓库） | **9/9 OK**；totals **9 文件 / 68,518,847 B** 不变 | ☐ 待主理人核对 |
-| 9 | 本地测试 | `sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test` | 绿、`ResearchModuleGoldSetTest` 非 skip、Skipped 总数由 12 下降（B01b 本机实测 `216 / 0 / 0 / 7`） | ☐ 待主理人核对 |
-| 10 | **git push（M01，A 类）** | 推送代码/文档 → `origin` + `github`；数据 → 双镜像 | **凭证已实测可用，按 A 类本机执行**；成功记 `push_state = pushed`；**失败如实标注「未推送」，不得称已推送** | ☐ **未推送** |
-| 11 | **两端 commit 对照** | `git rev-parse HEAD` 与两远端 `git ls-remote ... HEAD` 三方比对 | 记录三方实际 SHA 于本清单；**一致才算推送闭环** | ☐ 待主理人填写 |
-| 12 | **Release 前置产物（B05 工程师产出）** | `ls -l ../dist/PhytoScope-Windows-0.3.0.zip` + `sha256sum -c desktop_program/SHA256SUMS.txt` | 两个文件必须存在且校验 OK，**M02 才能启动**；不得由主理人代建。**B05 已产出**：`PhytoScope-Windows-0.3.0.zip` 46,185,790 B / SHA `8f7953eb...`，`sha256sum -c` **3/3 OK**；`docs/fcs-v0.3.0-release-notes.md` 已记录 smoke 与 bundle 版本常量说明 | ☑ **B05 已产出（待主理人核对）** |
-| 13 | **Release 资产上传（M02，主理人）** | 推送后用**本机缓存凭据**走 GitHub Release API 尝试：补建 `v0.3.0` Release，上传 #12 两个资产 | **成功**才记 `release_state = published` + Release URL/时间；**权限不足/失败**记 `release_state = pending_release（待发布）` + 如实原因；**未执行前一律 `pending_release`，不得称已发布 v0.3.0** | ☐ **pending_release** |
-| 14 | 执行主体 | 固定字段 | M01/M02 均为**主理人齐活林**；工程师只备清单与前置产物；Zenodo deposit 仍属作者 A1 | 固定 |
+| 1 | 主仓工作区干净 | `git status --porcelain` | 输出为空（须先 `git add` 全部新增文档） | ☑ 通过 |
+| 2 | HEAD | `git rev-parse HEAD` | 与汇总文档 `docs/ci-reports/v0.3.0/README.md` / 本清单记录一致 | ☑ `3e8b83c` |
+| 3 | tag | `git tag -l v0.3.0` + `git rev-parse v0.3.0^{commit}` | 存在且指向预期提交；**`v0.2.0` 保留不删** | ☑ 前移至 `3e8b83c`（`v0.2.0` 保留） |
+| 4 | 版本口径 | `grep -m1 '<version>' pom.xml` | 应用版本 **0.3.0**；**3.2.5 = Spring Boot 父 POM，非应用版本**（README 已显式澄清） | ☑ 0.3.0 |
+| 5 | 两远端一致性 | `git ls-remote origin HEAD` / `git ls-remote github HEAD` | 指向同一 SHA | ☑ 均 `3e8b83c` |
+| 6 | 数据双镜像一致性 | 两数据仓库远端 `git ls-remote ... HEAD` | 同一提交 | ☑ 均 `249e771` |
+| 7 | 数据仓库工作区 | `git -C <reference-data> status --porcelain` | 输出为空 | ☑ 通过 |
+| 8 | 数据校验 | `sha256sum -c SHA256SUMS.txt`（数据仓库） | **9/9 OK**；totals **9 文件 / 68,518,847 B** 不变 | ☑ 9/9 OK |
+| 9 | 本地测试 | `sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test` | 绿、`ResearchModuleGoldSetTest` 非 skip、Skipped 总数由 12 下降（B01b 本机实测 `216 / 0 / 0 / 7`） | ☑ `216 / 0 / 0 / 7` BUILD SUCCESS |
+| 10 | **git push（M01，A 类）** | 推送代码/文档 → `origin` + `github`；数据 → 双镜像 | **凭证已实测可用，按 A 类本机执行**；成功记 `push_state = pushed`；**失败如实标注「未推送」，不得称已推送** | ☑ **pushed**（2026-11-14） |
+| 11 | **两端 commit 对照** | `git rev-parse HEAD` 与两远端 `git ls-remote ... HEAD` 三方比对 | 记录三方实际 SHA 于本清单；**一致才算推送闭环** | ☑ 三方一致（见下） |
+| 12 | **Release 前置产物（B05 工程师产出）** | `ls -l ../dist/PhytoScope-Windows-0.3.0.zip` + `sha256sum -c desktop_program/SHA256SUMS.txt` | 两个文件必须存在且校验 OK，**M02 才能启动**；不得由主理人代建。**B05 已产出**：`PhytoScope-Windows-0.3.0.zip` 46,185,790 B / SHA `8f7953eb...`，`sha256sum -c` **3/3 OK**；`docs/fcs-v0.3.0-release-notes.md` 已记录 smoke 与 bundle 版本常量说明 | ☑ 通过 |
+| 13 | **Release 资产上传（M02，主理人）** | 推送后用**本机缓存凭据**走 GitHub Release API 尝试：补建 `v0.3.0` Release，上传 #12 两个资产 | **成功**才记 `release_state = published` + Release URL/时间；**权限不足/失败**记 `release_state = pending_release（待发布）` + 如实原因；**未执行前一律 `pending_release`，不得称已发布 v0.3.0** | ☑ **published**（Release id 445353264，2026-11-14） |
+| 14 | 执行主体 | 固定字段 | M01/M02 均为**主理人齐活林**；工程师只备清单与前置产物；Zenodo deposit 仍属作者 A1 | 主理人已执行 M01/M02 |
 
-### 两端 commit 对照记录（空，主理人推送后填）
+### 两端 commit 对照记录（主理人 2026-11-14 已填写）
 
 | 端 | 实际 SHA | 核对时间 | 是否一致 |
 |---|---|---|---|
-| 本机 `git rev-parse HEAD` | （未填写） | （未填写） | （未填写） |
-| `origin`（gitee）`git ls-remote ... HEAD` | （未填写） | （未填写） | （未填写） |
-| `github`（SSH over 443）`git ls-remote ... HEAD` | （未填写） | （未填写） | （未填写） |
+| 本机 `git rev-parse HEAD` | `3e8b83ceebabb431da201357cedc421f213cbed6` | 2026-11-14 | — |
+| `origin`（gitee）`git ls-remote ... HEAD` | `3e8b83ceebabb431da201357cedc421f213cbed6` | 2026-11-14 | ✅ 一致 |
+| `github`（SSH over 443）`... HEAD` | `3e8b83ceebabb431da201357cedc421f213cbed6` | 2026-11-14 | ✅ 一致 |
+
+数据仓库三方一致：本机 / gitee / github 均为 `249e771a09b28312f46df0f1a02eb7d34f14897f`。
+
+Release：`v0.3.0` 已发布（Release id `445353264`，https://github.com/omixcore/phytoscope/releases/tag/v0.3.0），
+资产 `PhytoScope-Windows-0.3.0.zip`（46,185,790 B）+ `SHA256SUMS.txt`（1,547 B）。
 
 > **失败时如实标注未推送**：若第 10 项未执行或失败，`push_state` 保持 `not_pushed`，
 > 并在回执写明「未推送」及真实原因，禁止用「凭证可用」冒充已推送。
