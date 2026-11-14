@@ -36,13 +36,13 @@
 | 2 | HEAD | `git rev-parse HEAD` | 与汇总文档 `docs/ci-reports/v0.3.0/README.md` / 本清单记录一致 | ☑ **发布提交 = `0638dbe`**（= `v0.3.0` tag）；dev tip 为含本文件的登记提交，见 §1.1 |
 | 3 | tag | `git tag -l v0.3.0` + `git rev-parse v0.3.0^{commit}` | 存在且指向预期提交；**`v0.2.0` 保留不删** | ☑ `v0.3.0` → `0638dbe`（含远端 `refs/tags/v0.3.0`）；`v0.2.0` → `771b099` 保留 |
 | 4 | 版本口径 | `grep -m1 '<version>' pom.xml` | 应用版本 **0.3.0**；**3.2.5 = Spring Boot 父 POM，非应用版本**（README 已显式澄清） | ☑ 0.3.0 |
-| 5 | 两远端一致性 | `git ls-remote origin HEAD` / `git ls-remote github HEAD` | 指向同一 SHA | ☑ 改写后重推，三方均 **`0638dbe`**：gitee 用 `git ls-remote` 实测；github 用 GitHub REST API `/repos/omixcore/phytoscope/commits/dev` 实测（`git ls-remote` 走 SSH over 443 曾被 reset，改用 API 绕过） |
+| 5 | 两远端一致性 | `git ls-remote origin HEAD` / GitHub REST API `commits/dev` | 指向同一 SHA | ☑ **一致**。改写后重推时刻三方均为 **`0638dbe`**；其后登记性文档提交使三方**同步**前进到新 SHA（**值不写入本节，以 `git rev-parse HEAD` 为准**，见 §1.1）。gitee 用 `git ls-remote` 实测；github 用 `/repos/omixcore/phytoscope/commits/dev` 实测（SSH over 443 曾被 reset，直连 HTTPS 亦偶发 reset，均以 API 复核） |
 | 6 | 数据双镜像一致性 | 两数据仓库远端 `git ls-remote ... HEAD` | 同一提交 | ☑ 均 `66054b7` |
 | 7 | 数据仓库工作区 | `git -C <reference-data> status --porcelain` | 输出为空 | ☑ 通过 |
 | 8 | 数据校验 | `sha256sum -c SHA256SUMS.txt`（数据仓库） | **9/9 OK**；totals **9 文件 / 68,518,847 B** 不变 | ☑ 9/9 OK |
 | 9 | 本地测试 | `sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test` | 绿、`ResearchModuleGoldSetTest` 非 skip、Skipped 总数由 12 下降（B01b 本机实测 `216 / 0 / 0 / 7`） | ☑ `216 / 0 / 0 / 7` BUILD SUCCESS |
 | 10 | **git push（M01，A 类）** | 推送代码/文档 → `origin` + `github`；数据 → 双镜像 | **凭证已实测可用，按 A 类本机执行**；成功记 `push_state = pushed`；**失败如实标注「未推送」，不得称已推送** | ☑ **pushed**（2026-11-14） |
-| 11 | **两端 commit 对照** | `git rev-parse HEAD` 与两远端 `git ls-remote ... HEAD` 三方比对 | 记录三方实际 SHA 于本清单；**一致才算推送闭环** | ☑ 改写后重推，三方一致于 **`0638dbe`**（发布提交）；登记性文档提交在其之后前进，见 §1.1 |
+| 11 | **两端 commit 对照** | `git rev-parse HEAD` 与两远端 HEAD 三方比对 | 记录三方实际 SHA 于本清单；**一致才算推送闭环** | ☑ **一致**（每次登记提交后均复核）。重推时刻三方同于 **`0638dbe`**（发布提交）；当前值随登记提交前进且三方同步，见 §1.1「两端 commit 对照记录」的读法说明 |
 | 12 | **Release 前置产物（B05 工程师产出）** | `ls -l ../dist/PhytoScope-Windows-0.3.0.zip` + `sha256sum -c desktop_program/SHA256SUMS.txt` | 两个文件必须存在且校验 OK，**M02 才能启动**；不得由主理人代建。**B05 已产出**：`PhytoScope-Windows-0.3.0.zip` 46,185,966 B / SHA `dcc2051f...`，`sha256sum -c` **3/3 OK**；`docs/fcs-v0.3.0-release-notes.md` 已记录 smoke 与 bundle 版本常量说明 | ☑ 通过 |
 | 13 | **Release 资产上传（M02，主理人）** | 推送后用**本机缓存凭据**走 GitHub Release API 尝试：补建 `v0.3.0` Release，上传 #12 两个资产 | **成功**才记 `release_state = published` + Release URL/时间；**权限不足/失败**记 `release_state = pending_release（待发布）` + 如实原因；**未执行前一律 `pending_release`，不得称已发布 v0.3.0** | ☑ **published**（Release id 445353264，2026-11-14） |
 | 14 | 执行主体 | 固定字段 | M01/M02 均为**主理人齐活林**；工程师只备清单与前置产物；Zenodo deposit 仍属作者 A1 | 主理人已执行 M01/M02 |
