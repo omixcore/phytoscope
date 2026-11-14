@@ -90,10 +90,12 @@ def main() -> int:
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
 
-    # Guard first: a missing gold-set report is a real failure, never a silent
-    # skip. This MUST precede shutil.which("blastp"), otherwise the external-tool
-    # message hides the fact that the Java gold-set test never produced its
-    # report (see B01/R1).
+    # Guards run in this fixed order (QA round-1, item 1): report exists ->
+    # report is valid JSON -> external tool available. A corrupt gold-set report
+    # must be reported as "[guard] ..." even on a machine without blastp;
+    # otherwise the missing-tool message masks the real failure. Both guards
+    # MUST precede shutil.which("blastp") (B01/R1), and the Java gold-set test
+    # must never be allowed to skip silently.
     if not args.report.is_file():
         raise SystemExit(
             f"[guard] gold-set report 缺失: {args.report}；"
@@ -102,9 +104,6 @@ def main() -> int:
             "禁止静默跳过"
         )
 
-    blastp = shutil.which("blastp")
-    if not blastp:
-        raise SystemExit("blastp is required; install ncbi-blast+ before running this comparison")
     try:
         report = json.loads(args.report.read_text(encoding="utf-8"))
     except (FileNotFoundError, json.JSONDecodeError) as exc:
@@ -114,6 +113,10 @@ def main() -> int:
             "-Dphytoscope.referenceDataDir=target/reference-data test` 产出该文件，"
             "禁止静默跳过"
         ) from exc
+
+    blastp = shutil.which("blastp")
+    if not blastp:
+        raise SystemExit("blastp is required; install ncbi-blast+ before running this comparison")
     similarity = report["protein_similarity"]
     records = similarity["reference_proteins"]
     queries = [record for record in records if record["family"] == "RBCS"]

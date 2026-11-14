@@ -188,3 +188,50 @@ PhytoScope（`--benchmark`，`-Xmx3g`）与 gffutils（`compare_gffutils.py`，�
 
 > **B 类如实标注**：R6 属「只交物料/协议，需作者执行」。本批只产出定性定稿 + 功能差异单列 +
 > 空白外部实机协议；**不得写成「已完成三工具同任务实机对照」**，也不把定性对照冒充实机计时。
+
+---
+
+## 8. B05 增量口径说明（QA 复核；上方 §1–§7 既有实测数字原样保留）
+
+> 本节只做**口径澄清**，不重跑任何计时、不新增实测结论、不改动 §1–§7 任何数字。
+> 目的：消除「§3.1 表格数字」与「Figure S1 冻结 JSON 数据源」之间的可复现性歧义。
+
+### 8.1 §3.1 表格「13.46 ms / 16.16 ms」是描述性四舍五入汇总
+
+- §3.1 表格「PhytoScope 选中基因座搜索（100 次，中位/p95）| 13.46 ms / 16.16 ms」是
+  `247ff11` 时代**正文里的描述性四舍五入汇总**，用于叙述性呈现，**不是**从冻结 JSON
+  重新计算的精确统计量，也不是 Figure S1 的数据源。按设计约定，§1–§7 既有实测数字
+  **原样保留、不重算、不回改**。
+- 机器可读的三轮原始值完整保留在冻结文件
+  `docs/paper-figures/data/gffutils-summary.json`（B02 冻结，带 `_provenance`）：
+
+  | 轮次 | `selected_gene_search_median_ms` | `selected_gene_search_p95_ms` |
+  | --- | --- | --- |
+  | trial 1 | 13.4572 | 16.1704 |
+  | trial 2 | 14.5065 | 16.1604 |
+  | trial 3 | 14.5774 | 17.2893 |
+
+  三者均为 `_provenance.not_new_measurement = true` 的**既有实机基线**（`measured_on_head = 247ff11`），
+  非本次新测。`13.46` 即 trial 1 的 median `13.4572` 四舍五入到两位；`16.16` 为 p95 序列中的
+  描述性取值（trial 2 的 `16.1604`）。**不把描述性汇总当作新的统计口径或新的实测**。
+
+### 8.2 Figure S1 采用 `median_*` 冷导入值（已核对一致）
+
+- Figure S1 面板 (a) 的**冷导入 / 建索引**计时由 `docs/paper-figures/make_paper_figures.py`
+  直接读取冻结 JSON 的两个 `median_*` 字段，未硬编码、未四舍五入掩盖：
+
+  | 显示量 | 冻结 JSON 字段 | 值（ms） |
+  | --- | --- | --- |
+  | PhytoScope in-memory import | `median_phytoscope_full_import_ms` | 2670.7585 |
+  | gffutils on-disk SQLite index | `median_gffutils_full_index_build_ms` | 57801.95119999917 |
+
+  二者与 §3.1「冷导入（中位）2,670.76 ms / 建索引（中位）57,801.95 ms」**已核对一致**
+  （同一冻结 JSON 的三轮中位），仅渲染时按 `%6.0f` 显示为整数毫秒。
+- Figure S1 面板 (a) 的**冻结基因座检索**用 `trials[0]` 的
+  `phytoscope.selected_gene_search_median_ms`（13.4572）与
+  `gffutils.selected_gene_query_100_median_ms`（0.2344），按 `%4.2f` 显示为
+  `13.46 ms · 0.23 ms`；与 §3.1 的 `13.46 / 0.24` 叙述一致（gffutils 为描述性四舍五入）。
+- **结论**：Figure S1 的**唯一数据源**是 `docs/paper-figures/data/*.json`（设计 §7.6），
+  其与 §3.1 正文数字的差异仅限「描述性四舍五入 vs 冻结原始值」，**不构成数据冲突、
+  不构成新实测、不构成速度优劣主张**。冷导入与建索引依旧分开报告（不同存储设计），
+  RSS 仍为 `not measured`。

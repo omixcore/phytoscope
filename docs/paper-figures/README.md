@@ -26,6 +26,14 @@ vector SVG): `Figure1–5.png/svg` + `FigureS1.png/svg` in this directory.
 **Toolchain**: Python 3.13 + matplotlib 3.11 (`Agg` headless backend); no
 Java/Maven required to render.
 
+**Byte-level reproducibility (honest note)**: the **PNG** files are byte-for-byte
+identical across regeneration runs (verified by regenerating all six figures and
+comparing SHA-256: 6/6 PNG unchanged). The **SVG** files are **not** byte-for-byte
+reproducible — matplotlib embeds a generation timestamp (`<dc:date>` in the RDF
+metadata) and this Windows tree writes CRLF line endings, so 6/6 SVG differ on each
+run. This is a **metadata/newline difference only**: the rendered figure content is
+identical. Do not treat an SVG hash mismatch as a data or figure-content discrepancy.
+
 ---
 
 ## Figure captions

@@ -44,7 +44,7 @@
 | `public_data_validation.counts_in_platform_matrix` | **`false`**（固定） |
 | `public_data_validation.failure_category` | **`"external_network"`**（固定，Q13，非代码逻辑） |
 | `public_data_validation.failure_reason` | `"外网 PMC/PastDB/ENA 依赖不可达，非代码缺陷；不据此判定 validation job 失败"` |
-| `evidence_chain_footnote` | `""`（**初值空字符串**，设计 §3.1 / §11.2；**证据链脚注，非失败项**）：R2 回收时由主理人如实记录「B01 曾暴露 `ComparisonWorkflowUiTest` 既有 FX 缺陷 → 主理人第三轮裁定必修 → B01b（`ca8743e`）测试侧两阶段 FX 重构修复（断言 verbatim / `src/main/java` 零改动 / 单条 `verify` 不变）→ 当前 HEAD 全量 `216/0/0/7` 绿」。**不并入 `c79034e` 基线、不并入外部网络类、不并入 failure → success 矩阵、不判代码失败**；本机 A 类留痕见 `docs/fcs-ci-goldset-fix-report.md` §2.8 与 `docs/fcs-phase2-verification-report.md` §5 |
+| `evidence_chain_footnote` | `""`（string，初值空串；**证据链脚注，非失败项**，见设计 §3.1 / §11.2）：B01 曾暴露 `ComparisonWorkflowUiTest` 既有 FX 缺陷 → 主理人第三轮裁定必修 → B01b（`ca8743e`）测试侧两阶段 FX 重构修复（断言 verbatim / `src/main/java` 零改动 / 单条 `verify` 不变）→ 当前 HEAD 全量 `216/0/0/7` 绿。**不并入 `c79034e` 基线、不并入外部网络类、不进 failure→success 矩阵、不判代码失败**；设计 §11 状态为「已闭环」，非待裁定提案 |
 | `overall_honest_statement` | `"A 类 7 项本机已闭环、B 类 6 项物料齐备待作者执行、C 类 1 项给出核查结论"`（固定） |
 | `baseline_reference` | `"docs/prd-fcs-final-delivery.md §1 / §1.1（HEAD c79034e）；本 run 为其后的修复 HEAD"`（固定） |
 

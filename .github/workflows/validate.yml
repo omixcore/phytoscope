@@ -49,18 +49,47 @@ jobs:
       - name: Java and JavaFX regressions
         shell: bash
         run: sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data verify
-      - name: Assert gold-set report was actually produced
+      - name: Assert gold-set report and key tests actually ran
         shell: bash
         run: |
           test -s target/research-validation/research-module-gold-set.json
           python - <<'PY'
           import glob, xml.etree.ElementTree as ET
-          p = glob.glob("target/surefire-reports/TEST-*ResearchModuleGoldSetTest.xml")
-          assert p, "surefire report for ResearchModuleGoldSetTest missing"
-          r = ET.parse(p[0]).getroot()
-          print("tests/skipped/failures/errors =", r.get("tests"), r.get("skipped"), r.get("failures"), r.get("errors"))
-          assert int(r.get("skipped") or 0) == 0, "gold-set test was SKIPPED, not executed"
-          assert int(r.get("failures") or 0) == 0 and int(r.get("errors") or 0) == 0
+
+          def counters(root):
+              return tuple(int(root.get(k) or 0) for k in ("skipped", "failures", "errors"))
+
+          # Per-test guard: these tests must really execute, never be skipped
+          # by an Assumptions gate, and must be green (B01/R1 + B01b/R2 QA round-1).
+          key_tests = [
+              "ResearchModuleGoldSetTest",
+              "DomainCaseValidationTest",
+              "ComparisonWorkflowUiTest",
+              "Gff2ParserSupportTest",
+          ]
+          for name in key_tests:
+              matched = glob.glob("target/surefire-reports/TEST-*" + name + ".xml")
+              assert matched, "surefire report for %s missing" % name
+              root = ET.parse(matched[0]).getroot()
+              skipped, failures, errors = counters(root)
+              print("%s tests/skipped/failures/errors = %s %s %s %s"
+                    % (name, root.get("tests"), skipped, failures, errors))
+              assert skipped == 0, "%s was SKIPPED, not executed" % name
+              assert failures == 0 and errors == 0, "%s reported failures/errors" % name
+
+          # Global guard: no red anywhere, and total Skipped must not exceed the
+          # PRD baseline of 12 (design §3.1). This stays ahead of every
+          # external-tool step on all three platforms.
+          totals = {"tests": 0, "skipped": 0, "failures": 0, "errors": 0}
+          reports = glob.glob("target/surefire-reports/TEST-*.xml")
+          assert reports, "no surefire XML reports found"
+          for path in reports:
+              root = ET.parse(path).getroot()
+              for key in totals:
+                  totals[key] += int(root.get(key) or 0)
+          print("GLOBAL tests/skipped/failures/errors =", totals)
+          assert totals["failures"] == 0 and totals["errors"] == 0, "surefire reported failures/errors"
+          assert totals["skipped"] <= 12, "total Skipped %d exceeds PRD baseline 12" % totals["skipped"]
           PY
       - name: Install external sequence baselines
         if: runner.os == 'Linux'
