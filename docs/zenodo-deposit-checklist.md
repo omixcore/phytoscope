@@ -8,8 +8,10 @@
 
 - **软件：v0.3.0**。软件仓库本地已打 tag `v0.3.0`，对应「数据瘦身 + 导入向导体检（D1–D6）+
   Manifest v2 / schemaVersion 4 + 跨物种可移植性加固」的功能集。
-- **数据：以提交 `acac2cf`（归档 9 文件）或其后 `5029713`（回填镜像）为准**，两者数据内容
-  字节一致（9 文件 / 68,518,847 B）。数据仓库已镜像于 gitee + github（同一提交）。
+- **数据：以提交 `2c6608b` 为准**（数据仓库当前 HEAD，含最终许可结论：horsemint 注释
+  CC BY 4.0 已确证，其余 8 条 needs_confirmation；9 文件 / 68,518,847 B）。数据仓库已镜像于
+  gitee + github。数据仓库目前无 tag，建议作者在 Zenodo 归档前先为其打 tag（或直接以提交
+  `2c6608b` 为准）。
 
 ## 2. 上传文件清单（建议拆分为两个 deposit，各取一个 DOI）
 
@@ -25,7 +27,7 @@
 
 | 文件 | 描述 |
 | --- | --- |
-| `phytoscope-reference-data-v0.3.0.zip` | 独立数据仓库 `phytoscope-reference-data` 在提交 `acac2cf` 的归档（9 个完整参考数据文件 + `MANIFEST.json` + `SHA256SUMS.txt` + `LICENSES.md` + `scripts/`）。已镜像于 gitee/github |
+| `phytoscope-reference-data-v0.3.0.zip` | 独立数据仓库 `phytoscope-reference-data` 在提交 `2c6608b` 的归档（9 个完整参考数据文件 + `MANIFEST.json` + `SHA256SUMS.txt` + `LICENSES.md` + `scripts/`）。已镜像于 gitee/github |
 | `SHA256SUMS.txt` | 数据仓库内 9 文件 SHA-256（`sha256sum -c SHA256SUMS.txt` 应 9/9 OK） |
 
 > 软件与数据是两个独立仓库、两套 DOI，建议拆分为两个 Zenodo deposit，并在
@@ -54,8 +56,9 @@
 
 - 软件：**MIT**（仓库根 `LICENSE`）。
 - 数据：逐文件许可见 `phytoscope-reference-data/LICENSES.md`。已确证：horsemint 注释
-  **CC BY 4.0**；TAIR10 FASTA 遵循 **Ensembl 数据政策（无额外限制，TAIR10 为第三方公开参考）**。
-  待作者确认：Araport11 Chr1–Chr5、E-MTAB-7978、mint 4 叶 TPM（来源未明确，硬缺口）。
+  **CC BY 4.0**。待作者确认：Araport11 Chr1–Chr5（TAIR 再分发风险，建议换 NCBI RefSeq
+  CP002684–CP002688）、TAIR10 FASTA（Ensembl 第三方数据约束责任在用户）、E-MTAB-7978
+  （所有者许可）、mint 4 叶 TPM（来源未明确，硬缺口）。
   Zenodo 数据 deposit 的 license 字段建议在作者完成许可核查后再选（若全部落定可归并为 CC BY 4.0，
   否则选「Other / 多许可」并引用 `LICENSES.md`）。
 

@@ -107,11 +107,11 @@ FASTA, and the app states this explicitly instead of silently showing nothing.
 ## Build artifact size (measured)
 
 Measured on 2026-11-13 (Windows 11 x64, JDK 21.0.6) after `./mvnw clean package`
-and `python tools/package_desktop.py --jar target/phytoscope-0.2.0.jar`:
+and `python tools/package_desktop.py --jar target/phytoscope-0.3.0.jar`:
 
 | Artifact | Measured size |
 | --- | --- |
-| Executable JAR `target/phytoscope-0.2.0.jar` | **22,317,249 bytes (21.28 MiB)** |
+| Executable JAR `target/phytoscope-0.3.0.jar` | **22,317,249 bytes (21.28 MiB)** |
 | jlink app-image ZIP `PhytoScope-Windows-AMD64.zip` | **46,146,746 bytes (44.01 MiB)** |
 
 The historical v0.2.0 README quoted "about 105 MiB" for its released Windows
@@ -136,7 +136,7 @@ sh mvnw javafx:run
 
 # Build and run the executable JAR (Windows: substitute mvnw.cmd for sh mvnw)
 sh mvnw clean package
-java -jar target/phytoscope-0.2.0.jar
+java -jar target/phytoscope-0.3.0.jar
 ```
 
 The first build downloads Maven and dependencies. JavaFX may print an
@@ -247,10 +247,10 @@ differential-expression tests.
 ## Batch export
 
 ```bash
-java -jar target/phytoscope-0.2.0.jar \
+java -jar target/phytoscope-0.3.0.jar \
   --example maize --out figures --format svg
 
-java -jar target/phytoscope-0.2.0.jar \
+java -jar target/phytoscope-0.3.0.jar \
   --gff3 annotation.gff3 --expression expression.tsv \
   --loci gene1,gene2 --out figures --format both
 ```
@@ -290,7 +290,7 @@ See the audit document for source URLs, checks and interpretation of parser coun
 Display-free comparison (does not initialize the JavaFX toolkit):
 
 ```bash
-java -jar target/phytoscope-0.2.0.jar --compare --example arabidopsis \
+java -jar target/phytoscope-0.3.0.jar --compare --example arabidopsis \
   --expression examples/arabidopsis-atlas/expression.tsv \
   --loci AT1G67090,AT5G38410,AT5G38420,AT5G38430 --out results \
   --project results/atlas.phytoscope
@@ -300,7 +300,7 @@ Optional comparison flags: `--alignment GENOMIC_START|TRANSCRIPTION_START|CDS_ST
 `--compress-introns`, `--scale LINEAR|LOG1P`, `--no-expression`.
 
 ```bash
-java -Xmx3g -jar target/phytoscope-0.2.0.jar --benchmark \
+java -Xmx3g -jar target/phytoscope-0.3.0.jar --benchmark \
   --example arabidopsis --out benchmark-results
 ```
 
