@@ -1,5 +1,16 @@
 # PhytoScope FCS · Zenodo 交接卡（占位符集中登记，B 类）
 
+> ## ⚠️ 醒目结论
+>
+> **现有数据归档包不构成已具备公开再分发条件的证据；8 项许可未落定前，Deposit B 不得设为公开可下载。**
+>
+> 因此：**Zenodo 归档状态保持「待发布」**；§1 五个占位符（含 `{{DATA_DOI}}`）**保持未回填**；
+> 不得在 Zenodo 设为公开。逐条条件见 `phytoscope-reference-data/LICENSES.md` §7。
+>
+> **Deposit B 公开归档范围 = 8 个文件 / 65,124,010 B**（仓库 `totals` 仍为
+> **9 个文件 / 68,518,847 B**、`SHA256SUMS.txt` 仍为 9 行）。扣留
+> `data/species/mint/mentha_longifolia_expression.tsv`（见 §3.3）。
+
 > 批次：B03 · 执行人：工程师寇豆码（Kou）· 日期：2026-11-14（ISO-8601 UTC 口径同设计 §7.10）
 > 权威规格：`docs/design-fcs-final-delivery.md` §5 B03 #8、§3.1、§7.5；增量 PRD R5。
 > **状态口径**：本文件属 **B 类（只交物料、需作者执行）**。**DOI 未取得**。本机不能代替作者登录
@@ -54,8 +65,16 @@
 |---|---|---|---|
 | `phytoscope-v0.3.0-source.zip` | **11,636,868** | **`git archive e920a12`**（B05 主 commit，归档源固定，见 §3.1） | B05 |
 | `PhytoScope-Windows-0.3.0.zip` | 46,185,790 | 本机构建（jpackage）+ 重命名 | B05 |
-| `phytoscope-reference-data-v0.3.0.zip` | 64,329,519 | 数据仓库 **B04 定稿后实际 HEAD** `249e771` | B05 |
+| `phytoscope-reference-data-v0.3.0.zip` | 64,329,519（**9 文件旧口径**，须重打） | 数据仓库 **`249e771`** | B05 |
 | `desktop_program/SHA256SUMS.txt`（主仓内） | — | 0.3.0 包校验和（M02 上传资产之一） | B05 |
+
+> **⚠️ 数据包必须重打后再上传**：上表 `phytoscope-reference-data-v0.3.0.zip`（64,329,519 B）
+> 是**含 9 个数据文件的旧口径**产物。公开归档范围已改为 **8 个文件 / 65,124,010 B**
+> （扣留 `data/species/mint/mentha_longifolia_expression.tsv`，见 §3.3），
+> 因此**该 ZIP 与其 SHA-256 不得用于公开发布**，须按 8 文件口径重新打包后另行登记。
+> 本节只登记既有产物与归档源，**不虚报新包的字节数与校验和**。
+> **仓库内 `totals` 仍为 9 / 68,518,847 B、`SHA256SUMS.txt` 仍为 9 行**——
+> 「仓库口径」与「公开包口径」必须分开表述。
 
 两包 SHA-256（B05 定稿后实测，上传时供作者核对）：
 - `phytoscope-v0.3.0-source.zip` = `e8ca52b88451d207673f6be1f1c62fed0f1c7ca5a515c25ebd502a3109e17b6a`
@@ -92,23 +111,45 @@
 - Deposit A：含 `README.md`、`CITATION.cff`、`pom.xml`、`docs/**`、`src/**`、`tools/**`、
   `benchmarks/**`；`unzip -t` → `DEP_A_ZIP_OK`。
 - Deposit B：含 `MANIFEST.json`、`SHA256SUMS.txt`、`LICENSES.md`、`scripts/**`（10 个脚本）；
-  且 `LICENSES.md` 内含「B04 三选一结论定稿表」§0、`MANIFEST.json` 含 `license_decision`
-  字段；`unzip -t` → `DEP_B_ZIP_OK`。
+  且 `LICENSES.md` 内含「三选一结论定稿表」§0 与「可执行再分发条件表」§7、`MANIFEST.json`
+  含 `license_decision` / `distribution_status` 字段；`unzip -t` → `DEP_B_ZIP_OK`。
 - 两包 `unzip -t` 完整性校验均通过；**本机未上传、未创建 deposit、未取得 DOI**。
+
+### 3.3 Deposit B 扣留文件（本轮新增，**必须遵守**）
+
+| 项 | 值 |
+|---|---|
+| 扣留文件 | `data/species/mint/mentha_longifolia_expression.tsv`（3,394,837 B，SHA-256 `8000e27d…`） |
+| `distribution_status` | `withdrawn_from_public_deposit` |
+| `license_decision` | `withdrawn_pending_upstream_confirmation` |
+| `license_status` | `needs_confirmation`（**不变**） |
+| 处置理由 | 溯源**已确证**（本项目用 SRP565976 的 4 个叶片文库 + 本项目 CC BY 4.0 horsemint 注释自行计算，见 `phytoscope-reference-data/PROVENANCE-mint-tpm.md`）；但上游 INSDC 读段**无明示许可**，故按保守原则**不进入公开归档包** |
+| **不做什么** | **不删除磁盘文件**（否则 `MintTranscriptomeUiTest` 与既有基线失效）；**不改 `data/**` 字节**；**不改 `SHA256SUMS.txt` 的 9 行**；**不改 `totals`（9 / 68,518,847）** |
+| 公开包结果 | **8 个文件 / 65,124,010 B**（= 68,518,847 − 3,394,837） |
+
+> 打包时的正确做法：**在仓库内不删任何文件**，只在上传的 ZIP 中排除该 1 个路径，
+> 并保留包内 `README.md` / `LICENSES.md` 顶部的扣留声明。
+> **不得**对外表述为「数据仓库只有 8 个文件」或「9 个文件都可公开下载」。
 
 ---
 
 ## 4. Description / License / Citation 定稿物料的指针
 
-- 两个 deposit 的 Description、Related identifiers、Citation 模板：**`docs/zenodo-deposit-checklist.md`**（B04 独占定稿）。
-- 逐文件许可结论（1 confirmed + 8 待确认）：**`phytoscope-reference-data/LICENSES.md`** 与
-  **`docs/fcs-data-license-decision.md`**（B04 独占定稿）。
+- 两个 deposit 的 Description、Related identifiers、Citation 模板：**`docs/zenodo-deposit-checklist.md`**。
+- 逐文件许可结论（1 confirmed + 8 待确认）：**`phytoscope-reference-data/LICENSES.md`**
+  （含 §7 **可执行再分发条件表**，逐文件给出权利方 / 条款 URL / 能否公开再分发 / 还缺什么 / 建议动作）
+  与 **`docs/fcs-data-license-decision.md`**。
+- 薄荷 4 叶 TPM 的**可复核溯源**：**`phytoscope-reference-data/PROVENANCE-mint-tpm.md`**
+  （含证据链、取证命令、输入文件、输入数据许可、复现步骤与复现性边界）。
 - 软件许可证：**MIT**（仓库根 `LICENSE`）。
 
 ---
 
 ## 5. 如实口径
 
-- 本文件只交付**占位符登记 + 交接步骤**；**Zenodo 归档未完成、DOI 未取得**。
+- 本文件只交付**占位符登记 + 交接步骤**；**Zenodo 归档未完成、DOI 未取得、归档保持「待发布」**。
+- **现有数据归档包不构成已具备公开再分发条件的证据；8 项许可未落定前，Deposit B 不得设为公开可下载。**
 - 对外表述固定为「**A 类 7 项本机已闭环、B 类 6 项物料齐备待作者执行、C 类 1 项给出核查结论**」；
-  禁止写「已完成 Zenodo 归档 / 取得 DOI」「14 项全部完成」「已发布 v0.3.0」。
+  禁止写「已完成 Zenodo 归档 / 取得 DOI」「14 项全部完成」「已发布 v0.3.0」「数据许可已理清」。
+- **仓库口径 vs 公开包口径**：仓库 9 个文件 / 68,518,847 B / `SHA256SUMS.txt` 9 行（不变）；
+  公开包 8 个文件 / 65,124,010 B。**两者不得混用**。

@@ -1,12 +1,25 @@
 # PhytoScope Zenodo 归档上传清单（提交给作者的物料）
 
+> ## ⚠️ 醒目结论
+>
+> **现有数据归档包不构成已具备公开再分发条件的证据；8 项许可未落定前，Deposit B 不得设为公开可下载。**
+>
+> 8 项许可全部落定（书面许可到手或完成替换）之前：**Deposit B 归档状态保持「待发布」**，
+> **`{{DATA_DOI}}` / `{{SOFTWARE_DOI}}` / `{{PAPER_DOI}}` 占位符保持未回填**，
+> 不得在 Zenodo 设为公开，也不得称「数据许可已理清」。逐条条件见
+> `phytoscope-reference-data/LICENSES.md` §7（可执行再分发条件表）。
+
 > 本文件是交给「作者」的投稿物料，指导其在 **Zenodo 网页端手动**完成软件与数据两仓库的
 > 归档并取得 DOI。**Zenodo 注册 / 上传 / 发布动作由作者在网页端手动完成**，本文件不含任何
 > 自动上传脚本。**B 类如实标注：DOI 未取得、Release 附件未公开、归档未发布**；本机只交物料。
 >
-> **B04 定稿说明（R3 / R5 checklist）**：§5 License 已按 `docs/fcs-data-license-decision.md`
+> **许可定稿说明（R3 / R5 checklist）**：§5 License 已按 `docs/fcs-data-license-decision.md`
 > 的 8 条三选一结论定稿；两个 deposit 的 Description / Related identifiers / Citation 模板已定稿；
 > `docs/fcs-figure-numbering-map.md` 为图号唯一权威（本文件不涉及图号）。
+>
+> **数据包口径变更（本轮）**：Deposit B **公开归档包由 9 个文件改为 8 个文件**
+> （`data/species/mint/mentha_longifolia_expression.tsv` 扣留，见 §2 Deposit B 说明）；
+> 仓库 `totals` 仍为 **9 个文件 / 68,518,847 B**，`SHA256SUMS.txt` 仍为 9 行。
 
 ## 0. 占位符清单（全部未回填；集中登记于 `docs/fcs-zenodo-handoff.md`）
 
@@ -50,10 +63,23 @@
 
 ### Deposit B：数据（PhytoScope reference data）
 
+> **公开归档范围 = 8 个数据文件 / 65,124,010 B**（仓库 `totals` 仍为 9 个文件 /
+> 68,518,847 B）。扣留 1 个文件：
+> `data/species/mint/mentha_longifolia_expression.tsv`（3,394,837 B）——
+> `distribution_status: withdrawn_from_public_deposit`，
+> `license_decision: withdrawn_pending_upstream_confirmation`。
+> **该文件保留在仓库中供内部复现与审计，但不进入公开归档包**；其溯源已确证，见
+> `phytoscope-reference-data/PROVENANCE-mint-tpm.md`。
+> `SHA256SUMS.txt` **仍为 9 行**（仓库口径未变），打包时**不删任何字节**，
+> 只在上传的 ZIP 中排除该 1 个文件，并在包内 `README.md` / `LICENSES.md` 顶部保留扣留声明。
+
 | 文件 | 描述 |
 | --- | --- |
-| `phytoscope-reference-data-v0.3.0.zip` | 独立数据仓库 `phytoscope-reference-data` 在 **B04 定稿后实际 HEAD** 的归档：9 个完整参考数据文件 + `MANIFEST.json` + `SHA256SUMS.txt` + `LICENSES.md` + `scripts/`。包内 `LICENSES.md` / `MANIFEST.json` 含**最终三选一许可结论** |
-| `SHA256SUMS.txt` | 数据仓库内 9 文件 SHA-256（`sha256sum -c SHA256SUMS.txt` 应 9/9 OK） |
+| `phytoscope-reference-data-v0.3.0.zip` | 独立数据仓库 `phytoscope-reference-data` 在其实际 HEAD 的归档：**8 个完整参考数据文件**（9 个中扣留 1 个）+ `MANIFEST.json` + `SHA256SUMS.txt`（9 行）+ `LICENSES.md` + `PROVENANCE-mint-tpm.md` + `README.md` + `scripts/`。包内 `LICENSES.md` / `MANIFEST.json` 含**最终许可结论与扣留声明** |
+| `SHA256SUMS.txt` | 数据仓库内 **9 行** SHA-256（`sha256sum -c SHA256SUMS.txt` 在**仓库内**应 9/9 OK；公开包内条目 8 个） |
+
+> **不得**把「8 个文件进公开包」写成「仓库只有 8 个文件」，也不得把「9/9 OK」写成
+> 「9 个文件均已具备公开再分发条件」——两件事必须分开表述。
 
 > 两个 ZIP 由 **B05** 在 `../dist/`（工作区根、主仓上一级）生成，并用 `unzip -l` 校验含
 > `MANIFEST.json` / `SHA256SUMS.txt` / `LICENSES.md` / `scripts/`。**上传与发布仍标 B 类待作者执行**；
@@ -81,12 +107,14 @@
   完成基因结构查看、表达矩阵挂载、序列提取、蛋白质相似性与结构域映射等分析，并以 SHA-256 溯源
   与版本化 Manifest 保证结果可复现。本版本（v0.3.0）内置瘦身后的 KB 级示例，完整参考数据见
   配套数据归档（{{DATA_DOI}}）。**软件许可 MIT**。
-- **数据**：PhytoScope 完整参考数据归档，含 **9 个文件 / 68,518,847 B** —— TAIR10 基因组 FASTA、
-  Araport11 Chr1–Chr5 注释、horsemint（*Mentha longifolia*）染色体级基因组注释、
-  E-MTAB-7978 表达图谱与 horsemint 4 叶 TPM 矩阵；附逐文件 SHA-256 校验和
-  （`sha256sum -c SHA256SUMS.txt` 应 9/9 OK）、双 gitee/github 镜像与来源 / 许可清单
+- **数据**：PhytoScope 参考数据归档**公开包**，含 **8 个文件 / 65,124,010 B** —— TAIR10 基因组
+  FASTA、Araport11 Chr1–Chr5 注释、horsemint（*Mentha longifolia*）染色体级基因组注释、
+  E-MTAB-7978 表达图谱；附逐文件 SHA-256 校验和、双 gitee/github 镜像与来源 / 许可清单
   （见 `MANIFEST.json` 与 `LICENSES.md`）。**许可为多许可（Other）**：1 条已确证 CC BY 4.0，
   8 条待确认，逐条见 `LICENSES.md`；不得归并成单一 CC BY 4.0。
+  **说明**：数据仓库共 9 个文件 / 68,518,847 B；其中 horsemint 4 叶 TPM 矩阵
+  （`mentha_longifolia_expression.tsv`）**不进入本公开包**（溯源已确证但上游读段许可未落定，
+  处置为 `withdrawn_from_public_deposit`），保留在仓库中供内部复现。
 
 ## 4. 贡献者 / 机构
 
@@ -95,30 +123,33 @@
 - 机构：`{{AFFILIATION}}`（**待作者填写**，见 `docs/fcs-zenodo-handoff.md`）
 - ORCID：`{{ORCID}}`（**待作者填写**，见 `docs/fcs-zenodo-handoff.md`）
 
-## 5. License（B04 定稿，裁定 3）
+## 5. License（许可定稿，裁定 3）
+
+> **现有数据归档包不构成已具备公开再分发条件的证据；8 项许可未落定前，Deposit B 不得设为公开可下载。**
 
 - **Deposit A（软件）：MIT**（仓库根 `LICENSE`）。与数据许可**分开**，不得互相套用。
 - **Deposit B（数据）：Other（多许可）+ 引用 `phytoscope-reference-data/LICENSES.md`**。
   Zenodo 的 license 字段选 **「Other」** 并在 Description / 备注中写明「多许可，逐文件见
   `LICENSES.md`」，**不得**选 CC BY 4.0 作为整个 deposit 的单一许可。
 
-  逐条口径（与 `LICENSES.md` §0 / `MANIFEST.json` 一一对应）：
+  逐条口径（与 `LICENSES.md` §0 / §7、`MANIFEST.json` 一一对应）：
 
-  | 条 | 数据 | 许可状态 | `decision` |
-  | --- | --- | --- | --- |
-  | 1（**confirmed**） | horsemint 完整注释 `mentha_longifolia_horsemint.gff3.gz` | ✅ **CC BY 4.0**（figshare 官方 API 确证，DOI 10.6084/m9.figshare.28457522.v3） | `redistribute` |
-  | 2–6（5 条） | Araport11 `Chr1–Chr5.gff3.gz` | ⚠️ 待确认：需向 Phoenix/TAIR 申请书面许可，或后续版本替换为 NCBI RefSeq CP002684–CP002688 | `author_authorization_required` |
-  | 7 | TAIR10 `TAIR10_genomic.fna.gz` | ⚠️ 待确认：Ensembl 第三方数据约束责任在用户，需向 Phoenix/TAIR 申请书面许可或后续版本替换 | `author_authorization_required` |
-  | 8 | E-MTAB-7978 `expression.tsv` | ⚠️ 待确认：需向数据所有者（Mergner / TUM）确认许可 | `author_authorization_required` |
-  | 9 | mint 4 叶 TPM `mentha_longifolia_expression.tsv` | ❌ **来源与许可无法确证 → 不得再分发，需作者追根或删除** | `replace_required` |
+  | 条 | 数据 | 是否进公开包 | 许可状态 | `decision` |
+  | --- | --- | --- | --- | --- |
+  | 1（**confirmed**） | horsemint 完整注释 `mentha_longifolia_horsemint.gff3.gz` | ✅ 进 | ✅ **CC BY 4.0**（figshare 官方 API 确证，DOI 10.6084/m9.figshare.28457522.v3） | `redistribute` |
+  | 2–6（5 条） | Araport11 `Chr1–Chr5.gff3.gz` | ⚠️ 进（需许可） | ⚠️ 待确认：需向 Phoenix/TAIR 申请书面许可，或后续版本替换为 NCBI RefSeq CP002684–CP002688 | `author_authorization_required` |
+  | 7 | TAIR10 `TAIR10_genomic.fna.gz` | ⚠️ 进（需许可） | ⚠️ 待确认：Ensembl 第三方数据约束责任在用户，需向 Phoenix/TAIR 申请书面许可或后续版本替换 | `author_authorization_required` |
+  | 8 | E-MTAB-7978 `expression.tsv` | ⚠️ 进（需许可） | ⚠️ 待确认：需向数据所有者（Mergner / TUM）确认许可 | `author_authorization_required` |
+  | 9 | mint 4 叶 TPM `mentha_longifolia_expression.tsv` | ❌ **不进公开包** | ⚠️ **溯源已确证、许可未落定**：本项目自行计算的衍生数据，上游注释/基因组 CC BY 4.0，但 INSDC 读段无明示许可 | `withdrawn_pending_upstream_confirmation` |
 
-  **合计 1 confirmed（CC BY 4.0）+ 8 待确认**。
+  **合计 1 confirmed（CC BY 4.0）+ 8 待确认；公开包 8 个文件 / 65,124,010 B。**
 
-- **8 条未定稿 / 未获权利人书面许可前，不得归并成 CC BY 4.0**：即使 B04 已把 8 条「三选一
-  再分发决策」定稿，`license_status` 一律保持 `needs_confirmation`，`conclusion_is_authorization =
-  false`，**结论 ≠ 已获授权**；本机不能代替权利人授予许可。取得书面许可、Zenodo 发布、DOI 回填、
-  mint 4 叶 TPM 删除决策均属**作者 / 主理人动作（B 类）**。
-- 权威决策表：`docs/fcs-data-license-decision.md`；逐条取证：`phytoscope-reference-data/LICENSES.md`。
+- **8 条未定稿 / 未获权利人书面许可前，不得归并成 CC BY 4.0**：即使三选一结论已定稿，
+  `license_status` 一律保持 `needs_confirmation`，`conclusion_is_authorization = false`，
+  **结论 ≠ 已获授权**；本机不能代替权利人授予许可。取得书面许可、Zenodo 发布、DOI 回填、
+  mint 4 叶 TPM 的最终去留均属**作者 / 主理人动作（B 类）**。
+- 权威决策表：`docs/fcs-data-license-decision.md`；逐条取证与**可执行再分发条件表**：
+  `phytoscope-reference-data/LICENSES.md`（§0 / §7）。
 
 ## 6. Related DOI（占位，归档后回填）
 
