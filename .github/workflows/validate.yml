@@ -28,7 +28,22 @@ jobs:
       - name: Fetch complete reference data from reference-data repository
         shell: bash
         run: |
-          git clone --depth 1 https://gitee.com/omixcore/phytoscope-reference-data.git target/reference-data
+          # The clone pulls ~127 MB from gitee and has failed intermittently with
+          # "GnuTLS recv error (-110) / early EOF" (transient TLS reset), turning a
+          # healthy commit red. Retry a bounded number of times instead of failing fast.
+          for attempt in 1 2 3; do
+            if git clone --depth 1 https://gitee.com/omixcore/phytoscope-reference-data.git target/reference-data; then
+              echo "reference-data clone succeeded on attempt $attempt"
+              break
+            fi
+            echo "::warning::reference-data clone attempt $attempt failed (transient network/TLS); retrying"
+            rm -rf target/reference-data
+            if [ "$attempt" -eq 3 ]; then
+              echo "::error::could not clone phytoscope-reference-data after 3 attempts"
+              exit 1
+            fi
+            sleep 5
+          done
           python - <<'PY'
           import json, pathlib
           src = pathlib.Path("src/main/resources/data/species/arabidopsis/manifest.json")

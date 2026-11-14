@@ -6,11 +6,16 @@ root=Path(__file__).resolve().parents[1]
 for name in ['arabidopsis','rice','maize','soybean']:
  out=a.out/name
  subprocess.run([a.java,'-Xmx3g','-jar',str(a.jar),'--benchmark','--example',name,'--out',str(out)],check=True)
- if name=='arabidopsis':
-  sources= sorted((root/'src/main/resources/data/species/arabidopsis').glob('Chr*.gff3*'))
- else:
-  base=root/f'src/main/resources/data/species/{name}/{name}_chromosomes.gff3'
-  sources=[base] if base.exists() else [base.with_suffix(base.suffix+'.gz')]
+ # Compare exactly the annotation this benchmark imported. The complete Arabidopsis
+ # Chr1-Chr5 datasets were moved out of this repository into phytoscope-reference-data,
+ # so `--example arabidopsis` now loads the bundled KB-scale example
+ # (arabidopsis_chromosomes.gff3.gz). The former Chr*.gff3* glob no longer matched
+ # anything and silently left --source with zero arguments.
+ base=root/f'src/main/resources/data/species/{name}/{name}_chromosomes.gff3'
+ sources=[base] if base.exists() else [base.with_suffix(base.suffix+'.gz')]
+ missing=[s for s in sources if not s.exists()]
+ if missing:
+  raise SystemExit(f"[guard] bundled example annotation missing: {missing[0]}")
  subprocess.run([sys.executable,str(root/'tools/validate_structure_inventory.py'),'--source',*map(str,sources),'--parsed',str(out/'parsed-structure.tsv'),'--out',str(out/'structure-validation.json')],check=True)
  if a.full_dir:
   source=a.full_dir/f'{name}.gff3.gz';full=a.out/(name+'-full')
