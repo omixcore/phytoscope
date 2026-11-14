@@ -14,6 +14,14 @@
 # PhytoScope-Windows-AMD64.zip is 927b0002... . Both historical ZIPs were left
 # untouched; only the name<->hash association in this checksum file was corrected.
 # Verify from the main repository root with:  sha256sum -c desktop_program/SHA256SUMS.txt
-8f7953eba6c04922be9b2faf21b717ff3fe36cc15a5bd1f3393b38da7716bfa6 *../dist/PhytoScope-Windows-0.3.0.zip
+# NOTE (2026-11-14, rebuild): the 0.3.0 archive was rebuilt after the
+# commit-message rewrite so that the binary and the source archive in the same
+# release come from one tree. The release commit is 0638dbe (= tag v0.3.0);
+# the source ZIP carries that SHA in its archive comment. Nothing under src/,
+# pom.xml or tools/package_desktop.py differs from the earlier e293f7e build
+# (tree hashes: src c37fbcbc..., src/main 5072f55b..., pom.xml 4b7dc45a...),
+# so the two builds are byte-equal except for embedded build timestamps.
+# The earlier build's checksum 8f7953eb... is superseded and must not be quoted.
+dcc2051f63228ad93f5954a326c157f8b04ba82556d67b1311a2964025a7ed6c *../dist/PhytoScope-Windows-0.3.0.zip
 927b000219cd9b1d08f577c4fb315ff86538656cfc11451872f05c7e4911aa2c *../dist/PhytoScope-Windows-AMD64.zip
 763b1c42350872047f36eb6c944ea3ebfd10ffaaca7a1fb8a59645a2392b3cce *../dist/PhytoScope-Windows-0.2.0.zip

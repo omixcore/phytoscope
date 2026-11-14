@@ -19,8 +19,8 @@ archive: `.tar.gz` on Linux/macOS (preserving executable permissions) or `.zip`
 on Windows. Unpack this archive before launching.
 
 > **B05 (0.3.0) authoritative archive name.** The single authoritative Windows
-> release asset is **`../dist/PhytoScope-Windows-0.3.0.zip`** (46,185,790 bytes,
-> SHA-256 `8f7953eba6c04922be9b2faf21b717ff3fe36cc15a5bd1f3393b38da7716bfa6`).
+> release asset is **`../dist/PhytoScope-Windows-0.3.0.zip`** (46,185,966 bytes,
+> SHA-256 `dcc2051f63228ad93f5954a326c157f8b04ba82556d67b1311a2964025a7ed6c`).
 > `tools/package_desktop.py` still emits `PhytoScope-Windows-AMD64.zip` (raw
 > jpackage output, no version in the name) and keeps a legacy bundle
 > `--app-version 0.2.0` constant; **that is NOT the application version**. This

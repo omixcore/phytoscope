@@ -7,6 +7,11 @@
 > ## 状态：`collection_state = remote_run_collected`（远端已实跑，结论已回填）
 >
 > **本文件记录的是远端实测结果，本地通过记录不能替代远端结果。**
+> **本目录含两次远端运行，读数时必须先看清是哪一次**：
+> - **§1–§6 = run `43605656726`（commit `49a5fac`，历史记录，ubuntu failure）**；
+> - **§7 = run `43609281554`（commit `0638dbe` = 发布提交，三平台矩阵全 success）← 当前发布口径以此为准**。
+>
+> （下段为 §1–§6 那次运行的快照口径，保留原文以存事实。）
 > 依据：GitHub Actions run **`43605656726`**（`event=push`、`head_branch=dev`、
 > `run_started_at=2026-11-14T14:35:25Z`、`updated_at=2026-11-14T14:41:50Z`），
 > commit **`49a5fac`**；run 页面
@@ -18,7 +23,7 @@
 > `public-data-validation` failure 在 step 5 `Audit public Arabidopsis splicing and proteomics resources`，
 > 属**外部网络数据源**，单列、不计入代码失败。
 >
-> **ubuntu 的修复已提交但尚未经远端重跑确认**；重跑确认前**不得写「三平台通过」**。
+> **该 ubuntu 失败已定位并修复，且修复后已在 run `43609281554` 上经远端重跑确认（见 §7）**。
 > 采集时间：**2026-11-14T14:41:50Z**（GitHub REST API，取 run `updated_at` 为快照时间）。
 > 未取得项如实保留：三平台 `surefire-reports/` 明细、Linux 三个 JSON 的远端副本**仍待回收**
 > —— 这两项需下载 artifact，未经下载不作任何内容声明。
@@ -30,7 +35,7 @@
 | 字段 | 值 |
 |---|---|
 | `run_id` | **`"43605656726"`** |
-| `commit_sha` | **`"49a5fac43c1e7d2c915a9aac4abfca7b2356b581"`**（dev tip；发布 tag `v0.3.0` 指向 `3e8b83c`，见 `docs/fcs-final-push-checklist.md` §1.1） |
+| `commit_sha` | **`"49a5fac43c1e7d2c915a9aac4abfca7b2356b581"`**（dev tip；发布 tag `v0.3.0` 指向 `0638dbe`，见 `docs/fcs-final-push-checklist.md` §1.1） |
 | `workflow` | `"Validate and package PhytoScope"`（固定） |
 | `trigger` | **`"push"`**（**不是** `workflow_dispatch`） |
 | `triggered_at_utc` | **`"2026-11-14T14:35:25Z"`**（= `run_started_at` / `created_at`） |
@@ -131,9 +136,10 @@
 
 ## 4. 状态归属与归类（强制）
 
-1. 三平台 `validation` 的远端结论**已如实回填**（windows success / macos success / ubuntu failure）；
+1. 三平台 `validation` 的远端结论**已如实回填**（run `43605656726`：windows success / macos success / ubuntu failure）；
    **不得**把「2 of 3 success」概括为「三平台通过」或「CI 全绿」。
-   ubuntu 的修复已提交但**尚未经远端重跑确认**，确认前保持 failure 口径。
+   该 ubuntu failure 的修复已在 run `43609281554` 上经远端重跑确认通过（**§7**）；
+   引用「三平台通过」时**只允许**绑定 §7 的 run id 与 commit `0638dbe`，不得反向套用到本节这次运行。
 2. `public-data-validation` 的失败是**外部网络类**（PMC/PastDB/ENA 不可达，`failure_category = external_network`），
    **永远不并入三平台 `validation` 矩阵结论**（`counts_in_platform_matrix = false`），
    **不据此判定代码失败**，也不混入「CI 转 success」结论。
@@ -155,10 +161,14 @@
 ## 5. 对外口径（禁止虚报）
 
 - 固定表述：「**A 类 7 项本机已闭环、B 类 6 项物料齐备待作者执行、C 类 1 项给出核查结论**」。
-- 可正面陈述（有远端实测证据）：run `43605656726` / commit `49a5fac` 上
-  **windows、macos 两个 `validation` job 为 success**，且**金标准链路已在远端实跑、`Skipped: 0`**。
-- 禁止：「14 项全部完成」「**CI 三平台通过 / CI 全绿**」「已完成 Zenodo 归档/取得 DOI」
+- 可正面陈述（有远端实测证据）：
+  - run `43609281554` / commit `0638dbe`（**§7**）：**三个 `validation` job 全 success**，
+    ubuntu `216 / 0 / 0 / 7` + `BUILD SUCCESS`；
+  - run `43605656726` / commit `49a5fac`（§1–§6，历史）：windows、macos 两个 job success；
+  - 两次运行中金标准链路均**已在远端实跑、`Skipped: 0`**。
+- 禁止：「14 项全部完成」「**整条 workflow 全绿**」「已完成 Zenodo 归档/取得 DOI」
   「已完成用户测试」「已完成三平台原生验证」「许可问题已解决」。
+  （「三平台矩阵在 `0638dbe` 上通过」是**允许**的表述，但必须与 §7 的 run/job id 绑定。）
 - 禁止把 `public-data-validation` 外部网络失败计入代码失败；禁止把 ubuntu 的 failure 略去不提，
   或只写「金标准通过」而不提该 job 仍 failure。
 - 禁止用**本机本地通过记录**替代**远端结果**；两者口径不同，须分别标注来源。
@@ -169,21 +179,109 @@
 
 ## 6. 提交 SHA 与历史改写
 
-本节记录的远端运行基于提交 `49a5fac`。此后为统一仓库语言风格，`c79034e..HEAD` 区间的提交信息被改写为英文；
-**提交内容（tree）逐字节不变**，仅 commit message 与因之变化的 SHA 不同。本节的 run id、job id、平台结论、
-失败步骤与测试计数均为该次运行的事实记录，**不随后续改写失效**；当前有效 SHA 以
-`docs/fcs-final-push-checklist.md` 的「发布提交 vs 分支最新提交」一节为准。
+本节记录的远端运行基于提交 `49a5fac`。为统一仓库语言风格，`c79034e..HEAD` 区间的提交信息随后被改写为英文；
+**提交内容（tree）逐字节不变**，仅 commit message 与因之变化的 SHA 不同（改写前后已逐对校验 tree 相同）。
+本节的 run id、job id、平台结论、失败步骤与测试计数均为该次运行的事实记录，**不随后续改写失效**；
+当前有效 SHA 以 `docs/fcs-final-push-checklist.md` §1.1 / §1.2 为准。
 
 ```
-rewritten_head_sha: （待主理人回填）
+rewritten_head_sha: 0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4
+rewrite_scope: c79034e..HEAD (commit messages only; trees byte-identical)
+old_commit_49a5fac_equals_after_rewrite: 76712bd
 ```
 
 > **读法说明（避免后来者困惑）**：
 > 1. 本文件上文出现的 `49a5fac` 是**本次 CI 运行时**的 commit SHA，属**历史事实记录**，不会因为历史改写而变成错误。
-> 2. 历史改写后 remote 上可能已无 `49a5fac` 这个 SHA —— 这是**预期的**，不代表本次运行记录失效或伪造。
+> 2. 改写后远端已无 `49a5fac` 这个 SHA —— 这是**预期的**，不代表本次运行记录失效或伪造；
+>    它等价于改写后的 `76712bd`（tree 相同）。
 > 3. 若要复核本次运行，请用 `run_id 43605656726`（run 与 job 记录不可变）而不是用 SHA 去 `git show`。
-> 4. 历史改写**不改变发布内容**：`v0.3.0` tag 仍指向 `3e8b83c` 的**内容**（改写若涉及该提交，
->    其 tree 逐字节不变），Release 资产 `PhytoScope-Windows-0.3.0.zip` 46,185,790 B
->    与 `SHA256SUMS.txt` 1,547 B 亦不受影响。
-> 5. 改写完成后须同步更新 `docs/fcs-final-push-checklist.md` §1.1 的 SHA 列，
->    并在此处回填 `rewritten_head_sha`。
+> 4. 改写**不改变发布内容**：`v0.3.0` tag 现指向 `0638dbe`（含本轮 CI 修复），
+>    Release 资产已于 2026-11-14 从该 tag 重建并重新上传（旧校验和作废），
+>    新值见 `docs/fcs-v0.3.0-release-notes.md` / `docs/fcs-zenodo-handoff.md` 与
+>    `desktop_program/SHA256SUMS.txt`。
+> 5. 改写后**重跑了一次三平台 CI**（`0638dbe`），其结果单独记于 §7，不与本节混为一谈。
+
+---
+
+## 7. 修复后的远端重跑：run `43609281554`（commit `0638dbe`，三平台矩阵全绿）
+
+> **本节是「ubuntu 修复是否真的生效」的唯一远端证据**，也是 `v0.3.0` 发布提交的口径依据。
+> §1–§6 记录的是 run `43605656726`（`49a5fac`，ubuntu failure），两节不得混读。
+
+### 7.1 运行元数据（GitHub REST API 实测）
+
+| 字段 | 值 |
+|---|---|
+| `run_id` | **`43609281554`** |
+| `run_attempt` | `1` |
+| `workflow` | `Validate and package PhytoScope` |
+| `head_sha` | **`0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4`**（= `v0.3.0` tag = 发布提交） |
+| `head_branch` | `dev` |
+| run 页面 | https://github.com/omixcore/phytoscope/actions/runs/43609281554 |
+| `collected_at_utc` | **`2026-11-14T15:37Z`**（`/actions/runs/43609281554/jobs` 查询，run 已结束） |
+| `collection_state` | `remote_run_collected` |
+
+### 7.2 逐 job 结论（4 个 job）
+
+| job | job_id | 结论 | started_at (UTC) | completed_at (UTC) | 失败步骤 |
+|---|---|---|---|---|---|
+| `validation (ubuntu-latest)` | **`132490554008`** | **success** | `2026-11-14T15:16:31Z` | `2026-11-14T15:32:41Z` | — |
+| `validation (macos-latest)` | **`132490554359`** | **success** | `2026-11-14T15:16:32Z` | `2026-11-14T15:19:23Z` | — |
+| `validation (windows-latest)` | **`132490554399`** | **success** | `2026-11-14T15:16:31Z` | `2026-11-14T15:24:16Z` | — |
+| `public-data-validation` | **`132490554373`** | **failure** | `2026-11-14T15:16:31Z` | `2026-11-14T15:17:14Z` | **step 5 `Audit public Arabidopsis splicing and proteomics resources`** |
+
+- **三平台矩阵 `validation` 三个 job 全部 success** —— `platforms.ubuntu.status = "success"`，
+  `status_transition = failure → success`（相对 §1 的 `49a5fac` 那次，亦相对 `c79034e` 基线为 `failure → success`）。
+- `public-data-validation` 仍为**外部网络类失败**（同一 step 5，PMC/PastDB/ENA 不可达），
+  `counts_in_platform_matrix = false`，**不并入矩阵结论、不判代码失败**。
+
+### 7.3 ubuntu 测试计数（该 job 日志实测，`Skipped: 0` 门控通过）
+
+```
+Results: Tests run: 216, Failures: 0, Errors: 0, Skipped: 7
+BUILD SUCCESS
+```
+
+| 测试类 | run / failures / errors / skipped | 时长 |
+|---|---|---|
+| `ResearchModuleGoldSetTest` | **1 / 0 / 0 / 0** | 6.799 s |
+| `DomainCaseValidationTest` | **1 / 0 / 0 / 0** | 3.708 s |
+| `Gff2ParserSupportTest` | **5 / 0 / 0 / 0** | — |
+| `ComparisonWorkflowUiTest` | **1 / 0 / 0 / 0** | 16.02 s |
+
+> 与 §1.1（`49a5fac` 那次）对比：金标准 4 个门控类的 `Skipped: 0` 在两次运行中一致，
+> 说明**金标准链路在 ubuntu 上一直是真执行**；差异只在 `Java and JavaFX regressions` 步骤的
+> FX 无头启动。全局 `Skipped` 由基线的 `12` 降到 **`7`**，且 `216` 与本地全量复跑一致。
+
+### 7.4 ubuntu 失败 → 通过的完整因果链（含一次误判，如实记录）
+
+1. **首轮失败（run `43605656726`，`49a5fac`）**：14 个 JavaFX UI 测试各耗时恰好 `20.00s` 后超时。
+2. **第一次修复（`e293f7e`）**：根因是 surefire `reuseForks=true` 复用同一 JVM，而 JavaFX
+   在一个 JVM 内只能初始化一次，后续测试类的 `Platform.runLater` 永远不会被派发。
+   改为 `forkCount=1` / `reuseForks=false`（`pom.xml` `ui-tests` profile），并把 7 个 UI 测试类的
+   latch 超时由 20s（`MintTranscriptomeUiTest` 30s）统一放宽到 90s。**未增删/未弱化任何断言。**
+3. **该修复引入的新问题（同一提交的 rerun，run `43608357998`）**：`ComparisonWorkflowUiTest`
+   在新 JVM 下 `realAtlasComparisonProjectRoundTripAndVectorRasterExports` 超时（246.9s），
+   thread dump 显示 **FX Application Thread 不存在**——`LoadingOperation` 的进度对话框是最后一个窗口，
+   在默认 `implicitExit=true` 下关窗即关掉 toolkit。补 `Platform.setImplicitExit(false)` 后本机通过。
+   > 另：run `43608357998` 的 ubuntu 还在 **step 5 `git clone`** 上失败过一次
+   > （`RPC failed; curl 56 GnuTLS recv error (-110)` / `fatal: early EOF`），属**瞬时网络**，
+   > 同提交的 windows/macos 均通过。已在 `validate.yml` 为该 clone 加 **3 次有界重试**，
+   > 不改 `verify` 命令本身。
+4. **第二次修复（`0638dbe`）**：`tools/run_validation.py` 里 Arabidopsis 分支仍在 glob
+   `src/main/resources/data/species/arabidopsis/Chr*.gff3*`，该目录在完整 Chr1–Chr5 外迁到
+   `phytoscope-reference-data` 后已不存在 → glob 匹配为空 → `--source` 收到 0 个参数 →
+   `validate_structure_inventory.py: error: argument --source: expected at least one argument`。
+   四个物种（arabidopsis / rice / maize / soybean）统一改为校验 `--example <name>` **实际导入的那份**
+   注释（即随包 KB 级示例 `*_chromosomes.gff3(.gz)`），并加「文件缺失即 `SystemExit`」守卫，
+   避免同类静默失败再次发生。
+5. **确认（run `43609281554`，本节）**：ubuntu success，`BUILD SUCCESS`。
+
+### 7.5 口径（强制）
+
+- 可以说：「**三平台矩阵（ubuntu / macos / windows）在 `0638dbe` 上通过**」，
+  并附 job id 与时间戳。
+- **不得**说「整条 workflow 全绿」——同一 run 内 `public-data-validation` 仍 failure（外部网络）。
+- **不得**把本节结论外推为「已完成三平台**原生**人工验证」：Monocle headless 不能认证原生对话框、
+  DPI 缩放、图形驱动、签名/公证或 SmartScreen 提示（§2 硬约束仍有效）。
+- 本节所有数值均来自 GitHub REST API 与 runner 日志，**未由本地结果代入**。

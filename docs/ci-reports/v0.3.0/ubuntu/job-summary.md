@@ -20,7 +20,7 @@
 - **失败步骤**：**step 10 `Java and JavaFX regressions`**
 - **原因**：**14 个 JavaFX UI 测试在无头环境下 `Platform.startup` latch 超时**
 - **归类**：代码 / 测试环境类（`failure_category` 不属 `external_network`）
-- **状态**：修复**已提交**，但**尚未经远端重跑确认**；**确认前不得写「三平台通过」**
+- **状态**：修复**已提交**，且已在 run `43609281554` 上**经远端重跑确认通过**（见文末「重跑确认」）
 
 ## 关键测试计数（远端实测，`Skipped: 0`）
 
@@ -63,3 +63,38 @@
 
 - `check_isoform_case.py`（`validate.yml:48`）`FileNotFoundError: src/main/resources/data/species/arabidopsis/TAIR10_genomic.fna.gz` → **代码类**，B01 已修。
 - 连带：金标准门控未传参 → `Skipped: 1`、gold-set JSON 不产出、bedtools/BLASTP 失去输入 → **代码类**，B01 已修。
+
+---
+
+## 重跑确认（run `43609281554` / commit `0638dbe`）
+
+> 上表记录的是 run `43605656726`（`49a5fac`，failure）。修复后重跑的结果如下，
+> **当前发布口径以本段为准**；逐 job 全量记录见 `docs/ci-reports/v0.3.0/README.md` §7。
+
+| 项 | 值 |
+|---|---|
+| job 名 | `validation (ubuntu-latest)` |
+| job id | **`132490554008`** |
+| 结论 | **`success`** |
+| `status_transition` | **`failure → success`**（相对 `49a5fac` / `c79034e` 均为 failure） |
+| started_at (UTC) | `2026-11-14T15:16:31Z` |
+| completed_at (UTC) | `2026-11-14T15:32:41Z` |
+| 证据来源 | run **`43609281554`**（`run_attempt=1`、`head_branch=dev`、`head_sha=0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4`）；https://github.com/omixcore/phytoscope/actions/runs/43609281554 |
+
+日志实测：
+
+```
+Results: Tests run: 216, Failures: 0, Errors: 0, Skipped: 7
+BUILD SUCCESS
+```
+
+| 测试类 | run / failures / errors / skipped | 时长 |
+|---|---|---|
+| `ResearchModuleGoldSetTest` | **1 / 0 / 0 / 0** | 6.799 s |
+| `DomainCaseValidationTest` | **1 / 0 / 0 / 0** | 3.708 s |
+| `Gff2ParserSupportTest` | **5 / 0 / 0 / 0** | — |
+| `ComparisonWorkflowUiTest` | **1 / 0 / 0 / 0** | 16.02 s |
+
+> 全局 `Skipped` 已由基线 `12` 降至 **`7`**；`errors = 0`、`failures = 0`。
+> `surefire-reports/` 与三个 Linux JSON 的**内容**仍未下载回收，仍标「待回收」——
+> 本表只填「已确证的计数」，不用本机报告充数。

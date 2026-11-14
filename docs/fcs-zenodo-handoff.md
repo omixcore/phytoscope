@@ -61,50 +61,41 @@
 > 本节只登记 B05 已产出的归档包与**归档源 SHA**（team-lead 第三轮续作指令）。
 > **上传与发布仍标 B 类待作者执行**。
 
-| 文件（`../dist/`，工作区根、主仓上一级） | 大小（B） | 归档源 | 产出批次 |
+| 文件（`../dist/`，工作区根、主仓上一级） | 大小（B） | 归档源 | 说明 |
 |---|---|---|---|
-| `phytoscope-v0.3.0-source.zip` | **11,636,868** | **`git archive e920a12`**（B05 主 commit，归档源固定，见 §3.1） | B05 |
-| `PhytoScope-Windows-0.3.0.zip` | 46,185,790 | 本机构建（jpackage）+ 重命名 | B05 |
-| `phytoscope-reference-data-v0.3.0.zip` | 64,329,519（**9 文件旧口径**，须重打） | 数据仓库 **`249e771`** | B05 |
-| `desktop_program/SHA256SUMS.txt`（主仓内） | — | 0.3.0 包校验和（M02 上传资产之一） | B05 |
+| `phytoscope-v0.3.0-source.zip` | **11,658,264** | **`git archive 0638dbe`**（显式 SHA；当时 tag `v0.3.0` 指向同一提交，见 §3.1） | 460 项，ZIP 注释即该 SHA |
+| `PhytoScope-Windows-0.3.0.zip` | 46,185,966 | 从发布提交 `0638dbe` 的 tree 构建（jpackage）+ 重命名 | packaged smoke PASS；旧构建 `8f7953eb…` 作废 |
+| `phytoscope-reference-data-v0.3.0.zip` | 63,580,701 | 数据仓库 **`66054b7`** | 29 项 / **8 个数据文件**，已剔除扣留文件 |
+| `desktop_program/SHA256SUMS.txt`（主仓内） | 2,158 | 0.3.0 包校验和（Release 资产之一） | 已更新为重建后的值，`sha256=690905ad…` |
 
-> **⚠️ 数据包必须重打后再上传**：上表 `phytoscope-reference-data-v0.3.0.zip`（64,329,519 B）
-> 是**含 9 个数据文件的旧口径**产物。公开归档范围已改为 **8 个文件 / 65,124,010 B**
-> （扣留 `data/species/mint/mentha_longifolia_expression.tsv`，见 §3.3），
-> 因此**该 ZIP 与其 SHA-256 不得用于公开发布**，须按 8 文件口径重新打包后另行登记。
-> 本节只登记既有产物与归档源，**不虚报新包的字节数与校验和**。
-> **仓库内 `totals` 仍为 9 / 68,518,847 B、`SHA256SUMS.txt` 仍为 9 行**——
-> 「仓库口径」与「公开包口径」必须分开表述。
+> **公开包口径（2026-11-14 重建后已落实）**：数据包已按 **8 个数据文件**（未压缩合计
+> 65,124,010 B）重新打包，`data/species/mint/mentha_longifolia_expression.tsv` 已从 ZIP 中剔除
+> （理由见 §3.3）。**仓库内 `totals` 仍为 9 / 68,518,847 B、`SHA256SUMS.txt` 仍为 9 行**——
+> 「仓库口径」与「公开包口径」必须分开表述，不得互相替代。
 
-两包 SHA-256（B05 定稿后实测，上传时供作者核对）：
-- `phytoscope-v0.3.0-source.zip` = `e8ca52b88451d207673f6be1f1c62fed0f1c7ca5a515c25ebd502a3109e17b6a`
-- `phytoscope-reference-data-v0.3.0.zip` = `c7eb904c1e8a7977bb751f9b412ec9386d977d6062a4a179e3b4aac7f1361e9b`
+两包 SHA-256（2026-11-14 重建后实测，上传时供作者核对）：
+- `phytoscope-v0.3.0-source.zip` = `4f1a212591e9e0b32ac41882ed0b656a0c663587afc5ae8cd925709933b1c9f9`
+- `phytoscope-reference-data-v0.3.0.zip` = `e88a9cfa172244a71b88fe580991160f536bf6e75a91213960e69aadaa180416`
 
-### 3.1 归档源 SHA（记录；`v0.3.0` tag 不用）
+### 3.1 归档源 SHA
 
-- **Deposit A（软件源码）**：用 **`git archive e920a12`（B05 主 commit 显式 SHA）** 生成，
-  **禁止** `git archive v0.3.0` —— 该 annotated tag 指向 `edae8433`（tag 对象）、
-  落后当前 HEAD 多个提交且**无 Release 附件关联**，会漏掉本次全部改动。
-  `v0.3.0` tag 由**主理人**在推送阶段前移到最终提交并同步两远端，工程师**不动 tag**。
-  - **B05 主 commit（Deposit A 归档源，固定）= `e920a1211904709dc61776bf091322a73f7d2010`**
-    （team-lead 续作指令要求登记）。Deposit A 已用 `git archive e920a12` **生成**，
-    包内含 B05 的 `fcs-v0.3.0-release-notes.md` /
-    `fcs-performance-benchmark.md` / `benchmarks/results/2026-11-14-v0.3.0/**` /
-    架构师 3 份设计文档（`unzip -l` 已核对）。已实测 `git archive e920a12` 与交付 ZIP
-    **逐字节一致**（`cmp` BYTE_IDENTICAL=YES），归档可确定复现。
-  - 首次生成时 HEAD 为 `7eead0e032edbbe4b370c827733794d9e47ac94a`（B05 commit 前），
-    已被 `e920a12` 归档版覆盖；**不得**把首次生成的 `7eead0e` 当作归档源。
-  - **归档源固定为 `e920a12`，不随其后 HEAD 前移**：本文件的归档源 SHA / 两包校验和
-    登记由 **B05 收尾 commit** 写入；归档快照无法包含其自身的 SHA 登记，故该收尾
-    commit **不纳入 Deposit A**，但 `e920a12` 已含 B05 全部实质产物（代码 / 文档 /
-    性能实测 / 设计定稿），满足「不用 `v0.3.0` tag、不漏改动」的裁定要求。
-    主理人 push 前用 `git cat-file -t e920a1211904709dc61776bf091322a73f7d2010`
-    与 `git archive e920a12 | sha256sum` 复现核对归档源；第 2/11 项**推送闭环**的
-    三方 HEAD 比对（另一动作）见 `docs/fcs-final-push-checklist.md`。
-- **Deposit B（参考数据）**：用 `git -C ../phytoscope-reference-data rev-parse HEAD`
-  取 **B04 定稿后实际 HEAD = `249e771a09b28312f46df0f1a02eb7d34f14897f`**，
-  使包内 `LICENSES.md` / `MANIFEST.json` 含最终三选一许可结论（与 Zenodo dataset
-  license 字段如实一致）。**不用**基线 `2c6608b`（不含 B04 定稿）。
+- **Deposit A（软件源码）**：用 **`git archive 0638dbe`** 生成（**显式 SHA，不用 tag 作为命令**），
+  实测 `git rev-parse v0.3.0^{}` = **`0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4`**，460 项。
+  - **历史说明**：B05 阶段该 annotated tag 曾指向 `edae8433`（tag 对象）、落后 HEAD 多个提交
+    且无 Release 附件关联，当时**禁止**用 tag 生成源码包，只能用显式 SHA `e920a12`。
+  - **现状（2026-11-14）**：tag 经主理人两次前移后已指向**含本轮全部修复的内容提交**
+    `0638dbe`；此刻 `git archive v0.3.0` 与 `git archive 0638dbe` 产出**逐字节相同**
+    （包内 ZIP 注释即 `0638dbe…`）。但归档命令**仍以显式 SHA 书写**，理由见下条。
+  - **可复现性约束（为什么不写 tag）**：tag 会随收尾/登记性文档移动（本次已移动两次），
+    一旦再移动，`git archive v0.3.0` 就产不出同一个包。显式 SHA 永不移动。
+    归档快照本身也无法包含它的 SHA 登记，因此**登记性文档提交不纳入 Deposit A**。
+  - 核对命令：`git cat-file -t 0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4`、
+    `git archive 0638dbe | sha256sum`；推送闭环的三方 HEAD 比对见
+    `docs/fcs-final-push-checklist.md`。
+- **Deposit B（参考数据）**：用数据仓库 **`66054b7`**
+  （= `66054b700d902fdd8171c3565dc50482d5fa6f25`，B04 许可定稿 + 薄荷 TPM 溯源），
+  包内含 `LICENSES.md` / `MANIFEST.json` / `PROVENANCE-mint-tpm.md` 的最终结论；
+  **不用**基线 `2c6608b`（不含 B04 与溯源定稿）。
 
 ### 3.2 `unzip -l` 内容留痕（B05 实跑）
 

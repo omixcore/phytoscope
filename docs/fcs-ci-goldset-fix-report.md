@@ -3,7 +3,10 @@
 > 批次：B01（`.github/`、`tools/`、`src/test/`）+ B01b（阻塞修复 / 跨平台换行消除）· 执行人：工程师寇豆码（Kou）· 日期：2026-11-14（ISO-8601 UTC 口径同设计 §7.10）
 > 环境：Windows 11 x64 · JDK 21.0.6 · Python 3.13.14 · Git Bash · `mvnw -Pui-tests`（JavaFX Monocle headless）
 > 权威规格：`docs/design-fcs-final-delivery.md` §5 B01、§0.1、§7；增量 PRD `docs/prd-fcs-final-delivery.md` R1/R7；第三轮下发 B01b 裁定
-> **状态口径**：本报告只记录本机真实输出。三平台远端 CI 报告回收属 B 类（主理人执行，裁定 4），**本报告不宣称三平台 CI 已通过**。
+> **状态口径**：§2–§5 只记录本机真实输出；§6.1–§6.5 同理。**§6.6 例外**——它记录的是
+> 远端 run `43609281554` 的实测结果，作为「ubuntu 修复是否生效」的独立证据。
+> 本地与远端两条证据须分别标注来源，不得相互替代；「三平台矩阵通过」只能绑定
+> `docs/ci-reports/v0.3.0/README.md` §7 的 run/job id 引用。
 > **版本说明**：§2.2、§4.1、§5 已按 B01b 结果更新；`ComparisonWorkflowUiTest` 由「未解决遗留」改为「已修复（B01b）」；§2.8 记录新旧全量测试结果对比与 B01b-2 语义比较改动。
 
 ---
@@ -238,7 +241,9 @@ BUILD SUCCESS
 - R7 的 4 个 fixture + 5 个兼容级测试全绿，明确「非独立解析器 / 非独立验证宣称」，零 `src/main/java/**` 改动。
 - **B01b 阻塞修复已完成**：`sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test` → `Tests run: 216, Failures: 0, Errors: 0, Skipped: 7`，`BUILD SUCCESS`；`ResearchModuleGoldSetTest skipped=0`、`ComparisonWorkflowUiTest` 通过、全量 Skipped 不高于基线 12。未使用 `@Disabled` / `Assumptions` 绕过，未改生产加载语义。
 - **B01b-2 跨平台换行不确定性已消除**：`check_isoform_case.py` 本机 Windows `exit=0`；`candidates.tsv` 字节比较与 `input_sha256` 校验保持；`screen_domain_isoforms.py` 仅固定 LF 输出、未改算法。
-- **仍如实标注的边界**：本机无 bedtools（8/8 比对留给 CI Linux）；三平台远端 CI 报告回收、Release、Zenodo DOI 均为 B 类，**本报告不宣称已完成**。
+- **仍如实标注的边界**：本机无 bedtools（8/8 比对留给 CI Linux）；Zenodo DOI 仍属 B 类未取得。
+  三平台远端 CI 与 Release 已在 **§6.6** 记录实测结果（run `43609281554` 三平台矩阵 success、
+  Release 已发布并已重传资产），但**本报告不代替** `docs/ci-reports/v0.3.0/README.md` §7 的逐 job 记录。
 
 ---
 
@@ -322,7 +327,31 @@ sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test
 
 ### 6.5 边界声明
 
-- 未改 `src/main/java/**`、未改任何断言体与期望值、未改 `.github/workflows/validate.yml`、未改 `README.md` / `CHANGELOG.md` / `CITATION.cff`；未使用 `@Disabled`、`Assumptions` 或重新门控等回避手段。
-- 本节的验证全部在**本机 Windows + JDK 21** 上执行，未改动 Gitee 外置仓库与远端 CI 配置。
-- **远端 ubuntu 修复结果需重跑 CI 确认，本节不宣称已修复。**
+- 本节所述修复（`e293f7e`）未改 `src/main/java/**`、未改任何断言体与期望值、
+  未改 `.github/workflows/validate.yml`、未改 `README.md` / `CHANGELOG.md` / `CITATION.cff`；
+  未使用 `@Disabled`、`Assumptions` 或重新门控等回避手段。
+  > 后续提交 `0638dbe`（见 §6.6）**确有**改 `.github/workflows/validate.yml`（只加 clone 重试）
+  > 与 `tools/run_validation.py`，那属 §6.6 的独立问题，不影响本节「未改工作流」的陈述范围。
+- §6.1–§6.4 的验证全部在**本机 Windows + JDK 21** 上执行；远端 CI 配置当时未改动。
+
+### 6.6 远端确认（本节结论已由 run `43609281554` 证实）
+
+- **`e293f7e` 的修复已在远端生效**：run `43609281554`（`run_attempt=1`，commit `0638dbe` = `v0.3.0`）
+  的 `validation (ubuntu-latest)` **success**（job `132490554008`，`15:16:31Z → 15:32:41Z`），
+  `Results: Tests run: 216, Failures: 0, Errors: 0, Skipped: 7` + `BUILD SUCCESS`；
+  四个门控类 `Skipped: 0`（`ResearchModuleGoldSetTest 1/0/0/0` 6.799 s、
+  `DomainCaseValidationTest 1/0/0/0` 3.708 s、`Gff2ParserSupportTest 5/0/0/0`、
+  `ComparisonWorkflowUiTest 1/0/0/0` 16.02 s）。
+- **中途还暴露并修掉了第二个问题（`0638dbe`）**：`tools/run_validation.py` 的 Arabidopsis 分支
+  仍在 glob 已被外迁的 `src/main/resources/data/species/arabidopsis/Chr*.gff3*`，匹配为空导致
+  `--source` 收到 0 个参数 → `validate_structure_inventory.py: error: argument --source:
+  expected at least one argument`。四个物种统一改为校验 `--example <name>` 实际导入的随包示例注释，
+  并加文件缺失守卫。此前一次尝试误指向 `phytoscope-reference-data` 的全量 Chr1–Chr5，
+  引发 `expected_records: 811827 / parsed_records: 571` 不一致，已回退（如实记录）。
+- **同期一次瞬时网络失败**：run `43608357998` 的 ubuntu 在 step 5 `git clone`
+  报 `RPC failed; curl 56 GnuTLS recv error (-110)` / `fatal: early EOF`，同提交 windows/macos 通过；
+  已在 `validate.yml` 为该 clone 加 3 次有界重试，**`verify` 命令本身未改**。
+- **因此**：§6.4 的「本地通过」与远端结果现已**相互独立地同时成立**；
+  但引用时仍须分别标注来源，不得用其一替代另一。
+- 完整逐 job 记录见 `docs/ci-reports/v0.3.0/README.md` **§7**。
 

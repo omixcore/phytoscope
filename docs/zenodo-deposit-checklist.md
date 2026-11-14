@@ -51,6 +51,12 @@
   Deposit A 一律用 `git archive HEAD`（或最终 commit SHA）。`v0.3.0` tag 由主理人在推送阶段
   前移到最终提交并同步两远端，作者 / 工程师**不要动 tag**。
 
+  > **2026-11-14 现状补注（不改上条规则）**：`v0.3.0` 已由主理人前移并同步两远端，
+  > 现实测指向 `0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4`。**归档命令仍按上条写显式 SHA**
+  > （`git archive 0638dbe`）——tag 已移动过两次，若再随登记性文档前移，
+  > `git archive v0.3.0` 就产不出同一个包。`../dist/phytoscope-v0.3.0-source.zip`
+  > 即由该 SHA 生成，460 项，`sha256 4f1a2125…`。详见 `docs/fcs-zenodo-handoff.md` §3.1。
+
 ## 2. 上传文件清单（两个 deposit，各取一个 DOI；均在 `../dist/` 由 B05 产出）
 
 ### Deposit A：软件（PhytoScope software）

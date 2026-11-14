@@ -71,23 +71,30 @@
 
 > **阅读提示（2026-11-14 追加，不改上方原文）**：§一–§六 是 `8b6bf0b` 时代的只读盘点，
 > 其中若干状态**已被后续动作覆盖**，按下列口径读：
-> - ②「tag/Release 严重滞后」→ **已消除**：`v0.3.0` tag 指向 `3e8b83c`，GitHub Release 已公开发布
->   （`PhytoScope-Windows-0.3.0.zip` 46,185,790 B + `SHA256SUMS.txt` 1,547 B），
+> - ②「tag/Release 严重滞后」→ **已消除**：`v0.3.0` tag 指向 `0638dbe`，GitHub Release 已公开发布
+>   （`PhytoScope-Windows-0.3.0.zip` 46,185,966 B + `SHA256SUMS.txt` 2,158 B；
+>   两资产已于 2026-11-14T15:38Z 替换为与发布提交同源的构建），
 >   https://github.com/omixcore/phytoscope/releases/tag/v0.3.0 。
 > - ①「软件 DOI 缺失」→ **仍未解决**，`zenodo_state = not_published`，DOI 未取得。
 > - ③「许可全待确认」→ **仍未解决**（1/9 确认，8 项 `needs_confirmation`），且这是
 >   **Zenodo 归档与 DOI 回填的前置条件**：许可未落定前 **Deposit B 不得公开**。
-> - 「CI 三平台通过」类表述 → **不得使用**，见 §7.1（远端已实跑但非全绿）。
+> - 「CI 三平台通过」类表述 → 现在**可以使用，但必须绑定证据**：仅限
+>   「三平台矩阵（ubuntu / macos / windows）在 commit `0638dbe` 上通过」
+>   （run `43609281554`，job `132490554008` / `132490554359` / `132490554399`），
+>   见 §7.1；**不得**泛化为「整条 workflow 全绿」（`public-data-validation` 仍外部网络失败）。
 
 1. **已基本就绪、只需复核（约 20/30）**：输入规范（#1）、版本一致性（#2/#3）、LICENSE（#7）、Windows 打包与实测（#11/#12）、参考数据机读清单（#14/#15/#17）、六份验证文档（#18–#23）、7 个分析模块实现+金标准（#24–#30）均已落地且有**具体文件/提交/测试类可查**。这些属于「材料齐、待作者复核措辞与许可」。
 
 2. **明确缺口、需补齐（4 项）**：① **软件 DOI 缺失（#6）**——需挂 Zenodo/DataCite 并版本化；② **tag/Release 严重滞后（#4/#5）**——HEAD 领先 v0.2.0 共 16 提交，当前树（瘦身+intake）无新 tag、无新版发布附件；③ **许可全待确认（#16）**——9 个数据文件 `license_status` 全为 `needs_confirmation`，薄荷 TPM 甚至无来源 URL，投稿前必须逐条落定；④ **CHANGELOG 未回填（#8）** 与 **README「remote URLs pending」表述过时（#9）**。
 
-3. **需新增实测（⏳/🟡 类，约 6 项）**：macOS/Linux 桌面原生启动实测（#13）、~~当前 HEAD 的 CI 三平台实跑结果落地（#10）~~（**已回填，见 §7.1：远端已实跑但非全绿**）、BED/bedGraph 规范项（#1 内 deferred，如需宣称则需实现+测试）、非标准遗传密码/细胞器翻译（#1 验收项，尚未实现）、更大规模的多家族/负例金标准（#25/#26 的泛化）、以及对比实验与用户研究（#20 自认的 GUI 同类软件同任务对照**未执行**，论文仅作**定性功能比较**，见 §7.3）。
+3. **需新增实测（⏳/🟡 类，约 6 项）**：macOS/Linux 桌面原生启动实测（#13）、~~当前 HEAD 的 CI 三平台实跑结果落地（#10）~~（**已闭环，见 §7.1：run `43609281554` / commit `0638dbe` 三平台矩阵 success**）、BED/bedGraph 规范项（#1 内 deferred，如需宣称则需实现+测试）、非标准遗传密码/细胞器翻译（#1 验收项，尚未实现）、更大规模的多家族/负例金标准（#25/#26 的泛化）、以及对比实验与用户研究（#20 自认的 GUI 同类软件同任务对照**未执行**，论文仅作**定性功能比较**，见 §7.3）。
 
 4. **执行优先级建议（相对当前任务面板）**：把「阶段1」内 **tag + Release + DOI + 许可** 四项提为 P0（投稿硬门槛、纯物料操作、不涉代码）；**CHANGELOG 回填 + README 表述统一** 为 P1（低成本消除不一致）；**macOS/Linux 原生实测、当前树 CI 绿、BED/bedGraph 决策** 为 P2（需要运行时或实现投入）；**用户研究/更大金标准/对比实验**维持阶段6/7，不阻塞投稿但需在文中如实标注「未执行」而非留白。
 
-> 待运行时验证汇总：`#10`（当前 HEAD 三平台 CI 实跑）、`#13`（macOS/Linux 原生桌面）、`#1` 中的 BED/bedGraph 与遗传密码项、`#25/#26` 的更大金标准泛化、`#20` 的 manual/浏览器对比。以上均未在本仓库落地可查结果，故不标 ✅。
+> 待运行时验证汇总：`#13`（macOS/Linux 原生桌面）、`#1` 中的 BED/bedGraph 与遗传密码项、
+> `#25/#26` 的更大金标准泛化、`#20` 的 manual/浏览器对比。
+> ~~`#10`（当前 HEAD 三平台 CI 实跑）~~ **已闭环**（run `43609281554`，见 §7.1）。
+> 以上未闭环项均未在本仓库落地可查结果，故不标 ✅。
 
 ---
 
@@ -97,28 +104,34 @@
 > 状态值全部保留、不改、不外推为当前实测**（设计 §7.3 / PRD §8 第 5 条）。补注只做两件事：
 > ① 为 #10 标「**待远端回收**」；② 声明论文图表述的唯一权威图号。
 
-### 7.1 #10「CI 三平台工作流」状态：远端已实跑，**非全绿**
+### 7.1 #10「CI 三平台工作流」状态：远端已实跑两次，**当前三平台矩阵通过**
 
 - 上方 #10 的 🟡 与「待运行时验证」是 **HEAD `8b6bf0b` 时代的只读盘点结论**，保留原样。
-- **当前状态（远端实测已回填）**：run **`43605656726`**（`event=push`、`head_branch=dev`、
-  `run_started_at=2026-11-14T14:35:25Z`、`updated_at=2026-11-14T14:41:50Z`）/ commit **`49a5fac`**。
+- **第一次运行（run `43605656726` / commit `49a5fac`，历史记录）**：
   `validation (windows-latest)` **success**（job `132479612528`）、
   `validation (macos-latest)` **success**（job `132479612388`）、
   `validation (ubuntu-latest)` **failure**（job `132479612471`，失败于
   **step 10 `Java and JavaFX regressions`**，**14 个 JavaFX UI 测试在无头环境
   `Platform.startup` latch 超时**）。
-- **不得写「CI 三平台通过 / CI 全绿」**。ubuntu 的修复**已提交但尚未经远端重跑确认**；
-  重跑确认前保持 failure 口径。
-- **金标准链路已在远端确认实跑（`Skipped: 0`）**：`ResearchModuleGoldSetTest 1/0/0/0`、
+- **第二次运行（run `43609281554` / commit `0638dbe` = `v0.3.0`，当前口径）**：
+  `validation (ubuntu-latest)` **success**（job `132490554008`，`15:16:31Z → 15:32:41Z`）、
+  `validation (macos-latest)` **success**（job `132490554359`）、
+  `validation (windows-latest)` **success**（job `132490554399`）。
+  ubuntu 全量 `Tests run: 216, Failures: 0, Errors: 0, Skipped: 7` + `BUILD SUCCESS`。
+- **口径**：可以说「**三平台矩阵（ubuntu / macos / windows）在 `0638dbe` 上通过**」，
+  但须绑定 run / job id；**不得**说「整条 workflow 全绿」（同 run 内 `public-data-validation`
+  仍为外部网络失败）。
+- **金标准链路两次均在远端确认实跑（`Skipped: 0`）**：`ResearchModuleGoldSetTest 1/0/0/0`、
   `DomainCaseValidationTest 1/0/0/0`、`Gff2ParserSupportTest 5/0/0/0`、
   `ComparisonWorkflowUiTest 1/0/0/0`。**本地通过记录（`216 / 0 / 0 / 7`）不能替代远端结果**，
   两者口径不同；`c79034e` 基线的「金标准 `Skipped: 1`」问题已在远端被证伪修复。
-- `public-data-validation`（PMC/PastDB/ENA 外网依赖，job `132479612205`，失败于
+- `public-data-validation`（PMC/PastDB/ENA 外网依赖，job `132479612205` / `132490554373`，失败于
   **step 5 `Audit public Arabidopsis splicing and proteomics resources`**）单独归类为
   `failure_category = external_network`、`counts_in_platform_matrix = false`，
   **不并入三平台矩阵、不据此判定代码失败**（Q13）。
-- 汇总落点：`docs/ci-reports/v0.3.0/README.md`（含 §1.1 按 job 的实测表）+ 逐平台
-  `job-summary.md`；仍待回收：`surefire-reports/` 明细、Linux 三个 JSON、artifact、job id。
+- 汇总落点：`docs/ci-reports/v0.3.0/README.md`（§1.1 = 第一次运行按 job 的实测表，
+  **§7 = 第二次运行**）+ 逐平台 `job-summary.md`；仍待回收：`surefire-reports/` 明细、
+  Linux 三个 JSON、artifact。
 - **证据链脚注（非失败项，设计 §11.2）**：B01 → B01b 的 `ComparisonWorkflowUiTest` 既有 FX
   缺陷修复（`ca8743e`，测试侧两阶段 FX 重构、断言 verbatim、`src/main/java` 零改动）
   只作脚注，**不并入 `c79034e` 基线 / 外部网络类 / failure → success 矩阵、不判代码失败**。

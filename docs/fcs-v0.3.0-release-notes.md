@@ -30,10 +30,16 @@
 | Release 状态 | `draft = false`、`prerelease = false`（**已公开发布**） |
 | 发布时间（UTC） | `2026-11-14T14:30:37Z` |
 | Release 页面 | https://github.com/omixcore/phytoscope/releases/tag/v0.3.0 |
-| 资产 1 | `PhytoScope-Windows-0.3.0.zip` — 46,185,790 B |
-| 资产 2 | `SHA256SUMS.txt` — 1,547 B |
-| tag 指向提交 | `3e8b83ceebabb431da201357cedc421f213cbed6`（`3e8b83c`） |
+| 资产 1 | `PhytoScope-Windows-0.3.0.zip` — 46,185,966 B，`sha256:dcc2051f…`（asset `747931335`） |
+| 资产 2 | `SHA256SUMS.txt` — 2,158 B，`sha256:690905ad…`（asset `747935209`） |
+| tag 指向提交 | `0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4`（`0638dbe`） |
 | 上一个版本 tag | `v0.2.0` → `771b0992edcdec4b654b4ec5724ea4c49056294f`，**保留不删** |
+
+> **资产替换记录（如实）**：Release 首次发布（`2026-11-14T14:30:37Z`）挂的是从 `3e8b83c`
+> 构建的包（46,185,790 B，`8f7953eb…`）。commit 信息英文化 + ubuntu CI 修复后，发布提交前移到
+> `0638dbe`，故于 `2026-11-14T15:38Z` **删除并重传两个资产**，使「tag / 源码包 / 二进制 /
+> 校验和」指向同一棵树。旧包的两个 asset（`747744359` / `747745997`）已 delete，现仅存上表两条；
+> 两个新资产的大小与 SHA-256 由 GitHub API 返回的 `digest` 字段逐一核对一致。
 
 > **两个动作必须区分**：`git push`（M01，把提交/tag 推到 gitee 与 github）与
 > **Release 资产上传**（M02，GitHub Release API）是**两个独立动作**。本次发布由**主理人经 GitHub API 执行**
@@ -53,9 +59,11 @@
 - **`3.2.5` 是 Spring Boot 父 POM 版本**（`spring-boot:3.2.5:repackage`），
   **不是应用版本**（见 `README.md` / `CHANGELOG.md`）。
 - **`pom.xml` 本批未改动**；`src/main/java/**` 零改动；未引入新依赖、未改算法/解析器。
-  > 注：上句指 **B05 批次**范围。若发布后另有修复提交改动 `pom.xml` 或测试代码，
-  > 属**发布之后的新变更**，**不改变本 Release（tag `v0.3.0` → `3e8b83c`）的内容**，
-  > 且不得据此声称「Release 资产已更新」——资产一经上传即固定，变更需走新版本/新 Release。
+  > 注：上句指 **B05 批次**范围。发布后另有提交改动 `pom.xml`（UI 测试 profile）与 7 个 UI
+  > 测试类、`.github/workflows/validate.yml`、`tools/run_validation.py`；这些提交随
+  > **发布提交前移**一并进入 `v0.3.0`（= `0638dbe`），故 §0.1 的两个资产也在
+  > `2026-11-14T15:38Z` **重传**（见该节「资产替换记录」）。`src/main/java/**` 仍零改动，
+  > 因此应用行为与本批构建一致，差异仅限内嵌构建时间戳。
 - **bundle 版本常量 ≠ 应用版本（如实标注）**：`tools/package_desktop.py:21` 里
   `--app-version 0.2.0`（macOS 分支 `1.0.0`）是 jpackage **bundle 版本历史常量**，
   归档名由 `platform.system()/machine()` 生成 `PhytoScope-Windows-AMD64.zip`（不含版本号）。
@@ -64,12 +72,14 @@
 - **tag 口径（分「历史」与「现状」两段写，勿混读）**：
   - **历史（B05 当时）**：`v0.3.0` 曾为 annotated tag，当时指向 `edae8433`（tag 对象）、落后 HEAD
     多个提交、且无 Release 附件关联，故当时**禁止**用 `git archive v0.3.0` 生成源码包。
-  - **现状（主理人 M01/M02 执行后）**：`v0.3.0` 已由主理人**前移并同步两远端**，实测
-    `git rev-parse v0.3.0^{}` = `3e8b83ceebabb431da201357cedc421f213cbed6`，且已绑定公开发布的
-    GitHub Release（§0.1）。gitee `origin` 侧 `refs/tags/v0.3.0` 同为 `3e8b83c`（`git ls-remote --tags` 实测）。
-  - **不变的部分**：Deposit A 的归档源**仍固定为 `git archive e920a12`**（B05 主 commit 显式 SHA）。
-    理由不是「tag 不可用」，而是**归档源必须可复现**：tag 会随收尾文档提交移动，
-    显式 SHA 不会。工程师**不动 tag**。
+  - **现状（2026-11-14 重新发布后）**：`v0.3.0` 已**两次前移并同步两远端**，现实测
+    `git rev-parse v0.3.0^{}` = `0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4`（含本轮 CI 修复与许可修正），
+    且绑定公开发布的 GitHub Release（§0.1）。gitee `origin` 侧 `refs/tags/v0.3.0` 同为 `0638dbe`
+    （`git ls-remote --tags` 实测）。
+  - **归档源（现状）**：Deposit A 以**显式 SHA `0638dbe`** 生成（`git archive 0638dbe`；
+    当时 `git archive v0.3.0` 与该 SHA 指向同一提交，产出逐字节相同，但不作为命令写入，
+    因为归档源**必须可复现**、不得依赖 tag 的当前位置）。若日后 tag 再随登记性文档前移，
+    显式 SHA 方案不受影响。
 
 ## 2. 瘦身说明（沿用 B03 口径）
 
@@ -101,11 +111,11 @@ git 历史 pack 与 fresh-clone 大小未变；只有当前 checkout 与构建�
 
 | 产物 | 大小（B） | SHA-256 | 口径 |
 | --- | --- | --- | --- |
-| `../dist/PhytoScope-Windows-0.3.0.zip` | 46,185,790 | `8f7953eba6c04922be9b2faf21b717ff3fe36cc15a5bd1f3393b38da7716bfa6` | **本批新构建（唯一权威发布名）** |
+| `../dist/PhytoScope-Windows-0.3.0.zip` | 46,185,966 | `dcc2051f63228ad93f5954a326c157f8b04ba82556d67b1311a2964025a7ed6c` | **2026-11-14 从发布提交 `0638dbe` 重建**（旧构建 `8f7953eb…` 作废），唯一权威发布名，已重传 Release |
 | `../dist/PhytoScope-Windows-AMD64.zip` | 113,094,544 | `927b000219cd9b1d08f577c4fb315ff86538656cfc11451872f05c7e4911aa2c` | `historical`，字节不动 |
 | `../dist/PhytoScope-Windows-0.2.0.zip` | 110,405,267 | `763b1c42350872047f36eb6c944ea3ebfd10ffaaca7a1fb8a59645a2392b3cce` | `historical`，字节不动 |
-| `../dist/phytoscope-v0.3.0-source.zip` | **11,636,868** | `e8ca52b88451d207673f6be1f1c62fed0f1c7ca5a515c25ebd502a3109e17b6a` | Deposit A（`git archive e920a12`，B05 主 commit / 归档源固定，已含 B05 全部实质产物） |
-| `../dist/phytoscope-reference-data-v0.3.0.zip` | 64,329,519 | `c7eb904c1e8a7977bb751f9b412ec9386d977d6062a4a179e3b4aac7f1361e9b` | Deposit B（数据仓库 B04 HEAD `249e771`） |
+| `../dist/phytoscope-v0.3.0-source.zip` | **11,658,264** | `4f1a212591e9e0b32ac41882ed0b656a0c663587afc5ae8cd925709933b1c9f9` | Deposit A（`git archive 0638dbe`，460 项，ZIP 注释即该 SHA） |
+| `../dist/phytoscope-reference-data-v0.3.0.zip` | 63,580,701 | `e88a9cfa172244a71b88fe580991160f536bf6e75a91213960e69aadaa180416` | Deposit B（数据仓 `66054b7`，**29 项 / 8 个数据文件**，已剔除扣留的薄荷 TPM） |
 
 > 新包约 **44 MiB**，**不是** 110 MB 历史 v0.2.0 包（瘦身生效）。两个历史 ZIP
 > **字节未动、未删除、未重建**。
@@ -118,8 +128,8 @@ git 历史 pack 与 fresh-clone 大小未变；只有当前 checkout 与构建�
 
 | Deposit | 归档源 | 包内必含项校验 |
 | --- | --- | --- |
-| A（软件源码） | `git archive e920a12`（B05 主 commit 显式 SHA，归档源固定，**不用 tag**） | `README.md` / `CITATION.cff` / `pom.xml` / `docs/**` / `src/**` / `tools/**` |
-| B（参考数据） | 数据仓库 **B04 定稿后实际 HEAD `249e771`** | `MANIFEST.json` / `SHA256SUMS.txt` / `LICENSES.md` / `scripts/**`；且 `LICENSES.md` 含 B04 §0 三选一结论表、`MANIFEST.json` 含 `license_decision` 字段 |
+| A（软件源码） | `git archive 0638dbe`（显式 SHA；当时 tag `v0.3.0` 指向同一提交） | `README.md` / `CITATION.cff` / `pom.xml` / `docs/**` / `src/**` / `tools/**` |
+| B（参考数据） | 数据仓库 **当前 HEAD `66054b7`**（旧 `249e771` 因 commit 信息英文化已不可达，映射见 `docs/fcs-final-push-checklist.md` §1.2） | `MANIFEST.json` / `SHA256SUMS.txt` / `LICENSES.md` / `scripts/**`；且 `LICENSES.md` 含 B04 §0 三选一结论表、`MANIFEST.json` 含 `license_decision` 字段 |
 
 `unzip -t` 两包均 OK（`DEP_A_ZIP_OK` / `DEP_B_ZIP_OK`）；`unzip -l` 留痕见
 `docs/fcs-zenodo-handoff.md`。具体归档 SHA 记入 `docs/fcs-zenodo-handoff.md` 与
@@ -141,27 +151,36 @@ git 历史 pack 与 fresh-clone 大小未变；只有当前 checkout 与构建�
   `docs/fcs-desktop-native-verification-checklist.md` 为空白清单。
   **GitHub Actions 三平台构建 artifact ≠ 原生人工验证**：Monocle headless 测试不能认证
   原生对话框、DPI 缩放、图形驱动、签名/公证或 SmartScreen 提示。
-- **三平台 CI 已在远端实跑，但结果不是全绿**（run `43605656726`、`event=push`、`head_branch=dev`、
-  `run_started_at=2026-11-14T14:35:25Z`、commit `49a5fac`）：
-  `validation (windows-latest)` success（job `132479612528`）、
-  `validation (macos-latest)` success（job `132479612388`）、
-  `validation (ubuntu-latest)` **failure**（job `132479612471`，失败于
-  **step 10 `Java and JavaFX regressions`**，14 个 JavaFX UI 测试在无头环境下
-  `Platform.startup` latch 超时）；`public-data-validation` 失败（job `132479612205`，
-  **step 5 `Audit public Arabidopsis splicing and proteomics resources`**）属**外部网络数据源**，不计代码失败。
+- **三平台 CI 在远端实跑两次，须按「两次」口径引用**：
+  - **第一次（run `43605656726`，commit `49a5fac`，历史记录；其失败已修复）**：
+    `validation (windows-latest)` success（job `132479612528`）、
+    `validation (macos-latest)` success（job `132479612388`）、
+    `validation (ubuntu-latest)` **failure**（job `132479612471`，失败于
+    **step 10 `Java and JavaFX regressions`**，14 个 JavaFX UI 测试在无头环境下
+    `Platform.startup` latch 超时）；`public-data-validation` 失败（job `132479612205`，
+    **step 5 `Audit public Arabidopsis splicing and proteomics resources`**）属**外部网络数据源**，不计代码失败。
+  - **第二次（run `43609281554`，`run_attempt=1`，commit `0638dbe` = 发布提交，三平台绿）**：
+    `validation (ubuntu-latest)` **success**（job `132490554008`，`15:16:31Z → 15:32:41Z`）、
+    `validation (macos-latest)` **success**（job `132490554359`，`→ 15:19:23Z`）、
+    `validation (windows-latest)` **success**（job `132490554399`，`→ 15:24:16Z`）；
+    同 run 内 `public-data-validation`（job `132490554373`，step 5 同上）仍为**外部网络失败**，
+    是独立 job、不在三平台矩阵内。
+  - **口径**：可以说「**三平台矩阵在 commit `0638dbe` 上通过**」；**不得**说「整条 workflow 全绿」。
 - 金标准链路**确已在远端执行**：`ResearchModuleGoldSetTest 1/0/0/0`、
   `DomainCaseValidationTest 1/0/0/0`、`Gff2ParserSupportTest 5/0/0/0`、
-  `ComparisonWorkflowUiTest 1/0/0/0`，全部 `Skipped: 0`。详见 `docs/ci-reports/v0.3.0/README.md`。
-- ubuntu 的修复**已提交但尚未经远端重跑确认**；确认前**不得写「三平台通过」**。
-  本机本地通过记录（`216/0/0/7`）**不能替代远端结果**，两者口径不同。
+  `ComparisonWorkflowUiTest 1/0/0/0`，全部 `Skipped: 0`；ubuntu 全量
+  `Tests run: 216, Failures: 0, Errors: 0, Skipped: 7` + `BUILD SUCCESS`。
+  详见 `docs/ci-reports/v0.3.0/README.md` §6/§7。
+- 本机本地通过记录（`216/0/0/7`）与远端结果是**两条独立证据**，口径不同，不得互相替代。
 
 ## 6. 对外口径（禁止虚报）
 
 - 固定表述：「**A 类 7 项本机已闭环、B 类 6 项物料齐备待作者执行、C 类 1 项给出核查结论**」。
 - 已可正面陈述（有实测证据）：**`v0.3.0` 已推送、GitHub Release 已公开发布（tag `v0.3.0` →
-  `3e8b83c`，两个资产 46,185,790 B + 1,547 B）**。
+  `0638dbe`，两个资产 46,185,966 B + 2,158 B，已于 `2026-11-14T15:38Z` 替换为与发布提交同源的构建）**；
+  **三平台矩阵（ubuntu / macos / windows）在 `0638dbe` 上通过**。
 - 仍禁止：「已完成 Zenodo 归档/取得 DOI」「已完成三平台原生验证」
-  「许可问题已解决」「CI 三平台全绿」「性能测试更快/更好」
+  「许可问题已解决」「整条 workflow 全绿」「性能测试更快/更好」
   「已做三款 GUI 软件同任务实机计时对照」。
 - `zenodo_state = not_published` 为**如实值**，不得在动作真实执行前改成完成态；
   Deposit B 公开以数据许可落定为前置条件。

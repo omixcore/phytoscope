@@ -53,3 +53,17 @@
 
 - `Real case, no display required`（`validate.yml:83-88`）`error: Unknown exact gene ID: AT1G67090`，退出码 3 → **代码类**，B01 已修（改走 `--gff3 examples/arabidopsis-atlas/annotation.gff3`）。
 - 连带：金标准门控未传参 → `Skipped: 1` → **代码类**，B01 已修。本 run 已在远端确认 `Skipped: 0`。
+
+---
+
+## 重跑确认（run `43609281554` / commit `0638dbe`）
+
+| 项 | 值 |
+|---|---|
+| job id | **`132490554399`** |
+| 结论 | **`success`** |
+| started_at (UTC) | `2026-11-14T15:16:31Z` |
+| completed_at (UTC) | `2026-11-14T15:24:16Z` |
+
+> 与上表（run `43605656726`）结论一致：该平台在两次运行中均 success。
+> 全量逐 job 记录见 `docs/ci-reports/v0.3.0/README.md` §7。

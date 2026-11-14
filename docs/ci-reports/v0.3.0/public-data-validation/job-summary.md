@@ -45,3 +45,20 @@
 - 三平台 `failure_reason` 字段**不得**写入外网类原因；外网类原因一律只写在本文件。
 - 不得把本 job 的失败与 ubuntu 的 FX 无头超时失败混为一谈：**两者性质不同**，
   ubuntu 的 failure 属代码/测试环境类，本 job 的 failure 属外部网络类。
+
+---
+
+## 重跑确认（run `43609281554` / commit `0638dbe`）
+
+| 项 | 值 |
+|---|---|
+| job id | **`132490554373`** |
+| 结论 | **`failure`** |
+| started_at (UTC) | `2026-11-14T15:16:31Z` |
+| completed_at (UTC) | `2026-11-14T15:17:14Z` |
+| 失败步骤 | **step 5 `Audit public Arabidopsis splicing and proteomics resources`** |
+
+> 与上表（run `43605656726`）同一失败模式：**外部网络数据源不可达**，
+> `failure_category = external_network`、`counts_in_platform_matrix = false`，
+> **不并入三平台矩阵、不判代码失败**。该 job 在两次运行中均失败，属环境依赖未解决，
+> 与 ubuntu 的 FX 修复无关。全量记录见 `docs/ci-reports/v0.3.0/README.md` §7。

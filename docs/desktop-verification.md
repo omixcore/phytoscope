@@ -9,7 +9,7 @@
 >   `PASS: packaged runtime launched and parsed the rice example`；CLI smoke
 >   `java -Xmx3g -jar target/phytoscope-0.3.0.jar --benchmark --example rice`
 >   `SMOKE_EXIT=0`（stderr 空）。权威包 `../dist/PhytoScope-Windows-0.3.0.zip`
->   （46,185,790 B / SHA-256 `8f7953eb...`），`sha256sum -c desktop_program/SHA256SUMS.txt`
+>   （46,185,966 B / SHA-256 `dcc2051f...`），`sha256sum -c desktop_program/SHA256SUMS.txt`
 >   **3/3 OK**。
 > - **macOS · Linux 待真机**：本机未做、无结果。两份空白清单见
 >   `docs/fcs-desktop-native-verification-checklist.md`（需作者在有显示环境的真机执行）。
