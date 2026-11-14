@@ -179,7 +179,9 @@ The old "Figure 2 = cross-species gold / Figure 4 = comparison" mapping is retir
   not genome-wide; expression = single assay, not DE analysis; standard nuclear code only; BED/bedGraph
   deferred; **GUI-peer comparison with JBrowse2/IGV/TBtools is qualitative-functional only — no
   same-task wall-clock benchmark was performed**; license status of 8/9 reference files unresolved
-  (mint TPM source unknown).
+  (for the mint TPM matrix the provenance is now established as a derived product of this work, but
+  the upstream read-archive redistribution terms are unconfirmed, so the file is withheld from the
+  public deposit).
 - Future work: multi-experiment/time-course expression, interval/signal tracks, larger multi-family
   gold sets, a same-task quantitative/timed comparison against GUI peers (JBrowse2/IGV/TBtools) in a
   GUI-capable environment, a participant user study (explicitly not performed).
@@ -197,12 +199,14 @@ The old "Figure 2 = cross-species gold / Figure 4 = comparison" mapping is retir
 
 > **Status: `filled`** — written out in `docs/fcs-paper-manuscript-draft.md` (Data Availability).
 
-- `phytoscope-reference-data` repository (**dual mirrors**: gitee + github): **9 files /
-  68,518,847 B**, `MANIFEST.json` + `SHA256SUMS.txt` + `LICENSES.md`;
+- `phytoscope-reference-data` repository (**dual mirrors**: gitee + github, both at `66054b7`):
+  **9 files / 68,518,847 B** in the repository; **public deposit = 8 files / 65,124,010 B**
+  (mint TPM matrix withheld), `MANIFEST.json` + `SHA256SUMS.txt` + `LICENSES.md`;
   `sha256sum -c SHA256SUMS.txt` → **9/9 OK**.
 - Each dataset's accession/release/source URL/SHA-256/access date (→ Supplementary Table 1).
 - License status: **1 confirmed** (horsemint CC BY 4.0) + **8 待确认 / needs-confirmation**
-  (Araport11 Chr1–5, TAIR10 FASTA, E-MTAB-7978, mint 4-leaf TPM whose source is unresolved).
+  (Araport11 Chr1–5, TAIR10 FASTA, E-MTAB-7978, mint 4-leaf TPM — provenance documented in
+  `PROVENANCE-mint-tpm.md`, redistribution terms still unconfirmed).
   **结论 ≠ 已获授权** (`docs/fcs-data-license-decision.md`); data deposit must not be merged into
   CC BY 4.0 while the 8 are unfinalized.
 - Zenodo dataset DOI `{{DATA_DOI}}` (software `{{SOFTWARE_DOI}}`, paper `{{PAPER_DOI}}`):
@@ -270,7 +274,7 @@ See §6 below.
 
 | Sup Table | Title | Content | Data source |
 |---|---|---|---|
-| Sup Table 1 | Reference-data inventory & provenance | 9 files: path, bytes, SHA-256, source URL, release, license status | `phytoscope-reference-data/MANIFEST.json` + `LICENSES.md` |
+| Sup Table 1 | Reference-data inventory & provenance | 9 files (public deposit: 8): path, bytes, SHA-256, source URL, release, license status | `phytoscope-reference-data/MANIFEST.json` + `LICENSES.md` |
 | Sup Table 2 | Test/evidence coverage matrix | requirement → test class / script → evidence doc → status (P0/P1/P2) | `docs/prd-fcs-submission.md` requirement pool; `docs/fcs-submission-gap-audit.md` 30-item table |
 | Sup Table 3 | Tool capability & design-difference matrix | PhytoScope vs JBrowse2/IGV/TBtools/gffutils/Biopython: shared task, correctness evidence, workflow properties, design difference (no superiority) | `docs/prd-fcs-submission.md` §3.1; `docs/non-model-portability-evidence.md` §"Fair alternatives comparison" |
 | Sup Table 4 | Software & reproduction information | version/tag, DOI (pending), run environment (JDK 21, Maven), reproduce commands, platform status | `docs/chromosome-validation.md` §Reproduce; `docs/desktop-distribution.md`; gap audit §二 |

@@ -272,11 +272,16 @@ A saved `.phytoscope` project is a versioned, self-contained unit
   gene, window) plus research parameters (promoter windows, interval format) are restored.
 
 Complete reference data are distributed in the independent `phytoscope-reference-data` repository
-(9 files, 68,518,847 bytes, dual gitee/github mirrors at commit `acac2cf`), governed by
+(9 files, 68,518,847 bytes **in the repository**; the **public deposit** is restricted to 8 files,
+65,124,010 bytes — see Data Availability; dual gitee/github mirrors, the 9-file archive was
+introduced at commit `acac2cf` (the commit shown in Fig. 5) and the mirrors now stand at `66054b7`),
+governed by
 `MANIFEST.json` (per-file bytes, SHA-256, source URL, release, license status) and `LICENSES.md`;
 `SHA256SUMS.txt` allows `sha256sum -c` self-verification (9/9 OK). License status is itemized in
 `phytoscope-reference-data/LICENSES.md` (one file confirmed CC BY 4.0; the remainder pending author
-confirmation, including one mint TPM matrix whose source is not yet established).
+confirmation). The mint 4-leaf TPM matrix is a derived product computed in this work — provenance is
+documented in `PROVENANCE-mint-tpm.md` — but redistribution awaits confirmation of the upstream
+read-archive terms, so it is withheld from the public deposit.
 
 ## 2.6 Comparison and benchmark protocol (phase 6)
 
@@ -502,9 +507,12 @@ To prevent misreading, we state the boundaries explicitly:
   tools could be installed and scripted onto an identical task sequence. External on-machine comparison
   and participant user studies were likewise **not performed**.
 - **Data licensing.** License status is resolved for only **1 of 9** reference files (horsemint
-  CC BY 4.0); the remaining **8** items, including a mint TPM matrix whose source is not yet
-  established, require author confirmation before redistribution
-  (`phytoscope-reference-data/LICENSES.md`, `docs/fcs-data-license-decision.md`).
+  CC BY 4.0); the remaining **8** items require confirmation from the rights holders before
+  redistribution (`phytoscope-reference-data/LICENSES.md`, `docs/fcs-data-license-decision.md`).
+  For the mint 4-leaf TPM matrix the open question is narrower: provenance **is** established (it is
+  computed in this work from `SRP565976` leaf reads, see `PROVENANCE-mint-tpm.md`), but the upstream
+  read-archive redistribution terms are unconfirmed, so the file is **withheld from the public
+  deposit** (repository 9 files / 68,518,847 B vs public deposit 8 files / 65,124,010 B).
 
 ## 4.4 Future work
 
@@ -527,8 +535,11 @@ participants. Native macOS/Linux verification is likewise unexecuted
 
 The complete reference data are distributed from the independent
 `phytoscope-reference-data` repository (dual mirrors on gitee and github), governed by
-`MANIFEST.json`, `SHA256SUMS.txt` and `LICENSES.md`. The archive contains **9 files** totalling
-**68,518,847 bytes**; `sha256sum -c SHA256SUMS.txt` verifies **9/9 OK**. Kilobyte-scale examples
+`MANIFEST.json`, `SHA256SUMS.txt` and `LICENSES.md`. Two scopes must be distinguished and are
+reported separately. The **repository** holds **9 files** totalling **68,518,847 bytes**, and
+`sha256sum -c SHA256SUMS.txt` verifies **9/9 OK**. The **public deposit** is restricted to
+**8 files** totalling **65,124,010 bytes** (68,518,847 − 3,394,837); the mint 4-leaf TPM matrix is
+withheld from public distribution, see below. Kilobyte-scale examples
 ship inside the software repository; full data are retrieved from the data repository without any
 runtime download. Per-file accession, release, source URL, SHA-256 and license status are itemized in
 `MANIFEST.json` / `LICENSES.md` (Supplementary Table 1).
@@ -537,8 +548,13 @@ runtime download. Per-file accession, release, source URL, SHA-256 and license s
 figshare `10.6084/m9.figshare.28457522`) and **8 files remain to be confirmed** by the data owners
 or authors before redistribution — Araport11 Chr1–Chr5 and the TAIR10 genome FASTA (TAIR / Phoenix
 Bioinformatics terms; written permission or a later switch to NCBI RefSeq CP002684–CP002688),
-E-MTAB-7978 (data-owner permission), and a mint 4-leaf TPM matrix whose source and license could
-not be established. The conclusions in `LICENSES.md` and
+and E-MTAB-7978 (data-owner permission). The mint 4-leaf TPM matrix is a **derived product computed
+in this work**, not third-party data: leaf reads from SRA study `SRP565976` were aligned with
+`minimap2 2.28 -ax splice` and quantified with `featureCounts 2.0.6 -s 0`; the chain is documented
+in `phytoscope-reference-data/PROVENANCE-mint-tpm.md`. Its **provenance is therefore established**,
+but redistribution of a matrix derived from those reads still requires confirmation of the upstream
+terms, so it is **withdrawn from the public deposit pending that confirmation** and is not covered by
+any claim in this paper. The conclusions in `LICENSES.md` and
 `docs/fcs-data-license-decision.md` are **not authorizations**; the machine cannot grant permission
 on behalf of rights holders. Accordingly, the data deposit is **not** merged into a single CC BY 4.0
 license.
