@@ -30,6 +30,16 @@ def resolve(reference, name):
     return plain
 
 
+def canonical_text(path: Path) -> str:
+    """Read a text artifact with platform line endings normalised to LF.
+
+    The frozen case files were committed with LF, while Python's ``write_text``
+    emits CRLF on Windows. Comparing canonical text keeps the content check
+    strict without making the result depend on the host OS.
+    """
+    return path.read_text(encoding='utf-8').replace('\r\n', '\n')
+
+
 def parse_args(argv=None):
     """Parse the reference-data location, allowing an environment override."""
     parser = argparse.ArgumentParser(
@@ -74,8 +84,21 @@ def main(argv=None):
                     '--reference', str(reference), '--uniprot', str(case / 'uniprot-domains.tsv'),
                     '--protocol', str(case / 'protocol.json'), '--out', str(out),
                     '--cache', str(cache)], check=True)
-    for name in ['candidates.json', 'candidates.tsv', 'annotation.gff3', 'discovery-manifest.json']:
-        if (case / name).read_bytes() != (out / name).read_bytes():
+    # candidates.json is compared by JSON semantics (json.loads), so CRLF/LF
+    # line endings and key order do not produce a spurious mismatch. It used to
+    # be a byte comparison, which failed on Windows even though the 16 candidate
+    # records were identical (B01b-2).
+    expected_candidates = json.loads(canonical_text(case / 'candidates.json'))
+    actual_candidates = json.loads(canonical_text(out / 'candidates.json'))
+    if actual_candidates != expected_candidates:
+        raise ValueError('Screen result changed: candidates.json')
+    # The TSV byte comparison and the input_sha256 guard above stay unchanged.
+    if (case / 'candidates.tsv').read_bytes() != (out / 'candidates.tsv').read_bytes():
+        raise ValueError('Screen result changed: candidates.tsv')
+    # Remaining screen artifacts are still compared strictly, but LF-normalised
+    # so Windows and Linux agree on the same frozen bytes.
+    for name in ['annotation.gff3', 'discovery-manifest.json']:
+        if canonical_text(case / name) != canonical_text(out / name):
             raise ValueError(f'Screen result changed: {name}')
     subprocess.run([sys.executable, str(root / 'tools/validate_domain_isoforms.py'),
                     '--case', str(case), '--proteins', str(cache / 'specificity-proteins.json'),

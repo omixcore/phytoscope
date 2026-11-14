@@ -1,22 +1,27 @@
-# B01 · CI 金标准证据链修复 — 本地实跑留痕报告
+# B01 / B01b · CI 金标准证据链修复 — 本地实跑留痕报告
 
-> 批次：B01（`.github/`、`tools/`、`src/test/`）· 执行人：工程师寇豆码（Kou）· 日期：2026-11-14（ISO-8601 UTC 口径同设计 §7.10）
+> 批次：B01（`.github/`、`tools/`、`src/test/`）+ B01b（阻塞修复 / 跨平台换行消除）· 执行人：工程师寇豆码（Kou）· 日期：2026-11-14（ISO-8601 UTC 口径同设计 §7.10）
 > 环境：Windows 11 x64 · JDK 21.0.6 · Python 3.13.14 · Git Bash · `mvnw -Pui-tests`（JavaFX Monocle headless）
-> 权威规格：`docs/design-fcs-final-delivery.md` §5 B01、§0.1、§7；增量 PRD `docs/prd-fcs-final-delivery.md` R1/R7
+> 权威规格：`docs/design-fcs-final-delivery.md` §5 B01、§0.1、§7；增量 PRD `docs/prd-fcs-final-delivery.md` R1/R7；第三轮下发 B01b 裁定
 > **状态口径**：本报告只记录本机真实输出。三平台远端 CI 报告回收属 B 类（主理人执行，裁定 4），**本报告不宣称三平台 CI 已通过**。
+> **版本说明**：§2.2、§4.1、§5 已按 B01b 结果更新；`ComparisonWorkflowUiTest` 由「未解决遗留」改为「已修复（B01b）」；§2.8 记录新旧全量测试结果对比与 B01b-2 语义比较改动。
 
 ---
 
-## 1. 改动摘要（只改 B01 区域）
+## 1. 改动摘要（只改 B01 / B01b 区域）
 
-| 文件 | 改动 |
-|---|---|
-| `.github/workflows/validate.yml` | Java 步加 `-Dphytoscope.referenceDataDir=target/reference-data`；Java 步后新增 `Assert gold-set report was actually produced`（全平台）；`check_isoform_case.py` 步传 `--reference target/reference-data/data/species/arabidopsis`；`Real case` 把 `--example arabidopsis` 换成 `--gff3 examples/arabidopsis-atlas/annotation.gff3`。`:41`、`:58`、`:87`、`:88` 未改动。 |
-| `tools/check_isoform_case.py` | 新增 `argparse --reference`（默认 `target/reference-data/data/species/arabidopsis`，环境变量 `PHYTOSCOPE_REFERENCE_DATA_DIR` 可覆盖默认值）；`resolve()` 前加目录缺失 `SystemExit` guard；下游 `--reference` 传参改用同一变量。 |
-| `tools/compare_promoters_bedtools.py` | `parse_args()` 之后、`shutil.which("bedtools")` 之前加 report 存在性 guard；`json.loads` 包 `try/except (FileNotFoundError, json.JSONDecodeError)` 统一 guard 文案。 |
-| `tools/compare_homology_blastp.py` | 同上（`shutil.which("blastp")` 之前）。 |
-| `src/test/resources/gff2/*.gff2`（4 个） | 最小 fixture：CDS phase、转录本边界、多 parent / 无 exon 的 CDS、1 个负例。 |
-| `src/test/java/io/gitee/omixcore/phytoscope/Gff2ParserSupportTest.java` | 走**既有 importer** `Gff3Parser` 的兼容级测试；类注释明确「非独立解析器、非独立验证宣称」；零 `src/main/java/**` 改动、零新解析器。 |
+| 文件 | 批次 | 改动 |
+|---|---|---|
+| `.github/workflows/validate.yml` | B01 | Java 步加 `-Dphytoscope.referenceDataDir=target/reference-data`；Java 步后新增 `Assert gold-set report was actually produced`（全平台）；`check_isoform_case.py` 步传 `--reference target/reference-data/data/species/arabidopsis`；`Real case` 把 `--example arabidopsis` 换成 `--gff3 examples/arabidopsis-atlas/annotation.gff3`。`:41`、`:58`、`:87`、`:88` 未改动。 |
+| `tools/check_isoform_case.py` | B01 | 新增 `argparse --reference`（默认 `target/reference-data/data/species/arabidopsis`，环境变量 `PHYTOSCOPE_REFERENCE_DATA_DIR` 可覆盖默认值）；`resolve()` 前加目录缺失 `SystemExit` guard；下游 `--reference` 传参改用同一变量。 |
+| `tools/check_isoform_case.py` | B01b-2 | 新增 `canonical_text(path)`；冻结 `candidates.json` **由字节比较改为 JSON 语义比较**（`json.loads`，忽略 CRLF/LF 与键顺序）；`candidates.tsv` 逐字节比较与 `input_sha256` 输入校验保持不变；`annotation.gff3` / `discovery-manifest.json` 改为 LF 归一化后的严格文本比较。 |
+| `tools/screen_domain_isoforms.py` | B01b-2 | 3 个被比较 / 派生哈希依赖的文本输出改为显式 `newline='\n'`（deterministic LF）；**未改动任何业务算法、候选筛选逻辑或 TSV 写入逻辑**。 |
+| `tools/compare_promoters_bedtools.py` | B01 | `parse_args()` 之后、`shutil.which("bedtools")` 之前加 report 存在性 guard；`json.loads` 包 `try/except (FileNotFoundError, json.JSONDecodeError)` 统一 guard 文案。 |
+| `tools/compare_homology_blastp.py` | B01 | 同上（`shutil.which("blastp")` 之前）。 |
+| `src/test/resources/gff2/*.gff2`（4 个） | B01 | 最小 fixture：CDS phase、转录本边界、多 parent / 无 exon 的 CDS、1 个负例。 |
+| `src/test/java/io/gitee/omixcore/phytoscope/Gff2ParserSupportTest.java` | B01 | 走**既有 importer** `Gff3Parser` 的兼容级测试；类注释明确「非独立解析器、非独立验证宣称」；零 `src/main/java/**` 改动、零新解析器。 |
+| `src/test/java/io/gitee/omixcore/phytoscope/ComparisonWorkflowUiTest.java` | B01b | 单个长 FX `FutureTask` 拆为「setup / 断言」两个**短 FX 任务**；测试线程显式等待 `getPendingLoad()` 与 `getSequenceService().isLoaded()`；fixture 改用 `MainView.loadExpression(...)` 刷新 detail pane。**断言一条未删、未弱化、未改期望值**；未使用 `@Disabled` / `Assumptions` 绕过；未改生产异步加载路径为同步；`src/main/java/**` 零改动（复用已有 `getPendingLoad()` / `getSequenceService()` 只读 hook）。 |
+| `docs/fcs-ci-goldset-fix-report.md` | B01/B01b | 本留痕报告。 |
 
 ---
 
@@ -28,7 +33,7 @@
 git clone --depth 1 https://gitee.com/omixcore/phytoscope-reference-data.git target/reference-data
 ```
 
-结果：`CLONE_EXIT=0`；`data/species/arabidopsis/` 下取回 `TAIR10_genomic.fna.gz`、`Chr1..Chr5.gff3.gz`，`data/case-studies/arabidopsis-atlas/expression.tsv` 存在。
+结果：`CLONE_EXIT=0`；`data/species/arabidopsis/` 下取回 `TAIR10_genomic.fna.gz`、`Chr1..Chr5.gff3.gz`，`data/case-studies/arabidopsis-atlas/expression.tsv` 存在。B02 按执行顺序 `rm -rf target` 后，B01b 重新 clone 一次（`target/reference-data`），供全量测试与 isoform case 使用。
 
 ### 2.2 R1 主验收：gold-set 实跑且非 skip
 
@@ -36,7 +41,7 @@ git clone --depth 1 https://gitee.com/omixcore/phytoscope-reference-data.git tar
 sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test
 ```
 
-结果：**`MAVEN_EXIT=1`**（关键输出逐条摘录于本节；当时写入的 `target/b01-*.log` 属 `target/` 运行时日志，B02 按执行顺序 `rm -rf target` 后已清除，未入 git、不复存在）。
+**B01 当时结果（历史，保留作对比）**：`MAVEN_EXIT=1`（关键输出逐条摘录于本节；当时写入的 `target/b01-*.log` 属 `target/` 运行时日志，B02 按执行顺序 `rm -rf target` 后已清除，未入 git、不复存在）。
 
 ```
 [INFO] Running io.gitee.omixcore.phytoscope.ResearchModuleGoldSetTest
@@ -46,9 +51,24 @@ sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test
 
 - **金标准链路已打通**：`ResearchModuleGoldSetTest` `tests=1, skipped=0, failures=0, errors=0`；`DomainCaseValidationTest`、`MintTranscriptomeUiTest`、`ReferenceDatasetIntegrityTest`、`ComparisonWorkflowUiTest` 这 4 个同源门控类也一并**不再 skip**。
 - **skip 数下降**：基线 `Tests run: 211, Skipped: 12` → 本次 `Tests run: 216, Skipped: 7`（216 = 211 + 新增 5 个 GFF2 测试）。剩余 7 个 skip 是另外 3 个外部归档门控类（`AdditionalNonModelReferenceTest` 3 / `NonModelVignaReferenceTest` 3 / `FullAnnotationValidationTest` 1），与本次修复无关。
-- **唯一 error（非本次改动引入，需上报裁定）**：`ComparisonWorkflowUiTest.realAtlasComparisonProjectRoundTripAndVectorRasterExports:88` → `AssertionFailedError: promoter action should populate the QC sequence input ==> expected: <true> but was: <false>`。该测试原先因 `Assumptions.assumeTrue(-Dphytoscope.referenceDataDir)` 被 skip，传属性后首次实跑即暴露既有缺陷：`MainView.loadGenomeFasta()` 经 `LoadingOperation.run()` 在**后台线程**加载 36 MB `TAIR10_genomic.fna.gz`，随后用 `Platform.runLater` 在 FX 线程提交 `sequenceService.replaceWith(next)`；而该测试整体以 `Platform.runLater(task)` 运行在 FX 线程上并 `task.get(240s)` 阻塞，导致提交回调在 task 结束前永远无法执行，`ResearchAnalysisPane.promoter()` 因 `sequences.isLoaded()==false` 直接返回。单独重跑 `-Dtest=ComparisonWorkflowUiTest` 稳定复现（`UI_SINGLE_EXIT=1`），与显示器/bedtools 无关。**本报告未修改该测试**（超出 B01 授权文件清单，且设计 §5 B01 明确 R1 零算法/零断言体改动），详见 §4「遗留问题」。
+- **B01 唯一 error（已由 B01b 修复，见 §2.8）**：`ComparisonWorkflowUiTest.realAtlasComparisonProjectRoundTripAndVectorRasterExports:88` → `AssertionFailedError: promoter action should populate the QC sequence input ==> expected: <true> but was: <false>`。主理人第三轮裁定否决「重新门控 / 拆独立系统属性使其 skip」「记为已知失败」「把生产加载路径改为同步」三种方案，要求必修并保持真实异步加载覆盖。
 
-**隔离验证（剔除上述无关 UI 测试，证明金标准链路本身为绿）**：
+**B01b 修复后重跑结果（当前有效）**：
+
+```
+[INFO] Running io.gitee.omixcore.phytoscope.ResearchModuleGoldSetTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.161 s -- in io.gitee.omixcore.phytoscope.ResearchModuleGoldSetTest
+[INFO] Running io.gitee.omixcore.phytoscope.ComparisonWorkflowUiTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[WARNING] Tests run: 216, Failures: 0, Errors: 0, Skipped: 7
+[INFO] BUILD SUCCESS
+[INFO] Total time:  50.658 s
+```
+
+- `FULL_TEST_EXIT=0`；`ResearchModuleGoldSetTest skipped=0`（surefire XML `tests/skipped/failures/errors = 1 0 0 0`）；`ComparisonWorkflowUiTest` 通过（surefire XML `1 0 0 0`）；全量 `Skipped=7`，**不高于基线 12**。
+- 日志：`target/b01b-full-test2.log`（运行时日志，未入 git；关键输出已逐条摘录于本报告，报告不依赖其长期存在）。
+
+**隔离验证（剔除 UI 测试，证明金标准链路本身为绿；B01 当时执行）**：
 
 ```sh
 sh mvnw -B -Pui-tests -Dtest=ResearchModuleGoldSetTest,DomainCaseValidationTest,Gff2ParserSupportTest -Dphytoscope.referenceDataDir=target/reference-data test
@@ -70,16 +90,17 @@ test -s target/research-validation/research-module-gold-set.json && echo "GOLDSE
 python -c "import glob,xml.etree.ElementTree as E; p=glob.glob('target/surefire-reports/TEST-*ResearchModuleGoldSetTest.xml'); assert p; r=E.parse(p[0]).getroot(); print('tests/skipped/failures/errors=',r.get('tests'),r.get('skipped'),r.get('failures'),r.get('errors')); assert int(r.get('skipped') or 0)==0"
 ```
 
-真实输出：
+真实输出（B01b 最终全量绿跑后复验）：
 
 ```
 GOLDSET_OK
 tests/skipped/failures/errors= 1 0 0 0
+GOLDSET_SKIPPED_ZERO_OK
 ```
 
 - 文件：`target/research-validation/research-module-gold-set.json`，**52,392 B**。
-- SHA-256（隔离绿跑那一次）：`133e74860b25981e24e62e9cf3c1c86a67849b8dd9126451cddbe4366464a498`。
-- 全量跑那一次的 SHA-256 为 `337c8d3d38c42d5db556e7e6ceabd0ece3bc389afc39e3a756006bb9a3d376f7`。**两者不同是因为该 JSON 顶层含 `date` 运行时间戳**；它是 `target/` 运行时产物，按设计 §7.6 **不作为仓库内可提交数据源**，也不做跨次稳定哈希主张。
+- SHA-256（B01b 最终全量绿跑那一次）：`db05be65e460903e9089509b102ac840419bc50709f09bd8a9d690560741ee05`。
+- B01 隔离绿跑 / 全量跑的 SHA-256 分别为 `133e74860b25981e24e62e9cf3c1c86a67849b8dd9126451cddbe4366464a498` / `337c8d3d38c42d5db556e7e6ceabd0ece3bc389afc39e3a756006bb9a3d376f7`。**跨次不同是因为该 JSON 顶层含 `date` 运行时间戳**；它是 `target/` 运行时产物，按设计 §7.6 **不作为仓库内可提交数据源**，也不做跨次稳定哈希主张。
 
 ### 2.4 两个 report 守卫（本机无 bedtools 也应先报 guard）
 
@@ -100,15 +121,28 @@ exit=1
 - 两条均 `exit=1` 且**先报 guard**，未出现 `bedtools is required` / 未出现裸 `FileNotFoundError` → 守卫顺序正确（本机 `bedtools` 不在 PATH、`blastp` 2.17.0+ 在 PATH，两种环境都被 guard 覆盖）。
 - **本机无 bedtools**：`bedtools getfasta -s` 的 8/8 启动子比对实跑**留给 CI Linux runner**（`sudo apt-get install bedtools`，设计 §6 / §7.9）。本报告不声称本机完成该比对。
 
-### 2.5 外迁路径修复（Linux CI 步的本机等价验证）
+### 2.5 外迁路径修复 + B01b-2 跨平台换行消除（Linux CI 步的本机等价验证）
 
 ```sh
 python tools/check_isoform_case.py --reference target/reference-data/data/species/arabidopsis
 ```
 
-真实输出：`exit=1`，但在失败前**已成功解析外迁目录并执行完整 screen**（打印 `complete_cds_models=48002`、`candidate_rows=16`、`candidate_genes=13`，且 `input_sha256` 中 `TAIR10_genomic.fna.gz` / `Chr1..Chr5.gff3` 全部与冻结清单一致），证明原 `FileNotFoundError: src/main/resources/.../TAIR10_genomic.fna.gz` 已消除。
+**B01 当时结果**：`exit=1`，但在失败前**已成功解析外迁目录并执行完整 screen**（打印 `complete_cds_models=48002`、`candidate_rows=16`、`candidate_genes=13`，且 `input_sha256` 中 `TAIR10_genomic.fna.gz` / `Chr1..Chr5.gff3` 全部与冻结清单一致），证明原 `FileNotFoundError: src/main/resources/.../TAIR10_genomic.fna.gz` 已消除。失败点 `ValueError: Screen result changed: candidates.json`：原因是**本机 Windows 换行差异**而非数据/路径问题——`examples/arabidopsis-isoform-validation/candidates.json` 与重跑产物**JSON 语义完全相等**（16 条记录逐条一致），仅 `write_text()` 在 Windows 写出 `\r\n`、冻结文件为 `\n`；`candidates.tsv` 则逐字节相等。B01 如实记录本机 exit=1，未伪造 PASS。
 
-失败点：`ValueError: Screen result changed: candidates.json`，原因是**本机 Windows 换行差异**而非数据/路径问题——`examples/arabidopsis-isoform-validation/candidates.json` 与重跑产物**JSON 语义完全相等**（16 条记录逐条一致），仅 `write_text()` 在 Windows 写出 `\r\n`、冻结文件为 `\n`（首个字节差异在第 1 字节）；`candidates.tsv` 则逐字节相等。该 CI 步是 `if: runner.os == 'Linux'`，Linux 下 `write_text()` 产生 `\n`，按字节比较可通过。设计 §5 B01 亦注明「本机可跑至输入校验」。**如实记录本机 exit=1，不伪造成 PASS**。
+**B01b-2 修复（本机 Windows 与 CI Linux 都应 exit 0）**：
+
+- `tools/check_isoform_case.py`：**由字节比较改为语义等价比较** —— 对冻结 `candidates.json` 用 `json.loads(canonical_text(...))` 后比较，忽略 CRLF/LF 与键顺序差异；`canonical_text()` 把 `\r\n` 归一为 `\n`。**`candidates.tsv` 的逐字节比较与 `input_sha256` 输入校验保持不变**；`annotation.gff3` / `discovery-manifest.json` 仍做严格文本比较，但同样 LF 归一化，避免不同 OS 写出差异造成伪失败。
+- `tools/screen_domain_isoforms.py`：`candidates.json` / `annotation.gff3` / `discovery-manifest.json` 三个**被下游比较或派生哈希依赖**的文本输出改用 `open(..., newline='\n')` 显式 LF 写出（`discovery-manifest.json` 的 `candidate_sha256` 依赖 `candidates.json` 字节）。**仅为消除 platforms 换行不确定性，未改变任何算法、候选筛选逻辑或 TSV 写入逻辑**。
+- 原因：Windows `Path.write_text()` 可能写 CRLF，既让字节比较伪失败，也会改变派生 `candidate_sha256` / `input_sha256` 关联产物；JSON 语义比较对内容等价性不变，同时把生成端统一为 LF，使 Windows 与 Linux 的冻结产物字节一致。
+
+**B01b 真实输出**：
+
+```
+ISOFORM_EXIT=0
+PASS: fixed inputs, candidates, all peptide rows and failed outcomes reproduced
+```
+
+日志：`target/b01b-isoform.log`（运行时日志，未入 git；关键输出已摘录）。
 
 ### 2.6 Real case 位点修复（本地等价 smoke）
 
@@ -132,6 +166,35 @@ BUILD SUCCESS
 
 4 个 fixture（`cds-phase.gff2` / `transcript-boundaries.gff2` / `multi-parent-no-exon-cds.gff2` / `negative-orphan.gff2`）覆盖：CDS phase 0/1/2 保留、转录本边界（含负链双转录本）、`Parent=t-a,t-b` 多 parent 的 CDS 双挂、无重叠 exon 的 CDS 保留为 unassigned segment 且不臆造 exon、负例（未解析 parent 记为 orphan + 非数字坐标行被跳过且计入 diagnostics）。测试走 `Gff3Parser.parseResource(..., null)` 既有 importer；`##gff-version 2` 头与 `.gff2` 文件名均映射到既有 GTF dialect。**兼容级、非独立解析器、非独立验证宣称**。
 
+### 2.8 B01b 阻塞修复：新旧结果对比与修法留痕
+
+**新旧全量测试对比（真实输出）**：
+
+| 项 | B01（修复前） | B01b（修复后） |
+|---|---|---|
+| 命令 | `sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test` | 同左 |
+| 退出码 | `MAVEN_EXIT=1` | `FULL_TEST_EXIT=0` |
+| Tests run | 216 | 216 |
+| Failures | 0 | 0 |
+| Errors | **1**（`ComparisonWorkflowUiTest`） | **0** |
+| Skipped | 7（≤ 基线 12） | 7（≤ 基线 12） |
+| `ResearchModuleGoldSetTest` | `1 / 0 / 0 / 0`（skipped=0） | `1 / 0 / 0 / 0`（skipped=0） |
+| `ComparisonWorkflowUiTest` | 失败 | `1 / 0 / 0 / 0`（通过） |
+| BUILD | FAILURE | **SUCCESS** |
+
+**根因（只读核实，未改生产代码）**：`src/main/java/io/gitee/omixcore/phytoscope/ui/MainView.java:332-348` 的 `loadGenomeFasta(Path)` 经 `LoadingOperation.run(...)` 在后台线程解析 36 MB FASTA，其 commit 回调 `sequenceService.replaceWith(next)` 由 `src/main/java/io/gitee/omixcore/phytoscope/ui/component/LoadingOperation.java` 经 `Platform.runLater` 排入 FX 事件队列。原测试把 27–264 行整段放进一个 `FutureTask` 并在 FX 线程 `task.get(240s)` 阻塞，FX 事件队列被独占 → commit 回调永远排不上 → `sequenceService.isLoaded()==false` → promoter 断言失败。项目内已有正确范式：`BackgroundLoadingUiTest.fx(Callable<T>)` 短 FX 任务、`MintTranscriptomeUiTest` 的「后台 commit 在 FX 线程执行，测试不能在 FX 线程里阻塞等待」。
+
+**修法（测试侧重构，保持真实异步加载覆盖）**：
+
+1. 新增 `Fixture(MainView view, Scene scene, GenomeDataService genome, ExpressionDataService expression)` record 与短 FX helper `fx(Callable<T>)`（`Platform.runLater(task); task.get(240, TimeUnit.SECONDS)`）。
+2. **Phase 1（短 FX 任务）**：只构造 `MainView` / `Scene` 并调用 `loadArchivedAtlasCase(...)`，触发真实 `MainView.loadGenomeFasta(...)` 后立即返回，**让 FX 线程空闲**，使 `LoadingOperation` 的 `Platform.runLater` commit 回调可执行。
+3. **测试线程显式有界等待**：通过 `fx(() -> fixture.view().getPendingLoad())` 取回 `CompletableFuture<?>`，用 `fastaLoad.get(240, TimeUnit.SECONDS)` 等待真实后台 commit（同时建立 happens-before），再用 `awaitSequenceServiceLoaded(view, 60)` 轮询 `view.getSequenceService().isLoaded()`，超时抛明确 `AssertionError`。`requireReferenceData()` 条件 skip 仍在 FX `FutureTask` 外部，符合 `:21-23` 注释要求。
+4. **Phase 2（短 FX 任务）**：执行原 27–264 行断言体，**断言一条未删、未弱化、未改期望值**。
+
+**第二处隐性失败及修复**：两阶段重构后首次重跑仍失败于 `selected measured gene must show the expression bar chart in the details pane`（`Expression (unspecified)` ≠ 期望 `Expression (TPM)`）。根因是 fixture 直接调用 `expression.loadFromFile(...)` + `expression.reconcile(genome)`，绕过 `MainView.loadExpression(...)` / `refreshExpressionViews()`，`GeneDetailPane.valueUnit` 未刷新。改为调用 `view.loadExpression(...)`（public non-dialog UI 入口），detail pane 的 `valueUnit` / `samples` / `level` 被刷新，caption 恢复为 `Expression (TPM)`；所有断言保持不变，随后全量测试 `BUILD SUCCESS`。
+
+**未采用被否决方案**：未把测试重新门控 / 拆独立系统属性使其 skip；未记为已知失败；未改生产加载路径为同步；未使用 `@Disabled` 或 `Assumptions` 绕过；**未在 `src/main/java/**` 新增 getter 或改动任何加载语义**（`MainView` 已有 `getPendingLoad()` / `getSequenceService()` 只读 hook）。
+
 ---
 
 ## 3. CI 断言步的可执行性核对
@@ -154,22 +217,25 @@ BUILD SUCCESS
     PY
 ```
 
-本地同等断言（`§2.3`）通过：`tests/skipped/failures/errors = 1 0 0 0`。「禁止静默跳过」由 `test -s` + `skipped==0` 双重保证。
+本地同等断言（§2.3）通过：`tests/skipped/failures/errors = 1 0 0 0`。「禁止静默跳过」由 `test -s` + `skipped==0` 双重保证。
 
 ---
 
-## 4. 遗留问题与边界声明（如实、未解决）
+## 4. 遗留问题与边界声明
 
-1. **`ComparisonWorkflowUiTest` 首次实跑失败（需主理人/架构师裁定）**：如 §2.2 所述，传 `-Dphytoscope.referenceDataDir` 后 5 个原 skip 的门控类全部实跑，其中该 JavaFX UI 工作流测试因「FX 线程被 `task.get()` 阻塞 → 异步 FASTA 提交回调无法执行」而确定性失败（本机单跑稳定复现）。这会影响远端 `verify` 全绿，属设计 §5 B01 处方之外的既有测试缺陷。B01 授权文件清单不含该测试，且硬约束要求「不新增/不改既有断言体、零算法改动」，故**本次未修改**；建议由后续批次裁定：或让该测试改用同步 FASTA 加载，或把该门控从 `phytoscope.referenceDataDir` 拆分，或接受其为已知失败并单独记录。**本报告不宣称三平台 CI 已通过、不宣称全部测试绿。**
+1. **`ComparisonWorkflowUiTest` —— 已修复（B01b），不再是遗留问题**：如 §2.2 / §2.8 所述，B01 阶段该 JavaFX UI 工作流测试因「长 `FutureTask` 独占 FX 线程 → 异步 FASTA commit 回调无法执行」确定性失败。B01b 按主理人裁定改为两个短 FX 任务 + 测试线程有界等待，保持真实异步加载覆盖，全量测试 `BUILD SUCCESS`、`Failures=0 / Errors=0`、`ComparisonWorkflowUiTest` 通过、`ResearchModuleGoldSetTest skipped=0`、全量 `Skipped=7 ≤ 12`。生产加载路径、`src/main/java/**`、断言体均未改动。**本报告仍不宣称三平台 CI 已通过**（远端报告回收属 B 类）。
 2. **本机无 bedtools**：8/8 启动子独立比对实跑留给 CI Linux（`validate.yml` Linux 专属步）；本机只验证 guard 报错。
-3. **`check_isoform_case.py` 本机 exit=1**：仅因 Windows CRLF 与冻结 LF 的字节差异（语义一致），Linux CI 预期通过；未伪造 PASS。
+3. **`check_isoform_case.py` 本机结果 —— 已修复（B01b-2）**：B01 时因 Windows CRLF 与冻结 LF 的字节差异 exit=1（语义一致，未伪造 PASS）；B01b-2 把 `candidates.json` **由字节比较改为 JSON 语义比较**，并把生成器 3 个文本输出固定为 LF，本机 Windows `ISOFORM_EXIT=0`，输出 `PASS: fixed inputs, candidates, all peptide rows and failed outcomes reproduced`；CI Linux 预期同样通过。`candidates.tsv` 逐字节比较与 `input_sha256` 输入校验保持不变。
 4. **gold-set / bedtools / BLASTP 三个 JSON 均为 `target/` 运行时产物**：按设计 §7.6，只能由主理人在推送后经远端 API 回收落到 `docs/ci-reports/v0.3.0/`（B 类）；本机不生成、不伪造、不提交其内容。
 5. **非新测声明**：本批次未重跑任何计时、未产生新的性能数值；所有数字均为本机命令真实输出或设计/PRD 既有基线。
+6. **运行时日志**：`target/b01-*.log`（B02 `rm -rf target` 后已清除）、`target/b01b-full-test.log` / `b01b-full-test2.log` / `b01b-isoform.log` 均为 `target/` 运行时日志，未入 git、不作为长期证据；关键输出已逐条摘录于本报告。
 
 ---
 
 ## 5. 结论
 
-- R1 的**核心目标已达成**：`-Dphytoscope.referenceDataDir=target/reference-data` 使 `ResearchModuleGoldSetTest` 由 skip 变为实跑（`skipped=0`），产出 `target/research-validation/research-module-gold-set.json`（52,392 B），CI 断言步的本地等价校验通过；下游两个 `compare_*.py` 在 report 缺失时显式 `SystemExit` 且早于外部工具检查。
+- R1 的**核心目标已达成且全量测试为绿**：`-Dphytoscope.referenceDataDir=target/reference-data` 使 `ResearchModuleGoldSetTest` 由 skip 变为实跑（`skipped=0`），产出 `target/research-validation/research-module-gold-set.json`（52,392 B），CI 断言步的本地等价校验通过；下游两个 `compare_*.py` 在 report 缺失时显式 `SystemExit` 且早于外部工具检查。
 - R7 的 4 个 fixture + 5 个兼容级测试全绿，明确「非独立解析器 / 非独立验证宣称」，零 `src/main/java/**` 改动。
-- **尚存 1 项需裁定的既有 UI 测试失败**（§4.1），以及 2 项本机环境限制（无 bedtools / Windows 换行），均已如实标注，未伪造成 PASS、未写成 B 类已完成。
+- **B01b 阻塞修复已完成**：`sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test` → `Tests run: 216, Failures: 0, Errors: 0, Skipped: 7`，`BUILD SUCCESS`；`ResearchModuleGoldSetTest skipped=0`、`ComparisonWorkflowUiTest` 通过、全量 Skipped 不高于基线 12。未使用 `@Disabled` / `Assumptions` 绕过，未改生产加载语义。
+- **B01b-2 跨平台换行不确定性已消除**：`check_isoform_case.py` 本机 Windows `exit=0`；`candidates.tsv` 字节比较与 `input_sha256` 校验保持；`screen_domain_isoforms.py` 仅固定 LF 输出、未改算法。
+- **仍如实标注的边界**：本机无 bedtools（8/8 比对留给 CI Linux）；三平台远端 CI 报告回收、Release、Zenodo DOI 均为 B 类，**本报告不宣称已完成**。

@@ -16,6 +16,36 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @EnabledIfSystemProperty(named="phytoscope.ui.tests", matches="true")
 class ComparisonWorkflowUiTest {
+
+    /** UI objects shared between the two short FX tasks of the workflow test. */
+    private record Fixture(MainView view, Scene scene,
+                           GenomeDataService genome, ExpressionDataService expression) {}
+
+    /** Runs one short task on the FX thread and waits for it on the test thread. */
+    private static <T> T fx(Callable<T> call) throws Exception {
+        FutureTask<T> task = new FutureTask<>(call);
+        Platform.runLater(task);
+        return task.get(240, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Explicit, bounded confirmation that the asynchronous FASTA load has been
+     * committed. Must run on the TEST thread: blocking the FX thread here would
+     * prevent {@code LoadingOperation}'s {@code Platform.runLater} commit from
+     * ever running (the defect this two-phase test guards against).
+     */
+    private static void awaitSequenceServiceLoaded(MainView view, long timeoutSeconds)
+            throws InterruptedException {
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(timeoutSeconds);
+        while (!view.getSequenceService().isLoaded()) {
+            if (System.nanoTime() >= deadline) {
+                throw new AssertionError("Timed out after " + timeoutSeconds
+                        + " s waiting for the asynchronous genome FASTA load to commit on the FX thread");
+            }
+            Thread.sleep(20);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     @Test void realAtlasComparisonProjectRoundTripAndVectorRasterExports() throws Exception {
         // Conditional skip must happen OUTSIDE the FX FutureTask: a TestAbortedException
@@ -24,10 +54,38 @@ class ComparisonWorkflowUiTest {
         CountDownLatch ready = new CountDownLatch(1);
         try { Platform.startup(ready::countDown); } catch (IllegalStateException started) { Platform.runLater(ready::countDown); }
         assertTrue(ready.await(20, TimeUnit.SECONDS));
-        FutureTask<Void> task = new FutureTask<>(() -> {
+
+        // Phase 1 — short FX task: build the UI and kick off the REAL asynchronous
+        // genome-FASTA load (loadArchivedAtlasCase -> MainView.loadGenomeFasta).
+        // Returning here frees the FX event queue so LoadingOperation's
+        // Platform.runLater commit callback (sequenceService.replaceWith) can run.
+        // Everything after this point must NOT be put in one long FX task.
+        Fixture fixture = fx(() -> {
             var genome = new GenomeDataService(); var expression = new ExpressionDataService();
             var view = new MainView(genome, expression); var scene = new Scene(view, 1550, 900);
             loadArchivedAtlasCase(view, genome, expression, archivedRoot);
+            return new Fixture(view, scene, genome, expression);
+        });
+
+        // Wait on the TEST thread with an explicit timeout: getPendingLoad() is the
+        // CompletableFuture completed by the FX-thread commit callback, so get()
+        // also establishes the happens-before needed to observe isLoaded().
+        CompletableFuture<?> fastaLoad = fx(() -> fixture.view().getPendingLoad());
+        try {
+            fastaLoad.get(240, TimeUnit.SECONDS);
+        } catch (ExecutionException ex) {
+            throw new AssertionError("asynchronous genome FASTA load failed", ex.getCause());
+        } catch (TimeoutException ex) {
+            throw new AssertionError("timed out waiting for the genome FASTA load to commit on the FX thread", ex);
+        }
+        awaitSequenceServiceLoaded(fixture.view(), 60);
+
+        // Phase 2 — short FX task: the original assertion body, preserved verbatim
+        // (no assertion removed, weakened or re-valued). All state comes from the
+        // phase-1 fixture; the FASTA is now genuinely loaded through the async path.
+        fx(() -> {
+            var view = fixture.view(); var scene = fixture.scene();
+            var genome = fixture.genome(); var expression = fixture.expression();
             view.applyCss(); view.layout();
             assertTrue(expression.getImportReport().matchedIds() >= 30000);
             assertEquals(4, view.getComparisonPane().geneIds().size());
@@ -263,7 +321,6 @@ class ComparisonWorkflowUiTest {
             assertEquals(savedResearch, view.getResearchPane().state(), "research settings, sample groups and last result should survive project restoration");
             view.closeProjectResources(); return null;
         });
-        Platform.runLater(task); task.get(240, TimeUnit.SECONDS);
     }
 
     /**
@@ -295,9 +352,12 @@ class ComparisonWorkflowUiTest {
             parts.add(root.resolve("data/species/arabidopsis/Chr" + i + ".gff3.gz"));
         }
         genome.loadParts(parts, io.gitee.omixcore.phytoscope.parser.AnnotationFormat.GFF3);
-        expression.loadFromFile(root.resolve(
+        // Use MainView's public non-dialog entry point rather than writing the
+        // service directly: loadExpression() also refreshes the detail pane
+        // (unit / samples / level), which the tissue-expression chart needs.
+        // This is the real UI path, so the assertions below stay unchanged.
+        view.loadExpression(root.resolve(
                 "data/case-studies/arabidopsis-atlas/expression.tsv"));
-        expression.reconcile(genome);
         view.loadGenomeFasta(root.resolve(
                 "data/species/arabidopsis/TAIR10_genomic.fna.gz"));
         for (String id : java.util.List.of("AT1G67090", "AT5G38410", "AT5G38420", "AT5G38430")) {

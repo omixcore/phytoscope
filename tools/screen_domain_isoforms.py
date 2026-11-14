@@ -259,7 +259,11 @@ def main():
     args.cache.mkdir(parents=True, exist_ok=True)
     (args.cache / 'annotated-proteins.json').write_text(json.dumps(models))
     (args.cache / 'specificity-proteins.json').write_text(json.dumps(specificity))
-    (args.out / 'candidates.json').write_text(json.dumps(candidates, indent=2) + '\n')
+    # Frozen case artifacts are committed with LF. Write these compared outputs
+    # with an explicit newline so a Windows host does not emit CRLF (which also
+    # changes the derived candidate_sha256 in discovery-manifest.json).
+    with (args.out / 'candidates.json').open('w', encoding='utf-8', newline='\n') as handle:
+        handle.write(json.dumps(candidates, indent=2) + '\n')
     # Preserve complete, unmodified source rows for all candidate loci so that
     # the case can be opened in the desktop and tested without a full reimport.
     selected_genes = {c['gene'] for c in candidates}
@@ -279,7 +283,8 @@ def main():
                     excerpt.append(line)
                     if 'ID' in attrs:
                         retained_ids.add(attrs['ID'])
-    (args.out / 'annotation.gff3').write_text(''.join(excerpt))
+    with (args.out / 'annotation.gff3').open('w', encoding='utf-8', newline='\n') as handle:
+        handle.write(''.join(excerpt))
     fields = ['candidate_id', 'gene', 'symbol', 'accession', 'canonical_transcript', 'short_transcript',
               'canonical_length_aa', 'short_length_aa', 'deletion_start_aa', 'deletion_end_aa',
               'domain', 'domain_start_aa', 'domain_end_aa', 'domain_overlap_aa', 'domain_fraction_removed',
@@ -299,7 +304,8 @@ def main():
               'input_sha256': {manifest_key(p): content_sha256(p) for p in inputs},
               'candidate_sha256': sha256(args.out / 'candidates.json'),
               'validation_peptides_used_for_screening': False}
-    (args.out / 'discovery-manifest.json').write_text(json.dumps(report, indent=2) + '\n')
+    with (args.out / 'discovery-manifest.json').open('w', encoding='utf-8', newline='\n') as handle:
+        handle.write(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))
 
 
