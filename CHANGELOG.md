@@ -1,3 +1,27 @@
+## 0.3.0 — FCS submission candidate (version unification)
+
+- **Application version 0.3.0** (`pom.xml`, tag `v0.3.0`). **3.2.5 is the Spring Boot
+  parent POM version** used for build-time dependency management — not the
+  PhytoScope application/release version. `v0.2.0` is retained and not deleted.
+- **Single authoritative Windows installer name**: `PhytoScope-Windows-0.3.0.zip`,
+  with its SHA-256 in `desktop_program/SHA256SUMS.txt`. The raw
+  `PhytoScope-Windows-AMD64.zip` jpackage output name (no version number) and the
+  historical `dist/` archives are **historical build artifacts**, not the release name.
+- Download links / version wording unified to **0.3.0** in this file and `README.md`.
+- **Release status (honest)**: the only published GitHub Release is still `v0.2.0`;
+  **no `v0.3.0` Release has been published**. The 0.3.0 ZIP and its checksum are
+  built and verified locally in a later step, then uploaded by the maintainer —
+  until that succeeds the release is **pending (not published)**. Do not read
+  "version 0.3.0" as "v0.3.0 Release published".
+- **DOI 未取得**: software / dataset Zenodo DOIs are unfilled placeholders
+  `{{SOFTWARE_DOI}}` / `{{DATA_DOI}}` (plus `{{PAPER_DOI}}` / `{{ORCID}}` /
+  `{{AFFILIATION}}`), centrally registered in `docs/fcs-zenodo-handoff.md` and
+  `CITATION.cff`; **待 Zenodo 发布后回填**.
+- This entry records version/name unification and release-status honesty only;
+  it does **not** claim a new algorithm, new biological finding, new measurement,
+  or a completed Release / Zenodo deposit. Feature detail remains in the dated
+  entries below.
+
 ## 2026-11-14 — FCS submission candidate: slim data, intake health-check, cross-species portability
 
 - Slimmed the bundled data: the complete reference data (TAIR10 genome FASTA,

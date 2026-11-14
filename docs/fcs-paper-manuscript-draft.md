@@ -1,37 +1,111 @@
 # PhytoScope — Manuscript Draft: Materials and Methods · Results · Discussion
 
-> **Status**: first full-text draft of the three core sections. Figures are specified in
+> **Status**: `filled` — Abstract, Introduction, Materials and Methods, Results, Discussion,
+> Data Availability and Code Availability are written out. Figures are specified in
 > `docs/fcs-paper-outline.md` and are drawn separately by the engineering/QA stage; this document
-> references them by name only.
+> references them by name only. **Figure numbering authority**: `docs/fcs-figure-numbering-map.md`
+> (Figure 1 architecture / 2 data model and input formats / 3 seven-module gold / 4 cross-species
+> validation / 5 reproducibility / S1 tool comparison).
 > **Language**: English.
 > **Companion documents**: `docs/fcs-paper-outline.md` (section/table/figure spec),
-> `docs/prd-fcs-submission.md` (PRD), `docs/fcs-submission-gap-audit.md` (open items).
+> `docs/prd-fcs-submission.md` (PRD), `docs/fcs-submission-gap-audit.md` (open items),
+> `docs/fcs-reference-verification.md` (per-reference verification, R12).
 > **Citation key**: numbers `[1]`–`[16]` follow the Reference draft in §7 of
-> `docs/fcs-paper-outline.md`. Confirmed entries are cited directly; entries still awaiting
-> bibliographic verification are cited as `[n — to confirm]`.
+> `docs/fcs-paper-outline.md` and are synchronized with `docs/fcs-reference-verification.md`.
+> `confirmed` entries are cited directly; `unverifiable` entries are **not used as confirmed
+> journal citations** (they are accessions, software, specifications or platforms without a
+> resolvable DOI). No bibliographic detail has been invented.
+> **DOI placeholders**: `{{SOFTWARE_DOI}}` / `{{DATA_DOI}}` / `{{PAPER_DOI}}` are **unfilled**
+> (pending Zenodo), centrally registered in `docs/fcs-zenodo-handoff.md`.
 
 ---
 
-## Reference numbering key (see `docs/fcs-paper-outline.md` §7)
+## Reference numbering key (synchronized with `docs/fcs-reference-verification.md`, R12)
 
-| # | Source | Status |
-|---|---|---|
-| [1] | TAIR (Lamesch et al. 2012; a 2024 *Genetics* update to confirm) | to confirm |
-| [2] | Araport11 (Cheng et al. 2017) | to confirm |
-| [3] | Ensembl Plants (Yates et al. 2022) | to confirm |
-| [4] | Mergner et al. 2020, *Nature*, DOI 10.1038/s41586-020-2094-2 | confirmed |
-| [5] | Lieberman, Henry & Comai 2025, figshare 10.6084/m9.figshare.28457522 | confirmed |
-| [6] | Rice-bean RNA-seq, BioProject PRJNA765494 | to confirm |
-| [7] | gffutils (Dale, software) | to confirm |
-| [8] | Biopython (Cock et al. 2009) | confirmed |
-| [9] | bedtools (Quinlan & Hall 2010) | confirmed |
-| [10] | BLAST+ (Camacho et al. 2009) | confirmed |
-| [11] | Salmon (Patro et al. 2017) | confirmed |
-| [12] | JBrowse 2 (Diesh et al. 2023) | to confirm |
-| [13] | IGV (Robinson et al. 2011) | confirmed |
-| [14] | TBtools (Chen et al. 2020) | confirmed |
-| [15] | GFF3 specification (Stein, Sequence Ontology) | to confirm |
-| [16] | JavaFX / OpenJDK (platform; optional) | to confirm |
+> `confirmed` = DOI resolved via Crossref / DataCite with matching title, author, volume, pages and
+> year. `unverifiable` = no resolvable DOI / no publisher machine-readable record; **not used as a
+> confirmed journal citation**. Channels and exact bibliographic details are in
+> `docs/fcs-reference-verification.md` §2. Numbering slots `[1]`–`[16]` are kept stable so that
+> in-text citations do not shift.
+
+| # | Source | DOI | Status |
+|---|---|---|---|
+| [1] | TAIR, Lamesch et al. 2012, *Nucleic Acids Res* 40:D1202–D1210 | `10.1093/nar/gkr1090` | `confirmed` |
+| [1a] | TAIR 2024 update, Reiser et al., *GENETICS* 227(1):iyae027 | `10.1093/genetics/iyae027` | `confirmed` |
+| [2] | Araport11, Cheng et al. 2017, *Plant J* 89:789–804 | `10.1111/tpj.13415` | `confirmed` |
+| [3] | Ensembl Genomes 2022, Yates et al., *Nucleic Acids Res* 50(D1):D996–D1003 | `10.1093/nar/gkab1007` | `confirmed` (draft DOI corrected) |
+| [4] | Mergner et al. 2020, *Nature* 579:409–414 | `10.1038/s41586-020-2094-2` | `confirmed` |
+| [5] | Horsemint genome, figshare (CC BY 4.0) | `10.6084/m9.figshare.28457522` | `confirmed` |
+| [6] | Rice-bean RNA-seq, BioProject PRJNA765494 (ENA: SRP339385) | no DOI | `unverifiable` (accession, not a paper) |
+| [7] | gffutils (Dale, software, PyPI/GitHub) | no DOI | `unverifiable` (software; no Pertea & Pertea substitution) |
+| [8] | Biopython, Cock et al. 2009, *Bioinformatics* 25:1422–1423 | `10.1093/bioinformatics/btp163` | `confirmed` |
+| [9] | bedtools, Quinlan & Hall 2010, *Bioinformatics* 26:841–842 | `10.1093/bioinformatics/btq033` | `confirmed` |
+| [10] | BLAST+, Camacho et al. 2009, *BMC Bioinformatics* 10:421 | `10.1186/1471-2105-10-421` | `confirmed` |
+| [11] | Salmon, Patro et al. 2017, *Nat Methods* 14:417–419 | `10.1038/nmeth.4197` | `confirmed` |
+| [12] | JBrowse 2, Diesh et al. 2023, *Genome Biol* 24:74 | `10.1186/s13059-023-02914-z` | `confirmed` |
+| [13] | IGV, Robinson et al. 2011, *Nat Biotechnol* 29:24–26 | `10.1038/nbt.1754` | `confirmed` |
+| [14] | TBtools, Chen et al. 2020, *Mol Plant* 13:1194–1202 | `10.1016/j.molp.2020.06.009` | `confirmed` |
+| [15] | GFF3 specification, Sequence Ontology (GitHub `gff3.md`) | no DOI | `unverifiable` (spec URL only) |
+| [16] | JavaFX / OpenJDK (platform; optional) | no DOI | `unverifiable` (not retained as numbered citation) |
+
+---
+
+# Abstract
+
+Plant genomics resources remain fragmented across species-specific portals, and researchers working
+on crops or medicinal plants without a dedicated portal need a local way to query gene structure,
+sequence and expression without uploading their data. PhytoScope is a local JavaFX desktop
+application that implements a single import → validate → browse/query → compare → export pipeline
+with no species-specific code; species entries are data (per-species manifests), never code. We
+validate three claims on pinned inputs: **generality**, by importing four model crops (Arabidopsis,
+rice, maize, soybean) and three portal-poor non-model species (rice bean, Andrographis, Hibiscus)
+through the same path with byte-exact sequence and translation gold sets; **correctness**, by checking
+seven research modules against independent tools (bedtools, BLASTP, gffutils, Biopython, Salmon) with
+exact agreement on frozen gold sets; and **reproducibility**, through SHA-256 provenance, versioned
+manifests, a self-contained `.phytoscope` project format and an independent dual-mirror reference-data
+repository. These results are exactness checks on pinned inputs, not a general precision/recall
+estimate, not a new algorithm, not a new biological discovery and not a performance-competition
+claim; generality is demonstrated on the tested cohort only, and expression handling is an
+import/ID-reconciliation check rather than differential-expression biology. The software is released
+under the MIT license from the `phytoscope` repository (gitee + github mirrors); the complete
+reference data are distributed from the independent `phytoscope-reference-data` repository (gitee +
+github mirrors). Zenodo DOIs for the software and data deposits are **pending**:
+`{{SOFTWARE_DOI}}` / `{{DATA_DOI}}` (see Data Availability and `docs/fcs-zenodo-handoff.md`).
+
+**Keywords**: genome browser; gene structure; GFF3; reproducibility; plant genomics; species-agnostic
+annotation.
+
+---
+
+# Introduction
+
+Plant gene-structure queries are commonly served by species-specific web portals. For species
+without such a portal — including several orphan crops and medicinal plants — a researcher must
+either adapt a general genome browser, write scripts, or upload data to a third-party service.
+Existing tools occupy distinct niches: web genome browsers (JBrowse 2, IGV) require configuration,
+indexing or upload; script libraries (gffutils, Biopython) provide parsing or sequence primitives
+without an integrated interface, provenance record or project format; and GUI tool-suites (TBtools)
+expose many discrete analyses. A gap remains for **local execution with user-supplied data,
+site-free locus querying and traceable, reproducible results**.
+
+PhytoScope addresses that gap as a local JavaFX desktop application built on one
+species-independent pipeline. It accepts GFF3/GTF annotations (with compatibility-level legacy GFF2
+through the same importer), a user-supplied genome FASTA and an optional expression matrix, and
+exposes seven research modules plus a multi-locus comparison figure and a versioned, checksummed
+project format. It performs no runtime download and ships only kilobyte-scale examples.
+
+This Code & Data Letter makes three evidence-backed contributions, none of them algorithmic: a single
+species-agnostic pipeline demonstrated on four model crops and three non-model species; independent
+cross-tool correctness verification against frozen source-derived gold sets; and a traceable,
+reproducible local workflow. The remainder of the paper states precisely what these claims do and do
+not establish: generality is proven on the tested cohort, not on every assembly or annotation
+dialect; correctness is proven on pinned gold sets, not as a genome-wide precision/recall estimate;
+and reproducibility is provenance-level, not biological-validity-level. We explicitly exclude new
+algorithm, new biological discovery, performance/competition and participant-usability claims; a
+participant user study and native macOS/Linux verification are documented as future work.
+
+---
+
 
 ---
 
@@ -40,11 +114,11 @@
 ## 2.1 Software implementation
 
 PhytoScope is a local desktop application written in Java 21 and built with Maven; the graphical
-interface uses JavaFX. The release version and tag are frozen at submission (the repository currently
-tracks `v0.2.0` plus later commits; see `docs/fcs-submission-gap-audit.md` §二). The application
-ships only six kilobyte-scale example annotations, performs no download at runtime, and requires a
-user-imported genome FASTA for any sequence-dependent operation
-(`docs/portability-and-reproducibility.md`, `phytoscope-reference-data/README.md`).
+interface uses JavaFX. The application version is **0.3.0** (`pom.xml`), with tag `v0.3.0` retained
+alongside the earlier `v0.2.0` tag; **3.2.5 is the Spring Boot parent POM version, not the
+application version**. The application ships only six kilobyte-scale example annotations, performs
+no download at runtime, and requires a user-imported genome FASTA for any sequence-dependent
+operation (`docs/portability-and-reproducibility.md`, `phytoscope-reference-data/README.md`).
 
 The functional core is organized around one species-independent pipeline
 (*import → validate → model → browse/query → research modules → export*). There is no
@@ -77,9 +151,13 @@ PhytoScope accepts the formats and conventions defined in
   chromosome, scaffold, contig, and organelle sequences are accepted.
 - **Annotation**: GFF3 (nine tab-delimited columns, 1-based inclusive coordinates, escaped
   attributes, ID/Parent relationships including multiple parents and discontinuous features), and
-  GTF (via `gene_id`/`transcript_id` attributes). Legacy GFF2 is accepted through the same importer
-  for compatibility but has no dedicated fixture or validation claim in this release
-  (`docs/input-format-specification.md`).
+  GTF (via `gene_id`/`transcript_id` attributes). **Legacy GFF2 is supported at compatibility level
+  only, through the existing `Gff3Parser` importer** — there is **no standalone GFF2 parser** and
+  **no independent GFF2 validation claim**. A minimal fixture set
+  (`src/test/resources/gff2/`) and a compatibility-boundary test (`Gff2ParserSupportTest`) document
+  that boundary (CDS phase, transcript boundaries, multi-parent/no-exon CDS, one negative case);
+  validated coverage remains GFF3 and GTF
+  (`docs/input-format-specification.md` §"GFF2 support scope", `docs/fcs-paper-outline.md` §3.2(b)).
 - **Expression**: UTF-8 tab-delimited matrix with one identifier column and unique sample columns
   (CSV and semicolon-delimited inputs are also supported); `#unit`/`#level` metadata; measured zero is
   preserved separately from missing/invalid values.
@@ -227,7 +305,10 @@ executed in the CI Ubuntu runner (workflow run #192), not on this machine.
 
 # Results
 
-Results follow the five main figures of `docs/fcs-paper-outline.md` §4.
+Results follow the five main figures plus one supplementary figure of
+`docs/fcs-paper-outline.md` §4; the **figure numbering authority** is
+`docs/fcs-figure-numbering-map.md` (Figure 1 architecture / 2 data model and input formats /
+3 seven-module gold / 4 cross-species validation / 5 reproducibility / S1 tool comparison).
 
 ## 3.1 One local pipeline across model and non-model species (Figure 1)
 
@@ -241,7 +322,14 @@ reference-acceptance audit confirming assembly accessions GCA_000001735.1, GCA_0
 GCA_902167145.1, and GCA_000004515.4 (`docs/chromosome-validation.md` §"Reference acceptance audit").
 The non-model species import end-to-end through the same path (Table 2.4).
 
-## 3.2 Cross-species portability with byte-exact sequence gold (Figure 2)
+## 3.2 Standard data model and input formats (Figure 2); cross-species validation (Figure 4)
+
+The input-format and data-model conventions underlying Figure 2 (one unified model for GFF3/GTF and
+compatibility-level legacy GFF2, 1-based closed vs 0-based half-open coordinates, strand handling,
+measured-zero vs missing) are specified in §2.2 and `docs/input-format-specification.md`. The
+byte-exact cross-species sequence gold and the multi-species validation results summarized below are
+the content of **Figure 4**, not Figure 2; the unique mapping is recorded in
+`docs/fcs-figure-numbering-map.md`.
 
 For the three non-model full-gold loci, PhytoScope's exported genomic span, spliced transcript, CDS,
 translated protein, and inferred UTRs match the independently derived frozen gold byte-for-byte
@@ -284,36 +372,44 @@ Seven modules were checked against independent references
 Across the two homology families, agreement with BLASTP is 20/20 in each panel (agreement = 1.0).
 These are exactness checks on pinned inputs, not a general precision/recall estimate.
 
-## 3.4 Fair comparison with existing tools (Figure 4)
+## 3.4 Tool comparison with existing tools (Figure S1)
+
+Tool comparison is a **supplementary** result (Figure S1, not a main figure); the numbering is fixed
+by `docs/fcs-figure-numbering-map.md`.
 
 **gffutils (structure import).** PhytoScope and gffutils 0.13 produced identical structure tuples for
 the frozen rice-bean locus, and both matched the source-derived gold in all three trials (3/3)
-(`docs/fcs-phase3-comparison-plan.md` §3.1). Setup and task times were reported separately because
-the storage designs differ (PhytoScope is in-memory; gffutils builds an on-disk SQLite index):
-
-| Measure | PhytoScope | gffutils 0.13 |
-|---|---|---|
-| Cold setup (median of 3) | 2,670.76 ms (import) | 57,801.95 ms (index build) |
-| Selected-locus query, 100 runs (median / p95) | 13.46 ms / 16.16 ms | 0.24 ms / 0.28 ms |
-| Import scale | 41,713 genes / 726,726 features / 232 sequences | (same GFF3) |
-| Peak heap (PhytoScope, pool peak, −Xmx3g) | Old Gen ≈ 1.58 GB, Eden ≈ 0.49 GB | RSS not measured (Windows lacks `resource`) |
-
-The cold-setup difference reflects the in-memory vs SQLite design choice, **not** a speed
-superiority; the query-latency difference likewise reflects an in-memory scan vs an indexed lookup.
-No "faster" claim is made.
+(`docs/fcs-phase3-comparison-plan.md` §3.1). The two storage designs differ — PhytoScope keeps an
+in-memory model, while gffutils builds an on-disk SQLite index — so cold setup (import vs index
+build) and selected-locus task time were reported separately. These are frozen historical baselines
+(`measurement_class = historical_measured_not_new`, `not_new_measurement = true`) recorded in
+`docs/paper-figures/data/gffutils-summary.json`; **no new timing was run for this manuscript**. The
+cold-setup difference reflects the storage design choice, **not** speed superiority; no "faster"
+claim is made.
 
 **Biopython (sequence reconstruction).** Biopython 1.88 `SeqIO` reconstruction of all five products
 (genomic span, transcript, CDS, translation, inferred UTRs) matched the frozen gold byte-for-byte in
 all three non-model species, with correct strand handling on the two minus-strand loci (rice bean,
 Hibiscus) and the one plus-strand locus (Andrographis)
-(`docs/fcs-phase3-comparison-plan.md` §3.2).
+(`docs/fcs-phase3-comparison-plan.md` §3.2; frozen `docs/paper-figures/data/biopython-summary.json`).
 
-**JBrowse 2 / IGV / TBtools (qualitative).** These were compared on shared tasks only, from public
-documentation, not on-machine (Table 3.4, Supplementary Table 3). All three can locate genes and
-display structure tracks; the matrix-level sample-grouping semantics, native multi-locus aligned
-comparison figure, and self-contained project restore are PhytoScope-specific capabilities, while the
-three browsers provide broader coverage of alignment/variant/quantitative tracks that PhytoScope does
-not attempt. These are design differences listed without ranking.
+**JBrowse 2 / IGV / TBtools — qualitative, based on public documentation, not on-machine
+measurements.** JBrowse 2 was not installed in the environment; IGV and TBtools are desktop GUIs
+without a scriptable headless snapshot. They were therefore compared on shared tasks only, from
+public documentation, with **no on-machine timings** (`docs/fcs-tool-comparison-final.md`,
+Supplementary Table 3). All three can locate genes and display structure tracks; the matrix-level
+sample-grouping semantics, native multi-locus aligned comparison figure, and self-contained project
+restore are PhytoScope-specific capabilities, while the three browsers provide broader coverage of
+alignment/variant/quantitative tracks that PhytoScope does not attempt. These are design differences
+listed without ranking; no faster / better / easier-to-use claim is made.
+
+**Performance data (R10 pointer).** All current-tree performance and memory figures are reported in
+`docs/fcs-performance-benchmark.md`, which distinguishes `current_measured` from `historical`
+(v0.2.0 / `8fd01ca`) values and declares the hardware, data, task and ≥3 alternating cold-start
+trials. **Resident set size (RSS) is `not measured`** (Windows lacks Python's `resource` module);
+PhytoScope memory is reported as JVM pool peak only. No performance number is hard-coded in this
+manuscript, so that the B05 benchmark values remain the single source of truth. Historical
+`docs/performance.json` values are not reused as current measurements.
 
 ## 3.5 Reproducibility: provenance and self-contained projects (Figure 5)
 
@@ -355,15 +451,20 @@ To prevent misreading, we state the boundaries explicitly:
 1. **Not a new algorithm.** Structure prediction, orthology, and expression analysis are not
    re-derived; the modules implement established computations (coordinate slicing, reverse
    complement, Smith–Waterman family similarity, mean/median grouping) and are judged on correctness.
-2. **Not a performance-competition tool.** The gffutils cold-setup difference (2,670.76 ms import vs
-   57,801.95 ms index build) and query-latency difference (13.46 ms vs 0.24 ms) reflect the
-   in-memory vs SQLite storage design, not speed superiority; both directions are reported without a
-   "faster" claim.
+2. **Not a performance-competition tool.** The gffutils cold-setup and query-latency differences
+   reflect the in-memory vs SQLite storage design, not speed superiority; both directions are
+   reported without a "faster" claim. All performance data are in
+   `docs/fcs-performance-benchmark.md` (`current_measured` vs `historical`, RSS = `not measured`);
+   no number is hard-coded here (§3.4, R10 pointer).
 3. **Not a new biological discovery.** No new genes, isoforms, orthology, or expression findings are
    claimed; the PIF6 note in `docs/case-study-pif6-known-positive.md` is a known-positive context, not
    a discovery.
-4. **Not a user-usability study.** No participant study, time-saving, easier-to-use, or
-   discovery-rate claim is made; JBrowse 2 / IGV / TBtools are qualitative design comparisons only.
+4. **Not a user-usability study.** **No participant user study was conducted**; no time-saving,
+   easier-to-use, or discovery-rate claim is made. A participant study is explicitly listed as
+   future work (§4.4), with a protocol and an explicitly unexecuted results template in
+   `docs/fcs-user-study-protocol.md` / `docs/fcs-user-study-results.md`. JBrowse 2 / IGV / TBtools
+   are qualitative design comparisons based on public documentation, not on-machine measurements
+   (`docs/fcs-tool-comparison-final.md`).
 5. **Not unqualified species-independence.** Generality is demonstrated on the tested cohort;
    BED/bedGraph tracks and non-standard genetic codes are out of scope, and "species-agnostic" means
    the same code path, not that every assembly or annotation dialect is supported
@@ -378,27 +479,82 @@ To prevent misreading, we state the boundaries explicitly:
 - **Gold-set breadth.** Sequence gold covers five loci per non-model species (25 transcripts), not
    genome-wide; the homology checks span two families with taxonomically unbalanced negatives and
    are not a general precision/recall estimate.
-- **Runtime/memory.** gffutils peak RSS was not measurable on Windows (no `resource` module); PhytoScope
-   memory is reported as JVM pool peak (Old Gen ≈ 1.58 GB under `-Xmx3g`), not RSS. Current-tree
-   performance numbers from phase 6 are declared-hardware, 3-trial values; historical v0.2.0 /
-   `8fd01ca` numbers in `docs/portability-and-reproducibility.md` §5 are archived and must not be read
-   as current.
-- **Comparison scope.** JBrowse 2 / IGV / TBtools are not measured on-machine; manual handling and
-   participant studies were not performed.
-- **Data licensing.** License status is resolved for only 1 of 9 reference files (horsemint CC BY 4.0);
-   the remaining items, including a mint TPM matrix whose source is not yet established, require author
-   confirmation before redistribution (`phytoscope-reference-data/LICENSES.md`).
+- **Runtime/memory.** **RSS is `not measured`** on Windows (no Python `resource` module); PhytoScope
+  memory is reported as JVM pool peak only, not RSS. All performance data — declared hardware,
+  data, task, ≥3 alternating cold-start trials, each value labelled `current_measured` or
+  `historical` — are in `docs/fcs-performance-benchmark.md`; this manuscript hard-codes no number
+  (R10 pointer). Historical v0.2.0 / `8fd01ca` numbers in
+  `docs/portability-and-reproducibility.md` §5 are archived and must not be read as current.
+- **Comparison scope.** JBrowse 2 / IGV / TBtools are **not measured on-machine** (qualitative
+  comparison from public documentation; `docs/fcs-tool-comparison-final.md`); external on-machine
+  comparison and participant user studies were **not performed**.
+- **Data licensing.** License status is resolved for only **1 of 9** reference files (horsemint
+  CC BY 4.0); the remaining **8** items, including a mint TPM matrix whose source is not yet
+  established, require author confirmation before redistribution
+  (`phytoscope-reference-data/LICENSES.md`, `docs/fcs-data-license-decision.md`).
 
 ## 4.4 Future work
 
 Multi-experiment/time-course expression browsing, BED/bedGraph interval and signal tracks,
 non-standard genetic-code and organellar translation, broader multi-family and negative-set gold
-standards, declared-hardware cross-platform benchmarking, and a participant user study are all
-documented as future work and are not claimed here
-(`docs/portability-and-reproducibility.md` §3, `docs/input-format-specification.md`).
+standards, declared-hardware cross-platform benchmarking, native macOS/Linux desktop verification,
+external on-machine tool comparison, and a **participant user study** are all documented as future
+work and are not claimed here (`docs/portability-and-reproducibility.md` §3,
+`docs/input-format-specification.md`). **We did not conduct a user study**; the protocol
+(`docs/fcs-user-study-protocol.md`) and the explicitly unexecuted results template
+(`docs/fcs-user-study-results.md`) are provided for a later study requiring ≥3 recruited
+participants. Native macOS/Linux verification is likewise unexecuted
+(`docs/fcs-desktop-native-verification-checklist.md`).
 
 ---
 
-*End of draft sections. Introduction, Abstract, Data/Code Availability, Acknowledgments, and the
-finalized References are written against the outline in `docs/fcs-paper-outline.md` once the
-gap-audit items (version tag, DOI, license status, citation verification) are closed.*
+# Data Availability
+
+The complete reference data are distributed from the independent
+`phytoscope-reference-data` repository (dual mirrors on gitee and github), governed by
+`MANIFEST.json`, `SHA256SUMS.txt` and `LICENSES.md`. The archive contains **9 files** totalling
+**68,518,847 bytes**; `sha256sum -c SHA256SUMS.txt` verifies **9/9 OK**. Kilobyte-scale examples
+ship inside the software repository; full data are retrieved from the data repository without any
+runtime download. Per-file accession, release, source URL, SHA-256 and license status are itemized in
+`MANIFEST.json` / `LICENSES.md` (Supplementary Table 1).
+
+**License status (as of this submission)**: **1 file is confirmed** (horsemint annotation, CC BY 4.0,
+figshare `10.6084/m9.figshare.28457522`) and **8 files remain to be confirmed** by the data owners
+or authors before redistribution — Araport11 Chr1–Chr5 and the TAIR10 genome FASTA (TAIR / Phoenix
+Bioinformatics terms; written permission or a later switch to NCBI RefSeq CP002684–CP002688),
+E-MTAB-7978 (data-owner permission), and a mint 4-leaf TPM matrix whose source and license could
+not be established. The conclusions in `LICENSES.md` and
+`docs/fcs-data-license-decision.md` are **not authorizations**; the machine cannot grant permission
+on behalf of rights holders. Accordingly, the data deposit is **not** merged into a single CC BY 4.0
+license.
+
+Zenodo archiving is **pending**: the dataset DOI placeholder `{{DATA_DOI}}` (and the software DOI
+`{{SOFTWARE_DOI}}`) is **unfilled** and centrally registered in `docs/fcs-zenodo-handoff.md`.
+**No DOI has been obtained.** The paper DOI `{{PAPER_DOI}}` is likewise pending.
+
+---
+
+# Code Availability
+
+The PhytoScope source code is available from the `phytoscope` repository (gitee and github mirrors)
+under the **MIT** license (root `LICENSE`), at application version **0.3.0** (`pom.xml`;
+3.2.5 is the Spring Boot parent POM, not the application version). Build and reproduction commands,
+the frozen gold sets, the figure generator `docs/paper-figures/make_paper_figures.py` and the
+validation scripts in `tools/` are committed in the same repository. The Windows desktop package is
+`PhytoScope-Windows-0.3.0.zip`; its checksum is recorded in `desktop_program/SHA256SUMS.txt`.
+The versioned software archive for Zenodo is pending; the software DOI placeholder
+`{{SOFTWARE_DOI}}` is **unfilled (DOI not obtained)** and registered in
+`docs/fcs-zenodo-handoff.md`. Build/runtime environment: Java 21, Maven Wrapper, JavaFX; headless
+regressions run under JavaFX Monocle (`sh mvnw -B -Pui-tests
+-Dphytoscope.referenceDataDir=target/reference-data test`). No new algorithm or dependency is
+introduced by this submission.
+
+---
+
+*Manuscript draft complete: Abstract, Introduction, Materials and Methods, Results, Discussion,
+Data Availability and Code Availability are written out above. Reference numbering is synchronized
+with `docs/fcs-reference-verification.md`; figure numbering with
+`docs/fcs-figure-numbering-map.md`. Remaining external items — Zenodo DOIs, `v0.3.0` Release upload,
+native macOS/Linux verification, a participant user study and the eight data-license confirmations —
+are B-class actions that require the authors and are **not claimed as completed** here. See
+`docs/fcs-zenodo-handoff.md` and `docs/fcs-final-push-checklist.md`.*

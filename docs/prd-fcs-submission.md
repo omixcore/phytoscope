@@ -42,7 +42,7 @@
 
 | ID | 需求条目 | 状态 | 验收口径（怎么算"完成"） | 数据来源 | 优先级 | 依赖 |
 |---|---|---|---|---|---|---|
-| R1.1 | GFF3/GTF/GFF2 支持范围与解析规则 | ✅ 已有（GFF2 需确认） | `input-format-specification.md` 已定义 GFF3/GTF 规则；补一句 GFF2 支持范围与「GTF/GFF2 走既有 importer」的明确边界；不新增解析器 | 既有规范 + 既有 importer 代码 | P0 | 无 |
+| R1.1 | GFF3/GTF/GFF2 支持范围与解析规则 | ✅ 已有（GFF2 需确认） | `input-format-specification.md` 已定义 GFF3/GTF 规则；补一句 GFF2 支持范围与「GTF/GFF2 走既有 importer」的明确边界；不新增解析器。**B03/R7 备注：GFF2 定稿为「兼容级 / 走既有 `Gff3Parser` importer / 非独立解析器 / 非独立验证宣称」，措辞与 `input-format-specification.md` §"GFF2 support scope"、outline §3.2(b)、manuscript §2.2 一致** | 既有规范 + 既有 importer 代码 | P0 | 无 |
 | R1.2 | FASTA 规范与染色体 ID 匹配 | ✅ 已有 | 规范已定义（首个空白前非空标识、case/原名保留、重复 ID 拒绝）；验收=抽查文档与 `GeneSequenceService.normalizeSequenceName`/别名逻辑一致 | `input-format-specification.md`、`GeneSequenceService` | P0 | R1.1 |
 | R1.3 | 表达矩阵 TSV/CSV 标准与元数据 | ✅ 已有 | 规范已定义（UTF-8 TSV 模板、CSV/分号兼容、`#unit`/`#level` 元数据、零 vs 缺失区分）；验收=文档与 `ExpressionDataService` 行为一致 | `input-format-specification.md`、`ExpressionDataService` | P0 | R1.1 |
 | R1.4 | Gene/Transcript/Exon/CDS/UTR 数据模型统一 | ✅ 已有 | 模型已统一（共享父边、多父、不连续 feature、无 exon 的 CDS/UTR 单独保留不虚构）；验收=抽查 `GenomeDataService` 与结构清单一致 | 既有数据模型 + `validate_structure_inventory.py` | P0 | R1.1 |
@@ -54,7 +54,7 @@
 | R2.4 | 重建 Windows 安装包并核对 | 🔶 有缺口 | 重新 `package_desktop.py` 生成瘦身版 ZIP（已测 44.01 MiB）→ 发布为 GitHub Release 附件 → 更新 SHA256SUMS.txt；**缺口**：当前发布页仍是 110 MB 历史 v0.2.0 包 | `desktop-distribution.md`、`desktop-verification.md` | P0 | R2.3 |
 | R2.5 | 验证 Linux/Windows/macOS 安装启动 | 🔶 有缺口 | CI 三平台构建通过，但 Monocle 不覆盖原生对话框/DPI；**缺口**：在三平台真机各录一次「启动 → 导入 → 浏览 → 导出 → 存/读项目」手动清单 | `desktop-verification.md` 手动清单 | P0 | R2.4 |
 | R2.6 | 正式版本标签和 DOI（Zenodo） | 🆕 需新增 | 冻结投稿版本 → 打 tag（建议 `v1.0.0` 或保留 `v0.2.0`+patch 版本，待拍板）→ 经 Zenodo 归档软件+数据两仓库，取得 DOI 并回填 README/CITATION | GitHub/gitee Releases、Zenodo | P0 | R2.3, R2.4 |
-| R3.1 | GFF3/GTF/GFF2 格式测试集 | 🔶 有缺口 | GFF3/GTF 已有 GoldenRegressionTest/四物种 fixture；**缺口**：为 GFF2 补一组专用最小 fixture（含 CDS phase、转录本边界）确认 importer 覆盖 | `src/test/resources`、四物种 fixture | P0 | R1.1 |
+| R3.1 | GFF3/GTF/GFF2 格式测试集 | 🔶 有缺口 | GFF3/GTF 已有 GoldenRegressionTest/四物种 fixture；**缺口**：为 GFF2 补一组专用最小 fixture（含 CDS phase、转录本边界）确认 importer 覆盖。**B03/R7 备注：B01 已建 `src/test/resources/gff2/` 4 个最小 fixture（CDS phase / 转录本边界 / 多 parent 无 exon CDS / 负例）与 `Gff2ParserSupportTest`（5 测试，走既有 importer、全绿）；仅作兼容级边界记录，不宣称独立 GFF2 解析或独立验证** | `src/test/resources`、四物种 fixture | P0 | R1.1 |
 | R3.2 | 异常注释/缺失字段/重复ID/错误坐标测试 | ✅ 已有 | `Gff3ParserEdgeCaseTest` + D6 边界/越界 + intake health-check 已覆盖；验收=盘点测试清单确认真实覆盖 | 既有测试 + intake fixture | P0 | R1.5 |
 | R3.3 | 染色体命名和正负链测试 | ✅ 已有 | `AdaptiveChromosomeTest`/`SpeciesAgnosticTest`/负链 fixture 已覆盖；验收=盘点确认 | `chromosome-validation.md` | P0 | R1.5 |
 | R3.4 | 表达矩阵缺失值/零值/ID 不匹配测试 | ✅ 已有 | `ExpressionDelimiterTest`/D 系列/`AdditionalNonModelReferenceTest` 已覆盖零 vs 缺失、重复、ID 对齐；验收=盘点确认 | 既有测试 | P0 | R1.3 |
@@ -141,6 +141,16 @@
 ---
 
 ## 4. 论文图表清单
+
+> **图号修订说明（B03 / R9，增量 PRD 图号对照表为准）**：本节 4.1–4.3 是**旧需求池编号**
+> （图 1–图 5 / 补图 1–补图 5 / 补表 1–补表 4），按任务要求**保留旧编号、不重排**。
+> 论文最终图号的**唯一权威**是 `docs/fcs-figure-numbering-map.md`：
+> `Figure1` 架构 / `Figure2` 数据模型与输入格式 / `Figure3` 七模块金标准 /
+> `Figure4` 跨物种验证 / `Figure5` 可复现性 / `FigureS1` 工具对比（补充图）。
+> 因此下表旧「图2 跨物种可移植性」「图4 软件对比与功能差异」标题仅为需求池历史表述，
+> **不得作为论文图号引用**；`docs/fcs-paper-outline.md` §4、
+> `docs/fcs-paper-manuscript-draft.md` §3.1–3.5 及 `docs/fcs-submission-gap-audit.md`
+> 的图表述均按该对照表对齐。旧编号与最终编号的逐条映射见对照表 §3「引用修改映射」。
 
 ### 4.1 五张主图
 

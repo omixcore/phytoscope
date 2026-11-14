@@ -1,0 +1,79 @@
+# PhytoScope FCS · 收尾推送与发布核对表（裁定 6 / M01 / M02）
+
+> 批次：B03 · 执行人：工程师寇豆码（Kou，只备清单，不执行推送）· 日期：2026-11-14（ISO-8601 UTC 口径同设计 §7.10）
+> 权威规格：`docs/design-fcs-final-delivery.md` §3.5、§5 B03 #12、§0.2 裁定 6、§0.3、§7.8/§7.11；增量 PRD §3 收尾段 / §8。
+> **执行主体（M01 / M02）：主理人齐活林**。工程师只备清单与前置产物，**不执行 git push、不上传 Release**。
+>
+> **项数口径说明**：第三轮下发文字写「11 项核对表」，但权威规格 §3.5 的核对表实为 **14 行**
+> （§5 B03 #12 亦写「按 §3.5 建 14 项核对表」）。本清单按**设计 §3.5 全 14 项**落地，
+> 覆盖下发要求的全部 11 项要点，不遗漏任何字段；差异已在 B03 回执中如实说明。
+
+---
+
+## 0. 三个独立状态字段（彼此独立，禁止串写）
+
+| 字段 | 含义 | 初值 |
+|---|---|---|
+| `push_state` | git push（M01，**A 类**本机动作） | `not_pushed`（未推送） |
+| `release_state` | `v0.3.0` Release 资产上传（M02，主理人） | **`pending_release`（待发布）** |
+| `zenodo_state` | Zenodo 两个 deposit 发布（作者 A1，B 类） | `not_published`（未发布） |
+
+> **「推送凭证可用」≠「已推送」≠「已发布」**（PRD §8 第 4/5 条）。
+> 当前 GitHub Release **只有 `v0.2.0`**，禁止写成「已发布 v0.3.0」。
+> 禁止把「推送凭证可用」写成「已推送」；任一动作失败时**如实标注「未推送 / 待发布」**，不得称已完成。
+
+---
+
+## 1. 核对表（14 项，按设计 §3.5）
+
+| # | 核对项 | 命令 | 期望 / 失败口径 | 状态 |
+|---|---|---|---|---|
+| 1 | 主仓工作区干净 | `git status --porcelain` | 输出为空（须先 `git add` 全部新增文档） | ☐ 待主理人核对 |
+| 2 | HEAD | `git rev-parse HEAD` | 与汇总文档 `docs/ci-reports/v0.3.0/README.md` / 本清单记录一致 | ☐ 待主理人核对 |
+| 3 | tag | `git tag -l v0.3.0` + `git rev-parse v0.3.0^{commit}` | 存在且指向预期提交；**`v0.2.0` 保留不删** | ☐ 待主理人核对 |
+| 4 | 版本口径 | `grep -m1 '<version>' pom.xml` | 应用版本 **0.3.0**；**3.2.5 = Spring Boot 父 POM，非应用版本**（README 已显式澄清） | ☐ 待主理人核对 |
+| 5 | 两远端一致性 | `git ls-remote origin HEAD` / `git ls-remote github HEAD` | 指向同一 SHA | ☐ 待主理人核对 |
+| 6 | 数据双镜像一致性 | 两数据仓库远端 `git ls-remote ... HEAD` | 同一提交 | ☐ 待主理人核对 |
+| 7 | 数据仓库工作区 | `git -C <reference-data> status --porcelain` | 输出为空 | ☐ 待主理人核对 |
+| 8 | 数据校验 | `sha256sum -c SHA256SUMS.txt`（数据仓库） | **9/9 OK**；totals **9 文件 / 68,518,847 B** 不变 | ☐ 待主理人核对 |
+| 9 | 本地测试 | `sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test` | 绿、`ResearchModuleGoldSetTest` 非 skip、Skipped 总数由 12 下降（B01b 本机实测 `216 / 0 / 0 / 7`） | ☐ 待主理人核对 |
+| 10 | **git push（M01，A 类）** | 推送代码/文档 → `origin` + `github`；数据 → 双镜像 | **凭证已实测可用，按 A 类本机执行**；成功记 `push_state = pushed`；**失败如实标注「未推送」，不得称已推送** | ☐ **未推送** |
+| 11 | **两端 commit 对照** | `git rev-parse HEAD` 与两远端 `git ls-remote ... HEAD` 三方比对 | 记录三方实际 SHA 于本清单；**一致才算推送闭环** | ☐ 待主理人填写 |
+| 12 | **Release 前置产物（B05 工程师产出）** | `ls -l ../dist/PhytoScope-Windows-0.3.0.zip` + `sha256sum -c desktop_program/SHA256SUMS.txt` | 两个文件必须存在且校验 OK，**M02 才能启动**；不得由主理人代建。**B05 暂未下发，本批不生成 ZIP** | ☐ **B05 待产出** |
+| 13 | **Release 资产上传（M02，主理人）** | 推送后用**本机缓存凭据**走 GitHub Release API 尝试：补建 `v0.3.0` Release，上传 #12 两个资产 | **成功**才记 `release_state = published` + Release URL/时间；**权限不足/失败**记 `release_state = pending_release（待发布）` + 如实原因；**未执行前一律 `pending_release`，不得称已发布 v0.3.0** | ☐ **pending_release** |
+| 14 | 执行主体 | 固定字段 | M01/M02 均为**主理人齐活林**；工程师只备清单与前置产物；Zenodo deposit 仍属作者 A1 | 固定 |
+
+### 两端 commit 对照记录（空，主理人推送后填）
+
+| 端 | 实际 SHA | 核对时间 | 是否一致 |
+|---|---|---|---|
+| 本机 `git rev-parse HEAD` | （未填写） | （未填写） | （未填写） |
+| `origin`（gitee）`git ls-remote ... HEAD` | （未填写） | （未填写） | （未填写） |
+| `github`（SSH over 443）`git ls-remote ... HEAD` | （未填写） | （未填写） | （未填写） |
+
+> **失败时如实标注未推送**：若第 10 项未执行或失败，`push_state` 保持 `not_pushed`，
+> 并在回执写明「未推送」及真实原因，禁止用「凭证可用」冒充已推送。
+
+---
+
+## 2. 依赖与前置（如实）
+
+- 第 12 项的两个前置产物（`dist/PhytoScope-Windows-0.3.0.zip`、`desktop_program/SHA256SUMS.txt`）
+  由 **B05** 产出；**B05 暂未下发**，故第 12/13 项目前**不可执行**，状态如实为
+  「B05 待产出」/「pending_release」。
+- 第 9 项本地测试的本机绿跑证据在 `docs/fcs-ci-goldset-fix-report.md`；**三平台 CI 报告回收**
+  属 **R2 远端实跑的目标态，不计入本机 A 类闭环**（见 `docs/ci-reports/v0.3.0/README.md`）。
+- Zenodo 两个 deposit 发布与 DOI 回填属作者 A1（B 类），见 `docs/fcs-zenodo-handoff.md`；
+  **DOI 未取得**。
+
+---
+
+## 3. 对外口径（强制）
+
+- 固定表述：「**A 类 7 项本机已闭环、B 类 6 项物料齐备待作者执行、C 类 1 项给出核查结论**」。
+- 禁止：「14 项全部完成」「已完成 Zenodo 归档/取得 DOI」「已完成用户测试」
+  「已完成三平台原生验证」「许可问题已解决」「已推送」「已发布 v0.3.0 Release」。
+- 禁止把「现有 `v0.2.0` Release」说成「已发布 v0.3.0」；把 `public-data-validation` 外部网络失败
+  计入代码失败。
+- `not_collected` / `not_pushed` / `pending_release` / `not_published` 均为**如实初值**，
+  不得在动作真实执行前改成完成态。

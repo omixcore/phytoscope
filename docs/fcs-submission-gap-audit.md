@@ -78,3 +78,41 @@
 4. **执行优先级建议（相对当前任务面板）**：把「阶段1」内 **tag + Release + DOI + 许可** 四项提为 P0（投稿硬门槛、纯物料操作、不涉代码）；**CHANGELOG 回填 + README 表述统一** 为 P1（低成本消除不一致）；**macOS/Linux 原生实测、当前树 CI 绿、BED/bedGraph 决策** 为 P2（需要运行时或实现投入）；**用户研究/更大金标准/对比实验**维持阶段6/7，不阻塞投稿但需在文中如实标注「未执行」而非留白。
 
 > 待运行时验证汇总：`#10`（当前 HEAD 三平台 CI 实跑）、`#13`（macOS/Linux 原生桌面）、`#1` 中的 BED/bedGraph 与遗传密码项、`#25/#26` 的更大金标准泛化、`#20` 的 manual/浏览器对比。以上均未在本仓库落地可查结果，故不标 ✅。
+
+---
+
+## 七、B03 增量补注（只读盘点原文不改动）
+
+> 本补注由 **B03（工程师寇豆码）** 追加，**上方 §一–§六 的只读盘点正文与其 `8b6bf0b` 时代
+> 状态值全部保留、不改、不外推为当前实测**（设计 §7.3 / PRD §8 第 5 条）。补注只做两件事：
+> ① 为 #10 标「**待远端回收**」；② 声明论文图表述的唯一权威图号。
+
+### 7.1 #10「CI 三平台工作流」状态：待远端回收
+
+- 上方 #10 的 🟡 与「待运行时验证」是 **HEAD `8b6bf0b` 时代的只读盘点结论**，保留原样。
+- **当前状态：待远端回收**。三平台报告骨架已建于 `docs/ci-reports/v0.3.0/`
+  （汇总 `README.md` + `c79034e-baseline.md` 对照基线 + 逐平台 `job-summary.md`），
+  所有状态初值 `not_collected` / `collection_state = materials_ready_pending_remote`。
+  **结果真实回收前不得写 pass / success，不预填任何 surefire / JSON 内容**。
+- 回收执行主体固定「**主理人（GitHub Actions REST API artifact download）**」；本机不生成、
+  不伪造报告。三平台由 failure 转 success 属 **R2 远端实跑的目标态，不计入本机 A 类闭环**。
+- `public-data-validation`（PMC/PastDB/ENA 外网依赖）单列为
+  `failure_category = external_network`、`counts_in_platform_matrix = false`，
+  **不并入三平台矩阵、不据此判定代码失败**（Q13）。
+- 汇总落点：`docs/fcs-phase2-verification-report.md`（T06）；本机 A 类留痕：
+  `docs/fcs-ci-goldset-fix-report.md`（B01/B01b，全量 `216 / 0 / 0 / 7` 绿、金标准非 skipped）。
+- **证据链脚注（非失败项，设计 §11.2）**：B01 → B01b 的 `ComparisonWorkflowUiTest` 既有 FX
+  缺陷修复（`ca8743e`，测试侧两阶段 FX 重构、断言 verbatim、`src/main/java` 零改动）
+  只作脚注，**不并入 `c79034e` 基线 / 外部网络类 / failure → success 矩阵、不判代码失败**。
+
+### 7.2 论文图号表述（按唯一权威对照表对齐）
+
+- 本审计正文出现的 `ComparisonFigure.java` 等是**源码类名，不是论文图号**，无需改动。
+- 凡涉及论文主图/补充图的表述，一律以 `docs/fcs-figure-numbering-map.md` 为**唯一权威**：
+  `Figure1` 架构 / `Figure2` 数据模型与输入格式 / `Figure3` 七模块金标准 /
+  `Figure4` 跨物种验证 / `Figure5` 可复现性 / `FigureS1` 工具对比（补充图）。
+- 旧「Figure 2 = cross-species portability」「Figure 4 = fair comparison」错位映射已废止；
+  Figure S1 数据源为 B02 冻结的 `docs/paper-figures/data/*.json`，**不得再写**
+  `target/phase3-comparison/*.json`（运行时产物）。增补 PRD §4 修订说明见
+  `docs/prd-fcs-submission.md` §4，正文/大纲对齐见
+  `docs/fcs-paper-outline.md` §4 与 `docs/fcs-paper-manuscript-draft.md` §3.1–3.5。

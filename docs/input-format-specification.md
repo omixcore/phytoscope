@@ -19,7 +19,7 @@ sequence-dependent operations. Expression and tracks are optional.
 | Input | Format | Coordinate convention |
 | --- | --- | --- |
 | Reference | FASTA; gzip accepted | Sequence positions |
-| Annotation | GFF3 or supported GTF; legacy GFF2 accepted via the same importer (not separately validated); gzip accepted | 1-based, closed |
+| Annotation | GFF3 or supported GTF; legacy GFF2 at compatibility level via the same importer (no standalone parser / no independent validation claim — see §"GFF2 support scope"); gzip accepted | 1-based, closed |
 | Expression | Delimited text with header | Gene or transcript ID |
 | Intervals | BED3 or BED6 *(deferred — v2 target, not yet implemented)* | 0-based, half-open |
 | Signal | bedGraph *(deferred — v2 target, not yet implemented)* | 0-based, half-open |
@@ -43,8 +43,8 @@ Parse GFF3 as nine tab-delimited columns with 1-based inclusive coordinates,
 honoring escaped attributes and ID/Parent relationships, including multiple
 parents and discontinuous features. Parse GTF using its gene_id and
 transcript_id attributes under the existing importer. Legacy GFF2 is accepted
-through the same importer for compatibility, but has no dedicated fixture or
-validation claim in this release; validated coverage is GFF3 and GTF only.
+through the same importer at compatibility level only (see the dedicated
+"GFF2 support scope" section below); validated coverage is GFF3 and GTF.
 Preserve source feature types, coordinates, sequence identifiers, strand (`+` /
 `-`) and CDS phase. Minus-strand loci are reversed and reverse-complemented for
 sequence extraction (see the README "Gene sequence details"); the input spec
@@ -57,6 +57,31 @@ available, unresolved parents, duplicate or inconsistent identifiers, and
 invalid CDS phase. Distinguish fatal errors, warnings, notices and checks not
 performed. Report affected counts and examples with source line numbers when
 available. Existing parser behavior and supported inputs remain compatible.
+
+## GFF2 support scope
+
+Legacy GFF2 is supported at **compatibility level only**, through the existing
+`Gff3Parser` importer. There is **no standalone GFF2 parser** and **no
+independent GFF2 validation claim**. GTF and legacy GFF2 records are read by the
+same importer already used for GFF3; no separate parser, grammar or validation
+path is introduced, and compatibility with the full GFF2 specification is not
+claimed.
+
+A minimal fixture set (`src/test/resources/gff2/`: `cds-phase.gff2`,
+`transcript-boundaries.gff2`, `multi-parent-no-exon-cds.gff2`,
+`negative-orphan.gff2`) and a compatibility-boundary test
+(`Gff2ParserSupportTest`, five tests) document that boundary: CDS phase,
+transcript boundaries, multi-parent / no-exon CDS and one negative case. These
+fixtures exercise the **existing importer** on legacy-shaped records; they are
+not an independent GFF2 validation suite and do not establish a separate GFF2
+parser. Validated coverage remains GFF3 and GTF. This boundary is stated
+consistently in `docs/fcs-paper-outline.md` §3.2(b) and
+`docs/fcs-paper-manuscript-draft.md` §2.2; the requirement-side remarks are in
+`docs/prd-fcs-submission.md` R1.1 / R3.1.
+
+Out-of-scope items are unchanged: BED3/BED6 and bedGraph tracks remain deferred
+(v2 target), and translation uses the standard nuclear genetic code only. No new
+parser, algorithm or format is added by this specification section.
 
 ## Expression
 

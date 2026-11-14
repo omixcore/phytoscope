@@ -148,3 +148,43 @@ PhytoScope（`--benchmark`，`-Xmx3g`）与 gffutils（`compare_gffutils.py`，�
 - `tools/compare_biopython_seqio.py`（新增，Biopython 对比脚本）
 - `target/phase3-comparison/biopython/summary.json` + `{vigna-umbellata,andrographis-paniculata,hibiscus-syriacus}.json`
 - `target/phase3-comparison/gffutils/summary.json`（3 轮对比，后台执行）
+
+---
+
+## 7. B03 定稿说明（R6，增量补注；上方 §1–§6 既有实测数字原样保留）
+
+> 本节由 **B03（工程师寇豆码）** 追加，是对本报告的**定性定稿口径说明**，**不重跑任何计时、
+> 不重造任何数字、不新增任何实测结论**。§1–§6 记录的 gffutils 0.13 / Biopython 1.88
+> 数值均为 `247ff11` 时代的**既有实机基线**，本报告正文与数值**一字不改**。
+
+### 7.1 三工具：定性对照，非本机实测
+
+- JBrowse 2 / IGV 2.19.3 / TBtools-II 三工具行固定标注
+  「**定性对照（基于公开文档，非本机实测）**」：JBrowse 2 未安装（§1 环境侦察
+  `which jbrowse` 无结果），IGV/TBtools 为桌面 GUI、本环境未脚本化，无可复现的无头快照或计时。
+- **不作「更快 / 更好 / 更易用」主张**，不作省时、发现率、可用性优劣比较；§4.1 共同任务矩阵
+  的 ✅/⚠️ 只描述公开文档所述的「原生能力有无」，不是实机计时、不是性能或易用性评分、不排名。
+- **GitHub Actions 三平台构建 artifact ≠ 外部实机同任务对照**，二者不得互相替代。
+
+### 7.2 gffutils / Biopython：既有实机基线，只引用不重跑
+
+- 二者的 §3.1 / §3.2 计时与一致性结果是**既有实机基线**，已由 **B02** 冻结到
+  `docs/paper-figures/data/gffutils-summary.json` 与 `biopython-summary.json`，带
+  `_provenance`（`not_new_measurement = true`、
+  `measurement_class = historical_measured_not_new`、`measured_on_head = 247ff11`）与
+  `SHA256SUMS.txt`。**B03 未重跑计时、未新测、未把历史值当当前实测**。
+- §6 列出的 `target/phase3-comparison/*.json` 是 `target/` **运行时产物**，干净 clone 下不存在；
+  **Figure S1 的数据源一律写 `docs/paper-figures/data/*.json`**（设计 §7.6）。
+- bedtools 2.31.1 / BLASTP 的 CI Linux 8/8、20/20 既有对比同样只引用；本机无 bedtools，
+  B01 只验证 report guard 报错，不重复比对实跑。
+
+### 7.3 定稿物料与图号
+
+| 物料 | 文件 | 状态 |
+|---|---|---|
+| 三工具定性对照定稿 | `docs/fcs-tool-comparison-final.md` | 成文（定性，非实测） |
+| 外部实机同任务补充协议 | `docs/fcs-tool-comparison-external.md` | **空白 / 未执行**（需带显示环境机器 + 作者执行，A8） |
+| 图号唯一权威 | `docs/fcs-figure-numbering-map.md` | 工具对比 = **`FigureS1`（补充图）**，不是 Figure 4 / Figure 5 |
+
+> **B 类如实标注**：R6 属「只交物料/协议，需作者执行」。本批只产出定性定稿 + 功能差异单列 +
+> 空白外部实机协议；**不得写成「已完成三工具同任务实机对照」**，也不把定性对照冒充实机计时。

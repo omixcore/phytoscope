@@ -19,7 +19,23 @@ No external service is required while browsing local files.
 
 ## Download for Windows (no JDK required)
 
-Download the packaged Windows application (x64) from the releases page: [PhytoScope v0.2.0](https://github.com/omixcore/phytoscope/releases) — SHA-256 checksums in [desktop_program/SHA256SUMS.txt](desktop_program/SHA256SUMS.txt). That released v0.2.0 archive predates the data-slimming change and includes a slim jlink runtime, so nothing else has to be installed. **No new Release has been published yet for the current tree** (the data-slimming, import health-check and manifest-v2 changes); v0.2.0 remains the latest published archive. For the current tree's freshly measured build sizes see [Build artifact size](#build-artifact-size).
+The application version for the current tree is **0.3.0** (`pom.xml`; tag `v0.3.0`),
+distributed under the MIT license. Note that **3.2.5 is the Spring Boot parent POM
+version** used for build-time dependency management — it is **not** the PhytoScope
+application/release version, which is 0.3.0. The single authoritative installer name
+for this version is `PhytoScope-Windows-0.3.0.zip` (produced by the final build step);
+SHA-256 checksums are recorded in [desktop_program/SHA256SUMS.txt](desktop_program/SHA256SUMS.txt).
+
+Download packaged Windows applications (x64) from the
+[releases page](https://github.com/omixcore/phytoscope/releases): the only published
+Release is still **v0.2.0** (`PhytoScope-Windows-AMD64.zip`), a historical archive that
+predates data slimming and includes a slim jlink runtime, so nothing else has to be
+installed. **No `v0.3.0` Release has been published yet**: `PhytoScope-Windows-0.3.0.zip`
+is built and its checksum verified locally in a later step, then uploaded by the
+maintainer; until that upload succeeds, the release is **pending (not published)** and
+v0.2.0 remains the latest published archive. Do not read "version 0.3.0" above as
+"v0.3.0 Release published". For the current tree's measured build sizes see
+[Build artifact size](#build-artifact-size).
 
 1. Extract the ZIP to any local folder, keeping `PhytoScope.exe`, `app/` and `runtime/` together.
 2. Double-click `PhytoScope.exe` — a bundled Java runtime is included, so nothing else has to be installed.
@@ -124,6 +140,15 @@ build artifacts (JAR / jlink ZIP) get smaller. Because the removal is a normal
 `git rm` in a new commit and history was never rewritten, the **git history pack
 (~209 MiB) and a fresh clone are unchanged** — there is no "smaller repository"
 or "faster clone" claim.
+
+**Naming note (0.3.0):** `PhytoScope-Windows-AMD64.zip` in the table above is the
+raw jpackage app-image output name from that measurement (it carries no version
+number). It is a historical, measured build artifact — **not** the authoritative
+release name. The single authoritative installer name for version 0.3.0 is
+`PhytoScope-Windows-0.3.0.zip` (produced in the final build step by building into
+a separate output directory and renaming; see `docs/fcs-final-push-checklist.md`).
+The two historical ZIPs under `dist/` are kept as historical artifacts and are not
+deleted.
 
 ## Run
 
@@ -318,7 +343,16 @@ The right-hand Gene Details → Sequences section displays the gene genomic span
 
 ## Citation
 
-Song X, Chen P, Liang F. *PhytoScope for portable local queries of plant genome data.* Concise Report.
+Song X, Chen P, Liang F. *PhytoScope for portable local queries of plant genome data.* Concise Report. PhytoScope 0.3.0.
+
+> **DOI 未取得（待 Zenodo 发布后回填）**：软件与数据两个 Zenodo deposit 尚未创建/发布，
+> 因此以下占位符**全部保持未回填**，不得填入任何真实值：
+> software `{{SOFTWARE_DOI}}`、dataset `{{DATA_DOI}}`、paper `{{PAPER_DOI}}`、
+> author `{{ORCID}}`、`{{AFFILIATION}}`。占位符集中登记于
+> [`docs/fcs-zenodo-handoff.md`](docs/fcs-zenodo-handoff.md)；机器可读引用见
+> [`CITATION.cff`](CITATION.cff)。当前 GitHub Release 只有 `v0.2.0`，**没有 `v0.3.0`**。
+> 论文投稿引用格式见 [`docs/fcs-paper-manuscript-draft.md`](docs/fcs-paper-manuscript-draft.md)
+> 的 Data Availability / Code Availability。
 
 ## License
 
