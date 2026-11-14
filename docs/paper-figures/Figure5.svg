@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-14T13:47:31.148713</dc:date>
+    <dc:date>2026-11-14T16:40:59.468922</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -40,7 +40,7 @@ Q 7.2 78.974146 7.2 83.358078
 L 7.2 206.108184 
 Q 7.2 210.492116 16.667339 210.492116 
 z
-" clip-path="url(#p7fdafe0a65)" style="fill: #eaf2f8; stroke: #2c7bb6; stroke-width: 1.1; stroke-linejoin: miter"/>
+" clip-path="url(#p09b049f0c4)" style="fill: #eaf2f8; stroke: #2c7bb6; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 8.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="19.823119" y="97.199288" transform="rotate(-0 19.823119 97.199288)">.phytoscope project manifest</text>
@@ -82,7 +82,7 @@ Q 379.582018 75.618543 379.582018 79.67774
 L 379.582018 104.03292 
 Q 379.582018 108.092116 389.049358 108.092116 
 z
-" clip-path="url(#p5a9bc28425)" style="fill: #f4fbf4; stroke: #333333; stroke-linejoin: miter"/>
+" clip-path="url(#p7868d97ce6)" style="fill: #f4fbf4; stroke: #333333; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 389.049358 145.977951 
@@ -95,7 +95,7 @@ Q 379.582018 113.504379 379.582018 117.563575
 L 379.582018 141.918755 
 Q 379.582018 145.977951 389.049358 145.977951 
 z
-" clip-path="url(#p5a9bc28425)" style="fill: #eaf2f8; stroke: #333333; stroke-linejoin: miter"/>
+" clip-path="url(#p7868d97ce6)" style="fill: #eaf2f8; stroke: #333333; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 389.049358 189.276049 
@@ -108,7 +108,7 @@ Q 379.582018 156.802476 379.582018 160.861672
 L 379.582018 185.216852 
 Q 379.582018 189.276049 389.049358 189.276049 
 z
-" clip-path="url(#p5a9bc28425)" style="fill: #fff7e6; stroke: #333333; stroke-linejoin: miter"/>
+" clip-path="url(#p7868d97ce6)" style="fill: #fff7e6; stroke: #333333; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 559.461468 132.447296 
@@ -121,7 +121,7 @@ Q 549.994128 83.736937 549.994128 87.796133
 L 549.994128 128.388099 
 Q 549.994128 132.447296 559.461468 132.447296 
 z
-" clip-path="url(#p5a9bc28425)" style="fill: #f4fbf4; stroke: #333333; stroke-linejoin: miter"/>
+" clip-path="url(#p7868d97ce6)" style="fill: #f4fbf4; stroke: #333333; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
     <path d="M 559.461468 197.394442 
@@ -134,7 +134,7 @@ Q 549.994128 164.920869 549.994128 168.980066
 L 549.994128 193.335245 
 Q 549.994128 197.394442 559.461468 197.394442 
 z
-" clip-path="url(#p5a9bc28425)" style="fill: #fde0e0; stroke: #333333; stroke-linejoin: miter"/>
+" clip-path="url(#p7868d97ce6)" style="fill: #fde0e0; stroke: #333333; stroke-linejoin: miter"/>
    </g>
    <g id="text_10">
     <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="449.009174" y="86.439946" transform="rotate(-0 449.009174 86.439946)">save .phytoscope</text>
@@ -226,7 +226,7 @@ Q 7.2 287.357063 7.2 290.718078
 L 7.2 312.564674 
 Q 7.2 315.925689 20.9592 315.925689 
 z
-" clip-path="url(#pcddf5f1c5c)" style="fill: #f2eef9; stroke: #7570b3; stroke-linejoin: miter"/>
+" clip-path="url(#p53153da41f)" style="fill: #f2eef9; stroke: #7570b3; stroke-linejoin: miter"/>
    </g>
    <g id="patch_13">
     <path d="M 124.1532 315.925689 
@@ -239,7 +239,7 @@ Q 110.394 287.357063 110.394 290.718078
 L 110.394 312.564674 
 Q 110.394 315.925689 124.1532 315.925689 
 z
-" clip-path="url(#pcddf5f1c5c)" style="fill: #f2eef9; stroke: #7570b3; stroke-linejoin: miter"/>
+" clip-path="url(#p53153da41f)" style="fill: #f2eef9; stroke: #7570b3; stroke-linejoin: miter"/>
    </g>
    <g id="patch_14">
     <path d="M 241.1064 319.286704 
@@ -252,7 +252,7 @@ Q 227.3472 283.996049 227.3472 287.357063
 L 227.3472 315.925689 
 Q 227.3472 319.286704 241.1064 319.286704 
 z
-" clip-path="url(#pcddf5f1c5c)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-linejoin: miter"/>
+" clip-path="url(#p53153da41f)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-linejoin: miter"/>
    </g>
    <g id="text_22">
     <text style="font-weight: 700; font-size: 7.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #7570b3" x="62.2368" y="303.563931" transform="rotate(-0 62.2368 303.563931)">gitee</text>
@@ -341,13 +341,13 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p7fdafe0a65">
+  <clipPath id="p09b049f0c4">
    <rect x="7.2" y="70.206281" width="315.577982" height="146.131078"/>
   </clipPath>
-  <clipPath id="p5a9bc28425">
+  <clipPath id="p7868d97ce6">
    <rect x="379.582018" y="70.206281" width="315.577982" height="146.131078"/>
   </clipPath>
-  <clipPath id="pcddf5f1c5c">
+  <clipPath id="p53153da41f">
    <rect x="7.2" y="282.315541" width="687.96" height="168.05074"/>
   </clipPath>
  </defs>

@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-14T13:47:29.910756</dc:date>
+    <dc:date>2026-11-14T16:40:58.259741</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -40,7 +40,7 @@ Q -0.036 36.358437 -0.036 41.030593
 L -0.036 141.481944 
 Q -0.036 146.1541 14.436 146.1541 
 z
-" clip-path="url(#p6eea1cb2f1)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
+" clip-path="url(#pc44f1c33d8)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="18.054" y="52.132366" transform="rotate(-0 18.054 52.132366)">Promoter</text>
@@ -72,7 +72,7 @@ Q 372.564 36.358437 372.564 41.030593
 L 372.564 141.481944 
 Q 372.564 146.1541 387.036 146.1541 
 z
-" clip-path="url(#p95fb69596b)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
+" clip-path="url(#pc39f13350f)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
    <g id="text_6">
     <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="390.654" y="52.132366" transform="rotate(-0 390.654 52.132366)">Sequence QC</text>
@@ -104,7 +104,7 @@ Q -0.036 163.962334 -0.036 168.63449
 L -0.036 269.085841 
 Q -0.036 273.757997 14.436 273.757997 
 z
-" clip-path="url(#pc35aa848e7)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
+" clip-path="url(#p0d325e188e)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
    <g id="text_11">
     <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="18.054" y="179.737044" transform="rotate(-0 18.054 179.737044)">Homology</text>
@@ -136,7 +136,7 @@ Q 372.564 163.962334 372.564 168.63449
 L 372.564 269.085841 
 Q 372.564 273.757997 387.036 273.757997 
 z
-" clip-path="url(#p6414ded463)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
+" clip-path="url(#pcf3ea52430)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
    <g id="text_16">
     <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="390.654" y="179.737044" transform="rotate(-0 390.654 179.737044)">Domain</text>
@@ -168,7 +168,7 @@ Q -0.036 291.56623 -0.036 296.238386
 L -0.036 396.689737 
 Q -0.036 401.361893 14.436 401.361893 
 z
-" clip-path="url(#p1fba196ad0)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
+" clip-path="url(#pe66d2b5d47)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
    <g id="text_21">
     <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="18.054" y="307.340941" transform="rotate(-0 18.054 307.340941)">Expression</text>
@@ -201,7 +201,7 @@ Q 372.564 291.56623 372.564 296.238386
 L 372.564 396.689737 
 Q 372.564 401.361893 387.036 401.361893 
 z
-" clip-path="url(#pd97ad2e6a9)" style="fill: #f7f7f7; stroke: #9e9e9e; stroke-width: 1.1; stroke-linejoin: miter"/>
+" clip-path="url(#pab1f3d6433)" style="fill: #f7f7f7; stroke: #9e9e9e; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
    <g id="text_26">
     <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="390.654" y="307.340941" transform="rotate(-0 390.654 307.340941)">Comparison</text>
@@ -233,7 +233,7 @@ Q -0.036 419.170127 -0.036 423.842283
 L -0.036 524.293634 
 Q -0.036 528.96579 14.436 528.96579 
 z
-" clip-path="url(#p7a7888c452)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
+" clip-path="url(#p7253df622c)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
    <g id="text_31">
     <text style="font-weight: 700; font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="18.054" y="434.944837" transform="rotate(-0 18.054 434.944837)">Project</text>
@@ -265,7 +265,7 @@ Q 372.564 419.170127 372.564 423.842283
 L 372.564 524.293634 
 Q 372.564 528.96579 387.036 528.96579 
 z
-" clip-path="url(#p0377f0b4d9)" style="fill: #f7f7f7; stroke: #9e9e9e; stroke-width: 1.1; stroke-linejoin: miter"/>
+" clip-path="url(#p69ccda1d4c)" style="fill: #f7f7f7; stroke: #9e9e9e; stroke-width: 1.1; stroke-linejoin: miter"/>
    </g>
    <g id="text_36">
     <text style="font-size: 8.2px; font-family: 'DejaVu Sans'; fill: #222222" transform="translate(397.89 439.070075)">All seven modules share the</text>
@@ -284,28 +284,28 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p6eea1cb2f1">
+  <clipPath id="pc44f1c33d8">
    <rect x="7.2" y="31.686281" width="361.8" height="116.803897"/>
   </clipPath>
-  <clipPath id="p95fb69596b">
+  <clipPath id="pc39f13350f">
    <rect x="379.8" y="31.686281" width="361.8" height="116.803897"/>
   </clipPath>
-  <clipPath id="pc35aa848e7">
+  <clipPath id="p0d325e188e">
    <rect x="7.2" y="159.290178" width="361.8" height="116.803897"/>
   </clipPath>
-  <clipPath id="p6414ded463">
+  <clipPath id="pcf3ea52430">
    <rect x="379.8" y="159.290178" width="361.8" height="116.803897"/>
   </clipPath>
-  <clipPath id="p1fba196ad0">
+  <clipPath id="pe66d2b5d47">
    <rect x="7.2" y="286.894074" width="361.8" height="116.803897"/>
   </clipPath>
-  <clipPath id="pd97ad2e6a9">
+  <clipPath id="pab1f3d6433">
    <rect x="379.8" y="286.894074" width="361.8" height="116.803897"/>
   </clipPath>
-  <clipPath id="p7a7888c452">
+  <clipPath id="p7253df622c">
    <rect x="7.2" y="414.497971" width="361.8" height="116.803897"/>
   </clipPath>
-  <clipPath id="p0377f0b4d9">
+  <clipPath id="p69ccda1d4c">
    <rect x="379.8" y="414.497971" width="361.8" height="116.803897"/>
   </clipPath>
  </defs>

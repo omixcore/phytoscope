@@ -1,0 +1,11 @@
+##gff-version 2
+##sequence-region chrD 1 2000
+chrD	src	gene	100	1800	.	-	.	gene_id "g-bound"; gene_name "Boundary";
+chrD	src	transcript	100	900	.	-	.	gene_id "g-bound"; transcript_id "t-short";
+chrD	src	transcript	1000	1800	.	-	.	gene_id "g-bound"; transcript_id "t-long";
+chrD	src	exon	100	300	.	-	.	gene_id "g-bound"; transcript_id "t-short";
+chrD	src	exon	700	900	.	-	.	gene_id "g-bound"; transcript_id "t-short";
+chrD	src	CDS	150	300	.	-	0	gene_id "g-bound"; transcript_id "t-short";
+chrD	src	exon	1000	1200	.	-	.	gene_id "g-bound"; transcript_id "t-long";
+chrD	src	exon	1600	1800	.	-	.	gene_id "g-bound"; transcript_id "t-long";
+chrD	src	CDS	1050	1200	.	-	2	gene_id "g-bound"; transcript_id "t-long";

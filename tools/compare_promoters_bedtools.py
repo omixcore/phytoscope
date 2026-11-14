@@ -80,11 +80,31 @@ def main() -> int:
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
 
+    # Guard first: a missing gold-set report is a real failure, never a silent
+    # skip. This MUST precede shutil.which("bedtools"), otherwise a machine
+    # without bedtools reports the tool as the problem and hides the fact that
+    # the Java gold-set test never produced its report (see B01/R1).
+    if not args.report.is_file():
+        raise SystemExit(
+            f"[guard] gold-set report 缺失: {args.report}；"
+            "请先运行 `sh mvnw -B -Pui-tests "
+            "-Dphytoscope.referenceDataDir=target/reference-data test` 产出该文件，"
+            "禁止静默跳过"
+        )
+
     bedtools = shutil.which("bedtools")
     if not bedtools:
         raise SystemExit("bedtools is required; install the bedtools package before running this comparison")
 
-    report = json.loads(args.report.read_text(encoding="utf-8"))
+    try:
+        report = json.loads(args.report.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError) as exc:
+        raise SystemExit(
+            f"[guard] gold-set report 不可读或不是合法 JSON: {args.report}；"
+            "请先运行 `sh mvnw -B -Pui-tests "
+            "-Dphytoscope.referenceDataDir=target/reference-data test` 产出该文件，"
+            "禁止静默跳过"
+        ) from exc
     rows = report["promoter_extraction"]["records"]
     if len(rows) != 8:
         raise SystemExit(f"Expected the pinned 8-locus promoter set, found {len(rows)}")

@@ -10,6 +10,16 @@ no numbers are invented.
 python docs/paper-figures/make_paper_figures.py
 ```
 
+**Reproduce from a clean clone (no `target/`)** — the Figure S1 inputs are frozen
+in `docs/paper-figures/data/`, so no runtime artefact is needed:
+
+```sh
+rm -rf target
+python docs/paper-figures/make_paper_figures.py
+python -c "import pathlib; d=pathlib.Path('docs/paper-figures'); fs=[f'{n}.{e}' for n in ['Figure1','Figure2','Figure3','Figure4','Figure5','FigureS1'] for e in ['png','svg']]; miss=[f for f in fs if not (d/f).is_file()]; print('missing=',miss); assert not miss, miss"
+cd docs/paper-figures/data && sha256sum -c SHA256SUMS.txt && cd ../../..
+```
+
 **Outputs** (each figure is written as both print-resolution PNG @300 dpi and
 vector SVG): `Figure1–5.png/svg` + `FigureS1.png/svg` in this directory.
 
@@ -74,7 +84,14 @@ Java/Maven required to render.
 | 3 | `docs/research-module-validation.md` §Observed results from CI · `src/test/resources/non-model/vigna-umbellata/manifest.json` (expression reconciliation) |
 | 4 | `docs/chromosome-validation.md` §Full public annotation validation (4 model counts) · `src/test/resources/non-model/additional-nonmodel-manifest.json` (Andrographis/Hibiscus gene counts + loci) · `src/test/resources/non-model/vigna-umbellata/manifest.json` (Vigna counts + locus) · `src/test/resources/non-model/multi-locus-sequence-gold.tsv` (25 transcripts) |
 | 5 | `docs/portability-and-reproducibility.md` §2 + `docs/input-format-specification.md` §Project persistence (manifest schema / round-trip, schematic) · `docs/fcs-paper-outline.md` §3.5 + `docs/design-slim-bundled-data.md` §2.1 + `docs/fcs-paper-manuscript-draft.md` §2.5 (reference-data: 9 files / 68,518,847 B / commit `acac2cf` / dual mirror / 9/9 OK, real) |
-| S1 | `target/phase3-comparison/gffutils/summary.json` (measured) · `target/phase3-comparison/biopython/summary.json` (measured) · `docs/fcs-phase3-comparison-plan.md` §4.1 (qualitative matrix) |
+| S1 | `docs/paper-figures/data/gffutils-summary.json` (frozen historical measured baseline, **not a new measurement**) · `docs/paper-figures/data/biopython-summary.json` (same) · `docs/fcs-phase3-comparison-plan.md` §4.1 (qualitative matrix) |
+
+The two S1 JSONs were frozen from `target/phase3-comparison/{gffutils,biopython}/summary.json`
+(branch A byte copy + `_provenance`) so that a clean clone without `target/` can
+render Figure S1. Their provenance, SHA-256 and the "非新测" statement are in
+`docs/paper-figures/data/README.md` and `docs/paper-figures/data/SHA256SUMS.txt`;
+**no timing was re-run and no number was invented**. Figure 5 does **not** use
+these two JSONs.
 
 Notes on transcription: the four model-species counts (Arabidopsis/rice/maize/
 soybean) and the nine reference-data file sizes exist only as Markdown tables in
@@ -110,9 +127,10 @@ The earlier "tool comparison" main figure was demoted to **Figure S1**
 (supplementary), since it corresponds to the fair-comparison + capability-matrix
 content rather than the reproducibility contribution.
 
-Residual mismatch to flag: `docs/fcs-paper-outline.md` §4 currently titles
-"Figure 2" = cross-species portability and "Figure 4" = fair comparison. The
-team-lead list above instead places cross-species validation at Figure 4 and
-the data-model/input-format panel at Figure 2. The figures themselves are all
-present; only the outline's Figure-2/Figure-4 titles would need a one-line edit
-to match, if the team-lead wishes the outline to mirror this README exactly.
+Residual mismatch to flag: **已解决** — the figure-numbering mismatch is now
+recorded in the single authoritative table `docs/fcs-figure-numbering-map.md`
+(§3.4 of `docs/design-fcs-final-delivery.md`), and this script's docstring and
+comments have been normalised: the fair-comparison panel is **Figure S1**, while
+**Figure 5** remains the reproducibility main figure. Cross-document references
+(manuscript / outline / old PRD / gap audit) are handled by that map; this
+README is the authority for figure **file names** only.

@@ -1,0 +1,7 @@
+##gff-version 2
+##sequence-region chrC 1 300
+chrC	src	gene	1	300	.	+	.	gene_id "g-neg";
+chrC	src	transcript	1	300	.	+	.	gene_id "g-neg"; transcript_id "t-ok";
+chrC	src	exon	1	100	.	+	.	gene_id "g-neg"; transcript_id "t-ok";
+chrC	src	CDS	10	90	.	+	0	gene_id "g-neg"; transcript_id "t-missing";
+chrC	src	CDS	bad	90	.	+	0	gene_id "g-neg"; transcript_id "t-ok";

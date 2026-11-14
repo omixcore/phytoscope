@@ -1,0 +1,191 @@
+{
+  "status": "PASS",
+  "comparison": "Biopython SeqIO strand-aware sequence reconstruction vs frozen PhytoScope non-model sequence gold",
+  "python": "3.13.14",
+  "biopython_version": "1.88",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "trials_per_case": 3,
+  "cases": [
+    {
+      "species": "vigna-umbellata",
+      "assembly": "GCF_029865625.1",
+      "sequence": "NC_142174.1",
+      "gene_id": "gene-LOC124833352",
+      "transcript_id": "rna-XM_088100767.1",
+      "strand": "-",
+      "span": [
+        16647,
+        23821
+      ],
+      "exon_count": 3,
+      "cds_segments": 3,
+      "cds_length": 1983,
+      "protein_aa": 660,
+      "all_gold_products_match": true,
+      "products": {
+        "genomic_span": {
+          "status": "MATCH",
+          "length": 7175
+        },
+        "transcript": {
+          "status": "MATCH",
+          "length": 2060
+        },
+        "CDS": {
+          "status": "MATCH",
+          "length": 1983
+        },
+        "protein": {
+          "status": "MATCH",
+          "length": 660
+        },
+        "five_prime_UTR_inferred": {
+          "status": "MATCH",
+          "length": 30
+        },
+        "three_prime_UTR_inferred": {
+          "status": "MATCH",
+          "length": 47
+        }
+      },
+      "transcript_sha256": "4f9ef7739ac335410df60d17f68825ccbee54b8c446e87f6e139773930809fa7",
+      "timing_median_ms": {
+        "genomic_span_ms": 0.08680000064487103,
+        "transcript_ms": 0.0366000003850786,
+        "cds_ms": 0.017700000171316788,
+        "translate_ms": 0.21860000015294645,
+        "utr_ms": 0.018400000044493936,
+        "fasta_load_ms": 112.43180000019493
+      },
+      "trials": 3
+    },
+    {
+      "species": "andrographis-paniculata",
+      "assembly": "GCF_009805555.1_ASM980555v1",
+      "sequence": "NW_026137634.1",
+      "gene_id": "gene-LOC127243311",
+      "transcript_id": "rna-XM_051263269.1",
+      "strand": "+",
+      "span": [
+        2929092,
+        2934822
+      ],
+      "exon_count": 11,
+      "cds_segments": 11,
+      "cds_length": 3372,
+      "protein_aa": 1123,
+      "all_gold_products_match": true,
+      "products": {
+        "genomic_span": {
+          "status": "MATCH",
+          "length": 5731
+        },
+        "transcript": {
+          "status": "MATCH",
+          "length": 3851
+        },
+        "CDS": {
+          "status": "MATCH",
+          "length": 3372
+        },
+        "protein": {
+          "status": "MATCH",
+          "length": 1123
+        },
+        "five_prime_UTR_inferred": {
+          "status": "MATCH",
+          "length": 258
+        },
+        "three_prime_UTR_inferred": {
+          "status": "MATCH",
+          "length": 221
+        }
+      },
+      "transcript_sha256": "5176b2005a1b87b37b9ed2bb2ad2235d815dab3de2588b6c2c99d1f3c49303e8",
+      "timing_median_ms": {
+        "genomic_span_ms": 0.005100000635138713,
+        "transcript_ms": 0.02240000139863696,
+        "cds_ms": 0.00670000008540228,
+        "translate_ms": 0.3195999997842591,
+        "utr_ms": 0.01359999987471383,
+        "fasta_load_ms": 12.526599999546306
+      },
+      "trials": 3
+    },
+    {
+      "species": "hibiscus-syriacus",
+      "assembly": "GCF_006381635.1_ASM638163v2",
+      "sequence": "NW_024062564.1",
+      "gene_id": "gene-LOC120212642",
+      "transcript_id": "rna-XM_039210874.1",
+      "strand": "-",
+      "span": [
+        758339,
+        760358
+      ],
+      "exon_count": 2,
+      "cds_segments": 2,
+      "cds_length": 624,
+      "protein_aa": 207,
+      "all_gold_products_match": true,
+      "products": {
+        "genomic_span": {
+          "status": "MATCH",
+          "length": 2020
+        },
+        "transcript": {
+          "status": "MATCH",
+          "length": 822
+        },
+        "CDS": {
+          "status": "MATCH",
+          "length": 624
+        },
+        "protein": {
+          "status": "MATCH",
+          "length": 207
+        },
+        "five_prime_UTR_inferred": {
+          "status": "MATCH",
+          "length": 190
+        },
+        "three_prime_UTR_inferred": {
+          "status": "MATCH",
+          "length": 8
+        }
+      },
+      "transcript_sha256": "47da26d376fc7ca092dce979d2198fbc50cde60dad4ffc39cfd972c75dfda2a4",
+      "timing_median_ms": {
+        "genomic_span_ms": 0.01920000067912042,
+        "transcript_ms": 0.011599999197642319,
+        "cds_ms": 0.006099999154685065,
+        "translate_ms": 0.08259999958681874,
+        "utr_ms": 0.013300001228344627,
+        "fasta_load_ms": 7.065900001180125
+      },
+      "trials": 3
+    }
+  ],
+  "interpretation": "Byte-for-byte agreement of genomic span, spliced transcript, CDS, translated protein and inferred UTRs against the Java-verified gold files. Timings are per-product wall-clock medians from Biopython-only in-process trials and are not a GUI or speed-superiority comparison.",
+  "all_gold_products_match": true,
+  "note": "链方向感知重建，与冻结金标 FASTA 逐字节一致；单进程墙钟中位，非速度优劣主张",
+  "_provenance": {
+    "artifact_kind": "frozen_phase3_summary",
+    "source_kind": "runtime_copy",
+    "source_document": "docs/fcs-phase3-comparison-plan.md",
+    "measured_at": "2026-11-14",
+    "measured_on_head": "247ff11",
+    "measurement_class": "historical_measured_not_new",
+    "not_new_measurement": true,
+    "frozen_at": "2026-11-14T08:39:15Z",
+    "sha256_record": "docs/paper-figures/data/SHA256SUMS.txt",
+    "statement": "非新测；仅冻结既有实机基线，未重跑计时",
+    "source_sections": [
+      "§3.2"
+    ],
+    "original_runtime_path": "target/phase3-comparison/biopython/summary.json",
+    "generator_scripts": [
+      "tools/compare_biopython_seqio.py"
+    ]
+  }
+}

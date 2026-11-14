@@ -1,0 +1,10 @@
+##gff-version 2
+##sequence-region chrA 1 500
+chrA	src	gene	1	500	.	+	.	gene_id "g-phase"; gene_name "PhaseGene";
+chrA	src	transcript	1	500	.	+	.	gene_id "g-phase"; transcript_id "t-phase";
+chrA	src	exon	1	100	.	+	.	gene_id "g-phase"; transcript_id "t-phase";
+chrA	src	CDS	10	60	.	+	0	gene_id "g-phase"; transcript_id "t-phase";
+chrA	src	exon	201	300	.	+	.	gene_id "g-phase"; transcript_id "t-phase";
+chrA	src	CDS	201	260	.	+	1	gene_id "g-phase"; transcript_id "t-phase";
+chrA	src	exon	401	500	.	+	.	gene_id "g-phase"; transcript_id "t-phase";
+chrA	src	CDS	430	480	.	+	2	gene_id "g-phase"; transcript_id "t-phase";

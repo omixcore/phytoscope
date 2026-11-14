@@ -17,9 +17,10 @@ Data sources (all relative to the repository root):
               src/test/resources/non-model/additional-nonmodel-manifest.json,
               src/test/resources/non-model/vigna-umbellata/manifest.json,
               src/test/resources/non-model/multi-locus-sequence-gold.tsv.
-  - Figure 5: target/phase3-comparison/gffutils/summary.json (real measured),
-              target/phase3-comparison/biopython/summary.json (real measured),
-              docs/fcs-phase3-comparison-plan.md (qualitative matrix, marked).
+  - Figure S1: docs/paper-figures/data/gffutils-summary.json (frozen historical
+               measured baseline, not a new measurement),
+               docs/paper-figures/data/biopython-summary.json (same),
+               docs/fcs-phase3-comparison-plan.md (qualitative matrix, marked).
 
 Run from the repository root:  python docs/paper-figures/make_paper_figures.py
 """
@@ -55,12 +56,9 @@ ADDITIONAL_MANIFEST = os.path.join(
 MULTILOCUS_GOLD = os.path.join(
     REPO, "src", "test", "resources", "non-model", "multi-locus-sequence-gold.tsv"
 )
-GFFUTILS_SUMMARY = os.path.join(
-    REPO, "target", "phase3-comparison", "gffutils", "summary.json"
-)
-BIOPYTHON_SUMMARY = os.path.join(
-    REPO, "target", "phase3-comparison", "biopython", "summary.json"
-)
+DATA = os.path.join(REPO, "docs", "paper-figures", "data")
+GFFUTILS_SUMMARY = os.path.join(DATA, "gffutils-summary.json")
+BIOPYTHON_SUMMARY = os.path.join(DATA, "biopython-summary.json")
 
 # Academic palette (no finance red/green semantics).
 BLUE = "#2C7BB6"
@@ -604,7 +602,7 @@ def make_figure4():
 
 
 # --------------------------------------------------------------------------- #
-# Figure 5 — fair comparison with existing tools (honest)
+# Figure S1 — fair comparison with existing tools (honest)
 # --------------------------------------------------------------------------- #
 
 def make_figureS1():
@@ -760,7 +758,8 @@ def make_figureS1():
 
 
 # --------------------------------------------------------------------------- #
-# Figure 5 — reproducibility (provenance + self-contained projects)
+# Figure 5 — reproducibility (provenance + self-contained projects);
+#            main figure, distinct from Figure S1 (tool comparison)
 # --------------------------------------------------------------------------- #
 
 def make_figure5():

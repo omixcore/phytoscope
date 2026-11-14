@@ -1,0 +1,9 @@
+##gff-version 2
+##sequence-region chrB 1 900
+chrB	src	gene	1	900	.	-	.	gene_id "g-mp"; gene_name "MultiParent";
+chrB	src	transcript	1	600	.	-	.	gene_id "g-mp"; transcript_id "t-a";
+chrB	src	transcript	200	900	.	-	.	gene_id "g-mp"; transcript_id "t-b";
+chrB	src	exon	100	200	.	-	.	gene_id "g-mp"; transcript_id "t-a";
+chrB	src	exon	700	800	.	-	.	gene_id "g-mp"; transcript_id "t-b";
+chrB	src	CDS	120	180	.	-	0	gene_id "g-mp"; Parent "t-a,t-b";
+chrB	src	CDS	400	450	.	-	1	gene_id "g-mp"; Parent "t-a,t-b";
