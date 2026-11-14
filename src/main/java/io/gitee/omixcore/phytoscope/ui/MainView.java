@@ -22,7 +22,9 @@ import io.gitee.omixcore.phytoscope.service.GeneSequenceService;
 import io.gitee.omixcore.phytoscope.intake.AliasMapping;
 import io.gitee.omixcore.phytoscope.intake.AnnotationMeta;
 import io.gitee.omixcore.phytoscope.intake.Assembly;
+import io.gitee.omixcore.phytoscope.intake.IntakeFileKind;
 import io.gitee.omixcore.phytoscope.intake.IntakeFileResult;
+import io.gitee.omixcore.phytoscope.intake.IntakeHealthCheck;
 import io.gitee.omixcore.phytoscope.intake.IntakeManifestMeta;
 import io.gitee.omixcore.phytoscope.ui.component.GeneDetailPane;
 import io.gitee.omixcore.phytoscope.ui.component.GeneTrackRenderer;
@@ -396,9 +398,16 @@ public class MainView extends BorderPane {
                 fasta.addAliases(aliasMapToMap(aliasMap));
             }
             sequenceService.replaceWith(fasta);
+            pendingAliasMap = aliasMap == null ? List.of() : List.copyOf(aliasMap);
+            pendingIntakeMeta = meta;
+        } else {
+            // Annotation-only import: never retain the previous project's FASTA or
+            // its aliases. A stale reference would let same-named sequences extract
+            // against the OLD genome (annotation-only retention fix D3).
+            sequenceService.clear();
+            pendingAliasMap = List.of();
+            pendingIntakeMeta = null;
         }
-        pendingAliasMap = aliasMap == null ? List.of() : List.copyOf(aliasMap);
-        pendingIntakeMeta = meta;
         activeExample = null;
         loading = true;
         try {
@@ -590,6 +599,11 @@ public class MainView extends BorderPane {
     public List<AliasMapping> getPendingAliasMap() {
         return pendingAliasMap;
     }
+
+    /** Test/headless hook returning the shared genome sequence service. */
+    public GeneSequenceService getSequenceService() {
+        return sequenceService;
+    }
     private ProjectStore.ViewState captureViewState() {
         Gene selected = renderer.getSelectedGene(); var settings = comparisonPane.settings();
         return new ProjectStore.ViewState(dataService.getActiveSequence(), selected == null ? null : selected.getId(),
@@ -619,6 +633,12 @@ public class MainView extends BorderPane {
         pendingAliasMap = restoredAliases;
         pendingIntakeMeta = new IntakeManifestMeta(manifest.specVersion(), manifest.assembly(),
                 manifest.annotationMeta(), manifest.files() == null ? List.of() : manifest.files(), restoredAliases);
+        // D5: a v2 project records the genome FASTA by (path, sha256) but never
+        // embeds its bytes. On reopen we re-bind the original file when it is still
+        // present and byte-identical; a missing or tampered file is skipped with a
+        // warning and the project opens without a FASTA (sequence extraction stays
+        // in its empty state rather than silently reusing a stale genome).
+        rebindRestoredFasta(manifest, restoredAliases);
         if (namesArchivedData(next)) {
             statusLabel.setTooltip(new Tooltip(LEGACY_PROJECT_HINT));
         }
@@ -653,6 +673,69 @@ public class MainView extends BorderPane {
         comparisonPane.restore(state.comparisonGenes(), settings); redraw();
         if (previous != null) try { previous.close(); } catch (IOException ex) { statusLabel.setTooltip(new Tooltip("Previous project cleanup: " + ex.getMessage())); }
     }
+
+    /**
+     * Re-binds the project's original genome FASTA on reopen. The v2 manifest
+     * records each input file's path and SHA-256; when the FASTA entry is present
+     * and the file still exists and is byte-identical to the recorded hash, the
+     * FASTA is loaded and its seqid aliases re-applied so sequence extraction works
+     * immediately. A missing file or hash mismatch is skipped with a status
+     * warning and the project opens without a FASTA (D5). The FASTA bytes are never
+     * embedded, so this is the only cross-session record of the genome reference.
+     *
+     * @param manifest        the restored project manifest (may be legacy / null)
+     * @param restoredAliases the alias map re-applied to the re-bound FASTA
+     */
+    private void rebindRestoredFasta(ProjectStore.Manifest manifest, List<AliasMapping> restoredAliases) {
+        if (manifest == null || manifest.files() == null) {
+            return;
+        }
+        IntakeFileResult fastaResult = null;
+        for (IntakeFileResult result : manifest.files()) {
+            if (result != null && result.kind() == IntakeFileKind.FASTA) {
+                fastaResult = result;
+                break;
+            }
+        }
+        if (fastaResult == null) {
+            // Annotation-only project (or legacy manifest with no FASTA record):
+            // there is nothing to re-bind; the FASTA stays cleared.
+            return;
+        }
+        String recordedPath = fastaResult.path();
+        if (recordedPath == null || recordedPath.isBlank()) {
+            statusLabel.setText("Restored project: no FASTA path recorded; supply the genome FASTA"
+                    + " via File → Import genome FASTA…");
+            return;
+        }
+        Path fastaPath = Path.of(recordedPath);
+        if (!Files.exists(fastaPath)) {
+            statusLabel.setText("Restored project: FASTA '" + recordedPath
+                    + "' is missing — supply it via File → Import genome FASTA… before extracting sequences.");
+            return;
+        }
+        String recordedHash = fastaResult.sha256();
+        String currentHash = IntakeHealthCheck.sha256(fastaPath);
+        if (recordedHash == null || !recordedHash.equals(currentHash)) {
+            statusLabel.setText("Restored project: FASTA '" + recordedPath
+                    + "' changed since the project was saved (SHA-256 mismatch) — re-import it"
+                    + " via File → Import genome FASTA…");
+            return;
+        }
+        try {
+            sequenceService.loadFromFile(fastaPath);
+            if (restoredAliases != null && !restoredAliases.isEmpty()) {
+                sequenceService.addAliases(aliasMapToMap(restoredAliases));
+            }
+            statusLabel.setText("Restored project and re-bound genome FASTA: "
+                    + fastaPath.getFileName() + " · " + sequenceService.getSequenceCount() + " sequences");
+        } catch (IOException ex) {
+            statusLabel.setText("Restored project: FASTA '" + recordedPath
+                    + "' could not be loaded (" + ex.getMessage()
+                    + "); re-import it via File → Import genome FASTA…");
+        }
+    }
+
     public void closeProjectResources() {
         if (restoredProject != null) try { restoredProject.close(); } catch (IOException ex) { statusLabel.setText(ex.getMessage()); }
     }

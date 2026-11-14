@@ -156,4 +156,78 @@ class ImportGenomeWizardUiTest {
         String json = Files.readString(temp.resolve("intake-health-report.json"));
         assertTrue(json.contains("\"specVersion\""));
     }
+
+    // ---- D2: a report is stale once the file changes; load is refused -------
+    @Test
+    void staleReportRefusesLoadAfterFileChange(@TempDir Path temp) throws Exception {
+        startPlatform();
+        AtomicReference<Captured> captured = new AtomicReference<>();
+        ImportGenomeWizard wizard = newWizard(captured);
+
+        Path working = temp.resolve("working.fa");
+        Files.copy(fixture("chr_level.fa"), working);
+        fx(() -> {
+            wizard.setSelectedFiles(working, fixture("chr_level.gff3"), null);
+            return null;
+        });
+        IntakeReport report = fx(() -> wizard.runHealthCheck());
+        fx(() -> null); // let the UI-update runLater enable Load
+        assertTrue(report.pass(), report.summary());
+        assertTrue(fx(() -> wizard.isLoadEnabled()), "Load enabled after a passing check");
+
+        // Tamper with the SAME file path so its SHA-256 no longer matches the
+        // recorded report hash.
+        String tampered = Files.readString(fixture("chr_level.fa"))
+                .replaceFirst("(?m)^>", ">Chr9\n>");
+        Files.writeString(working, tampered);
+        assertFalse(fx(() -> wizard.triggerLoad()),
+                "triggerLoad must refuse when the file changed since the health-check (D2)");
+        assertNull(captured.get(), "handler must NOT fire for a tampered/stale selection");
+
+        // Re-pointing at a different file without re-running the check also
+        // invalidates the cached report and disables Load.
+        fx(() -> {
+            wizard.setSelectedFiles(fixture("chr_level.fa"), fixture("chr_level.gff3"), null);
+            return null;
+        });
+        assertFalse(fx(() -> wizard.isLoadEnabled()),
+                "Load must be disabled while the report is stale (D2)");
+    }
+
+    // ---- D4: a confirmed manual alias re-evaluates and unblocks Load --------
+    @Test
+    void manualAliasRecomputeUnblocksLoad() throws Exception {
+        startPlatform();
+        AtomicReference<Captured> captured = new AtomicReference<>();
+        ImportGenomeWizard wizard = newWizard(captured);
+
+        fx(() -> {
+            wizard.setSelectedFiles(fixture("missing_seqid.fa"), fixture("missing_seqid.gff3"), null);
+            return null;
+        });
+        IntakeReport report = fx(() -> wizard.runHealthCheck());
+        fx(() -> null);
+        assertFalse(report.pass(), "precondition: the missing-seqid import is blocked");
+        assertFalse(fx(() -> wizard.isLoadEnabled()), "Load disabled while there is an ERROR");
+
+        // The missing seqid is 'Chr2'; map it to the FASTA id 'Chr1'.
+        fx(() -> {
+            wizard.addManualAliasRow("Chr2", "Chr1");
+            wizard.recomputeAliases();
+            return null;
+        });
+        IntakeReport recomputed = fx(() -> wizard.getReport());
+        assertTrue(recomputed.pass(),
+                "a valid manual alias must clear the SEQID error (D4): " + recomputed.summary());
+        assertTrue(fx(() -> wizard.isLoadEnabled()),
+                "Load must be re-enabled after the manual alias recompute (D4)");
+
+        boolean loaded = fx(() -> wizard.triggerLoad());
+        assertTrue(loaded, "triggerLoad must succeed once the alias unblocks the import");
+        Captured result = captured.get();
+        assertNotNull(result, "handler must receive the parsed services");
+        assertTrue(result.aliasMap().stream()
+                        .anyMatch(a -> "Chr2".equals(a.from()) && "Chr1".equals(a.to())),
+                "the manual alias must be delivered to the handler: " + result.aliasMap());
+    }
 }

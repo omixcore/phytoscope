@@ -140,6 +140,21 @@ public final class GeneSequenceService {
      *
      * @param aliasMap annotation-side name to FASTA id mappings, nullable/empty
      */
+    /**
+     * Injects project-level sequence-name aliases persisted in a manifest v2.
+     *
+     * <p>Each {@code from -> to} entry maps an annotation/query sequence name to an
+     * actual FASTA sequence id. Keys are stored under their normalised form, so a
+     * user mapping {@code 1 -> Chr1} makes {@link #resolveSequenceId(String)}
+     * resolve {@code 1} to {@code Chr1} after a project is restored (AC-2).</p>
+     *
+     * <p>A caller-confirmed mapping is authoritative: it <em>overwrites</em> any
+     * previously recorded alias for the same normalised key (including an
+     * auto-discovered normalisation alias). This lets an explicit user override
+     * always win over an ambiguous auto alias (alias-resolution fix D1).</p>
+     *
+     * @param aliasMap annotation-side name to FASTA id mappings, nullable/empty
+     */
     public void addAliases(Map<String, String> aliasMap) {
         if (aliasMap == null || aliasMap.isEmpty()) {
             return;
@@ -149,7 +164,9 @@ public final class GeneSequenceService {
             if (entry.getKey() == null || entry.getValue() == null) {
                 continue;
             }
-            next.putIfAbsent(normalizeSequenceName(entry.getKey()), entry.getValue());
+            // Overwrite (not putIfAbsent): a user-confirmed mapping takes precedence
+            // over any auto alias already present for the normalised key.
+            next.put(normalizeSequenceName(entry.getKey()), entry.getValue());
         }
         aliases = Map.copyOf(next);
     }
@@ -157,6 +174,46 @@ public final class GeneSequenceService {
     /** Current sequence-name alias table (copy); useful for restore verification. */
     public Map<String, String> getAliases() {
         return aliases;
+    }
+
+    /**
+     * Resolves an annotation/query sequence name to a FASTA record id without
+     * throwing. Resolution order: exact (case-insensitive) match against the
+     * loaded FASTA ids, then the project/parse alias table under the normalised
+     * key. Returns {@code null} when the name cannot be resolved.
+     *
+     * <p>Used by the import health-check to (a) verify an alias target exists and
+     * (b) read the contig length backing a coordinate-bounds check.</p>
+     *
+     * @param chromosome annotation/query sequence name, nullable
+     * @return the resolved FASTA record id, or {@code null} if unresolved
+     */
+    public String resolveSequenceName(String chromosome) {
+        if (chromosome == null) {
+            return null;
+        }
+        String exact = sequences.keySet().stream()
+                .filter(id -> id.equalsIgnoreCase(chromosome)).findFirst().orElse(null);
+        if (exact != null) {
+            return exact;
+        }
+        return aliases.get(normalizeSequenceName(chromosome));
+    }
+
+    /** Length of the FASTA record with the given id, or {@code -1} when absent. */
+    public int getSequenceLength(String id) {
+        String seq = sequences.get(id);
+        return seq == null ? -1 : seq.length();
+    }
+
+    /**
+     * Length of the contig backing an annotation/query sequence name (exact,
+     * alias or normalisation match), or {@code -1} when the name cannot be
+     * resolved. Drives the import-time coordinate-bounds check.
+     */
+    public int getResolvedLength(String chromosome) {
+        String id = resolveSequenceName(chromosome);
+        return id == null ? -1 : getSequenceLength(id);
     }
 
     /**
@@ -206,9 +263,22 @@ public final class GeneSequenceService {
                     addRecord(id, description, sequence, nextSequences, nextAliases, label);
                     String header = line.substring(1).trim();
                     if (header.isEmpty()) throw new IOException("FASTA contains an empty header");
-                    int space = header.indexOf(' ');
-                    id = space < 0 ? header : header.substring(0, space);
-                    description = space < 0 ? "" : header.substring(space + 1);
+            // Spec unification (D6a): split the header id at the FIRST whitespace
+            // character — a space OR a tab, whichever comes first — so both
+            // ">seq1 description" and ">seq1<TAB>description" yield the id "seq1"
+            // and discard the remainder of the header line.
+            int space = header.indexOf(' ');
+            int tab = header.indexOf('\t');
+            int cut;
+            if (space < 0) {
+                cut = tab;
+            } else if (tab < 0) {
+                cut = space;
+            } else {
+                cut = Math.min(space, tab);
+            }
+            id = cut < 0 ? header : header.substring(0, cut);
+            description = cut < 0 ? "" : header.substring(cut + 1);
                     sequence.setLength(0);
                 } else if (!line.isBlank()) {
                     if (id == null) throw new IOException("FASTA sequence data occurs before the first > header");

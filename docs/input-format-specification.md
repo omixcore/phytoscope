@@ -1,10 +1,11 @@
 # Species-independent input and project specification
 
 Status: proposed development and acceptance requirements. See the README for
-currently implemented behavior. BED and bedGraph tracks, joint validation,
-user-confirmed sequence aliases and FASTA rebinding require implementation and
-verification. This document does not claim that all species or annotation
-conventions have been validated.
+currently implemented behavior. Joint validation, user-confirmed sequence
+aliases and FASTA rebinding are implemented and verified for the genome-FASTA +
+GFF3 (+ optional expression) import health-check. BED and bedGraph tracks remain
+out of scope for this release. This document does not claim that all species or
+annotation conventions have been validated.
 
 ## Scope and compatibility
 
@@ -20,18 +21,21 @@ sequence-dependent operations. Expression and tracks are optional.
 | Reference | FASTA; gzip accepted | Sequence positions |
 | Annotation | GFF3 or supported GTF; gzip accepted | 1-based, closed |
 | Expression | Delimited text with header | Gene or transcript ID |
-| Intervals | BED3 or BED6 | 0-based, half-open |
-| Signal | bedGraph | 0-based, half-open |
+| Intervals | BED3 or BED6 *(deferred — not yet implemented)* | 0-based, half-open |
+| Signal | bedGraph *(deferred — not yet implemented)* | 0-based, half-open |
 | Saved project | .phytoscope | Record the convention of each source |
 
 ## Reference FASTA
 
 Use the nonempty identifier preceding the first whitespace after `>` as the
-sequence ID. Preserve case and original identifiers. Accept chromosome,
-scaffold, contig and organelle sequences. Reject duplicate identifiers and
-report their names. Report invalid characters and ambiguous bases. Sequence
-name and length agreement cannot establish assembly identity; record provenance
-and request the user's confirmation of the matching assembly.
+sequence ID. Whitespace is the first space **or** the first tab, so both
+`>seq1 description` and `>seq1\tdescription` yield the id `seq1` and discard the
+remainder of the header line (spec unification, see §Reference FASTA parsing).
+Preserve case and original identifiers. Accept chromosome, scaffold, contig and
+organelle sequences. Reject duplicate identifiers and report their names.
+Report invalid characters and ambiguous bases. Sequence name and length
+agreement cannot establish assembly identity; record provenance and request the
+user's confirmation of the matching assembly.
 
 ## Annotation
 
@@ -42,8 +46,9 @@ transcript_id attributes under the existing importer. Preserve source feature
 types, coordinates, sequence identifiers, strand and CDS phase. Do not assume
 all genes have protein-coding transcripts or complete CDS models.
 
-Report malformed records, out-of-bounds coordinates where reference lengths
-are available, unresolved parents, duplicate or inconsistent identifiers, and
+Report malformed records, and coordinates that fall outside the FASTA contig
+length (out-of-bounds; an import-blocking ERROR) where a reference FASTA is
+available, unresolved parents, duplicate or inconsistent identifiers, and
 invalid CDS phase. Distinguish fatal errors, warnings, notices and checks not
 performed. Report affected counts and examples with source line numbers when
 available. Existing parser behavior and supported inputs remain compatible.
@@ -72,13 +77,18 @@ mapping require an explicit user-supplied, confirmed mapping.
 
 ## Interval and signal tracks
 
-The first implementation supports BED3 and BED6, and four-column bedGraph.
-Columns are tab-separated. BED3 is chrom, start, end. BED6 adds name, score and
-strand. bedGraph adds a numeric value to BED3. Validate column count, numeric
-fields, score and strand against the applicable format, sequence IDs, bounds,
-and nonempty intervals. Reject or report malformed records with line numbers.
-Reject overlapping intervals within one bedGraph track, identify the conflicts
-and allow correction and retry. Other tracks may overlap.
+> **Deferred (out of scope for this release).** BED3/BED6 and bedGraph track
+> parsing, validation and display are **not** implemented in the current
+> genome-import health-check. The descriptions below record the intended
+> contract for a later version and are not yet enforced.
+
+The intended first implementation supports BED3 and BED6, and four-column
+bedGraph. Columns are tab-separated. BED3 is chrom, start, end. BED6 adds name,
+score and strand. bedGraph adds a numeric value to BED3. Validate column count,
+numeric fields, score and strand against the applicable format, sequence IDs,
+bounds, and nonempty intervals. Reject or report malformed records with line
+numbers. Reject overlapping intervals within one bedGraph track, identify the
+conflicts and allow correction and retry. Other tracks may overlap.
 
 The interval GFF3 chrA:1–100 and BED chrA 0 100 both cover 100 bases.
 Record source coordinates and convention, and convert explicitly at import and
@@ -102,7 +112,13 @@ no annotation remain available.
 4. Match expression IDs at the declared feature level.
 5. Check track names, coordinates and values against the reference when present.
 6. Present diagnostics and allow explicit alias confirmation before applying.
-7. Save and export a human-readable report and a machine-readable TSV report.
+7. Export three health-check reports for the selected inputs:
+   - **JSON** (`intake-health-report.json`) — machine/CI-readable, stable fields
+     in the order `specVersion, summary, pass, errorCount, warningCount,
+     infoCount, files, issues`.
+   - **Markdown** (`intake-health-report.md`) — human-readable summary.
+   - **TSV** (`intake-health-report.tsv`) — tabular, with columns
+     `severity, code, file, lineOrCoord, message`.
 
 The report records file, check, status, affected count, examples and suggested
 action. It identifies checks that could not run. Failed or cancelled imports

@@ -1,0 +1,11 @@
+##gff-version 3
+##sequence-region 1 1 200
+##sequence-region 2 1 200
+1	source	gene	1	150	.	+	.	ID=C_0001;Name=C_0001
+1	source	mRNA	1	150	.	+	.	ID=C_0001.t1;Parent=C_0001
+1	source	exon	1	150	.	+	.	Parent=C_0001.t1
+1	source	CDS	1	150	.	+	0	Parent=C_0001.t1
+2	source	gene	1	150	.	-	.	ID=C_0002;Name=C_0002
+2	source	mRNA	1	150	.	-	.	ID=C_0002.t1;Parent=C_0002
+2	source	exon	1	150	.	-	.	Parent=C_0002.t1
+2	source	CDS	1	150	.	-	0	Parent=C_0002.t1

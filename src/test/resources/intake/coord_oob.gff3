@@ -1,0 +1,10 @@
+##gff-version 3
+##sequence-region Chr1 1 2000
+Chr1	source	gene	1	2000	.	+	.	ID=O_0001;Name=O_0001
+Chr1	source	mRNA	1	2000	.	+	.	ID=O_0001.t1;Parent=O_0001
+Chr1	source	exon	1	2000	.	+	.	Parent=O_0001.t1
+Chr1	source	CDS	1	2000	.	+	0	Parent=O_0001.t1
+Chr1	source	gene	1901	2100	.	-	.	ID=O_0002;Name=O_0002
+Chr1	source	mRNA	1901	2100	.	-	.	ID=O_0002.t1;Parent=O_0002
+Chr1	source	exon	1901	2100	.	-	.	Parent=O_0002.t1
+Chr1	source	CDS	1901	2100	.	-	0	Parent=O_0002.t1

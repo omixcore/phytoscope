@@ -49,6 +49,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -124,6 +126,22 @@ public class ImportGenomeWizard {
         fastaField.setText(fasta == null ? "" : fasta.toString());
         gff3Field.setText(gff3 == null ? "" : gff3.toString());
         exprField.setText(expression == null ? "" : expression.toString());
+        // The selection changed; any previously computed report is now stale and
+        // the Load action must be re-gated (stale-report fix D2).
+        markStale();
+    }
+
+    /**
+     * Invalidates the current health-check result: clears the cached report,
+     * disables the Load button and drops any alias rows. Called whenever the
+     * selected file set changes so a stale report can never gate a load against a
+     * different set of files (stale-report fix D2).
+     */
+    private void markStale() {
+        lastReport = null;
+        loadButton.setDisable(true);
+        aliasRows.clear();
+        aliasTable.setItems(aliasRows);
     }
 
     /** Runs the health-check and refreshes the report + alias panels. */
@@ -138,10 +156,17 @@ public class ImportGenomeWizard {
         return lastReport;
     }
 
-    /** Confirms every proposed alias mapping; used by tests. */
+    /**
+     * Confirms every <em>auto-normalise</em> alias candidate. Used by tests and
+     * as the default "accept all" action. Ambiguous (user) candidates are left
+     * unconfirmed so the user must explicitly choose a target — they must never
+     * be auto-confirmed (alias-resolution fix D1).
+     */
     public void confirmAllAliases() {
         for (AliasRow row : aliasRows) {
-            row.confirmed().set(true);
+            if ("auto-normalize".equals(row.confirmedBy())) {
+                row.confirmed().set(true);
+            }
         }
     }
 
@@ -167,12 +192,78 @@ public class ImportGenomeWizard {
         Files.writeString(directory.resolve("intake-health-report.md"), lastReport.toMarkdown());
     }
 
+    /**
+     * Writes the tabular TSV report (columns: severity, code, file, lineOrCoord,
+     * message) into the given directory. One of three deliverables alongside the
+     * JSON (machine/CI) and Markdown (human) reports (D6c).
+     */
+    public void exportReportTsv(Path directory) throws IOException {
+        if (lastReport == null) {
+            lastReport = IntakeHealthCheck.check(fastaPath, gff3Path, exprPath);
+        }
+        if (!Files.isDirectory(directory)) {
+            Files.createDirectories(directory);
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("severity\tcode\tfile\tlineOrCoord\tmessage\n");
+        for (IntakeIssue issue : lastReport.issues()) {
+            sb.append(String.join("\t",
+                    issue.severity().name(),
+                    issue.code() == null ? "" : issue.code(),
+                    issue.file() == null ? "" : issue.file(),
+                    issue.lineOrCoord() == null ? "" : issue.lineOrCoord(),
+                    (issue.message() == null ? "" : issue.message())
+                            .replace("\t", " ").replace("\r", " ").replace("\n", " ")))
+                    .append('\n');
+        }
+        Files.writeString(directory.resolve("intake-health-report.tsv"), sb.toString());
+    }
+
     /** Simulates clicking "Load project"; returns false when blocked by errors. */
     public boolean triggerLoad() {
         if (loadButton.isDisabled()) {
             return false;
         }
+        // Before handing anything to the host, prove the report still describes
+        // the currently selected files: recompute each file's SHA-256 and compare
+        // it to the hash recorded in the report. A null report (stale) or a hash
+        // mismatch (files changed since the health-check) refuses the load
+        // (stale-report fix D2).
+        if (!isIntegrityVerified()) {
+            return false;
+        }
         doLoad();
+        return true;
+    }
+
+    /**
+     * Verifies that the report currently cached still matches the selected files
+     * byte-for-byte. Returns {@code false} when there is no report or when any
+     * selected file's current SHA-256 differs from the one recorded in the report
+     * (matched by file kind and path).
+     */
+    private boolean isIntegrityVerified() {
+        if (lastReport == null) {
+            return false;
+        }
+        Map<String, String> expected = new HashMap<>();
+        for (IntakeFileResult r : lastReport.files()) {
+            expected.put(r.kind() + "|" + (r.path() == null ? "" : r.path()), r.sha256());
+        }
+        Map<IntakeFileKind, Path> selected = new LinkedHashMap<>();
+        if (fastaPath != null) selected.put(IntakeFileKind.FASTA, fastaPath);
+        if (gff3Path != null) selected.put(IntakeFileKind.GFF3, gff3Path);
+        if (exprPath != null) selected.put(IntakeFileKind.EXPRESSION, exprPath);
+        for (Map.Entry<IntakeFileKind, Path> e : selected.entrySet()) {
+            String key = e.getKey() + "|" + e.getValue().toString();
+            String expectedHash = expected.get(key);
+            if (expectedHash == null) {
+                return false;
+            }
+            if (!expectedHash.equals(IntakeHealthCheck.sha256(e.getValue()))) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -185,6 +276,7 @@ public class ImportGenomeWizard {
         if (selected != null) {
             fastaPath = selected;
             fastaField.setText(selected.toString());
+            markStale();
         }
     }
 
@@ -194,6 +286,7 @@ public class ImportGenomeWizard {
         if (selected != null) {
             gff3Path = selected;
             gff3Field.setText(selected.toString());
+            markStale();
         }
     }
 
@@ -202,6 +295,7 @@ public class ImportGenomeWizard {
         if (selected != null) {
             exprPath = selected;
             exprField.setText(selected.toString());
+            markStale();
         }
     }
 
@@ -225,7 +319,10 @@ public class ImportGenomeWizard {
             GeneSequenceService fasta = IntakeHealthCheck.parseFasta(fastaPath);
             GenomeDataService genome = IntakeHealthCheck.parseAnnotation(gff3Path);
             for (AliasMapping candidate : IntakeHealthCheck.detectAliasCandidates(fasta, genome)) {
-                aliasRows.add(new AliasRow(candidate.from(), candidate.to(), true, "auto-normalize"));
+                boolean auto = "auto-normalize".equals(candidate.confirmedBy());
+                // Auto-normalise candidates are safe to pre-confirm; ambiguous
+                // "user" candidates stay unconfirmed so the user must pick a target.
+                aliasRows.add(new AliasRow(candidate.from(), candidate.to(), auto, candidate.confirmedBy()));
             }
         } catch (IOException ignored) {
             // Alias detection is best-effort; parse errors are already reported.
@@ -236,11 +333,44 @@ public class ImportGenomeWizard {
     private void addManualAlias() {
         // Small inline collector reusing the manual-entry fields from the scene.
         if (manualFrom != null && manualTo != null && !manualFrom.getText().isBlank() && !manualTo.getText().isBlank()) {
-            aliasRows.add(new AliasRow(manualFrom.getText().trim(), manualTo.getText().trim(), true, "user"));
-            aliasTable.setItems(aliasRows);
+            addManualAliasRow(manualFrom.getText().trim(), manualTo.getText().trim());
             manualFrom.clear();
             manualTo.clear();
         }
+    }
+
+    /** Adds a confirmed, user-declared alias row (also used by tests). */
+    public void addManualAliasRow(String from, String to) {
+        if (from == null || from.isBlank() || to == null || to.isBlank()) {
+            return;
+        }
+        aliasRows.add(new AliasRow(from.trim(), to.trim(), true, "user"));
+        aliasTable.setItems(aliasRows);
+    }
+
+    /**
+     * Re-runs the health-check after the user confirms or adds aliases, applying
+     * the confirmed {@code from -> to} mappings to the parsed FASTA so that a
+     * missing-seqid error is re-evaluated against the now-aliased FASTA. Refreshes
+     * the report and re-gates the Load button (manual-alias recompute, fix D4).
+     */
+    public void recomputeAliases() {
+        Map<String, String> confirmed = new LinkedHashMap<>();
+        for (AliasRow row : aliasRows) {
+            String from = row.from().get();
+            String to = row.to().get();
+            if (row.confirmed().get() && from != null && !from.isBlank()
+                    && to != null && !to.isBlank()) {
+                confirmed.put(from, to);
+            }
+        }
+        lastReport = IntakeHealthCheck.check(fastaPath, gff3Path, exprPath, confirmed);
+        Platform.runLater(() -> {
+            issueTable.setItems(FXCollections.observableArrayList(lastReport.issues()));
+            summaryLabel.setText(lastReport.summary());
+            // Re-gate Load: a valid manual alias can clear the ERROR that disabled it.
+            loadButton.setDisable(!lastReport.pass());
+        });
     }
 
     private void doLoad() {
@@ -340,9 +470,11 @@ public class ImportGenomeWizard {
         exportJsonButton.setOnAction(e -> exportToDirectory("json"));
         Button exportMdButton = new Button("Export Markdown");
         exportMdButton.setOnAction(e -> exportToDirectory("md"));
+        Button exportTsvButton = new Button("Export TSV");
+        exportTsvButton.setOnAction(e -> exportToDirectory("tsv"));
         Button closeButton = new Button("Close");
         closeButton.setOnAction(e -> stage.close());
-        HBox actionRow = new HBox(8, runButton, exportJsonButton, exportMdButton, loadButton, closeButton);
+        HBox actionRow = new HBox(8, runButton, exportJsonButton, exportMdButton, exportTsvButton, loadButton, closeButton);
 
         root.getChildren().addAll(
                 new Label("Import your own genome — bring FASTA + GFF3 (+ optional expression matrix)"),
@@ -373,7 +505,11 @@ public class ImportGenomeWizard {
         }
         Path dir = dirFile.toPath();
         try {
-            exportReport(dir);
+            if ("tsv".equals(kind)) {
+                exportReportTsv(dir);
+            } else {
+                exportReport(dir);
+            }
             new Alert(Alert.AlertType.INFORMATION, "Report exported to " + dir).showAndWait();
         } catch (IOException ex) {
             new Alert(Alert.AlertType.ERROR, "Export failed: " + ex.getMessage()).showAndWait();

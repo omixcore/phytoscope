@@ -4,9 +4,11 @@ import io.gitee.omixcore.phytoscope.intake.IntakeHealthCheck;
 import io.gitee.omixcore.phytoscope.intake.IntakeIssue;
 import io.gitee.omixcore.phytoscope.intake.IntakeReport;
 import io.gitee.omixcore.phytoscope.intake.IntakeSeverity;
+import io.gitee.omixcore.phytoscope.service.GeneSequenceService;
 import org.junit.jupiter.api.Test;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -160,5 +162,53 @@ class IntakeHealthCheckTest {
                 "Markdown must have the report heading");
         assertTrue(md.contains("## Files"), "Markdown must list files");
         assertTrue(md.contains("## Issues"), "Markdown must list issues");
+    }
+
+    // ---- D1: a name that normalises to more than one FASTA id is ambiguous --
+    @Test
+    void aliasCollisionIsReportedAsAmbiguous() {
+        IntakeReport report = IntakeHealthCheck.check(
+                fixture("alias_collision.fa"), fixture("alias_collision.gff3"), null);
+        assertTrue(hasCodeWithSeverity(report, "ALIAS_AMBIGUOUS", IntakeSeverity.WARNING),
+                "a chromosome matching multiple FASTA ids must be a WARNING, not auto-resolved: "
+                        + report.issues());
+        // A genuinely unique normalisation (annotation '2' -> FASTA 'Chr2') must
+        // still be suggested as an auto-normalise candidate.
+        assertTrue(hasCodeWithSeverity(report, "SEQUENCE_ALIAS_SUGGESTED", IntakeSeverity.INFO),
+                "the unique '2' -> 'Chr2' mapping should still be suggested: " + report.issues());
+    }
+
+    // ---- D1: a user-confirmed alias must overwrite any auto-discovered one ---
+    @Test
+    void confirmedAliasOverridesAutoAlias() throws Exception {
+        GeneSequenceService fasta = IntakeHealthCheck.parseFasta(fixture("alias_mismatch.fa"));
+        // Simulate an auto-discovered (or prior) alias '1' -> 'Chr2'.
+        fasta.addAliases(Map.of("1", "Chr2"));
+        assertEquals("Chr2", fasta.resolveSequenceName("1"),
+                "precondition: the initial alias should resolve '1' to Chr2");
+        // The user explicitly maps '1' -> 'Chr1'; the override must win.
+        fasta.addAliases(Map.of("1", "Chr1"));
+        assertEquals("Chr1", fasta.resolveSequenceName("1"),
+                "a user-confirmed alias must overwrite the auto alias (D1)");
+    }
+
+    // ---- D6a: a FASTA header split on a TAB keeps only the id --------------
+    @Test
+    void fastaHeaderTabSplitKeepsIdOnly() throws Exception {
+        GeneSequenceService fasta = IntakeHealthCheck.parseFasta(fixture("fasta_tab_header.fa"));
+        assertTrue(fasta.getSequenceNames().contains("seq1"),
+                "tab-split FASTA header must keep only the id 'seq1': " + fasta.getSequenceNames());
+        assertFalse(fasta.getSequenceNames().stream().anyMatch(n -> n.contains("\t") || n.contains(" ")),
+                "no sequence name should contain the description or a tab");
+    }
+
+    // ---- D6b: a feature past the FASTA contig end is an ERROR ---------------
+    @Test
+    void coordinateOutOfBoundsReportedAsError() {
+        IntakeReport report = IntakeHealthCheck.check(
+                fixture("coord_oob.fa"), fixture("coord_oob.gff3"), null);
+        assertFalse(report.pass(), "coord_oob must be blocked: " + report.summary());
+        assertTrue(hasCodeWithSeverity(report, "COORDINATE_OUT_OF_BOUNDS", IntakeSeverity.ERROR),
+                "a feature exceeding the FASTA contig length must be an ERROR: " + report.issues());
     }
 }
