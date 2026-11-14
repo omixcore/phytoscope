@@ -239,3 +239,90 @@ BUILD SUCCESS
 - **B01b 阻塞修复已完成**：`sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test` → `Tests run: 216, Failures: 0, Errors: 0, Skipped: 7`，`BUILD SUCCESS`；`ResearchModuleGoldSetTest skipped=0`、`ComparisonWorkflowUiTest` 通过、全量 Skipped 不高于基线 12。未使用 `@Disabled` / `Assumptions` 绕过，未改生产加载语义。
 - **B01b-2 跨平台换行不确定性已消除**：`check_isoform_case.py` 本机 Windows `exit=0`；`candidates.tsv` 字节比较与 `input_sha256` 校验保持；`screen_domain_isoforms.py` 仅固定 LF 输出、未改算法。
 - **仍如实标注的边界**：本机无 bedtools（8/8 比对留给 CI Linux）；三平台远端 CI 报告回收、Release、Zenodo DOI 均为 B 类，**本报告不宣称已完成**。
+
+---
+
+## 6. ubuntu 无头 JavaFX 失败（2026-11-14 远端实测）
+
+### 6.1 远端事实（GitHub Actions run `43605656726`，commit `49a5fac`）
+
+| 平台 | 结论 |
+|---|---|
+| `validation (windows-latest)` | success |
+| `validation (macos-latest)` | success |
+| `validation (ubuntu-latest)` | **failure**，失败步为第 10 步 `Java and JavaFX regressions` |
+| `public-data-validation` | failure（依赖外网 PMC / PastDB / ENA，非代码缺陷，不在本节范围） |
+
+ubuntu 该步内**四个门控类全部通过且 `Skipped: 0`**：`ResearchModuleGoldSetTest 1/0/0/0`、`DomainCaseValidationTest 1/0/0/0`、`Gff2ParserSupportTest 5/0/0/0`、`ComparisonWorkflowUiTest 1/0/0/0`（12.41 s）。换言之 R1 的「禁止静默跳过」与 §2.8 的两阶段异步工作流修复在远端依旧成立，失败面只在无头 JavaFX 的**平台初始化**。
+
+失败集中在 6 个 JavaFX UI 测试类、共 14 个方法，`Failures` 均为同一断言：
+
+```
+org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+    at ...UiTest.startPlatform(...:55)
+    → assertTrue(ready.await(20, TimeUnit.SECONDS))
+```
+
+| 类 | 方法数 | 方法名 | 报错位置 |
+|---|---|---|---|
+| `GenomeImportRetentionUiTest` | 3 | `annotationOnlyImportClearsPreviousFasta`、`reopenRestoresFastaWhenHashMatches`、`reopenSkipsFastaWhenMissingOrTampered` | `GenomeImportRetentionUiTest.java:55` |
+| `ImportGenomeWizardUiTest` | 7 | `happyPathEnablesLoadAndDeliversServices`、`missingSeqidBlocksLoad`、`confirmedAliasesAreDeliveredToHandler`、`exportWritesJsonAndMarkdown`、`staleReportRefusesLoadAfterFileChange`、`manualAliasRecomputeUnblocksLoad`、`exportWritesTsvReport` | `ImportGenomeWizardUiTest.java:53` |
+| `BackgroundLoadingUiTest` | 1 | `loadingDoesNotBlockFxAndCancellationNeverCommitsStagedData` | `BackgroundLoadingUiTest.java:21` |
+| `AdaptiveChromosomeUiTest` | 1 | `datasetDropdownMenuAndGeneSelectionStayInSync` | `AdaptiveChromosomeUiTest.java:39` |
+| `MintTranscriptomeUiTest` | 1 | `mintGenomeLeafExpressionPanelIsFullyBrowsable` | 30.00 s latch 超时 |
+| `UnassignedSegmentsUiTest` | 1 | `preservesSourceSegmentsWithoutInventingExonsOrSpliceJunctions` | `UnassignedSegmentsUiTest.java:15` |
+
+每个失败方法耗时精确等于 latch 上限（20.00 s；`MintTranscriptomeUiTest` 为 30.00 s），说明 `Platform.startup(ready::countDown)` 的回调在规定时间内**一次都没被执行**，而不是某条业务断言取值不符。
+
+### 6.2 根因判断
+
+`-Pui-tests` 在 surefire 里注入 `phytoscope.ui.tests=true`、`glass.platform=Monocle`、`monocle.platform=Headless`、`prism.order=sw`（`pom.xml` 的 `ui-tests` profile）。surefire 默认 `reuseForks=true`，**全部测试类共用同一个 JVM**，而 JavaFX 的 toolkit 每个 JVM 只能初始化一次：
+
+1. 第一个调用 `Platform.startup` 的类拿到活的 FX Application Thread（`ComparisonWorkflowUiTest` 12.41 s 通过即为反证）；
+2. 后续每个类只能落到 `catch (IllegalStateException) { Platform.runLater(ready::countDown); }` 分支，此时无头 Monocle 的 FX 线程已不再及时派发该任务，latch 走到超时；
+3. ubuntu runner 更慢、图形栈不同，暴露得最彻底；macOS / Windows 因为时序不同而侥幸通过（`validation (windows-latest)`、`validation (macos-latest)` 均为 success）。
+
+### 6.3 修复内容（两处，均为测试基础设施层）
+
+1. **`pom.xml` 的 `ui-tests` profile**：在 surefire `<configuration>` 内、（与既有 `<systemPropertyVariables>` 并列）新增
+   `<forkCount>1</forkCount>` 与 `<reuseForks>false</reuseForks>`，让**每个测试类在独立 JVM 中运行**，恢复「首次初始化即可用」这一前提。未改动任何其它 profile、未改依赖版本、未改 surefire 版本；`.github/workflows/validate.yml` 第 51 行的 `sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data verify` **一字未改**（刻意保持的「单条 verify 处方」）。
+2. **6 个 UI 测试类的平台启动等待上限 20 s → 90 s**（`MintTranscriptomeUiTest` 由 30 s → 90 s；`ComparisonWorkflowUiTest:56` 同属「平台启动等待」，按同一语义一并放宽，共 7 处）。这只是**等待上限**，不放宽任何正确性判定：断言、期望值、`entered.await(...)`/`workerDone.await(...)`/`task.get(...)` 等其它 latch 一律未动，目的是在慢 runner 上给 JavaFX 初始化留足时间。
+3. **`reuseForks=false` 顺带暴露并修复的第二个隐性缺陷（同一根因族）**：JVM 隔离后 `ComparisonWorkflowUiTest` 首次运行出现 246.9 s 的 `TimeoutException`（`fx:28` ← 阶段二 `:86`）。`jcmd Thread.print` 显示该 JVM 内**已无 FX Application Thread**（只剩 `Monocle Timer` / `Prism Font Disposer`，测试线程停在 `FutureTask.get`）。原因是 `LoadingOperation` 会 `dialog.show()` 并用 `dialog.close()` 结束（`LoadingOperation.java:60/67/78`）：在全新 JVM 中 JavaFX 的 `implicitExit` 仍为默认 `true`，最后一个窗口关闭即**关停 toolkit**，阶段二的 `Platform.runLater` 任务永远排不上。修法与项目内既有的 `BackgroundLoadingUiTest:21`、`GenomeImportRetentionUiTest:57`、`ImportGenomeWizardUiTest:55` 完全一致：在 `ComparisonWorkflowUiTest` 启动完成后先执行 `fx(() -> { Platform.setImplicitExit(false); return null; })`。**未改任何断言**，也未触碰 `src/main/java/**`。
+
+### 6.4 本地验证（真实输出，Windows + JDK 21，`JAVA_HOME=C:/Program Files/Java/jdk-21`）
+
+```
+rm -rf target/reference-data && git clone --depth 1 https://gitee.com/omixcore/phytoscope-reference-data.git target/reference-data
+sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test
+```
+
+| 项 | 结果 |
+|---|---|
+| 退出码 | `EXIT=0` |
+| 汇总行 | `[WARNING] Tests run: 216, Failures: 0, Errors: 0, Skipped: 7` |
+| BUILD | `BUILD SUCCESS`，`Total time: 01:09 min`（墙钟 72 s） |
+| surefire 报告数 | 40 个 `TEST-*.xml` |
+| `ResearchModuleGoldSetTest` | `tests=1 failures=0 errors=0 skipped=0`（5.245 s） |
+| `DomainCaseValidationTest` | `tests=1 failures=0 errors=0 skipped=0`（3.05 s） |
+| `Gff2ParserSupportTest` | `tests=5 failures=0 errors=0 skipped=0` |
+| `ComparisonWorkflowUiTest` | `tests=1 failures=0 errors=0 skipped=0`（11.528 s） |
+| 7 个 UI 测试类 | 全部通过：`AdaptiveChromosomeUiTest 1`、`BackgroundLoadingUiTest 1`、`ComparisonWorkflowUiTest 1`、`GenomeImportRetentionUiTest 3`、`ImportGenomeWizardUiTest 7`、`MintTranscriptomeUiTest 1`、`UnassignedSegmentsUiTest 1`（合计 15，覆盖远端 14 个失败方法） |
+| `Skipped=7` 来源 | `AdditionalNonModelReferenceTest 3`、`NonModelVignaReferenceTest 3`、`FullAnnotationValidationTest 1`（均为既有外部数据条件跳过，与本次修复无关） |
+
+**耗时对比（同机、同命令、仅 `reuseForks` 不同，各跑一轮）**：
+
+| 模式 | Total time | 墙钟 | JavaFX 启动告警次数（= 实际 JVM 数证据） |
+|---|---|---|---|
+| `reuseForks=true`（修复前口径，共用 JVM） | `31.940 s` | 33 s | 1 |
+| `reuseForks=false`（修复后） | `01:09 min` | 72 s | 8 |
+
+即每类独立 JVM 在本机增加约 **+37 s（≈2.2 倍）**，绝对增量不足 1 分钟，远低于 12 分钟告警线，无需精简建议；三平台各多出的这部分时间对 CI 预算可忽略。
+
+**过程中如实记录的两次失败（未伪造 PASS）**：`reuseForks=false` 首轮全量为 `Tests run: 216, Failures: 0, Errors: 1, Skipped: 7`（`ComparisonWorkflowUiTest` 阶段二 246.9 s `TimeoutException`），按 §6.3 第 3 条修复后转为上述 `Errors: 0`；单类复现运行 `-Dtest=ComparisonWorkflowUiTest` 亦由 `EXIT=1 / Errors: 1` 变为 `EXIT=0`（11.19 s）。
+
+### 6.5 边界声明
+
+- 未改 `src/main/java/**`、未改任何断言体与期望值、未改 `.github/workflows/validate.yml`、未改 `README.md` / `CHANGELOG.md` / `CITATION.cff`；未使用 `@Disabled`、`Assumptions` 或重新门控等回避手段。
+- 本节的验证全部在**本机 Windows + JDK 21** 上执行，未改动 Gitee 外置仓库与远端 CI 配置。
+- **远端 ubuntu 修复结果需重跑 CI 确认，本节不宣称已修复。**
+

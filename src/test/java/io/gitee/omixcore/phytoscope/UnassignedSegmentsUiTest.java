@@ -12,7 +12,7 @@ class UnassignedSegmentsUiTest {
     @Test void preservesSourceSegmentsWithoutInventingExonsOrSpliceJunctions() throws Exception {
         CountDownLatch ready = new CountDownLatch(1);
         try { Platform.startup(ready::countDown); } catch (IllegalStateException started) { Platform.runLater(ready::countDown); }
-        assertTrue(ready.await(20,TimeUnit.SECONDS));
+        assertTrue(ready.await(90,TimeUnit.SECONDS));
         FutureTask<Void> task = new FutureTask<>(() -> {
             var genome = new GenomeDataService();
             genome.loadFromContent("""

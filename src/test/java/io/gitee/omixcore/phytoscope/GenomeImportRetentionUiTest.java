@@ -52,7 +52,7 @@ class GenomeImportRetentionUiTest {
         } catch (IllegalStateException started) {
             Platform.runLater(ready::countDown);
         }
-        assertTrue(ready.await(20, TimeUnit.SECONDS));
+        assertTrue(ready.await(90, TimeUnit.SECONDS));
         fx(() -> {
             Platform.setImplicitExit(false);
             return null;

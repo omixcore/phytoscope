@@ -53,7 +53,14 @@ class ComparisonWorkflowUiTest {
         Path archivedRoot = requireReferenceData();
         CountDownLatch ready = new CountDownLatch(1);
         try { Platform.startup(ready::countDown); } catch (IllegalStateException started) { Platform.runLater(ready::countDown); }
-        assertTrue(ready.await(20, TimeUnit.SECONDS));
+        assertTrue(ready.await(90, TimeUnit.SECONDS));
+        // The asynchronous genome-FASTA load below shows a real progress dialog
+        // (LoadingOperation: dialog.show() ... dialog.close()). With JavaFX's default
+        // implicitExit=true, closing that last window would terminate the toolkit, so
+        // the phase-2 Platform.runLater task would never be dispatched. Keep the toolkit
+        // alive explicitly, the same way BackgroundLoadingUiTest / GenomeImportRetention-
+        // UiTest / ImportGenomeWizardUiTest already do. Assertions are untouched.
+        fx(() -> { Platform.setImplicitExit(false); return null; });
 
         // Phase 1 — short FX task: build the UI and kick off the REAL asynchronous
         // genome-FASTA load (loadArchivedAtlasCase -> MainView.loadGenomeFasta).

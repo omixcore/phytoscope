@@ -121,12 +121,26 @@
             <build><plugins><plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration><systemPropertyVariables>
-                    <phytoscope.ui.tests>true</phytoscope.ui.tests>
-                    <glass.platform>Monocle</glass.platform>
-                    <monocle.platform>Headless</monocle.platform>
-                    <prism.order>sw</prism.order>
-                </systemPropertyVariables></configuration>
+                <configuration>
+                    <!--
+                        JavaFX may only be initialised once per JVM. With the default
+                        reuseForks=true every UI test class shares one JVM, so only the
+                        first class to call Platform.startup() gets a live FX thread; the
+                        later classes fall into the IllegalStateException branch and wait
+                        on a Platform.runLater() that the (already idle/headless) FX
+                        thread no longer dispatches in time. That surfaced as 20s latch
+                        timeouts on the slower ubuntu-latest runner. One fork per test
+                        class restores the "first initialisation always wins" premise.
+                    -->
+                    <forkCount>1</forkCount>
+                    <reuseForks>false</reuseForks>
+                    <systemPropertyVariables>
+                        <phytoscope.ui.tests>true</phytoscope.ui.tests>
+                        <glass.platform>Monocle</glass.platform>
+                        <monocle.platform>Headless</monocle.platform>
+                        <prism.order>sw</prism.order>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin></plugins></build>
         </profile>
     </profiles>

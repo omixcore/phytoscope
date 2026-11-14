@@ -36,7 +36,7 @@ class AdaptiveChromosomeUiTest {
         } catch (IllegalStateException alreadyStarted) {
             Platform.runLater(ready::countDown);
         }
-        assertTrue(ready.await(20, TimeUnit.SECONDS));
+        assertTrue(ready.await(90, TimeUnit.SECONDS));
         var task = new FutureTask<Void>(() -> {
             var service = new GenomeDataService();
             var expression = new ExpressionDataService();

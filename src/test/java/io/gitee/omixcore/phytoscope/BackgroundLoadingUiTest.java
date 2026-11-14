@@ -18,7 +18,7 @@ class BackgroundLoadingUiTest {
     @Test void loadingDoesNotBlockFxAndCancellationNeverCommitsStagedData() throws Exception {
         CountDownLatch ready = new CountDownLatch(1);
         try { Platform.startup(ready::countDown); } catch (IllegalStateException started) { Platform.runLater(ready::countDown); }
-        assertTrue(ready.await(20, TimeUnit.SECONDS)); fx(() -> { Platform.setImplicitExit(false); return null; });
+        assertTrue(ready.await(90, TimeUnit.SECONDS)); fx(() -> { Platform.setImplicitExit(false); return null; });
         var entered = new CountDownLatch(1); var release = new CountDownLatch(1); var workerDone = new CountDownLatch(1);
         AtomicBoolean committed = new AtomicBoolean(); AtomicReference<Throwable> failure = new AtomicReference<>();
         var pending = fx(() -> LoadingOperation.run(null,"Validation loading",() -> {
