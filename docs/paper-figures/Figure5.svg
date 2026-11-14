@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="716.1192pt" height="461.005798pt" viewBox="0 0 716.1192 461.005798" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-14T13:47:31.148713</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 461.005798 
+L 716.1192 461.005798 
+L 716.1192 -0 
+L 0 -0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 16.667339 210.492116 
+L 313.310642 210.492116 
+Q 322.777982 210.492116 322.777982 206.108184 
+L 322.777982 83.358078 
+Q 322.777982 78.974146 313.310642 78.974146 
+L 16.667339 78.974146 
+Q 7.2 78.974146 7.2 83.358078 
+L 7.2 206.108184 
+Q 7.2 210.492116 16.667339 210.492116 
+z
+" clip-path="url(#p7fdafe0a65)" style="fill: #eaf2f8; stroke: #2c7bb6; stroke-width: 1.1; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 8.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="19.823119" y="97.199288" transform="rotate(-0 19.823119 97.199288)">.phytoscope project manifest</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 7.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="19.823119" y="113.975174" transform="rotate(-0 19.823119 113.975174)">•  schemaVersion (4) · applicationVersion</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 7.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="19.823119" y="130.049593" transform="rotate(-0 19.823119 130.049593)">•  assembly identity</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 7.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="19.823119" y="146.124011" transform="rotate(-0 19.823119 146.124011)">•  annotation metadata (format / version / source)</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 7.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="19.823119" y="162.19843" transform="rotate(-0 19.823119 162.19843)">•  per-file integrity — SHA-256 of exact bytes (incl. compression)</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 7.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="19.823119" y="178.272849" transform="rotate(-0 19.823119 178.272849)">•  user-confirmed sequence-name alias map</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 7.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="19.823119" y="194.347267" transform="rotate(-0 19.823119 194.347267)">•  provenance — source label + full import report</text>
+   </g>
+   <g id="text_8">
+    <text style="font-style: italic; font-size: 6.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #555555" x="19.823119" y="206.891189" transform="rotate(-0 19.823119 206.891189)">schema 1–4 backward-compatible · missing fields = "unknown" (never invented)</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="7.2" y="64.206281" transform="rotate(-0 7.2 64.206281)">(a) Manifest v2 (schemaVersion 4)</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_3">
+    <path d="M 389.049358 108.092116 
+L 508.968991 108.092116 
+Q 518.43633 108.092116 518.43633 104.03292 
+L 518.43633 79.67774 
+Q 518.43633 75.618543 508.968991 75.618543 
+L 389.049358 75.618543 
+Q 379.582018 75.618543 379.582018 79.67774 
+L 379.582018 104.03292 
+Q 379.582018 108.092116 389.049358 108.092116 
+z
+" clip-path="url(#p5a9bc28425)" style="fill: #f4fbf4; stroke: #333333; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 389.049358 145.977951 
+L 508.968991 145.977951 
+Q 518.43633 145.977951 518.43633 141.918755 
+L 518.43633 117.563575 
+Q 518.43633 113.504379 508.968991 113.504379 
+L 389.049358 113.504379 
+Q 379.582018 113.504379 379.582018 117.563575 
+L 379.582018 141.918755 
+Q 379.582018 145.977951 389.049358 145.977951 
+z
+" clip-path="url(#p5a9bc28425)" style="fill: #eaf2f8; stroke: #333333; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 389.049358 189.276049 
+L 508.968991 189.276049 
+Q 518.43633 189.276049 518.43633 185.216852 
+L 518.43633 160.861672 
+Q 518.43633 156.802476 508.968991 156.802476 
+L 389.049358 156.802476 
+Q 379.582018 156.802476 379.582018 160.861672 
+L 379.582018 185.216852 
+Q 379.582018 189.276049 389.049358 189.276049 
+z
+" clip-path="url(#p5a9bc28425)" style="fill: #fff7e6; stroke: #333333; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 559.461468 132.447296 
+L 685.692661 132.447296 
+Q 695.16 132.447296 695.16 128.388099 
+L 695.16 87.796133 
+Q 695.16 83.736937 685.692661 83.736937 
+L 559.461468 83.736937 
+Q 549.994128 83.736937 549.994128 87.796133 
+L 549.994128 128.388099 
+Q 549.994128 132.447296 559.461468 132.447296 
+z
+" clip-path="url(#p5a9bc28425)" style="fill: #f4fbf4; stroke: #333333; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 559.461468 197.394442 
+L 685.692661 197.394442 
+Q 695.16 197.394442 695.16 193.335245 
+L 695.16 168.980066 
+Q 695.16 164.920869 685.692661 164.920869 
+L 559.461468 164.920869 
+Q 549.994128 164.920869 549.994128 168.980066 
+L 549.994128 193.335245 
+Q 549.994128 197.394442 559.461468 197.394442 
+z
+" clip-path="url(#p5a9bc28425)" style="fill: #fde0e0; stroke: #333333; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_10">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="449.009174" y="86.439946" transform="rotate(-0 449.009174 86.439946)">save .phytoscope</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 6.2px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #555555" x="449.009174" y="101.584512" transform="rotate(-0 449.009174 101.584512)">SHA-256 per file</text>
+   </g>
+   <g id="text_12">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="449.009174" y="131.767642" transform="rotate(-0 449.009174 131.767642)">reopen project</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="449.009174" y="175.065739" transform="rotate(-0 449.009174 175.065739)">verify stored hash</text>
+   </g>
+   <g id="patch_8">
+    <path d="M 449.009174 107.386514 
+Q 449.009174 110.796764 449.009174 112.977177 
+" style="fill: none; stroke: #333333; stroke-width: 1.1; stroke-linecap: round"/>
+    <path d="M 451.409174 108.177177 
+L 449.009174 112.977177 
+L 446.609174 108.177177 
+z
+" style="fill: #333333; stroke: #333333; stroke-width: 1.1; stroke-linecap: round"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 449.009174 145.27367 
+Q 449.009174 151.391982 449.009174 156.280457 
+" style="fill: none; stroke: #333333; stroke-width: 1.1; stroke-linecap: round"/>
+    <path d="M 451.409174 151.480457 
+L 449.009174 156.280457 
+L 446.609174 151.480457 
+z
+" style="fill: #333333; stroke: #333333; stroke-width: 1.1; stroke-linecap: round"/>
+   </g>
+   <g id="text_14">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="622.577064" y="102.676428" transform="rotate(-0 622.577064 102.676428)">restore state</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 6.2px; font-family: 'DejaVu Sans'; fill: #555555" transform="translate(586.861674 114.100451)">structure · expression ·</text>
+    <text style="font-size: 6.2px; font-family: 'DejaVu Sans'; fill: #555555" transform="translate(585.663814 121.542146)">view state · parameters</text>
+   </g>
+   <g id="text_16">
+    <text style="font-weight: 700; font-size: 7.8px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="622.577064" y="175.742272" transform="rotate(-0 622.577064 175.742272)">“checksum mismatch” → abort</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 6.2px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #555555" x="622.577064" y="190.886838" transform="rotate(-0 622.577064 190.886838)">explicit user choice</text>
+   </g>
+   <g id="patch_10">
+    <path d="M 513.551266 166.229009 
+Q 534.214773 145.978399 553.999921 126.588596 
+" style="fill: none; stroke: #4daf4a; stroke-width: 1.1; stroke-linecap: round"/>
+    <path d="M 548.891886 128.234189 
+L 553.999921 126.588596 
+L 552.251575 131.66238 
+z
+" style="fill: #4daf4a; stroke: #4daf4a; stroke-width: 1.1; stroke-linecap: round"/>
+   </g>
+   <g id="text_18">
+    <text style="font-weight: 700; font-size: 6px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #4daf4a" x="534.215229" y="140.477349" transform="rotate(-0 534.215229 140.477349)">match</text>
+   </g>
+   <g id="patch_11">
+    <path d="M 514.122943 178.573915 
+Q 534.216646 179.804677 553.082813 180.960251 
+" style="fill: none; stroke: #c0392b; stroke-width: 1.1; stroke-linecap: round"/>
+    <path d="M 548.438519 178.271285 
+L 553.082813 180.960251 
+L 548.145064 183.062306 
+z
+" style="fill: #c0392b; stroke: #c0392b; stroke-width: 1.1; stroke-linecap: round"/>
+   </g>
+   <g id="text_19">
+    <text style="font-weight: 700; font-size: 6px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #c0392b" x="534.215229" y="174.303987" transform="rotate(-0 534.215229 174.303987)">differs</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 6.2px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; text-anchor: middle; fill: #555555" x="537.371009" y="214.581953" transform="rotate(-0 537.371009 214.581953)">implementation: project/ProjectStore.java</text>
+   </g>
+   <g id="text_21">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="379.582018" y="64.206281" transform="rotate(-0 379.582018 64.206281)">(b) Self-contained project round-trip</text>
+   </g>
+  </g>
+  <g id="axes_3">
+   <g id="patch_12">
+    <path d="M 20.9592 315.925689 
+L 103.5144 315.925689 
+Q 117.2736 315.925689 117.2736 312.564674 
+L 117.2736 290.718078 
+Q 117.2736 287.357063 103.5144 287.357063 
+L 20.9592 287.357063 
+Q 7.2 287.357063 7.2 290.718078 
+L 7.2 312.564674 
+Q 7.2 315.925689 20.9592 315.925689 
+z
+" clip-path="url(#pcddf5f1c5c)" style="fill: #f2eef9; stroke: #7570b3; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 124.1532 315.925689 
+L 206.7084 315.925689 
+Q 220.4676 315.925689 220.4676 312.564674 
+L 220.4676 290.718078 
+Q 220.4676 287.357063 206.7084 287.357063 
+L 124.1532 287.357063 
+Q 110.394 287.357063 110.394 290.718078 
+L 110.394 312.564674 
+Q 110.394 315.925689 124.1532 315.925689 
+z
+" clip-path="url(#pcddf5f1c5c)" style="fill: #f2eef9; stroke: #7570b3; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 241.1064 319.286704 
+L 681.4008 319.286704 
+Q 695.16 319.286704 695.16 315.925689 
+L 695.16 287.357063 
+Q 695.16 283.996049 681.4008 283.996049 
+L 241.1064 283.996049 
+Q 227.3472 283.996049 227.3472 287.357063 
+L 227.3472 315.925689 
+Q 227.3472 319.286704 241.1064 319.286704 
+z
+" clip-path="url(#pcddf5f1c5c)" style="fill: #f4fbf4; stroke: #4daf4a; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_22">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #7570b3" x="62.2368" y="303.563931" transform="rotate(-0 62.2368 303.563931)">gitee</text>
+   </g>
+   <g id="text_23">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #7570b3" x="165.4308" y="303.563931" transform="rotate(-0 165.4308 303.563931)">github</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #9e9e9e" x="106.9542" y="303.979267" transform="rotate(-0 106.9542 303.979267)">⇄</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #555555" x="20.9592" y="325.526274" transform="rotate(-0 20.9592 325.526274)">commit acac2cf</text>
+   </g>
+   <g id="text_26">
+    <text style="font-weight: 700; font-size: 7.6px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1b7a3d" x="461.2536" y="298.57437" transform="rotate(-0 461.2536 298.57437)">9 files · 68,518,847 B</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 6.6px; font-family: 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Computer Modern Typewriter', 'Andale Mono', 'Nimbus Mono L', 'Courier New', 'Courier', 'Fixed', 'Terminal', monospace; text-anchor: middle; fill: #1b7a3d" x="461.2536" y="310.078117" transform="rotate(-0 461.2536 310.078117)">$ sha256sum -c SHA256SUMS.txt  →  9/9 OK  ✓</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 6.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #555555" x="20.9592" y="334.536686" transform="rotate(-0 20.9592 334.536686)">MANIFEST.json: per-file bytes · SHA-256 · source URL · release · license</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="20.9592" y="362.345015" transform="rotate(-0 20.9592 362.345015)">TAIR10 genome FASTA (gz)</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #555555" x="241.1064" y="362.345015" transform="rotate(-0 241.1064 362.345015)">36.46 MB</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="20.9592" y="390.914094" transform="rotate(-0 20.9592 390.914094)">Araport11 Chr1 GFF3 (gz)</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #555555" x="241.1064" y="390.913641" transform="rotate(-0 241.1064 390.913641)">4.49 MB</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="20.9592" y="419.48272" transform="rotate(-0 20.9592 419.48272)">Araport11 Chr2 GFF3 (gz)</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #555555" x="241.1064" y="419.482266" transform="rotate(-0 241.1064 419.482266)">2.76 MB</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="254.8656" y="362.345468" transform="rotate(-0 254.8656 362.345468)">Araport11 Chr3 GFF3 (gz)</text>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #555555" x="475.0128" y="362.345015" transform="rotate(-0 475.0128 362.345015)">3.38 MB</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="254.8656" y="390.914094" transform="rotate(-0 254.8656 390.914094)">Araport11 Chr4 GFF3 (gz)</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #555555" x="475.0128" y="390.913641" transform="rotate(-0 475.0128 390.913641)">2.62 MB</text>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="254.8656" y="419.48272" transform="rotate(-0 254.8656 419.48272)">Araport11 Chr5 GFF3 (gz)</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #555555" x="475.0128" y="419.482266" transform="rotate(-0 475.0128 419.482266)">3.82 MB</text>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="488.772" y="362.345468" transform="rotate(-0 488.772 362.345468)">horsemint GFF3 (gz)</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #555555" x="708.9192" y="362.345015" transform="rotate(-0 708.9192 362.345015)">10.74 MB</text>
+   </g>
+   <g id="text_43">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="488.772" y="390.914094" transform="rotate(-0 488.772 390.914094)">horsemint 4-leaf TPM matrix</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #555555" x="708.9192" y="390.913641" transform="rotate(-0 708.9192 390.913641)">3.39 MB</text>
+   </g>
+   <g id="text_45">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #222222" x="488.772" y="419.48272" transform="rotate(-0 488.772 419.48272)">E-MTAB-7978 expression matrix</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 5.8px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #555555" x="708.9192" y="419.482266" transform="rotate(-0 708.9192 419.482266)">0.85 MB</text>
+   </g>
+   <g id="text_47">
+    <text style="font-style: italic; font-size: 6.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #555555" x="20.9592" y="452.172204" transform="rotate(-0 20.9592 452.172204)">LICENSES.md: 1 file confirmed CC BY 4.0 (horsemint) · 8 pending author confirmation (incl. one mint TPM matrix with unresolved source)</text>
+   </g>
+   <g id="text_48">
+    <text style="font-weight: 700; font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #333333" x="7.2" y="276.315541" transform="rotate(-0 7.2 276.315541)">(c) Independent reference-data repository (dual mirror)</text>
+   </g>
+  </g>
+  <g id="text_49">
+   <text style="font-weight: 700; font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #333333" x="339.84" y="15.558281" transform="rotate(-0 339.84 15.558281)">Reproducibility: provenance and self-contained projects</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p7fdafe0a65">
+   <rect x="7.2" y="70.206281" width="315.577982" height="146.131078"/>
+  </clipPath>
+  <clipPath id="p5a9bc28425">
+   <rect x="379.582018" y="70.206281" width="315.577982" height="146.131078"/>
+  </clipPath>
+  <clipPath id="pcddf5f1c5c">
+   <rect x="7.2" y="282.315541" width="687.96" height="168.05074"/>
+  </clipPath>
+ </defs>
+</svg>
