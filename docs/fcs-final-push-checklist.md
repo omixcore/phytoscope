@@ -52,11 +52,15 @@
 > 下表是**本次 force push（commit message 英文化之后）**的实测结果。改写前的旧提交
 > （旧 `3e8b83c` / 旧 `49a5fac`）已不在远端可达历史中，其 old→new 映射见 §1.2 的映射表。
 
-| 端 | 重推后 SHA | 核对时间 | 是否一致 |
+| 端 | 重推时刻的 SHA | 核对时间 | 是否一致 |
 |---|---|---|---|
-| 本机 `git rev-parse HEAD` | `0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4` | 2026-11-14 | — |
+| 本机 `git rev-parse HEAD`（**重推当时**） | `0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4` | 2026-11-14 | — |
 | `origin`（gitee）`git ls-remote ... HEAD` | `0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4` | 2026-11-14 | ✅ 一致 |
 | `github`（SSH over 443）`... HEAD` | `0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4` | 2026-11-14 | ✅ 一致 |
+
+> **为何现在 `git rev-parse HEAD` 不等于上表的 `0638dbe`**：重推之后另有**登记性文档提交**
+> （记录本次发布与 CI 结果），它们线性前进、**不改 `src/**` / `pom.xml` / `tools/**`**，
+> 所以 `v0.3.0` tag 按 §1.1 的规则**不随之前移**。当前三方的真实值见下一张表。
 
 数据仓库三方一致：本机 / gitee / github 均为 `66054b700d902fdd8171c3565dc50482d5fa6f25`。
 
@@ -113,6 +117,13 @@ github，`v0.3.0` tag 同步前移到 `0638dbe`。
 | （新增） | `e293f7e` | ubuntu CI 修复：每个 UI 测试类独立 JVM + FX 启动超时放宽 |
 | （新增） | `0638dbe` | ubuntu CI 修复：恢复被数据外迁打断的校验步骤（= 最终 `v0.3.0`） |
 | 数据仓 `249e771` | `f96e375` | 新 tip `66054b7` |
+
+> 表中「（新增）」行是**改写之后**才产生的提交：`1aab03f` / `148e986` 为文档补齐，
+> `e293f7e` / `0638dbe` 为 ubuntu CI 的两次修复，`0638dbe` 即最终 `v0.3.0`。
+> `0638dbe` 之后还有**登记性文档提交**（把发布与 CI 结果写回本清单、CI 报告、发布说明等），
+> 它们**无法记录自身 SHA**（自指），故不列入本表；其数量与内容可用
+> `git log --oneline 0638dbe..HEAD` 复核，且必须满足
+> `git diff --stat 0638dbe..HEAD -- src pom.xml tools` 输出为空。
 
 > **本节是「当前有效 SHA」的权威出处**（`docs/ci-reports/v0.3.0/README.md` §6 指向本节）。
 > 改写**不影响**：`v0.3.0` 的内容，以及 `docs/ci-reports/v0.3.0/` 里以 **run id
