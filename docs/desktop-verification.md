@@ -1,4 +1,28 @@
-# Desktop package verification — v0.2.0 (Windows x64)
+# Desktop package verification — v0.2.0 (Windows x64) + B05 0.3.0 增量补注
+
+> **B05 (2026-11-14) 增量补注 — 上方 §"Package identity"–"Manual checklist" 是 v0.2.0
+> 历史记录，数字与措辞原样保留、不外推为当前实测。**
+>
+> - **Windows x64 已测（0.3.0，本机构建 A 类）**：`sh mvnw -B -DskipTests package`
+>   `BUILD SUCCESS` → `tools/package_desktop.py --jar target/phytoscope-0.3.0.jar
+>   --out target/desktop-v0.3.0` `DESKTOP_EXIT=0`，packaged runtime smoke
+>   `PASS: packaged runtime launched and parsed the rice example`；CLI smoke
+>   `java -Xmx3g -jar target/phytoscope-0.3.0.jar --benchmark --example rice`
+>   `SMOKE_EXIT=0`（stderr 空）。权威包 `../dist/PhytoScope-Windows-0.3.0.zip`
+>   （46,185,790 B / SHA-256 `8f7953eb...`），`sha256sum -c desktop_program/SHA256SUMS.txt`
+>   **3/3 OK**。
+> - **macOS · Linux 待真机**：本机未做、无结果。两份空白清单见
+>   `docs/fcs-desktop-native-verification-checklist.md`（需作者在有显示环境的真机执行）。
+> - **GitHub Actions 三平台构建 artifact ≠ 原生人工验证**：JavaFX 测试使用 Monocle
+>   headless，不能认证原生对话框、DPI 缩放、图形驱动、签名/公证或 SmartScreen 提示；
+>   三平台 artifact 只能证明「可构建」，不能替代真机启动/导入/导出人工检查。
+> - **Release 附件公开动作由主理人用远端 API 尝试，未成功前不得称已发布**；
+>   当前 GitHub Release 只有 `v0.2.0`，`release_state = pending_release`。
+> - 详见 `docs/fcs-v0.3.0-release-notes.md` 与 `docs/fcs-performance-benchmark.md`。
+>
+> 历史 `desktop_program/SHA256SUMS.txt` 曾把 `763b1c42...` 挂在 `AMD64.zip` 名下；
+> 逐字节重测表明该哈希实属 `PhytoScope-Windows-0.2.0.zip`，而真实 `AMD64.zip` 为
+> `927b0002...`。B05 只更正 checksum 文件的关联，历史 ZIP 字节一字未动。
 
 > **Data-archiving notice (post-`8fd01ca`).** The complete reference data
 > (TAIR10 genome FASTA, Araport11 Chr1-Chr5, the 94,883-gene horsemint annotation

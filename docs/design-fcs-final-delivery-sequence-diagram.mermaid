@@ -27,11 +27,12 @@ sequenceDiagram
         ISO->>ISO: 目录存在性显式校验，缺失则 SystemExit（不再指向 src/main/resources）
         ISO->>FS: 复核冻结输入 SHA-256 / 复现 candidates+validation
     end
-    WF->>MVN: sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data verify  【R1 关键改动】
-    MVN->>T: referenceRoot() 读到非空 property → 不触发 assumeTrue skip
+    WF->>MVN: sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data verify  【R1 关键改动，处方不变】
+    MVN->>T: referenceRoot() 读到非空 property → 5 个归档门控类实跑、不触发 assumeTrue skip
     T->>T: 加载 TAIR10_genomic.fna.gz / Chr1.gff3.gz / E-MTAB-7978
     T->>FS: write target/research-validation/research-module-gold-set.json
     MVN-->>WF: surefire-reports: ResearchModuleGoldSetTest = run (skipped=0)
+    Note over WF,MVN: 【设计 §11 已闭环】B01 暴露 ComparisonWorkflowUiTest 既有 FX 缺陷（长 FutureTask 阻塞 FX 线程 → Errors:1）→ 主理人第三轮裁定必修、保持真实异步加载覆盖 → B01b(ca8743e) 测试侧两阶段短 FX 任务修复，断言 verbatim / src/main/java 零改动 / 单条 verify 未改。当前 HEAD 全绿 216/0/0/7；三平台 success 属 R2 目标态，不虚报
     WF->>WF: 【新增断言步】test -s target/research-validation/research-module-gold-set.json
     WF->>WF: 【新增断言步】解析 surefire XML 断言 skipped==0
     alt runner.os == Linux
@@ -49,7 +50,8 @@ sequenceDiagram
     LEAD->>LEAD: 与 c79034e-baseline.md 逐平台对照 failure → success
     LEAD->>FS: 落盘到 docs/ci-reports/v0.3.0/{ubuntu,windows,macos}/
     LEAD->>FS: 单列落盘 public-data-validation/（failure_category = external_network）
-    Note over LEAD,FS: 三平台转 success 属 R2 远端实跑目标态，不计入本机 A 类闭环；public-data-validation 外网失败单独归类、不并入代码失败；本机绝不伪造报告
+    LEAD->>FS: 汇总文档写 evidence_chain_footnote（B01→B01b 测试侧修复脚注，非失败项，见 §11.2）
+    Note over LEAD,FS: 三平台转 success 属 R2 远端实跑目标态，不计入本机 A 类闭环；public-data-validation 外网失败单独归类、不并入代码失败；B01→B01b 修复历史仅作证据链脚注、不进矩阵、不判失败；本机绝不伪造报告
 
 ---
 %% ============================================================

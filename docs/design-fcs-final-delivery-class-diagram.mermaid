@@ -1,6 +1,9 @@
 classDiagram
     %% PhytoScope FCS 投稿 14 项收尾交付 · 增量系统设计 · 契约实体 + 流程角色
     %% 注意：本次 src/main/java/** 零改动，本图为「设计契约」，不需落地为代码类。
+    %% 修订（设计 §11，已闭环）：B01 暴露的 UI 缺陷已由主理人第三轮裁定 + B01b(ca8743e) 测试侧修复；
+    %%   本图已移除 GatedUiDefect / known_gated_ui_defects / 方案 A 等作废口径，
+    %%   汇总文档改用 evidence_chain_footnote（string，初值 ""，非失败项），与 §3.1 字段契约一致。
     class CiReportBundle {
         +string run_id
         +string commit_sha
@@ -9,6 +12,7 @@ classDiagram
         +string collection_method
         +string baseline_commit_sha = c79034e
         +string baseline_status
+        +string evidence_chain_footnote
         +load() dict
         +validate_not_collected() bool
         +compare_failure_to_success() dict
@@ -134,6 +138,12 @@ classDiagram
         +referenceRoot() Path
         +writeGoldSetJson() void
     }
+    class ComparisonWorkflowUiTest {
+        +record Fixture
+        +fx(Callable~T~) T
+        +awaitSequenceServiceLoaded(view, timeoutSeconds) void
+        +realAtlasComparisonProjectRoundTripAndVectorRasterExports() void
+    }
     class BedtoolsComparator {
         +guard_report_exists(report) void
         +compare(report, genome) dict
@@ -161,6 +171,7 @@ classDiagram
     MakePaperFiguresScript ..> FrozenBiopythonSummary : 读取冻结JSON
     MakePaperFiguresScript ..> FigureNumberingEntry : 图号唯一权威
     ValidateWorkflow ..> GoldSetTest : -Dphytoscope.referenceDataDir 实跑
+    ValidateWorkflow ..> ComparisonWorkflowUiTest : -Pui-tests 下三平台实跑(B01b 测试侧修复)
     GoldSetTest ..> BedtoolsComparator : 产出 gold-set JSON
     GoldSetTest ..> BlastpComparator : 产出 gold-set JSON
     BedtoolsComparator ..> CiReportBundle : Linux 产物回收
@@ -173,5 +184,12 @@ classDiagram
     Batch "5" ..> LicenseDecision : B04 定稿
     Batch "5" ..> PushChecklist : B03 备清单
     PushChecklist ..> Batch : M02 前置产物 ZIP + SHA256SUMS 须由 B05 先产出
+    %% B01 实测反馈（设计 §11，已闭环）：referenceDataDir 为 5 类共享 K9 开关，
+    %% 3 类纯计算单门控 / 2 类 UI 双门控(@EnabledIfSystemProperty ui.tests)；-Pui-tests 下三平台都会跑。
+    %% B01 暴露 ComparisonWorkflowUiTest 既有 FX 缺陷 → 主理人第三轮裁定「必修 + 保持真实异步加载覆盖」
+    %%   → B01b(ca8743e) 测试侧两阶段短 FX 任务修复：复用 MainView.getPendingLoad()/getSequenceService().isLoaded() 只读 hook 有界等待真实后台 commit；
+    %%     断言 verbatim / src/main/java 零改动 / 单条 verify 不变 / 不用 @Disabled 或 Assumptions 绕过。
+    %%   当前 HEAD 全量 216/0/0/7 BUILD SUCCESS；evidence_chain_footnote 仅作证据链脚注(非失败项、不进矩阵、不判失败、初值 "")。
+    %% CI 处方冻结：单条 -Pui-tests -Dphytoscope.referenceDataDir=... verify；不采纳门控解耦 / 专步带参 / re-gating 变通。
     %% git push = M01(A类, 凭证可用) / Release 上传 = M02(主理人 API 尝试) / Zenodo = A1(作者)
     %% c79034e 三平台 failure 为对照基线；三平台转 success 属 R2 目标态，不计入本机 A 类

@@ -62,13 +62,16 @@
 - **B · 只交物料/协议，需作者执行（6 项）**：R2 / R3 / R5 / R6 / R13 / R14 → 以「物料齐备且如实标注『待作者执行 / 未执行 / 未取得 DOI / 未获授权 / 未实测』」判定。**所有 B 类事项在本设计中一律标注「只交物料/协议，需作者执行」，不得设计成本机完成。**
 - **C · 受网络/权限限制可能只能给结论（1 项）**：R12 → 以「结论成文 + 逐条标注确证渠道与无法确证项」判定；`⏳` 条目访问不到 DOI/Crossref/出版商时标「受网络限制未能确证」，不判 confirmed，不臆造文献。
 - **CI 失败分类（PRD §1.1 / Q13，强制）**：`c79034e` 三平台 `validation` 全 failure 中，四类为**代码类**（isoform 路径 / windows+macos Real case 位点 / 金标准门控），由 R1 修复；`public-data-validation` 的 PMC/PastDB/ENA 不可达为**外部网络类（非代码逻辑）**，单独归类、单独记录，**不并入代码失败口径、不据此判定 validation job 失败、不混入「CI 转 success」结论**。
+- **门控解禁暴露的既有 UI 缺陷（B01 → B01b，已修复；设计 §11）**：`ComparisonWorkflowUiTest` 的确定性失败属数据外迁后长期被门控遮蔽的既有缺陷（非 R1 引入、非外部网络），曾短暂构成阻断 R2 的风险；**已由主理人第三轮裁定 + 工程师 B01b（`ca8743e`）在测试侧两阶段 FX 重构修复**（单条 `verify` 不变、断言 verbatim、`src/main/java/**` 零改动），当前 HEAD 全量 `216/0/0/7` `BUILD SUCCESS`。**不并入 `c79034e` 基线、不并入 `public-data-validation` 外部网络类、不并入三平台 failure→success 矩阵、不写成 failure 项**；仅作证据链脚注（§11.2）。三平台 success 仍属 R2 目标态，不虚报。
 - 对外表述只能用「**A 类 7 项本机已闭环、B 类 6 项物料齐备待作者执行、C 类 1 项给出核查结论**」；禁止「14 项全部完成」「已完成 Zenodo 归档/取得 DOI」「已完成用户测试」「已完成三平台原生验证」「许可问题已解决」。**PRD §8 第 5 条另特别禁止**：把 `c79034e` 三平台全 failure 说成「CI 三平台通过」；把「推送凭证可用」说成「已推送」；把「现有 v0.2.0 Release」说成「已发布 v0.3.0」；把 `public-data-validation` 外部网络失败计入代码失败。
 
 ### 0.4 设计边界（白名单 / 禁止清单）
 
 **允许改动（仅此 5 类）**：① CI 配置（`.github/workflows/validate.yml`）；② Python 路径与守卫（`tools/check_isoform_case.py`、两个 `compare_*.py`）；③ 测试夹具与测试类（`src/test/resources/gff2/**`、`src/test/java/**/Gff2ParserSupportTest.java`）；④ 绘图脚本的路径常量与注释、`docs/**` 文档/JSON/Markdown 数据文件；⑤ 数据仓库**许可字段**（`LICENSES.md` / `MANIFEST.json`，非数据字节）、构建产物与归档包。
 
-**禁止改动**：`src/main/java/**` 下任何算法 / 解析器 / 服务类；`pom.xml` 版本与依赖；`target/` 产物作为可提交数据源；数据仓库 9 个数据文件字节与 `SHA256SUMS.txt`；`docs/performance.json` 的历史数值；`dist/` 历史 ZIP 的字节；`docs/design-fcs-final-delivery*` 之外的既有设计文档；任何 DOI / ORCID / 许可的「已获得」表述。
+**禁止改动**：`src/main/java/**` 下任何算法 / 解析器 / 服务类（含 `MainView` / `LoadingOperation` / `ResearchAnalysisPane` 的线程模型）；`pom.xml` 版本与依赖；`target/` 产物作为可提交数据源；数据仓库 9 个数据文件字节与 `SHA256SUMS.txt`；`docs/performance.json` 的历史数值；`dist/` 历史 ZIP 的字节；`docs/design-fcs-final-delivery*` 之外的既有设计文档；任何 DOI / ORCID / 许可的「已获得」表述。
+
+> **§0.4 补丁指针（B01 → B01b，主理人第三轮裁定，设计 §11）**：白名单③原**仅授权新建** `src/test/resources/gff2/**` 与 `Gff2ParserSupportTest.java`。**主理人第三轮裁定已一次性、定向授权**修改既有测试类 `ComparisonWorkflowUiTest.java`（仅此一个文件、仅测试侧两阶段 FX 编排），用于修复 B01 暴露的 UI 缺陷（B01b / `ca8743e`）。**硬边界不变**：`src/main/java/**` 零改动、断言 verbatim、禁用 `@Disabled`/`Assumptions` 绕过、保持真实异步加载覆盖、`validate.yml` 单条 `verify` 不改。除该定向授权外，白名单③不扩大到任何其他既有测试类。
 
 ---
 
@@ -265,6 +268,7 @@ docs/ci-reports/v0.3.0/
 | **`platforms.{os}.python_consumers`** | object | `{bedtools: pending/pass/fail, blastp: pending/pass/fail}`；两处是否成功消费 gold-set JSON 并产出比对 JSON（Linux 才有实值） |
 | `platforms.{os}.artifacts` | list[string] | 实际回收的文件相对路径；初值 `[]` |
 | `platforms.{os}.failure_reason` | string | 失败时**如实记录**代码类原因（`check_isoform_case` / `Real case` / 金标准门控）；**外网类原因一律归入下面的 `public_data_validation`，不得写在这里** |
+| **`evidence_chain_footnote`** | string | **证据链脚注（非失败项，设计 §11.2）**：如实记录「B01 曾暴露 `ComparisonWorkflowUiTest` 既有 FX 缺陷 → 主理人第三轮裁定必修 → B01b（`ca8743e`）测试侧两阶段 FX 重构修复（断言 verbatim / `src/main/java` 零改动 / 单条 `verify` 不变）→ 当前 HEAD 全量 `216/0/0/7` 绿」。**不并入 `c79034e` 基线、不并入外部网络类、不并入 failure→success 矩阵、不判代码失败**；初值 `""` |
 | `public_data_validation.status` | enum | **单列**；典型 `"fail (external network)"`；初值 `"not_collected"` |
 | `public_data_validation.counts_in_platform_matrix` | bool | 固定 `false` |
 | **`public_data_validation.failure_category`** | enum | 固定 `"external_network"`（**非代码逻辑**，Q13） |
@@ -606,11 +610,12 @@ sequenceDiagram
         ISO->>ISO: 目录存在性显式校验，缺失则 SystemExit（不再指向 src/main/resources）
         ISO->>FS: 复核冻结输入 SHA-256 / 复现 candidates+validation
     end
-    WF->>MVN: sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data verify  【R1 关键改动】
-    MVN->>T: referenceRoot() 读到非空 property → 不触发 assumeTrue skip
+    WF->>MVN: sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data verify  【R1 关键改动，处方不变】
+    MVN->>T: referenceRoot() 读到非空 property → 5 个归档门控类实跑、不触发 assumeTrue skip
     T->>T: 加载 TAIR10_genomic.fna.gz / Chr1.gff3.gz / E-MTAB-7978
     T->>FS: write target/research-validation/research-module-gold-set.json
     MVN-->>WF: surefire-reports: ResearchModuleGoldSetTest = run (skipped=0)
+    Note over WF,MVN: 【设计 §11 已闭环】B01 暴露 ComparisonWorkflowUiTest 既有 FX 缺陷（长 FutureTask 阻塞 FX 线程）→ 主理人第三轮裁定必修、保持真实异步加载覆盖 → B01b(ca8743e) 测试侧两阶段 FX 重构修复，断言 verbatim / src/main/java 零改动。当前 HEAD 单条 verify 全绿 216/0/0/7；三平台 success 属 R2 目标态，不虚报
     WF->>WF: 【新增断言步】test -s target/research-validation/research-module-gold-set.json
     WF->>WF: 【新增断言步】解析 surefire XML 断言 skipped==0
     alt runner.os == Linux
@@ -628,7 +633,8 @@ sequenceDiagram
     LEAD->>LEAD: 与 c79034e-baseline.md 逐平台对照 failure → success
     LEAD->>FS: 落盘到 docs/ci-reports/v0.3.0/{ubuntu,windows,macos}/
     LEAD->>FS: 单列落盘 public-data-validation/（failure_category = external_network）
-    Note over LEAD,FS: 三平台转 success 属 R2 远端实跑目标态，不计入本机 A 类闭环；public-data-validation 外网失败单独归类、不并入代码失败；本机绝不伪造报告
+    LEAD->>FS: 汇总文档写 evidence_chain_footnote（B01→B01b UI 缺陷修复脚注，非失败项，见 §11.2）
+    Note over LEAD,FS: 三平台转 success 属 R2 远端实跑目标态，不计入本机 A 类闭环；public-data-validation 外网失败单独归类、不并入代码失败；B01→B01b 仅作证据链脚注，不进矩阵、不判失败；本机绝不伪造报告
 ```
 
 ### 4.2 时序二：干净 clone → 读冻结 JSON → 重生成 6 组图（R8）
@@ -733,6 +739,8 @@ sequenceDiagram
 
 **具体改动要点（R1 精确到行/参数）**：
 
+> **✅ 处方复核结论（B01 → B01b，已闭环；设计 §11）**：下方 **第 1 点**的单条 `-Pui-tests -Dphytoscope.referenceDataDir=... verify` 处方**保持不变、且现已被实测证明为绿**。B01（`b26dbac`）实跑暴露盲点：`referenceDataDir` 是 5 类共享 K9 开关，连带解禁 `ComparisonWorkflowUiTest` 并暴露既有 FX 线程缺陷（`Errors:1`）。**主理人第三轮裁定「必修 + 保持真实异步加载覆盖」，工程师 B01b（`ca8743e`）在测试侧两阶段 FX 重构修复**（断言 verbatim、`src/main/java/**` 零改动、`validate.yml` 未改），当前 HEAD 全量 `216 / Failures 0 / Errors 0 / Skipped 7`、`BUILD SUCCESS`。**不采纳任何 CI 门控解耦 / re-gating 变通**。B01 本机 A 类闭环成立，三平台 success 仍属 R2 目标态、不虚报。
+
 > **修复基线 = PRD §1.1 的 `c79034e` 逐平台失败清单**。本批只处理其中**三类代码类失败**（ubuntu isoform 路径 / windows+macos `Real case` 位点 / 三平台金标准门控连带），加上 PRD R1 明确要求的 report 缺失守卫。**`public-data-validation` 的外部 PMC/PastDB/ENA 失败属外部网络类，不在本批修复对象内、不并入代码失败口径**（Q13）。本批的「三平台 `validation` 转 success」由 R2 远端实跑出具证据，**不计入本批本机 A 类闭环**。
 
 1. **`validate.yml:49-51` Java 步**：`run: sh mvnw -B -Pui-tests verify` →
@@ -809,7 +817,8 @@ python tools/check_isoform_case.py --reference target/reference-data/data/specie
 java -Xmx3g -jar target/phytoscope-0.3.0.jar --compare --gff3 examples/arabidopsis-atlas/annotation.gff3 --expression examples/arabidopsis-atlas/expression.tsv --loci AT1G67090,AT5G38410,AT5G38420,AT5G38430 --out target/case-study --project target/case-study.phytoscope
 # 5) R7 专用测试（含 ≥1 负例）
 sh mvnw -B -Pui-tests -Dtest=Gff2ParserSupportTest test
-# 6) 全量回归（与基线 211 tests / 0 failures 兼容，Skipped 应下降）
+# 6) 全量回归（B01b 后为绿：Tests run 216 / Failures 0 / Errors 0 / Skipped 7，BUILD SUCCESS，见 §11.2）
+#    金标准 ResearchModuleGoldSetTest 非 skipped；ComparisonWorkflowUiTest 经 B01b 测试侧修复后通过
 sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test
 ```
 
@@ -1030,7 +1039,7 @@ grep -rn "0.3.0\|bundle" docs/fcs-v0.3.0-release-notes.md docs/desktop-distribut
 | Biopython | 1.88 | Figure S1(b) **既有实机基线**的冻结来源 | ✅ 已装；**本次不重跑计时、不新测** |
 | bedtools | 2.31.1（CI apt） | R1 启动子 8/8 独立比对 | ❌ 本机不在 PATH；**仅 GitHub Actions ubuntu runner**（`sudo apt-get install bedtools`）；本机 B01 只验证守卫报错，不实跑比对 |
 | BLASTP / ncbi-blast+ | CI 2.12.0+ / 本机 2.17.0+ | R1 同源 20/20 独立比对 | ⚠️ 本机 `blastp` 2.17.0+ 可用，但 gold-set JSON 须先由 Java 产出；CI 该步仅 Linux；本机不做版本一致性主张 |
-| Git / `git archive` | 既有 | Zenodo 上传包、收尾核对 | ✅；远端**写权限未验证**（API 200 ≠ 可 push） |
+| Git / `git archive` | 既有 | Zenodo 上传包、收尾核对 | ✅；两远端 `git ls-remote` 可达、**推送凭证已实测可用**（收尾 git push 属 A 类，主理人 M01 执行，见 §3.5 / §9）；Release 资产上传为另一动作 M02 |
 | GitHub Actions | 既有 `validate.yml` | R2 三平台 CI | ❌ 本机不可替代；远端触发 + 主理人 API 回收 |
 | JBrowse2 / IGV / TBtools | 未装 / GUI | R6 定性对照 | ❌ JBrowse2 未安装；IGV 2.19.3 / TBtools-II 为 GUI 未脚本化 → **固定标注「非本机实测」** |
 | Zenodo / ORCID | 网页端 | R5 两个 DOI | ❌ 需作者账号，本机无法取得 DOI |
@@ -1059,7 +1068,8 @@ grep -rn "0.3.0\|bundle" docs/fcs-v0.3.0-release-notes.md docs/desktop-distribut
 8. **版本与命名**：应用版本 **0.3.0**；`3.2.5` 恒等于 Spring Boot 父 POM（须在 README 显式澄清）；唯一权威安装包 `PhytoScope-Windows-0.3.0.zip`；tag `v0.2.0` 保留不删；`dist/` 两个历史 ZIP 标 historical 但**不删除字节**。`tools/package_desktop.py:21` 的 `--app-version 0.2.0` 是 **jpackage bundle 版本常量（历史遗留）**，不等于应用版本，须在 `docs/fcs-v0.3.0-release-notes.md` 如实标注，且**本次不修改该脚本**；`:43` 原生输出名 `PhytoScope-Windows-AMD64.zip` 不含版本号，0.3.0 命名通过「独立 `--out` + 构建后重命名」实现（`dist/` 在主仓上一级，用 `../dist/`）。
 9. **实测口径**：R10 每个数字标 `current_measured` 或 `historical (v0.2.0 / 8fd01ca)`；RSS 固定 `not measured (Windows lacks Python resource module)`；gffutils/Biopython 冻结数据固定 `measurement_class=historical_measured_not_new` / `not_new_measurement=true`；三工具固定「定性对照（基于公开文档，非本机实测）」。
 10. **日期 / 编码 / 语言**：所有新增日期用 ISO-8601 UTC；所有文件 UTF-8；本设计与交付文档用中文（论文正文按 FCS 要求为英文）；JSON 用 `ensure_ascii=false`、2 空格缩进。
-11. **推送与报告**：收尾推送执行主体固定「主理人」；CI 报告回收执行主体固定「主理人（远端 API）」；工程师只备清单与骨架；`git ls-remote` 一致性、`git status --porcelain` 为空是硬门槛；失败一律标「未推送 / not_collected」。
+11. **推送与报告**：收尾推送执行主体固定「主理人」；CI 报告回收执行主体固定「主理人（远端 API）」；工程师只备清单与骨架；`git ls-remote` 一致性、`git status --porcelain` 为空是硬门槛；失败一律标「未推送 / not_collected」；`push_state` / `release_state` / `zenodo_state` 三字段独立，不得串写。
+12. **`phytoscope.referenceDataDir` 是共享门控，不是 gold-set 专用开关（B01 → B01b，已闭环；设计 §11）**：该属性被 5 个测试类共用（`ResearchModuleGoldSetTest` / `DomainCaseValidationTest` / `ReferenceDatasetIntegrityTest` 纯计算单门控；`MintTranscriptomeUiTest` / `ComparisonWorkflowUiTest` 叠加 `@EnabledIfSystemProperty(phytoscope.ui.tests=true)` 的 UI 双门控，`-Pui-tests` 下三平台都会跑）。**单条 `-Pui-tests -Dphytoscope.referenceDataDir=... verify` 处方不变且现为绿**：B01 暴露的 `ComparisonWorkflowUiTest` 既有 FX 缺陷已由 B01b（`ca8743e`）在测试侧两阶段短 FX 任务修复（断言 verbatim、`src/main/java/**` 零改动、非 skip、保持真实异步加载覆盖）。后续任何改动该属性 / Surefire / CI Java 步的批次，验收须覆盖「5 类全实跑、0 failures、0 errors」；**严禁**把长断言体塞进单个阻塞 FX `FutureTask`、改生产线程模型、用 `@Disabled`/`Assumptions` 或 `continue-on-error` 绕过、或改成 re-gating 变通。该修复历史只作 R2 证据链脚注，不登记为失败、不进矩阵、不虚报 success。
 
 ---
 
@@ -1107,10 +1117,11 @@ graph TD
 | 6 | A6 | 招募 ≥3 名科研人员参与者，按五任务协议执行用户测试并交回记录（裁定 5 已明确列 future work） | R13 | `docs/fcs-user-study-protocol.md`、`docs/fcs-user-study-results.md`（空白） |
 | 7 | A7 | 在 macOS / Linux 真机按手动清单执行「启动→导入→浏览→导出→存/读项目」及原生对话框/DPI/驱动核查，交回记录 | R14 | `docs/fcs-desktop-native-verification-checklist.md`（含空白模板） |
 | 8 | A8 | （可选）在外部机器安装 JBrowse2 / IGV / TBtools 补做实机同任务对照 | R6 | `docs/fcs-tool-comparison-external.md`（空白协议） |
-| 9 | A9 | 提供 gitee / github 与数据双镜像的**写权限凭证**，或自行执行收尾推送（裁定 6：主理人执行；API 200 只证明连通）；Release 附件公开发布同属此权限 | 收尾 / R4 | `docs/fcs-final-push-checklist.md`（11 项核对表） |
+| 9 | A9 | 在网页/API 完成 **v0.3.0 Release 资产上传**（当前仅 `v0.2.0`；由主理人 M02 用本机缓存凭据尝试，成功标「已发布」、权限不足标「待发布」）与 **Zenodo 两个 deposit 发布**（同 A1），并确认收尾推送两远端 commit 一致。**git push 凭证已实测可用、属 A 类（M01），不再是 B 类阻塞** | 收尾 / R4 / R5 | `docs/fcs-final-push-checklist.md`（14 项核对表）、`docs/fcs-v0.3.0-release-notes.md` |
 
 > 另：论文投稿后回填 `{{PAPER_DOI}}`（PRD §5），已含在第 1 项占位符统一回填动作内，不单列。
 > **本设计不请求、不等待上述任一动作的结论即可完成 A 类 7 项闭环与 B/C 类物料齐备。**
+> **B01 实测反馈已闭环（不新增「需主理人裁定」项）**：`referenceDataDir` 共享门控 / `ComparisonWorkflowUiTest` 既有 UI 缺陷，已由**主理人第三轮裁定 + 工程师 B01b（`ca8743e`，当前 HEAD）**修复，见 **§11**。这不是作者动作、不列入上表 9 项。R2 三平台远端实跑与报告回收仍为 A5（第 5 项），三平台 success 属目标态、本机不虚报。
 
 ---
 
@@ -1122,8 +1133,64 @@ graph TD
 | 类图 | `docs/design-fcs-final-delivery-class-diagram.mermaid` | 新建 |
 | 时序图 | `docs/design-fcs-final-delivery-sequence-diagram.mermaid` | 新建 |
 
-**回执口径（对外）**：「已完成增量系统设计与任务分解：5 个批次（B01 CI/测试代码 → B02 绘图 → B03 docs 文档 → B04 数据仓库许可 → B05 构建产物），逐批含独立可下发指令、验收命令与依赖；需作者/主理人执行项 9 项。**本次未修改任何既有文件、未写实现代码、未推送。**」
+**回执口径（对外）**：「已完成增量系统设计与任务分解：5 个批次（B01 CI/测试代码 → B02 绘图 → B03 docs 文档 → B04 数据仓库许可 → B05 构建产物），逐批含独立可下发指令、验收命令与依赖；需作者/主理人执行项 9 项 + 主理人交付动作 M01（git push，A 类）/ M02（Release 资产上传）。**本次未修改任何既有文件、未写实现代码、未推送。**」
+
+> **本轮增量修订（B01 → B01b 实测反馈）**：新增 §11「主理人第三轮裁定 + B01b 落地 + 交付后续批次的设计约定」，并同步 §0.3 / §0.4 / §3.1 / §4.1 / §5 B01 前言与验收 / §7 第 12 条 / §9 尾部注记 / §6 Git 行 / 两张 mermaid 图；顺带清理 §6「推送凭证未验证」与 §9 第 9 项「11 项核对表 / 需提供写凭证」两处旧口径（改为 14 项、git push 属 A 类）。**只改动本人 3 份设计文档，未写实现、未改 PRD、未改 CI、未改测试、未推送**；当前 HEAD `ca8743e` 全量绿，三平台 success 仍属 R2 目标态、不虚报。
 
 ---
 
 > 本设计为增量 PRD 的技术基线，交工程师按 B01 → B05 顺序执行。所有验收数值以 `docs/prd-fcs-final-delivery.md` §1 基线及 R1/R3 定稿后的实际结果为准；若后续作者采纳「替换为 NCBI RefSeq」（当前裁定 2 明确本次不采纳），需整体重跑并修订 SHA-256、金标准基线与论文数字。
+
+---
+
+## 11. 增量修订记录 · B01 实测反馈、主理人第三轮裁定与 B01b 落地（**已闭环**）
+
+> **权威状态**：本节记录一处设计盲点的「发现 → 裁定 → 修复」全链路，供 B03–B05 与 R2 下发时引用。B01（`b26dbac`）上报的 `ComparisonWorkflowUiTest` 确定性失败，已由**主理人第三轮裁定**定调、由工程师 **B01b（`ca8743e`，当前 HEAD）** 修复，并留痕于 `docs/fcs-ci-goldset-fix-report.md` §2.2 / §2.8 / §4。本节**不推翻既有批次设计、不改写 `.github/workflows/validate.yml`、不改 PRD、不改 `src/main/java/**`**；只固化「共享门控事实 + 已授权的白名单边界 + 后续批次须遵守的约定」。**本机全量已绿；三平台 `validation` 转 success 仍属 R2 远端目标态，不得虚报**（PRD §8 第 1 / 5 条）。
+
+### 11.1 发现：一处真实的设计盲点（保留为可复用事实）
+
+- **现象**：`validate.yml` Java 步传入 `-Dphytoscope.referenceDataDir=target/reference-data` 后，全量 `skipped 12 → 7`，**5 个门控类**由 skip 转实跑：`ResearchModuleGoldSetTest`、`DomainCaseValidationTest`、`ReferenceDatasetIntegrityTest`（纯计算）、`MintTranscriptomeUiTest`、`ComparisonWorkflowUiTest`（UI 工作流）。我原设计 §0.1 事实 1 与 §5 B01 #1 只预判到前 2 个，**低估了该属性的连带激活范围**。
+- **确定性失败**：`ComparisonWorkflowUiTest.realAtlasComparisonProjectRoundTripAndVectorRasterExports` 的 promoter 断言为 false，本机单跑两次 `exit=1`，与显示器 / bedtools 无关。
+- **根因**（工程师定位）：`MainView.loadGenomeFasta()` 经 `LoadingOperation.run()` 后台加载 36 MB FASTA，再以 `Platform.runLater` 提交 `sequenceService.replaceWith(next)`；原测试把整段断言放进单个 `FutureTask` 并在 FX 线程 `task.get(240s)` 阻塞 → commit 回调永远排不上 → `isLoaded()==false` → promoter 提前返回。属**数据外迁后长期被门控遮蔽的既有 UI 工作流缺陷，非 R1 修复引入**。
+- **门控结构**（复核 `src/test/java/**` 与 `pom.xml:125` 确认）：
+
+| 测试类 | 类型 | 门控 | 是否需 `-Pui-tests` |
+|---|---|---|---|
+| `ResearchModuleGoldSetTest` / `DomainCaseValidationTest` / `ReferenceDatasetIntegrityTest` | 纯计算 | 仅 `Assumptions.assumeTrue(referenceDataDir)` | 否 |
+| `MintTranscriptomeUiTest` / `ComparisonWorkflowUiTest` | UI 工作流 | `@EnabledIfSystemProperty(phytoscope.ui.tests=true)` **且** `assumeTrue(referenceDataDir)` | **是** |
+
+> **可复用事实**：`phytoscope.referenceDataDir` 是**共享 K9 opt-in 开关，不是 gold-set 专用开关**；`-Pui-tests` 另设 `phytoscope.ui.tests=true`。两重条件齐备时历史 atlas 端到端 UI 工作流也会实跑。后续任何改动该属性或 CI 门控的批次，必须按「5 类全部实跑且全绿」验收，不得只验金标准。
+
+### 11.2 裁定与落地（权威状态，不再开放讨论）
+
+| 项 | 结论 |
+|---|---|
+| **主理人第三轮裁定** | **否决** ①重新门控 / 拆独立系统属性使其 skip ②记为已知失败 ③把生产加载路径改为同步；**要求「必修 + 保持真实异步加载覆盖」**（见 `fcs-ci-goldset-fix-report.md` §2.2 / §4） |
+| **B01b 落地（`ca8743e`，当前 HEAD）** | 测试侧**两阶段 FX 重构**：单个长 `FutureTask` 拆为「setup 短任务 + 断言短任务」，测试线程有界等待 `getPendingLoad()` / `getSequenceService().isLoaded()`，令 FX 事件队列空闲以执行 `LoadingOperation` 的 `Platform.runLater` commit 回调；fixture 改用 `MainView.loadExpression(...)` 刷新 detail pane（修第二处隐性失败 `Expression (TPM)` caption） |
+| **硬边界（全部满足）** | **断言一条未删、未弱化、未改期望值**；未用 `@Disabled` / `Assumptions` 绕过；未改生产异步加载为同步；**`src/main/java/**` 零改动**（复用既有 `getPendingLoad()` / `getSequenceService()` 只读 hook）；**`.github/workflows/validate.yml` 未改** |
+| **CI 处方** | §5 B01 #1 的单条 `sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data verify` **维持不变且现为绿**；5 个归档门控类全部实跑通过。**不采纳任何 CI 门控解耦 / 专步带参 / 不带参 `verify` 的变通**（会削弱「真实异步加载覆盖」，与裁定相悖） |
+| **B01b-2 顺带修复** | 跨平台换行不确定性：`check_isoform_case.py` 把 `candidates.json` 由字节比较改为 JSON 语义比较 + `canonical_text()` LF 归一；`screen_domain_isoforms.py` 3 个文本输出固定 `newline='\n'`；`candidates.tsv` 逐字节比较与 `input_sha256` 校验不变；**未改任何业务算法 / 候选筛选 / TSV 写入逻辑**。本机 `ISOFORM_EXIT=0` |
+| **实测（`fcs-ci-goldset-fix-report.md` §2.2 / §2.8）** | `sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test` → `Tests run: 216, Failures: 0, Errors: 0, Skipped: 7`，`BUILD SUCCESS`；`ResearchModuleGoldSetTest` 与 `ComparisonWorkflowUiTest` 均 `1/0/0/0`；gold-set JSON 52,392 B 生成；全量 `Skipped=7 ≤ 基线 12`，满足 PRD §8 第 1 条 |
+
+**归类（禁止虚报）**：B01 阶段暴露的是「门控解禁后暴露的既有 UI 工作流缺陷（代码类、非 R1 引入、非外部网络）」，B01b 已在当前 HEAD **修复**。因此它：
+- **不并入** §1.1 的 `c79034e` 逐平台失败基线（不同 commit）；
+- **不并入** `public-data-validation` 外部网络类（唯一仍单列的外部项）；
+- **不是 R2 报告中的失败项**，不得登记为失败、不得写入 failure→success 矩阵、不得据此判定代码失败；
+- 仅作为**证据链脚注**在 `fcs-ci-goldset-fix-report.md` / `docs/fcs-phase2-verification-report.md` 如实记录「B01 暴露 → B01b 测试侧修复（非 skip、非改生产码、断言 verbatim）」。
+
+### 11.3 设计约定（交付 B03–B05 / R2 的核心产物，**即工程师所请求的「一条约定」**）
+
+1. **共享门控约定**：`phytoscope.referenceDataDir` 与 `phytoscope.ui.tests` 是两套正交开关，前者一次激活 5 个门控类。任何批次改动 `validate.yml` Java 步、Surefire 配置或该属性的传参方式，验收必须覆盖「5 类全实跑、0 failures、0 errors」；`@EnabledIfSystemProperty(ui.tests)` 的 UI 工作流测试在三平台 `-Pui-tests` 下同样会跑，不得假设只在 Windows 跑。
+2. **CI 处方冻结**：R1 的 CI 落地形态 = 单条 `-Pui-tests -Dphytoscope.referenceDataDir=target/reference-data verify`，**不得**改为「金标准专步带参 + 全量 `verify` 不带参」或任何 re-gating；PRD §1.1 / §3 R1 / §8 的字面口径**无需微调**。
+3. **白名单边界（主理人已授权）**：主理人第三轮裁定**已授权**在 `src/test/java/**/ComparisonWorkflowUiTest.java` 做测试侧修复，这是对 §0.4 白名单③（原仅授权新建 GFF2 fixture / `Gff2ParserSupportTest.java`）的**一次性、定向扩大**。硬边界不变：**`src/main/java/**` 零改动、断言 verbatim、禁用 `@Disabled` / `Assumptions` 绕过、保持真实异步加载覆盖**。其他既有测试类不在此授权内。
+4. **修复范式约定**：JavaFX 后台加载类 UI 测试必须遵循项目既有范式（`BackgroundLoadingUiTest.fx(Callable)` 短 FX 任务、测试线程等待），**不得把长断言体塞进单个阻塞 FX `FutureTask`**；修复走「测试侧编排」而非「改生产线程模型」或「跳过测试」。
+5. **R2 报告约定**：`c79034e` 仍是唯一对照基线；`public-data-validation` 仍是唯一外部网络单列项；汇总文档的 `skipped_before=12 → skipped_after=7`、`goldset_executed=true`、`python_consumers` 按真实回收填写；三平台 failure→success 由远端实跑出具，**本机不生成 / 不伪造** surefire-reports 与三个 JSON。B01→B01b 的修复历史只作脚注，不进矩阵。
+6. **后续批次无感**：B03–B05 的文件区与 `validate.yml` / `src/test/**` 无写冲突；B01b 未改动任何 B03–B05 独占文件，三批按 §5 原计划下发即可。
+
+### 11.4 修订索引（本章节替代本轮早前所有「待裁定 / 方案 A」注记）
+
+- 本轮曾短暂写入的「§11 待裁定 / 推荐方案 A（CI 门控解耦）/ `known_gated_ui_defects` 失败字段 / §4.1 与时序图的两段式 `verify` / §5 B01 前言与验收 #6 的 `Errors:1` 提示 / §9 第 10 项待裁定」**全部作废**，以 §11.2–11.3 为准。
+- §0.3、§0.4、§3.1、§4.1、§5 B01、§7、§9、§10 及两张 mermaid 图同步改为「已闭环 + 共享门控事实 + 已授权白名单边界」口径；**§5 B01 #1 正文处方一字不改**（现为绿）。
+- **类图收尾（本轮补齐）**：`docs/design-fcs-final-delivery-class-diagram.mermaid` 曾残留 `GatedUiDefect` 契约类、`PlatformReport.known_gated_ui_defects` 字段、两者关系线及「方案 A / 待主理人裁定」注释——现已全部清除；`CiReportBundle` 增 `evidence_chain_footnote`（与 §3.1 字段契约同名同型同初值），并新增 `ComparisonWorkflowUiTest` 契约节点 + `ValidateWorkflow ..>` 关系，体现「5 类共享门控 + B01b 测试侧修复」。至此 3 份设计文件与 `ca8743e` 无相互矛盾。
+- **B03 骨架字段对齐（跨成员约定，不改其独占文件）**：`docs/ci-reports/v0.3.0/README.md` 汇总字段表原用旧名 `known_gated_ui_defects: []`，须按 §3.1 改为 `evidence_chain_footnote: ""`（string，非失败项、不预填失败叙事），并删除「§11 为待裁定提案」的过时注记；该文件由 B03 独占，本设计只给出字段契约、不代改。已通过 SendMessage 告知工程师。
+- `docs/fcs-ci-goldset-fix-report.md` 由 B01/B01b 独占维护，本节只引用、不改写。

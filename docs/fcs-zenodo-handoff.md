@@ -44,16 +44,42 @@
 
 ---
 
-## 3. 上传文件清单（B05 产出，本批不生成）
+## 3. 上传文件清单（B05 产出，本机只生成包、不上传）
 
-| 文件 | 说明 | 产出批次 |
-|---|---|---|
-| `dist/phytoscope-v0.3.0-source.zip` | `git archive --format=zip --output ../dist/... v0.3.0` | B05 |
-| `dist/PhytoScope-Windows-0.3.0.zip` | 唯一权威 Windows 安装包命名（B05 生成） | B05 |
-| `dist/phytoscope-reference-data-v0.3.0.zip` | 数据仓库归档（含 MANIFEST / SHA256SUMS / LICENSES / scripts） | B05 |
-| `desktop_program/SHA256SUMS.txt` | 主仓内 0.3.0 包校验和（M02 上传资产之一） | B05 |
+> **B05 增量补注**：下方 §1 的 5 个占位符**仍全部保持未回填**、DOI 未取得；
+> 本节只登记 B05 已产出的归档包与**归档源 SHA**（team-lead 第三轮续作指令）。
+> **上传与发布仍标 B 类待作者执行**。
 
-> 本批（B03）**不生成任何 ZIP / 上传包**、不触碰 `dist/`、不触碰 `desktop_program/SHA256SUMS.txt`。
+| 文件（`../dist/`，工作区根、主仓上一级） | 大小（B） | 归档源 | 产出批次 |
+|---|---|---|---|
+| `phytoscope-v0.3.0-source.zip` | 11,589,747 | **`git archive HEAD`**（B05 最终 commit SHA，见 §3.1） | B05 |
+| `PhytoScope-Windows-0.3.0.zip` | 46,185,790 | 本机构建（jpackage）+ 重命名 | B05 |
+| `phytoscope-reference-data-v0.3.0.zip` | 64,329,519 | 数据仓库 **B04 定稿后实际 HEAD** | B05 |
+| `desktop_program/SHA256SUMS.txt`（主仓内） | — | 0.3.0 包校验和（M02 上传资产之一） | B05 |
+
+### 3.1 归档源 SHA（记录；`v0.3.0` tag 不用）
+
+- **Deposit A（软件源码）**：用 **`git archive HEAD`（或最终 commit SHA）** 生成，
+  **禁止** `git archive v0.3.0` —— 该 annotated tag 指向 `edae8433`（tag 对象）、
+  落后当前 HEAD 多个提交且**无 Release 附件关联**，会漏掉本次全部改动。
+  `v0.3.0` tag 由**主理人**在推送阶段前移到最终提交并同步两远端，工程师**不动 tag**。
+  - Deposit A 归档 SHA（B05 commit 前的 HEAD，首次生成时）：`7eead0e032edbbe4b370c827733794d9e47ac94a`。
+  - **B05 commit 后需用最终 HEAD 重新生成一次**（使包内含 B05 的 release-notes /
+    performance / desktop / 本 handoff 等文档）；最终 SHA 记入 B05 回执与
+    `docs/fcs-final-push-checklist.md` 第 2/11 项，由主理人 push 前核对。
+- **Deposit B（参考数据）**：用 `git -C ../phytoscope-reference-data rev-parse HEAD`
+  取 **B04 定稿后实际 HEAD = `249e771a09b28312f46df0f1a02eb7d34f14897f`**，
+  使包内 `LICENSES.md` / `MANIFEST.json` 含最终三选一许可结论（与 Zenodo dataset
+  license 字段如实一致）。**不用**基线 `2c6608b`（不含 B04 定稿）。
+
+### 3.2 `unzip -l` 内容留痕（B05 实跑）
+
+- Deposit A：含 `README.md`、`CITATION.cff`、`pom.xml`、`docs/**`、`src/**`、`tools/**`、
+  `benchmarks/**`；`unzip -t` → `DEP_A_ZIP_OK`。
+- Deposit B：含 `MANIFEST.json`、`SHA256SUMS.txt`、`LICENSES.md`、`scripts/**`（10 个脚本）；
+  且 `LICENSES.md` 内含「B04 三选一结论定稿表」§0、`MANIFEST.json` 含 `license_decision`
+  字段；`unzip -t` → `DEP_B_ZIP_OK`。
+- 两包 `unzip -t` 完整性校验均通过；**本机未上传、未创建 deposit、未取得 DOI**。
 
 ---
 

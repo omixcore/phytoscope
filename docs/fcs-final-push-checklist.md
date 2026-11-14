@@ -39,7 +39,7 @@
 | 9 | 本地测试 | `sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data test` | 绿、`ResearchModuleGoldSetTest` 非 skip、Skipped 总数由 12 下降（B01b 本机实测 `216 / 0 / 0 / 7`） | ☐ 待主理人核对 |
 | 10 | **git push（M01，A 类）** | 推送代码/文档 → `origin` + `github`；数据 → 双镜像 | **凭证已实测可用，按 A 类本机执行**；成功记 `push_state = pushed`；**失败如实标注「未推送」，不得称已推送** | ☐ **未推送** |
 | 11 | **两端 commit 对照** | `git rev-parse HEAD` 与两远端 `git ls-remote ... HEAD` 三方比对 | 记录三方实际 SHA 于本清单；**一致才算推送闭环** | ☐ 待主理人填写 |
-| 12 | **Release 前置产物（B05 工程师产出）** | `ls -l ../dist/PhytoScope-Windows-0.3.0.zip` + `sha256sum -c desktop_program/SHA256SUMS.txt` | 两个文件必须存在且校验 OK，**M02 才能启动**；不得由主理人代建。**B05 暂未下发，本批不生成 ZIP** | ☐ **B05 待产出** |
+| 12 | **Release 前置产物（B05 工程师产出）** | `ls -l ../dist/PhytoScope-Windows-0.3.0.zip` + `sha256sum -c desktop_program/SHA256SUMS.txt` | 两个文件必须存在且校验 OK，**M02 才能启动**；不得由主理人代建。**B05 已产出**：`PhytoScope-Windows-0.3.0.zip` 46,185,790 B / SHA `8f7953eb...`，`sha256sum -c` **3/3 OK**；`docs/fcs-v0.3.0-release-notes.md` 已记录 smoke 与 bundle 版本常量说明 | ☑ **B05 已产出（待主理人核对）** |
 | 13 | **Release 资产上传（M02，主理人）** | 推送后用**本机缓存凭据**走 GitHub Release API 尝试：补建 `v0.3.0` Release，上传 #12 两个资产 | **成功**才记 `release_state = published` + Release URL/时间；**权限不足/失败**记 `release_state = pending_release（待发布）` + 如实原因；**未执行前一律 `pending_release`，不得称已发布 v0.3.0** | ☐ **pending_release** |
 | 14 | 执行主体 | 固定字段 | M01/M02 均为**主理人齐活林**；工程师只备清单与前置产物；Zenodo deposit 仍属作者 A1 | 固定 |
 
@@ -59,12 +59,23 @@
 ## 2. 依赖与前置（如实）
 
 - 第 12 项的两个前置产物（`dist/PhytoScope-Windows-0.3.0.zip`、`desktop_program/SHA256SUMS.txt`）
-  由 **B05** 产出；**B05 暂未下发**，故第 12/13 项目前**不可执行**，状态如实为
-  「B05 待产出」/「pending_release」。
-- 第 9 项本地测试的本机绿跑证据在 `docs/fcs-ci-goldset-fix-report.md`；**三平台 CI 报告回收**
-  属 **R2 远端实跑的目标态，不计入本机 A 类闭环**（见 `docs/ci-reports/v0.3.0/README.md`）。
+  已由 **B05** 产出（本批），`sha256sum -c desktop_program/SHA256SUMS.txt` **3/3 OK**；
+  `desktop_program/SHA256SUMS.txt` 头部已改 0.3.0 口径，历史两 ZIP 字节不动。
+  **第 13 项（M02 Release 上传）仍不可由工程师执行**，`release_state` 保持
+  `pending_release`。第 12 项状态为「B05 已产出（待主理人核对）」，不等于 M02 已启动。
+- **B05 归档源 SHA（team-lead 续作指令要求登记）**：
+  - Deposit A（软件源码）：`git archive HEAD`，**不用** `v0.3.0` tag（指向 `edae8433`、
+    落后多提交、无 Release 附件）。B05 commit 前的 HEAD = `7eead0e032edbbe4b370c827733794d9e47ac94a`；
+    **B05 commit 后须用最终 HEAD 重新生成**并把最终 SHA 填入第 2/11 项（由主理人 push 前核对）。
+  - Deposit B（参考数据）：数据仓库 **B04 定稿后实际 HEAD =
+    `249e771a09b28312f46df0f1a02eb7d34f14897f`**，包内含最终 `LICENSES.md` / `MANIFEST.json`。
+  - 两包 `unzip -l` / `unzip -t` 留痕见 `docs/fcs-zenodo-handoff.md` §3.2 与
+    `docs/fcs-v0.3.0-release-notes.md` §4。**上传与发布仍属 B 类待作者执行**。
+- 第 9 项本地测试的本机绿跑证据在 `docs/fcs-ci-goldset-fix-report.md` 与 B05 全量复跑；
+  **三平台 CI 报告回收**属 **R2 远端实跑的目标态，不计入本机 A 类闭环**
+  （见 `docs/ci-reports/v0.3.0/README.md`）。
 - Zenodo 两个 deposit 发布与 DOI 回填属作者 A1（B 类），见 `docs/fcs-zenodo-handoff.md`；
-  **DOI 未取得**。
+  **DOI 未取得**。`zenodo_state = not_published`。
 
 ---
 

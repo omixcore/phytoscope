@@ -30,5 +30,15 @@
     "G1 Old Gen" : 899018608,
     "G1 Survivor Space" : 44040192,
     "G1 Eden Space" : 390070272
+  },
+  "_fcs_v0_3_0_pointer" : {
+    "note" : "B05 增量追加；上方所有字段为 2026-10-30 v0.2.0 / 8fd01ca 历史实测，一字未改、未重测、不得冒充当前版本实测。",
+    "measurement_class_of_fields_above" : "historical (v0.2.0 / 8fd01ca)",
+    "current_measured_report" : "docs/fcs-performance-benchmark.md",
+    "current_measured_results" : "benchmarks/results/2026-11-14-v0.3.0/",
+    "current_measured_summary" : "benchmarks/results/2026-11-14-v0.3.0/summary.json",
+    "current_input" : "KB-scale rice example (24 genes / 347 features / 12 sequences), NOT the archived 94883-gene horsemint annotation",
+    "rss" : "not measured (Windows lacks Python resource module; JVM heap pool peak only)",
+    "no_speed_claim" : true
   }
 }

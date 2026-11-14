@@ -11,12 +11,25 @@ Build with JDK 21 on each target OS:
 
 ```bash
 sh mvnw -Pui-tests verify
-python tools/package_desktop.py --jar target/phytoscope-0.2.0.jar
+python tools/package_desktop.py --jar target/phytoscope-0.3.0.jar --out target/desktop-v0.3.0
 ```
 
 The script creates a `jpackage` application image plus an OS/architecture-specific
 archive: `.tar.gz` on Linux/macOS (preserving executable permissions) or `.zip`
 on Windows. Unpack this archive before launching.
+
+> **B05 (0.3.0) authoritative archive name.** The single authoritative Windows
+> release asset is **`../dist/PhytoScope-Windows-0.3.0.zip`** (46,185,790 bytes,
+> SHA-256 `8f7953eba6c04922be9b2faf21b717ff3fe36cc15a5bd1f3393b38da7716bfa6`).
+> `tools/package_desktop.py` still emits `PhytoScope-Windows-AMD64.zip` (raw
+> jpackage output, no version in the name) and keeps a legacy bundle
+> `--app-version 0.2.0` constant; **that is NOT the application version**. This
+> batch does not modify the script — it builds into an isolated `--out` directory
+> and renames the copy. Application version is `pom.xml` 0.3.0 / tag / ZIP name.
+> Two older archives in `../dist/` — `PhytoScope-Windows-AMD64.zip` (113,094,544 B)
+> and `PhytoScope-Windows-0.2.0.zip` (110,405,267 B) — are labelled **`historical`**,
+> retained **byte-for-byte unchanged**, and are NOT the 0.3.0 release asset.
+> See `docs/fcs-v0.3.0-release-notes.md` and `desktop_program/SHA256SUMS.txt`.
 
 ## Packaged application layout
 
