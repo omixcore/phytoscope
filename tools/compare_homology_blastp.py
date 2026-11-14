@@ -20,6 +20,69 @@ def write_fasta(path: Path, records):
                 handle.write(sequence[offset:offset + 60] + "\n")
 
 
+def run_blastp_panel(query_records, subject_records, blastp):
+    """Run BLASTP query-vs-subject and apply the shared acceptance thresholds.
+
+    Returns ``(version, elapsed_seconds, blast_pairs, blast_rows)`` where
+    ``blast_pairs`` is the set of ``(qid, sid)`` pairs that pass the same
+    post-alignment filters used by PhytoScope.
+    """
+    with tempfile.TemporaryDirectory(prefix="phytoscope-family-blastp-") as temporary:
+        temp = Path(temporary)
+        query_fasta = temp / "family-query.fa"
+        subject_fasta = temp / "family-subject.fa"
+        raw_output = temp / "family-blastp.tsv"
+        write_fasta(query_fasta, query_records)
+        write_fasta(subject_fasta, subject_records)
+        version_result = subprocess.run([blastp, "-version"], check=True, capture_output=True, text=True)
+        version = (version_result.stdout or version_result.stderr).splitlines()[0].strip()
+        command = [
+            blastp, "-query", str(query_fasta), "-subject", str(subject_fasta),
+            "-evalue", "1e-5", "-max_hsps", "1",
+            "-outfmt", "6 qseqid sseqid pident length qcovs sstart send slen evalue bitscore",
+            "-out", str(raw_output),
+        ]
+        started = time.perf_counter()
+        subprocess.run(command, check=True, capture_output=True, text=True)
+        elapsed = time.perf_counter() - started
+        blast_pairs = set()
+        blast_rows = []
+        if raw_output.exists():
+            for line in raw_output.read_text(encoding="utf-8").splitlines():
+                fields = line.split("\t")
+                if len(fields) != 10:
+                    raise SystemExit(f"Unexpected BLASTP output row: {line}")
+                qid, sid = fields[0], fields[1]
+                identity = float(fields[2])
+                aligned_length = int(fields[3])
+                query_coverage = float(fields[4])
+                subject_start, subject_end, subject_length = int(fields[5]), int(fields[6]), int(fields[7])
+                subject_coverage = 100.0 * (abs(subject_end - subject_start) + 1) / subject_length
+                evalue = float(fields[8])
+                passes_shared_filter = (
+                    identity >= 30.0
+                    and aligned_length >= 20
+                    and query_coverage >= 50.0
+                    and subject_coverage >= 50.0
+                    and evalue <= 1e-5
+                )
+                if passes_shared_filter:
+                    blast_pairs.add((qid, sid))
+                blast_rows.append({
+                    "query_gene": qid,
+                    "target_gene": sid,
+                    "is_self_hit": qid == sid,
+                    "identity_percent": identity,
+                    "aligned_length": aligned_length,
+                    "query_coverage_percent": query_coverage,
+                    "subject_coverage_percent": subject_coverage,
+                    "evalue": fields[8],
+                    "bit_score": float(fields[9]),
+                    "passes_shared_filter": passes_shared_filter,
+                })
+    return version, elapsed, blast_pairs, blast_rows
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--report", type=Path, required=True,
@@ -262,6 +325,73 @@ def main() -> int:
         "shared_classification_thresholds": result["shared_classification_thresholds"],
         "scope_limit": "Four-species, single-family similarity smoke benchmark; no one-to-one orthology, proteome-wide accuracy or speed-superiority claim.",
     }
+    # A third, medium-conservation panel (Arabidopsis CYP71A cytochrome P450
+    # enzymes) exercises the same shared filters on a lower pairwise-identity
+    # family, complementing the high-conservation RBCS panels.
+    cyp71a = report.get("cyp71a_family")
+    if not isinstance(cyp71a, dict):
+        raise SystemExit("Missing cyp71a_family section in research-module report")
+    cyp71a_records = cyp71a.get("reference_proteins", [])
+    cyp71a_queries = [record for record in cyp71a_records if record["family"] == "CYP71A"]
+    cyp71a_species = {record.get("species") for record in cyp71a_queries}
+    if len(cyp71a_queries) != 4 or len(cyp71a_species) != 1 or len(cyp71a_records) != 6:
+        raise SystemExit(
+            "Expected 4 CYP71A proteins from one species plus 2 controls; "
+            f"got {len(cyp71a_queries)} CYP71A records, {len(cyp71a_species)} species, {len(cyp71a_records)} total records"
+        )
+    if len({record["gene_id"] for record in cyp71a_records}) != len(cyp71a_records):
+        raise SystemExit("Duplicate gene IDs in the CYP71A protein reference set")
+    cyp71a_positive_pairs = {
+        (q["gene_id"], t["gene_id"])
+        for q in cyp71a_queries for t in cyp71a_records
+        if t["family"] == "CYP71A" and q["gene_id"] != t["gene_id"]
+    }
+    cyp71a_negative_pairs = {
+        (q["gene_id"], t["gene_id"])
+        for q in cyp71a_queries for t in cyp71a_records
+        if t["family"] != "CYP71A"
+    }
+    cyp71a_phyto_pairs = {
+        (hit["query_gene"], hit["target_gene"])
+        for hit in cyp71a["filtered_search"]["hits"]
+        if hit["query_gene"] != hit["target_gene"]
+    }
+    cyp71a_version, cyp71a_elapsed, cyp71a_blast_pairs, cyp71a_blast_rows = run_blastp_panel(
+        cyp71a_queries, cyp71a_records, blastp)
+    cyp71a_missing_blast_positives = sorted(cyp71a_positive_pairs - cyp71a_blast_pairs)
+    cyp71a_blast_negative_hits = sorted(cyp71a_negative_pairs & cyp71a_blast_pairs)
+    cyp71a_missing_phyto_positives = sorted(cyp71a_positive_pairs - cyp71a_phyto_pairs)
+    cyp71a_phyto_negative_hits = sorted(cyp71a_negative_pairs & cyp71a_phyto_pairs)
+    cyp71a_pairwise_agreement = sum(
+        ((pair in cyp71a_blast_pairs) == (pair in cyp71a_phyto_pairs))
+        for pair in cyp71a_positive_pairs | cyp71a_negative_pairs
+    )
+    cyp71a_total_pairs = len(cyp71a_positive_pairs) + len(cyp71a_negative_pairs)
+    result["cyp71a_comparison"] = {
+        "external_tool": "NCBI BLASTP",
+        "version": cyp71a_version,
+        "reference_set": "Four Arabidopsis CYP71A cytochrome P450 proteins (CYP71A12, CYP71A16, CYP71A19, CYP71A21) plus two Arabidopsis unrelated-family controls",
+        "conservation_level": "medium (~50-60% pairwise identity, lower than the ~70-80% high-conservation RBCS family)",
+        "species_count": len(cyp71a_species),
+        "self_pairs_excluded_from_classification": len(cyp71a_queries),
+        "positive_family_pairs_expected": len(cyp71a_positive_pairs),
+        "positive_pairs_reported_by_blastp": len(cyp71a_positive_pairs & cyp71a_blast_pairs),
+        "negative_control_pairs_expected": len(cyp71a_negative_pairs),
+        "negative_pairs_reported_by_blastp": len(cyp71a_blast_negative_hits),
+        "positive_pairs_reported_by_phytoscope": len(cyp71a_positive_pairs & cyp71a_phyto_pairs),
+        "negative_pairs_reported_by_phytoscope": len(cyp71a_phyto_negative_hits),
+        "pairwise_classification_agreement": cyp71a_pairwise_agreement / cyp71a_total_pairs if cyp71a_total_pairs else 1.0,
+        "pairwise_classification_count": cyp71a_total_pairs,
+        "phytoscope_elapsed_ms": cyp71a.get("phytoscope_elapsed_ms"),
+        "blastp_elapsed_seconds": round(cyp71a_elapsed, 6),
+        "missing_blastp_positive_pairs": cyp71a_missing_blast_positives,
+        "blastp_negative_control_hits": cyp71a_blast_negative_hits,
+        "missing_phytoscope_positive_pairs": cyp71a_missing_phyto_positives,
+        "phytoscope_negative_control_hits": cyp71a_phyto_negative_hits,
+        "blastp_records": cyp71a_blast_rows,
+        "shared_classification_thresholds": result["shared_classification_thresholds"],
+        "scope_limit": "Single-species, medium-conservation family similarity benchmark; no orthology or proteome-wide accuracy claim.",
+    }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({
@@ -276,12 +406,21 @@ def main() -> int:
             "positive_pairs_reported_by_phytoscope", "negative_pairs_reported_by_phytoscope",
             "pairwise_classification_agreement", "pairwise_classification_count",
             "phytoscope_elapsed_ms", "blastp_elapsed_seconds")},
+        "cyp71a_comparison": {k: result["cyp71a_comparison"][k] for k in (
+            "conservation_level", "species_count", "positive_family_pairs_expected",
+            "positive_pairs_reported_by_blastp", "negative_control_pairs_expected",
+            "negative_pairs_reported_by_blastp", "positive_pairs_reported_by_phytoscope",
+            "negative_pairs_reported_by_phytoscope", "pairwise_classification_agreement",
+            "pairwise_classification_count", "phytoscope_elapsed_ms", "blastp_elapsed_seconds")},
     }, indent=2))
     cross_result = result["cross_species_comparison"]
     if (missing_blast_positives or blast_negative_hits or missing_phyto_positives or phyto_negative_hits
             or cross_missing_blast_positives or cross_blast_negative_hits
             or cross_missing_phyto_positives or cross_phyto_negative_hits
-            or cross_pairwise_agreement != cross_total_pairs):
+            or cross_pairwise_agreement != cross_total_pairs
+            or cyp71a_missing_blast_positives or cyp71a_blast_negative_hits
+            or cyp71a_missing_phyto_positives or cyp71a_phyto_negative_hits
+            or cyp71a_pairwise_agreement != cyp71a_total_pairs):
         print(json.dumps({
             "same_species": {
                 "missing_blastp_positive_pairs": missing_blast_positives,
@@ -295,6 +434,13 @@ def main() -> int:
                 "missing_phytoscope_positive_pairs": cross_missing_phyto_positives,
                 "phytoscope_negative_control_hits": cross_phyto_negative_hits,
                 "pairwise_classification_agreement": cross_pairwise_agreement / cross_total_pairs if cross_total_pairs else 1.0,
+            },
+            "cyp71a": {
+                "missing_blastp_positive_pairs": cyp71a_missing_blast_positives,
+                "blastp_negative_control_hits": cyp71a_blast_negative_hits,
+                "missing_phytoscope_positive_pairs": cyp71a_missing_phyto_positives,
+                "phytoscope_negative_control_hits": cyp71a_phyto_negative_hits,
+                "pairwise_classification_agreement": cyp71a_pairwise_agreement / cyp71a_total_pairs if cyp71a_total_pairs else 1.0,
             },
         }, indent=2))
         return 1

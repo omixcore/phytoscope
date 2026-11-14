@@ -3,6 +3,13 @@
 
 This deliberately uses only source feature coordinates and reference FASTA slices;
 it does not call PhytoScope or its parser. Run after the public-data fetch scripts.
+
+In addition to the genomic-span / transcript / CDS hashes, each coding transcript
+row now freezes the translated protein (terminal stop codon excluded), the protein
+length in amino acids, and the inferred 5'/3' UTR hashes. UTR inference mirrors
+PhytoScope's GeneSequenceService: when an annotation has exons and CDS but no
+explicit UTR rows, terminal exonic bases outside the CDS boundaries are labelled
+inferred. Protein translation uses the standard nuclear genetic code.
 """
 import argparse
 import csv
@@ -17,7 +24,16 @@ CASES = [
 ]
 HEADER = ["species", "annotation", "sequence", "gene_id", "transcript_id", "start", "end",
           "strand", "exon_count", "cds_segments", "cds_length", "span_sha256",
-          "transcript_sha256", "cds_sha256"]
+          "transcript_sha256", "cds_sha256", "protein_sha256", "protein_aa",
+          "five_prime_utr_sha256", "three_prime_utr_sha256"]
+
+CODONS = (
+    "TTT TTC TTA TTG TCT TCC TCA TCG TAT TAC TAA TAG TGT TGC TGA TGG "
+    "CTT CTC CTA CTG CCT CCC CCA CCG CAT CAC CAA CAG CGT CGC CGA CGG "
+    "ATT ATC ATA ATG ACT ACC ACA ACG AAT AAC AAA AAG AGT AGC AGA AGG "
+    "GTT GTC GTA GTG GCT GCC GCA GCG GAT GAC GAA GAG GGT GGC GGA GGG")
+AMINO_ACIDS = "FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG"
+CODON_TABLE = dict(zip(CODONS.split(), AMINO_ACIDS))
 
 
 def attrs(text):
@@ -32,6 +48,14 @@ def rc(text):
     return text.translate(str.maketrans("ACGTN", "TGCAN"))[::-1]
 
 
+def translate(cds):
+    """Translate a CDS with the standard nuclear code; exclude a terminal stop."""
+    protein = "".join(CODON_TABLE.get(cds[i:i + 3], "X") for i in range(0, len(cds) - 2, 3))
+    if protein.endswith("*"):
+        protein = protein[:-1]
+    return protein
+
+
 def read_records(annotation, sequence):
     records = []
     with gzip.open(annotation, "rt", encoding="utf-8") as source:
@@ -44,6 +68,24 @@ def read_records(annotation, sequence):
             records.append({"type": fields[2].lower(), "start": int(fields[3]),
                             "end": int(fields[4]), "strand": fields[6], "attrs": attrs(fields[8])})
     return records
+
+
+def infer_utr_segments(exons, cds, strand, five_prime):
+    """Mirror GeneSequenceService.inferTerminalUtr: exonic bases outside the CDS."""
+    min_cds = min(feature["start"] for feature in cds)
+    max_cds = max(feature["end"] for feature in cds)
+    segments = []
+    for exon in exons:
+        high_side = (strand == "-") == five_prime
+        if high_side:
+            start = max(exon["start"], max_cds + 1)
+            end = exon["end"]
+        else:
+            start = exon["start"]
+            end = min(exon["end"], min_cds - 1)
+        if end >= start:
+            segments.append({"start": start, "end": end})
+    return segments
 
 
 def build(data_root, additional_root):
@@ -86,13 +128,20 @@ def build(data_root, additional_root):
                 span = genome[gene["start"] - 1:gene["end"]]
                 if strand == "-":
                     span = rc(span)
+
                 def join(features):
                     sequence_text = "".join(genome[f["start"] - 1:f["end"]] for f in features)
                     return rc(sequence_text) if strand == "-" else sequence_text
+
                 transcript, coding = join(exons), join(cds)
+                protein = translate(coding)
+                five_prime = join(infer_utr_segments(exons, cds, strand, True))
+                three_prime = join(infer_utr_segments(exons, cds, strand, False))
                 rows.append([species, annotation_name, sequence, gene_id, tx_id,
                              gene["start"], gene["end"], strand, len(exons), len(cds), len(coding),
-                             digest(span), digest(transcript), digest(coding)])
+                             digest(span), digest(transcript), digest(coding),
+                             digest(protein), len(protein),
+                             digest(five_prime), digest(three_prime)])
     return rows
 
 

@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,12 +33,14 @@ class AdditionalNonModelReferenceTest {
 
     @Test void importsAndQueriesAndrographisPaniculataRefSeq() throws Exception {
         validate("GCF_009805555.1_ASM980555v1_genomic.gff.gz", 27_712,
-                "LOC127243311", "NW_026137634.1", 2_929_092, 2_934_822, null, 11);
+                "andrographis-paniculata", "LOC127243311", "rna-XM_051263269.1", "XP_051119226.1",
+                "NW_026137634.1", 2_929_092, 2_934_822, null, 11);
     }
 
     @Test void importsAndQueriesHibiscusSyriacusRefSeq() throws Exception {
         validate("GCF_006381635.1_ASM638163v2_genomic.gff.gz", 106_303,
-                "LOC120212642", "NW_024062564.1", 758_339, 760_358, '-', -1);
+                "hibiscus-syriacus", "LOC120212642", "rna-XM_039210874.1", "XP_039066805.1",
+                "NW_024062564.1", 758_339, 760_358, '-', -1);
     }
 
     @Test void acceptsUserSuppliedExpressionMatrixWithExactRefSeqGeneIds() throws Exception {
@@ -63,7 +66,8 @@ class AdditionalNonModelReferenceTest {
         assertEquals(0.0, expression.getProfile("gene-LOC127243311").getTpm("Leaf_probe"));
     }
 
-    private static void validate(String file, int expectedGenes, String targetId,
+    private static void validate(String file, int expectedGenes, String speciesKey,
+                                  String targetId, String transcriptId, String xpId,
                                   String targetSequence, int start, int end,
                                   Character strand, int expectedExons) throws Exception {
         Path source = DATA.resolve(file);
@@ -120,6 +124,7 @@ class AdditionalNonModelReferenceTest {
         }
         assertIndependentSequenceProducts(source, targetSequence, gene, sourceGene[0]);
         assertMultiLocusSequenceGold(file, targetSequence, genome);
+        assertFullLocusGold(speciesKey, targetId, transcriptId, xpId, targetSequence, genome);
     }
 
     /** Check frozen, independently reconstructed sequence hashes at five loci on each assembly. */
@@ -150,11 +155,81 @@ class AdditionalNonModelReferenceTest {
                     assertEquals(Integer.parseInt(row[10]), transcript.cdsSequence().length(), row[4] + " CDS length");
                     assertEquals(row[12], sha256(transcript.transcriptSequence()), row[4] + " transcript hash");
                     assertEquals(row[13], sha256(transcript.cdsSequence()), row[4] + " CDS hash");
+                    assertEquals(row[14], sha256(transcript.proteinSequence()), row[4] + " protein hash");
+                    assertEquals(Integer.parseInt(row[15]), transcript.proteinSequence().length(), row[4] + " protein length");
+                    assertEquals(row[16], sha256(transcript.fivePrimeUtrSequence()), row[4] + " 5' UTR hash");
+                    assertEquals(row[17], sha256(transcript.threePrimeUtrSequence()), row[4] + " 3' UTR hash");
                     checked++;
                 }
             }
         }
         assertTrue(checked >= 5, "at least five coding transcripts are covered by frozen sequence gold");
+    }
+
+    /**
+     * Freeze the full per-locus gold for the two additional non-model cases:
+     * genomic span, spliced transcript, CDS, translated protein and both inferred
+     * UTRs, plus a byte-for-byte comparison of the translation against the NCBI
+     * RefSeq protein record.
+     */
+    private static void assertFullLocusGold(String speciesKey, String locusId, String transcriptId,
+                                            String xpId, String sequenceId, GenomeDataService genome)
+            throws Exception {
+        Gene gene = genome.findGene("gene-" + locusId);
+        assertNotNull(gene, "full-gold locus must be searchable: " + locusId);
+        var sequenceService = new GeneSequenceService();
+        sequenceService.loadFromFile(DATA.resolve(sequenceId + ".fna"));
+        var products = sequenceService.extract(gene);
+        Map<String, String> gold = readGold("/non-model/" + speciesKey + "/gold-" + locusId + ".fasta");
+        assertFalse(gold.isEmpty(), "full-gold FASTA must be present for " + locusId);
+        assertEquals(gold.get("genomic_span"), products.genomicSpanSequence(), locusId + " genomic span");
+        var transcript = products.transcripts().stream()
+                .filter(tx -> tx.transcriptId().equals(transcriptId)).findFirst().orElse(null);
+        assertNotNull(transcript, "full-gold transcript must be exported: " + transcriptId);
+        assertEquals(gold.get("transcript"), transcript.transcriptSequence(), locusId + " transcript");
+        assertEquals(gold.get("CDS"), transcript.cdsSequence(), locusId + " CDS");
+        assertEquals(gold.get("protein"), transcript.proteinSequence(), locusId + " translated protein");
+        assertEquals(gold.get("five_prime_UTR_inferred"), transcript.fivePrimeUtrSequence(), locusId + " 5' UTR");
+        assertEquals(gold.get("three_prime_UTR_inferred"), transcript.threePrimeUtrSequence(), locusId + " 3' UTR");
+        assertEquals("inferred from exon/CDS boundaries", transcript.fivePrimeUtrSource(), locusId + " 5' UTR source");
+        assertEquals("inferred from exon/CDS boundaries", transcript.threePrimeUtrSource(), locusId + " 3' UTR source");
+        assertEquals(readProteinFixture("/non-model/" + speciesKey + "/" + xpId + ".faa"),
+                transcript.proteinSequence(),
+                locusId + " translation must match NCBI RefSeq " + xpId + " byte-for-byte");
+    }
+
+    private static Map<String, String> readGold(String resourcePath) throws Exception {
+        Map<String, String> result = new LinkedHashMap<>();
+        try (var raw = AdditionalNonModelReferenceTest.class.getResourceAsStream(resourcePath)) {
+            assertNotNull(raw, "missing gold resource " + resourcePath);
+            try (var reader = new BufferedReader(new InputStreamReader(raw, StandardCharsets.UTF_8))) {
+                String key = null;
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.startsWith(">")) {
+                        key = line.substring(1);
+                        result.put(key, "");
+                    } else if (key != null) {
+                        result.put(key, result.get(key) + line.trim());
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private static String readProteinFixture(String resourcePath) throws Exception {
+        try (var raw = AdditionalNonModelReferenceTest.class.getResourceAsStream(resourcePath)) {
+            assertNotNull(raw, "missing protein fixture " + resourcePath);
+            try (var reader = new BufferedReader(new InputStreamReader(raw, StandardCharsets.UTF_8))) {
+                StringBuilder sequence = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (!line.startsWith(">")) sequence.append(line.trim());
+                }
+                return sequence.toString();
+            }
+        }
     }
 
     private static String sha256(String text) throws Exception {

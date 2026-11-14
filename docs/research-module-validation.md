@@ -34,6 +34,10 @@ benchmark and the existing isoform/domain-coordinate case.
   accessions P10797, Q0INY7, O24574 and P12468, hash-pinned in
   `src/test/resources/research-validation/cross-species-rbcs-mature.faa`; two
   unrelated Arabidopsis controls are extracted from the pinned TAIR10/Araport11 data.
+- Medium-conservation protein family: four Arabidopsis CYP71A cytochrome P450
+  sequences from public UniProt accessions O49340, Q9FH66, Q9T0K0 and Q9STL2,
+  hash-pinned in `src/test/resources/research-validation/arabidopsis-cyp71a.faa`;
+  the same two unrelated Arabidopsis controls provide cross-family negatives.
 
 ## Checks performed
 
@@ -43,6 +47,7 @@ benchmark and the existing isoform/domain-coordinate case.
 | Sequence QC | Test-side GC/base counts, frame, start/stop checks and expected flag reconstruction | Four real RBCS CDS sequences |
 | Protein similarity | Test-side Smith–Waterman matrix/traceback compared against identity, aligned length, query/target coverage and reciprocal-best-hit flag | All positive pairwise alignments among four extracted Arabidopsis RBCS-family proteins plus two unrelated controls |
 | Cross-species protein similarity | PhytoScope family-similarity classifications compared with NCBI BLASTP 2.12.0+ under shared post-alignment thresholds | Four mature RBCS proteins from Arabidopsis, rice, maize and soybean plus two unrelated Arabidopsis controls; family similarity only, not orthology |
+| Medium-conservation protein similarity | PhytoScope family-similarity classifications compared with NCBI BLASTP under the same shared post-alignment thresholds | Four Arabidopsis CYP71A cytochrome P450 proteins plus two unrelated Arabidopsis controls; ~50-60% pairwise identity versus the ~70-80% high-conservation RBCS family; family similarity only, not orthology |
 | Expression grouping | Expected mean/median calculated from source-pinned expression values | AT1G01860 leaf-labelled conditions and AT5G38430 measured-zero conditions |
 | Domain-to-CDS mapping | Existing independent Python reference check and Java real-annotation regression | 16 annotated domain/deletion records in 13 genes, including a multi-exon junction |
 
@@ -69,12 +74,15 @@ restoration, UI and packaging regressions.
 ## Interpretation and limits
 
 These checks compare implementation outputs with reference calculations and
-source-pinned values. The RBCS proteins are members of one paralog-rich family;
-the within-family alignment exercise validates alignment metrics, **not**
-orthology assignments. The added cross-species panel agrees with BLASTP for 12
-non-self RBCS-family pairs and eight unrelated-family controls, but it is still
-a single-family smoke test with taxonomically unbalanced negatives—not a general
-precision/recall estimate. The expression panel has one assay per selected
+source-pinned values. The RBCS proteins are members of one paralog-rich,
+high-conservation family; the within-family alignment exercise validates
+alignment metrics, **not** orthology assignments. The cross-species RBCS panel
+and the medium-conservation CYP71A panel together span two conservation levels
+(high versus medium): both agree with BLASTP for 12 non-self within-family pairs
+and eight unrelated-family controls each. This upgrades the homology check from
+a single-family smoke test to a two-family, cross-conservation-level check, but
+it is still not a general precision/recall estimate, and the negatives remain
+taxonomically unbalanced. The expression panel has one assay per selected
 condition; grouping leaf-labelled conditions is a calculation check, not a
 replicate-based differential-expression analysis. The domain example checks
 coordinates and retained provenance, not an isoform's function. None of these
@@ -93,6 +101,7 @@ passed on Ubuntu, Windows and macOS. The real-data module report recorded:
 | Sequence QC | 4 real RBCS CDS records; lengths 411, 561, 546 and 546 nt; all in frame, zero ambiguous bases, no QC flags |
 | Protein similarity metrics | 4 Arabidopsis RBCS proteins, 16 pairwise hits; identity, alignment length, query/target coverage and reciprocal-best-hit flags matched the test-side reference implementation |
 | Cross-species homology vs BLASTP | 4 species; 12/12 non-self RBCS-family pairs and 8/8 unrelated-family controls classified identically by both methods (20/20 agreement); one observed call took 21.63 ms for PhytoScope and 32.4 ms for BLASTP on the Ubuntu runner—too small and noisy for a speed claim |
+| Medium-conservation homology vs BLASTP | Arabidopsis CYP71A cytochrome P450; 12/12 non-self within-family pairs (pairwise identity ~51-60%) and 8/8 unrelated-family controls classified identically by PhytoScope and BLASTP 2.17.0+ (20/20 agreement, 0 mismatches); PhytoScope took 34.8 ms and BLASTP 0.57 s on this run |
 | Expression grouping | AT1G01860 leaf-labelled conditions: mean = median = 16.0 TPM (n = 3); its low group mean = 2.5 (n = 2); AT5G38430's two measured zero values remain zero (n = 2) |
 | Domain mapping | 16 real domain/deletion records across 13 genes were separately checked against independent Python coordinates |
 

@@ -432,6 +432,73 @@ class ResearchModuleGoldSetTest {
                 "hits", crossSpeciesHitRows));
         crossSpeciesReport.put("interpretation", "Small cross-species RBCS family-similarity benchmark only; the paralog-rich family does not establish one-to-one orthology or proteome-wide accuracy.");
         report.put("cross_species_rbcS_family", crossSpeciesReport);
+
+        // Medium-conservation family benchmark: four pinned Arabidopsis CYP71A
+        // cytochrome P450 enzymes plus the two independently extracted Arabidopsis
+        // negative controls. This complements the high-conservation RBCS panel and
+        // demonstrates the shared filters across a lower pairwise-identity family.
+        List<ProteinHomologyService.Protein> cyp71a = readFamilyProteins(
+                "/research-validation/arabidopsis-cyp71a.faa", 4);
+        assertEquals(Set.of("Arabidopsis thaliana"),
+                cyp71a.stream().map(ProteinHomologyService.Protein::species)
+                        .collect(java.util.stream.Collectors.toSet()));
+        List<ProteinHomologyService.Protein> cyp71aTargets = new ArrayList<>(cyp71a);
+        cyp71aTargets.addAll(negativeControls);
+        long cyp71aStarted = System.nanoTime();
+        List<ProteinHomologyService.Hit> cyp71aHits = homology.compare(
+                cyp71a, cyp71aTargets, 30, 20, 0.5, 0.5);
+        double cyp71aElapsedMs = (System.nanoTime() - cyp71aStarted) / 1_000_000.0;
+        long cyp71aPositiveHits = cyp71aHits.stream().filter(hit ->
+                cyp71a.stream().anyMatch(p -> p.id().equals(hit.targetId()))).count();
+        long cyp71aNegativeHits = cyp71aHits.stream().filter(hit ->
+                negativeFamilies.containsKey(hit.targetId())).count();
+        assertEquals(16, cyp71aPositiveHits,
+                "All 4 x 4 CYP71A family comparisons, including self-pairs, should pass shared filters");
+        assertEquals(0, cyp71aNegativeHits,
+                "Unrelated Arabidopsis controls should not pass the CYP71A filters");
+        List<Map<String, Object>> cyp71aReferenceRows = new ArrayList<>();
+        for (var protein : cyp71a) {
+            cyp71aReferenceRows.add(Map.of(
+                    "gene_id", protein.id(), "species", protein.species(),
+                    "family", "CYP71A", "sequence", protein.sequence()));
+        }
+        for (var protein : negativeControls) {
+            cyp71aReferenceRows.add(Map.of(
+                    "gene_id", protein.id(), "species", protein.species(),
+                    "family", negativeFamilies.get(protein.id()), "sequence", protein.sequence()));
+        }
+        List<Map<String, Object>> cyp71aHitRows = cyp71aHits.stream()
+                .map(hit -> Map.<String, Object>of(
+                        "query_gene", hit.queryId(), "query_species", hit.querySpecies(),
+                        "target_gene", hit.targetId(), "target_species", hit.targetSpecies(),
+                        "identity_percent", hit.identity(), "aligned_length", hit.alignedLength(),
+                        "query_coverage", hit.queryCoverage(), "target_coverage", hit.targetCoverage()))
+                .toList();
+        Map<String, Object> cyp71aReport = new LinkedHashMap<>();
+        cyp71aReport.put("reference_set",
+                "Four Arabidopsis CYP71A cytochrome P450 proteins (CYP71A12, CYP71A16, CYP71A19, CYP71A21); two Arabidopsis unrelated-family controls");
+        cyp71aReport.put("conservation_level",
+                "medium (~50-60% pairwise identity, lower than the ~70-80% high-conservation RBCS family)");
+        cyp71aReport.put("positive_protein_count", cyp71a.size());
+        cyp71aReport.put("negative_control_protein_count", negativeControls.size());
+        cyp71aReport.put("phytoscope_elapsed_ms", cyp71aElapsedMs);
+        cyp71aReport.put("thresholds", Map.of(
+                "minimum_identity_percent", 30,
+                "minimum_aligned_length_aa", 20,
+                "minimum_query_coverage_fraction", 0.5,
+                "minimum_target_coverage_fraction", 0.5));
+        cyp71aReport.put("reference_proteins", cyp71aReferenceRows);
+        cyp71aReport.put("filtered_search", Map.of(
+                "positive_family_hits_expected_including_self", 16,
+                "positive_family_hits_reported", cyp71aPositiveHits,
+                "nonself_positive_pairs_expected", 12,
+                "negative_control_pairs_expected", cyp71a.size() * negativeControls.size(),
+                "negative_control_hits_reported", cyp71aNegativeHits,
+                "hits", cyp71aHitRows));
+        cyp71aReport.put("interpretation",
+                "Medium-conservation CYP71A cytochrome P450 family similarity benchmark; complements the high-conservation RBCS panel but still does not establish orthology or proteome-wide accuracy.");
+        report.put("cyp71a_family", cyp71aReport);
+
         report.put("claim_boundary", "These calculations validate selected implementation outputs on pinned real inputs. They do not establish general cross-species accuracy, orthology, usability or a new biological discovery.");
         JSON.writerWithDefaultPrettyPrinter().writeValue(output.resolve("research-module-gold-set.json").toFile(), report);
     }
@@ -593,9 +660,13 @@ class ResearchModuleGoldSetTest {
     }
 
     private static List<ProteinHomologyService.Protein> readCrossSpeciesRbcS() throws IOException {
-        InputStream resource = ResearchModuleGoldSetTest.class
-                .getResourceAsStream("/research-validation/cross-species-rbcs-mature.faa");
-        if (resource == null) throw new IOException("Missing cross-species mature RBCS fixture");
+        return readFamilyProteins("/research-validation/cross-species-rbcs-mature.faa", 4);
+    }
+
+    private static List<ProteinHomologyService.Protein> readFamilyProteins(String resourcePath, int expectedCount)
+            throws IOException {
+        InputStream resource = ResearchModuleGoldSetTest.class.getResourceAsStream(resourcePath);
+        if (resource == null) throw new IOException("Missing protein family fixture " + resourcePath);
         Map<String, FastaRecord> records = new LinkedHashMap<>();
         try (InputStream raw = resource;
              BufferedReader reader = new BufferedReader(new InputStreamReader(raw, StandardCharsets.UTF_8))) {
@@ -608,7 +679,7 @@ class ResearchModuleGoldSetTest {
                     header = line.substring(1).trim();
                     sequence.setLength(0);
                 } else if (!line.isBlank()) {
-                    if (header == null) throw new IOException("RBCS sequence appears before first FASTA header");
+                    if (header == null) throw new IOException("Sequence appears before first FASTA header");
                     sequence.append(line.replaceAll("\\s+", "").toUpperCase(Locale.ROOT));
                 }
             }
@@ -623,7 +694,10 @@ class ResearchModuleGoldSetTest {
             proteins.add(new ProteinHomologyService.Protein(
                     fields[1].replace('_', ' '), fields[0], record.sequence()));
         }
-        if (proteins.size() != 4) throw new IOException("Expected four curated cross-species RBCS proteins");
+        if (proteins.size() != expectedCount) {
+            throw new IOException("Expected " + expectedCount + " curated proteins in " + resourcePath
+                    + ", got " + proteins.size());
+        }
         return List.copyOf(proteins);
     }
 

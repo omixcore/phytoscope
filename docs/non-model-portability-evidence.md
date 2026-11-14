@@ -137,18 +137,28 @@ medicinal and ornamental plants: *Andrographis paniculata*
 scaffold) and *Hibiscus syriacus* (GCF_006381635.1, Annotation Release 100;
 target LOC120212642 on an unplaced scaffold). Their complete GFF3 files are
 fetched during CI and checked against the corresponding NCBI
-`md5checksums.txt`; the generated runtime manifest records MD5, SHA-256, size
-and source URL. Tests compare full gene/sequence inventories to NCBI release
-counts and verify exact target coordinates and searchable IDs. These two cases
-validate annotation import, sequence recognition, locus search and structure
-presence; the test also fetches each target RefSeq scaffold FASTA, independently
-reconstructs at least one transcript and CDS from source GFF3 coordinates, and
-compares them with PhytoScope exports. Rice bean remains the only case with a
-full per-locus gold set covering genomic span, transcript, CDS, protein and
-inferred UTRs; the additional cases now have multi-locus hashes for span,
-transcript and CDS. A targeted search located general NCBI assembly/Gene records,
-not dedicated species-specific query portals; phrase this as a scoped search
-result rather than proof that no such resource exists.
+`md5checksums.txt`; the committed manifest
+[`additional-nonmodel-manifest.json`](../src/test/resources/non-model/additional-nonmodel-manifest.json)
+freezes assembly accession/name, annotation release, source URLs, MD5/SHA-256,
+file sizes and access date for both cases. Tests compare full gene/sequence
+inventories to NCBI release counts and verify exact target coordinates and
+searchable IDs. These two cases validate annotation import, sequence
+recognition, locus search and structure presence; the test also fetches each
+target RefSeq scaffold FASTA, independently reconstructs transcript and CDS from
+source GFF3 coordinates, and compares them with PhytoScope exports. Both
+additional cases are now full per-locus gold sets covering genomic span,
+transcript, CDS, translated protein and inferred UTRs: the *Andrographis*
+locus `LOC127243311` (`rna-XM_051263269.1`, protein `XP_051119226.1`, plus
+strand) and the *Hibiscus* locus `LOC120212642` (`rna-XM_039210874.1`, protein
+`XP_039066805.1`, minus strand) are frozen in
+`src/test/resources/non-model/<species>/gold-<locus>.fasta` with the matching
+RefSeq protein record pinned alongside, and the translations were compared
+byte-for-byte with the NCBI RefSeq protein records. Neither species has a public
+expression matrix aligned to the tested RefSeq release in the targeted search,
+so expression reconciliation is recorded as not applicable rather than
+fabricated. A targeted search located general NCBI assembly/Gene records, not
+dedicated species-specific query portals; phrase this as a scoped search result
+rather than proof that no such resource exists.
 
 The frozen sequence gold was broadened to five coding loci on the tested
 sequence accession in each species. The checked-in
@@ -246,21 +256,21 @@ coordinates. Missing fields stay missing; the software must not invent them.
 
 ## Remaining evidence gaps and publication claim boundary
 
-The completed cohort contains one full GFF3/GTF sequence-gold case, two
-additional complete RefSeq GFF3 import/search/sequence-extraction checks, and
-frozen source-derived multi-locus sequence gold across all three assemblies.
-This supports portability across these three portal-poor plant examples, but
-not an unqualified claim that every species or annotation works unchanged.
-Remaining gaps are: (1) the expression validation covers only the 34,914 gene
-targets emitted from the matching RefSeq RNA FASTA; absence from that matrix
-does not mean zero expression for other annotation models, and the input
-genotype differs from the VRB3 reference cultivar; (2) sequence gold covers
-five loci per species on the tested sequence accession, not genome-wide loci,
-additional annotation dialects, or all optional-field/UTR edge cases; (3)
-runtime and peak memory need reporting on declared hardware; and (4) same-task
-manual handling and IGV/JBrowse comparisons remain unexecuted. The
-Andrographis root/leaf study also does not provide a compatible matrix for the
-tested RefSeq release. The gffutils comparison is an objective script-workflow
-baseline, not a browser or usability comparison. No participant study,
-time-saving claim, genotype-matched biology claim, or new biological discovery
-is claimed.
+The completed cohort contains three full per-locus sequence-gold cases (rice
+bean *Vigna umbellata*, *Andrographis paniculata*, and *Hibiscus syriacus*),
+plus frozen source-derived multi-locus sequence gold across all three
+assemblies. This supports portability across these three portal-poor plant
+examples, but not an unqualified claim that every species or annotation works
+unchanged. Remaining gaps are: (1) the expression validation covers only the
+34,914 gene targets emitted from the matching RefSeq RNA FASTA and only the
+rice-bean case; absence from that matrix does not mean zero expression for
+other annotation models, and the input genotype differs from the VRB3 reference
+cultivar; (2) sequence gold covers five loci per species on the tested sequence
+accession, not genome-wide loci, additional annotation dialects, or all
+optional-field/UTR edge cases; (3) runtime and peak memory need reporting on
+declared hardware; and (4) same-task manual handling and IGV/JBrowse
+comparisons remain unexecuted. The Andrographis root/leaf study also does not
+provide a compatible matrix for the tested RefSeq release. The gffutils
+comparison is an objective script-workflow baseline, not a browser or usability
+comparison. No participant study, time-saving claim, genotype-matched biology
+claim, or new biological discovery is claimed.
