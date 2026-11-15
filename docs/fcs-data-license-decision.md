@@ -4,6 +4,9 @@
 > 权威规格：`docs/design-fcs-final-delivery.md` §5 B04（817–849 行）、§3.3；增量 PRD R3 / §6.1 A2·A3·A4 / §8；主理人第三轮裁定 1/2/3。
 > 对应物料：`phytoscope-reference-data/LICENSES.md`、`MANIFEST.json`（8 条逐条一一对应）、
 > `docs/zenodo-deposit-checklist.md` §5。
+> 补充（P0 公开范围核查，2026-11-14）：`docs/fcs-public-scope-audit.md` —— 记录双镜像匿名
+> 可下载性实测结果（GitHub 9/9 匿名 200，Gitee 7/9 匿名 200、2 个大文件 403 需登录）。
+> **公开性 ≠ 许可**，本文件仍是许可结论的唯一权威；二者口径不同、不得混用。
 
 ---
 
