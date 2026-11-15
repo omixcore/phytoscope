@@ -8,6 +8,10 @@ PhytoScope is a local desktop app for browsing plant genome annotations, inspect
 
 Download [PhytoScope for Windows x64](https://github.com/omixcore/phytoscope/releases/download/v0.3.0/PhytoScope-Windows-0.3.0.zip). Check the archive against [SHA256SUMS.txt](https://github.com/omixcore/phytoscope/releases/download/v0.3.0/SHA256SUMS.txt), extract the ZIP, and run `PhytoScope.exe` from the extracted folder. Java is included.
 
+## Overview
+
+![PhytoScope workflow, locus queries, and validation](fig/Figure1.jpg)
+
 ## Quick start
 
 1. Open a bundled annotation example or choose **File → Import annotation** to load a GFF3 or GTF file.
