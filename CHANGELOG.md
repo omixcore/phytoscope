@@ -8,11 +8,11 @@
   `PhytoScope-Windows-AMD64.zip` jpackage output name (no version number) and the
   historical `dist/` archives are **historical build artifacts**, not the release name.
 - Download links / version wording unified to **0.3.0** in this file and `README.md`.
-- **Release status (honest)**: the only published GitHub Release is still `v0.2.0`;
-  **no `v0.3.0` Release has been published**. The 0.3.0 ZIP and its checksum are
-  built and verified locally in a later step, then uploaded by the maintainer —
-  until that succeeds the release is **pending (not published)**. Do not read
-  "version 0.3.0" as "v0.3.0 Release published".
+- **Release status**: `v0.3.0` is **published** (2026-11-14T14:30:37Z) on the GitHub
+  releases page, with assets `PhytoScope-Windows-0.3.0.zip` (46,185,966 bytes,
+  `sha256:dcc2051f…`) and `SHA256SUMS.txt` (`sha256:690905ad…`); the historical `v0.2.0`
+  remains published and is not deleted. Evidence is recorded in
+  `docs/fcs-v0.3.0-release-notes.md` §0.1.
 - **DOI 未取得**: software / dataset Zenodo DOIs are unfilled placeholders
   `{{SOFTWARE_DOI}}` / `{{DATA_DOI}}` (plus `{{PAPER_DOI}}` / `{{ORCID}}` /
   `{{AFFILIATION}}`), centrally registered in `docs/fcs-zenodo-handoff.md` and

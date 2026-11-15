@@ -115,7 +115,7 @@ git 历史 pack 与 fresh-clone 大小未变；只有当前 checkout 与构建�
 | `../dist/PhytoScope-Windows-AMD64.zip` | 113,094,544 | `927b000219cd9b1d08f577c4fb315ff86538656cfc11451872f05c7e4911aa2c` | `historical`，字节不动 |
 | `../dist/PhytoScope-Windows-0.2.0.zip` | 110,405,267 | `763b1c42350872047f36eb6c944ea3ebfd10ffaaca7a1fb8a59645a2392b3cce` | `historical`，字节不动 |
 | `../dist/phytoscope-v0.3.0-source.zip` | **11,658,264** | `4f1a212591e9e0b32ac41882ed0b656a0c663587afc5ae8cd925709933b1c9f9` | Deposit A（`git archive 0638dbe`，460 项，ZIP 注释即该 SHA） |
-| `../dist/phytoscope-reference-data-v0.3.0.zip` | 63,580,701 | `e88a9cfa172244a71b88fe580991160f536bf6e75a91213960e69aadaa180416` | Deposit B（数据仓 `66054b7`，**29 项 / 8 个数据文件**，已剔除扣留的薄荷 TPM；其中可公开再分发仅 1 个 horsemint） |
+| `../dist/phytoscope-reference-data-v0.3.0.zip` | 63,581,789 | `dce268f14ee3e8de6f8c4d636e1b569c0f45cd32cf59613bb9076333ba3dd72a` | Deposit B（数据仓 **`8906399`**，**29 项 / 8 个数据文件**，已剔除扣留的薄荷 TPM；其中可公开再分发仅 1 个 horsemint。**2026-11-15 从 `8906399` 重建**以纳入三口径措辞修正，旧包 `66054b7` / `e88a9cfa…` 作废） |
 
 > 新包约 **44 MiB**，**不是** 110 MB 历史 v0.2.0 包（瘦身生效）。两个历史 ZIP
 > **字节未动、未删除、未重建**。
@@ -129,7 +129,7 @@ git 历史 pack 与 fresh-clone 大小未变；只有当前 checkout 与构建�
 | Deposit | 归档源 | 包内必含项校验 |
 | --- | --- | --- |
 | A（软件源码） | `git archive 0638dbe`（显式 SHA；当时 tag `v0.3.0` 指向同一提交） | `README.md` / `CITATION.cff` / `pom.xml` / `docs/**` / `src/**` / `tools/**` |
-| B（参考数据） | 数据仓库 **当前 HEAD `66054b7`**（旧 `249e771` 因 commit 信息英文化已不可达，映射见 `docs/fcs-final-push-checklist.md` §1.2） | `MANIFEST.json` / `SHA256SUMS.txt` / `LICENSES.md` / `scripts/**`；且 `LICENSES.md` 含 B04 §0 三选一结论表、`MANIFEST.json` 含 `license_decision` 字段 |
+| B（参考数据） | 数据仓库 **当前 HEAD `8906399`**（旧 `66054b7` 因三口径措辞修正被取代、`249e771` 因 commit 信息英文化已不可达，映射见 `docs/fcs-final-push-checklist.md` §1.2） | `MANIFEST.json` / `SHA256SUMS.txt` / `LICENSES.md` / `scripts/**`；且 `LICENSES.md` 含 B04 §0 三选一结论表、`MANIFEST.json` 含 `license_decision` 字段 |
 
 `unzip -t` 两包均 OK（`DEP_A_ZIP_OK` / `DEP_B_ZIP_OK`）；`unzip -l` 留痕见
 `docs/fcs-zenodo-handoff.md`。具体归档 SHA 记入 `docs/fcs-zenodo-handoff.md` 与

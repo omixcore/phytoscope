@@ -27,15 +27,13 @@ for this version is `PhytoScope-Windows-0.3.0.zip` (produced by the final build 
 SHA-256 checksums are recorded in [desktop_program/SHA256SUMS.txt](desktop_program/SHA256SUMS.txt).
 
 Download packaged Windows applications (x64) from the
-[releases page](https://github.com/omixcore/phytoscope/releases): the only published
-Release is still **v0.2.0** (`PhytoScope-Windows-AMD64.zip`), a historical archive that
-predates data slimming and includes a slim jlink runtime, so nothing else has to be
-installed. **No `v0.3.0` Release has been published yet**: `PhytoScope-Windows-0.3.0.zip`
-is built and its checksum verified locally in a later step, then uploaded by the
-maintainer; until that upload succeeds, the release is **pending (not published)** and
-v0.2.0 remains the latest published archive. Do not read "version 0.3.0" above as
-"v0.3.0 Release published". For the current tree's measured build sizes see
-[Build artifact size](#build-artifact-size).
+[releases page](https://github.com/omixcore/phytoscope/releases). The latest published
+Release is **v0.3.0** (`PhytoScope-Windows-0.3.0.zip`, 46,185,966 bytes,
+`sha256:dcc2051f…`, published 2026-11-14T14:30:37Z), alongside
+`SHA256SUMS.txt` (`sha256:690905ad…`). The earlier **v0.2.0**
+(`PhytoScope-Windows-AMD64.zip`, 110,405,267 bytes) remains published as a historical
+archive that predates data slimming and includes a slim jlink runtime. For the current
+tree's measured build sizes see [Build artifact size](#build-artifact-size).
 
 1. Extract the ZIP to any local folder, keeping `PhytoScope.exe`, `app/` and `runtime/` together.
 2. Double-click `PhytoScope.exe` — a bundled Java runtime is included, so nothing else has to be installed.
@@ -350,7 +348,8 @@ Song X, Chen P, Liang F. *PhytoScope for portable local queries of plant genome 
 > software `{{SOFTWARE_DOI}}`、dataset `{{DATA_DOI}}`、paper `{{PAPER_DOI}}`、
 > author `{{ORCID}}`、`{{AFFILIATION}}`。占位符集中登记于
 > [`docs/fcs-zenodo-handoff.md`](docs/fcs-zenodo-handoff.md)；机器可读引用见
-> [`CITATION.cff`](CITATION.cff)。当前 GitHub Release 只有 `v0.2.0`，**没有 `v0.3.0`**。
+> [`CITATION.cff`](CITATION.cff)。GitHub Release 已有 **`v0.3.0`**（2026-11-14 发布，资产
+> `PhytoScope-Windows-0.3.0.zip` + `SHA256SUMS.txt`，见上文 Download 段）与历史 **`v0.2.0`**。
 > 论文投稿引用格式见 [`docs/fcs-paper-manuscript-draft.md`](docs/fcs-paper-manuscript-draft.md)
 > 的 Data Availability / Code Availability。
 

@@ -53,5 +53,6 @@ abstract: >-
   PhytoScope is a locally running JavaFX desktop browser for plant gene
   structures, providing a species-independent import-browse-query-compare-export
   pipeline with SHA-256 provenance and portable projects. Software and data
-  Zenodo DOIs ({{SOFTWARE_DOI}} / {{DATA_DOI}}) are not yet obtained; the only
-  published GitHub Release is v0.2.0, with v0.3.0 release pending.
+  Zenodo DOIs ({{SOFTWARE_DOI}} / {{DATA_DOI}}) are not yet obtained; the GitHub
+  Release v0.3.0 is published (2026-11-14), and v0.2.0 remains as a historical
+  archive.

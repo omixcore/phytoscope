@@ -36,8 +36,9 @@
 > `docs/zenodo-deposit-checklist.md`。**本文件是集中登记处**，其余位置只引用、不另立别名。
 
 **醒目声明**：**DOI 未取得**。截至本批次，软件与数据两个 Zenodo deposit **均未创建、均未发布**，
-`{{SOFTWARE_DOI}}` / `{{DATA_DOI}}` / `{{PAPER_DOI}}` 均无真实值。当前 GitHub Release **只有 `v0.2.0`**，
-**没有 `v0.3.0` Release**，不得把「现有 v0.2.0 Release」写成「已发布 v0.3.0」。
+`{{SOFTWARE_DOI}}` / `{{DATA_DOI}}` / `{{PAPER_DOI}}` 均无真实值。GitHub Release 已发布 **`v0.3.0`**
+（2026-11-14，软件包 `PhytoScope-Windows-0.3.0.zip`）与历史 **`v0.2.0`**；但**软件 Release ≠ 软件
+Zenodo 归档**，二者是不同动作，`{{SOFTWARE_DOI}}` 仍未回填。
 
 ---
 
@@ -67,7 +68,7 @@
 |---|---|---|---|
 | `phytoscope-v0.3.0-source.zip` | **11,658,264** | **`git archive 0638dbe`**（显式 SHA；当时 tag `v0.3.0` 指向同一提交，见 §3.1） | 460 项，ZIP 注释即该 SHA |
 | `PhytoScope-Windows-0.3.0.zip` | 46,185,966 | 从发布提交 `0638dbe` 的 tree 构建（jpackage）+ 重命名 | packaged smoke PASS；旧构建 `8f7953eb…` 作废 |
-| `phytoscope-reference-data-v0.3.0.zip` | 63,580,701 | 数据仓库 **`66054b7`** | 29 项 / **8 个数据文件**，已剔除扣留文件 |
+| `phytoscope-reference-data-v0.3.0.zip` | 63,581,789 | 数据仓库 **`8906399`** | 29 项 / **8 个数据文件**，已剔除扣留文件 |
 | `desktop_program/SHA256SUMS.txt`（主仓内） | 2,158 | 0.3.0 包校验和（Release 资产之一） | 已更新为重建后的值，`sha256=690905ad…` |
 
 > **拟归档包口径（2026-11-14 重建后已落实）**：数据包已按 **8 个数据文件**（未压缩合计
@@ -80,7 +81,9 @@
 
 两包 SHA-256（2026-11-14 重建后实测，上传时供作者核对）：
 - `phytoscope-v0.3.0-source.zip` = `4f1a212591e9e0b32ac41882ed0b656a0c663587afc5ae8cd925709933b1c9f9`
-- `phytoscope-reference-data-v0.3.0.zip` = `e88a9cfa172244a71b88fe580991160f536bf6e75a91213960e69aadaa180416`
+- `phytoscope-reference-data-v0.3.0.zip` = `dce268f14ee3e8de6f8c4d636e1b569c0f45cd32cf59613bb9076333ba3dd72a`
+  （**2026-11-15 从数据仓 `8906399` 重建**，以纳入「拟归档清单 vs 可再分发」三口径措辞修正；
+  旧包 `66054b7` / `e88a9cfa…` 作废）
 
 ### 3.1 归档源 SHA
 
@@ -97,10 +100,12 @@
   - 核对命令：`git cat-file -t 0638dbe67c7bb406cd6fbcbedc6d5e389ec4d8f4`、
     `git archive 0638dbe | sha256sum`；推送闭环的三方 HEAD 比对见
     `docs/fcs-final-push-checklist.md`。
-- **Deposit B（参考数据）**：用数据仓库 **`66054b7`**
-  （= `66054b700d902fdd8171c3565dc50482d5fa6f25`，B04 许可定稿 + 薄荷 TPM 溯源），
+- **Deposit B（参考数据）**：用数据仓库 **`8906399`**
+  （= `8906399071c4ac6ac120cfb7f952846fb534a9f4`，在 B04 许可定稿 + 薄荷 TPM 溯源基础上，
+  进一步**修正「拟归档清单 vs 可再分发」三口径措辞**），
   包内含 `LICENSES.md` / `MANIFEST.json` / `PROVENANCE-mint-tpm.md` 的最终结论；
-  **不用**基线 `2c6608b`（不含 B04 与溯源定稿）。
+  **不用**基线 `2c6608b`（不含 B04 与溯源定稿），**也不用**旧的 `66054b7`（其
+  `public_deposit_files=8` 措辞把「拟归档清单」误当「可公开文件」，已被 `8906399` 修正）。
 
 ### 3.2 `unzip -l` 内容留痕（B05 实跑）
 
