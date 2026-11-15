@@ -47,7 +47,8 @@ class BundledResourceGuardTest {
         }
         assertNull(ExampleDataset.byId("mint-genome"), "");
         assertEquals("arabidopsis", ExampleDataset.defaultDataset().id());
-        assertNull(ExampleDataset.defaultDataset().expressionResource());
+        assertNotNull(ExampleDataset.defaultDataset().expressionResource(),
+                "the default Arabidopsis example bundles its six-tissue expression subset");
     }
 
     /**

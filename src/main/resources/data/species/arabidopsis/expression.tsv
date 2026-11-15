@@ -1,0 +1,15 @@
+# unit=TPM
+# level=gene
+# source=Expression Atlas E-MTAB-7978; six selected single-assay tissue groups
+# provenance=subset of the full 32,833-gene matrix; the 10 bundled chromosome-subset genes only
+GeneID	Root	Rosette_leaf_1	Rosette_leaf_8	Cauline_leaf	Dry_seed	Pollen
+AT1G01010	46	14	4	12	3	0.1
+AT1G01020	7	17	19	12	1	0.4
+AT2G01008	0.1	0.8	0	0.6	2	0
+AT2G01021	0	0	0	0	0	0
+AT3G01010	0	0	0	0	0	0
+AT3G01015	0.9	0	0	0	0.1	24
+AT4G00005	0	0	0	0	0	0
+AT4G00020	6	3	7	0.9	0	1
+AT5G01010	109	99	74	91	61	18
+AT5G01015	0	0	18	0.2	0.3	0

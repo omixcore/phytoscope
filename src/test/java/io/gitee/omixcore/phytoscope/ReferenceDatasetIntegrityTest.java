@@ -49,16 +49,25 @@ class ReferenceDatasetIntegrityTest {
                 assertArrayEquals(expected.readAllBytes(), actual.readAllBytes());
             }
         }
-        // No bundled example carries a measured expression matrix any more:
-        // the E-MTAB-7978 atlas and the 4-leaf TPM panel were both archived.
-        // AC-3 requires an explicit empty state instead of a silent downgrade.
-        assertNull(dataset.expressionResource(),
-                "Untraceable measured expression must not be bundled");
+        // The Arabidopsis example bundles a six-tissue E-MTAB-7978 subset (the
+        // 10 subset genes only) so its per-gene expression chart is demonstrable;
+        // the full atlas matrix and the 4-leaf TPM panel remain archived. The
+        // other examples carry no expression resource and must fall back to the
+        // explicit empty state instead of a silent downgrade.
         var expression = new ExpressionDataService();
         expression.loadExample(dataset);
-        assertTrue(expression.isEmpty(), "");
-        assertEquals("No data loaded", expression.getSource());
-        assertEquals(0, expression.getProfileCount());
+        if ("arabidopsis".equals(id)) {
+            assertNotNull(dataset.expressionResource(),
+                    "the Arabidopsis example bundles its six-tissue subset");
+            assertFalse(expression.isEmpty(), "");
+            assertEquals(10, expression.getProfileCount());
+        } else {
+            assertNull(dataset.expressionResource(),
+                    "Untraceable measured expression must not be bundled");
+            assertTrue(expression.isEmpty(), "");
+            assertEquals("No data loaded", expression.getSource());
+            assertEquals(0, expression.getProfileCount());
+        }
         assertTrue(dataset.publishedSequenceLengths().isEmpty(), "Lengths come from the original GFF3 header");
     }
 
@@ -104,7 +113,8 @@ class ReferenceDatasetIntegrityTest {
         assertNotNull(ExampleDataset.byId("mint-plastid"));
         assertSame(ExampleDataset.byId("soybean"), ExampleDataset.byId("soybean-v2"));
         assertNotNull(getClass().getResource("/data/reference-provenance.json"));
-        assertNull(ExampleDataset.defaultDataset().expressionResource());
+        assertNotNull(ExampleDataset.defaultDataset().expressionResource(),
+                "the default Arabidopsis example bundles its six-tissue subset");
         assertEquals(1, ExampleDataset.defaultDataset().annotationResources().size());
         // The withdrawn illustrative organelle fixture must never come back.
         assertNull(getClass().getResource("/data/species/mint/mentha_spicata_plastid.gff3"));

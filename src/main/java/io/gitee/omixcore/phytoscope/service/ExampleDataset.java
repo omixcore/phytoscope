@@ -17,16 +17,22 @@ public record ExampleDataset(String id, String label, String commonName, String 
      * complete reference data (TAIR10 genome FASTA, Chr1-Chr5 annotation, the
      * E-MTAB-7978 atlas matrix and the complete horsemint case) was archived in
      * the independent {@code phytoscope-reference-data} repository at baseline
-     * commit {@code 8fd01ca}. No bundled example carries a measured expression
-     * matrix; sequence extraction requires a user-supplied matching FASTA.
+     * commit {@code 8fd01ca}. The Arabidopsis example also bundles the tissue
+     * expression of its 10 genes (an E-MTAB-7978 subset) so the per-gene
+     * expression bar chart is demonstrable without importing a matrix; the other
+     * examples carry no measured expression matrix, and sequence extraction
+     * requires a user-supplied matching FASTA.
      */
     public static final List<ExampleDataset> CATALOGUE = List.of(
             new ExampleDataset("arabidopsis", "Arabidopsis thaliana · TAIR10 · chromosome subset sample",
                     "Thale cress Col-0", "Rosid · Brassicaceae", "Arabidopsis thaliana", "TAIR10", Map.of(),
-                    BASE + "arabidopsis/arabidopsis_chromosomes.gff3.gz", AnnotationFormat.GFF3, null,
+                    BASE + "arabidopsis/arabidopsis_chromosomes.gff3.gz", AnnotationFormat.GFF3,
+                    BASE + "arabidopsis/expression.tsv",
                     "TAIR/Araport11 original June 2016 release; small version-pinned chromosome subset "
                             + "(10 genes / 24 transcripts). Complete Chr1-Chr5 annotation and the E-MTAB-7978 "
-                            + "expression case have been archived to the independent reference-data repository."),
+                            + "expression case have been archived to the independent reference-data repository; "
+                            + "a six-tissue E-MTAB-7978 subset for the 10 bundled genes is included so the "
+                            + "per-gene expression chart is demonstrable."),
             new ExampleDataset("rice", "Oryza sativa Japonica Group · 12 chromosomes",
                     "Rice Nipponbare", "Monocot · Poaceae", "Oryza sativa Japonica Group", "IRGSP-1.0", Map.of(),
                     BASE + "rice/rice_chromosomes.gff3", AnnotationFormat.GFF3, null,

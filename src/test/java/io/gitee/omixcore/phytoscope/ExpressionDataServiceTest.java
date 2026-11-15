@@ -38,15 +38,31 @@ class ExpressionDataServiceTest {
     }
 
     /**
-     * The default example no longer bundles the E-MTAB-7978 atlas matrix.
-     * AC-3 requires a visible, explicit empty state instead of the silent
-     * downgrade that the removed resource would otherwise cause.
+     * The default Arabidopsis example bundles a six-tissue E-MTAB-7978 subset so
+     * the per-gene expression chart is demonstrable without importing a matrix.
+     * The other five examples still carry no expression resource and must fall
+     * back to the explicit empty state.
      */
     @Test
-    void defaultArabidopsisExampleHasExplicitEmptyExpressionState() throws Exception {
+    void defaultArabidopsisExampleLoadsItsSixTissueExpressionSubset() throws Exception {
         ExpressionDataService service = new ExpressionDataService();
         service.loadExample(ExampleDataset.defaultDataset());
-        assertNull(ExampleDataset.defaultDataset().expressionResource());
+        assertNotNull(ExampleDataset.defaultDataset().expressionResource());
+        assertFalse(service.isEmpty());
+        assertEquals("Bundled panel (Arabidopsis thaliana)", service.getSource());
+        assertEquals(10, service.getProfileCount());
+        assertEquals(java.util.List.of("Root", "Rosette_leaf_1", "Rosette_leaf_8",
+                "Cauline_leaf", "Dry_seed", "Pollen"), service.getTissues());
+        assertEquals("TPM", service.getValueUnit());
+        assertNotNull(service.getProfile("AT5G01010"));
+        assertNotNull(service.getProfile("AT1G01010"));
+    }
+
+    @Test
+    void nonArabidopsisExamplesKeepExplicitEmptyExpressionState() throws Exception {
+        ExpressionDataService service = new ExpressionDataService();
+        service.loadExample(ExampleDataset.byId("rice"));
+        assertNull(ExampleDataset.byId("rice").expressionResource());
         assertTrue(service.isEmpty());
         assertEquals("No data loaded", service.getSource());
         assertEquals(0, service.getProfileCount());
