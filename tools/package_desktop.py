@@ -18,7 +18,7 @@ if existing.exists(): shutil.rmtree(existing)
 a.out.mkdir(parents=True,exist_ok=True)
 version_match = re.fullmatch(r"phytoscope-(\d+\.\d+\.\d+)\.jar", a.jar.name)
 if version_match is None:
-    raise SystemExit("Expected a versioned executable JAR such as phytoscope-0.3.0.jar")
+    raise SystemExit("Expected a versioned executable JAR such as phytoscope-0.0.1.jar")
 version = version_match.group(1)
 # macOS requires the first component of its bundle build version to be positive.
 app_version = f"1.{version.split('.', 1)[1]}" if sys.platform == 'darwin' and version.startswith('0.') else version

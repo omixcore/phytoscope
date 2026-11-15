@@ -6,7 +6,7 @@ PhytoScope is a local desktop app for browsing plant genome annotations, inspect
 
 ## Download and run
 
-Download [PhytoScope for Windows x64](https://github.com/omixcore/phytoscope/releases/download/v0.3.1/PhytoScope-Windows-0.3.1.zip). Check the archive against [SHA256SUMS.txt](https://github.com/omixcore/phytoscope/releases/download/v0.3.1/SHA256SUMS.txt), extract the ZIP, and run `PhytoScope.exe` from the extracted folder. Java is included.
+Download [PhytoScope for Windows x64](https://github.com/omixcore/phytoscope/releases/download/v0.0.1/PhytoScope-Windows-0.0.1.zip). Check the archive against [SHA256SUMS.txt](https://github.com/omixcore/phytoscope/releases/download/v0.0.1/SHA256SUMS.txt), extract the ZIP, and run `PhytoScope.exe` from the extracted folder. Java is included.
 
 ## Overview
 
@@ -27,7 +27,7 @@ Use JDK 21. On Windows, use `mvnw.cmd` in place of `sh mvnw`.
 
 ```sh
 sh mvnw clean package
-java -jar target/phytoscope-0.3.1.jar
+java -jar target/phytoscope-0.0.1.jar
 ```
 
 See [desktop packaging](docs/desktop-distribution.md) to build an archive with a bundled Java runtime.

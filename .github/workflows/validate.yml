@@ -27,7 +27,7 @@ jobs:
         run: sh mvnw -B -Pui-tests verify
       - name: Package the desktop application
         shell: bash
-        run: python tools/package_desktop.py --jar target/phytoscope-0.3.1.jar
+        run: python tools/package_desktop.py --jar target/phytoscope-0.0.1.jar
       - uses: actions/upload-artifact@v4
         with:
           name: PhytoScope-${{ matrix.os }}
@@ -36,14 +36,14 @@ jobs:
             target/desktop/*.tar.gz
           if-no-files-found: error
 
-  publish-windows-031:
+  publish-windows-001:
     if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
     concurrency:
-      group: phytoscope-release-v0.3.1
+      group: phytoscope-release-v0.0.1
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -56,12 +56,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if gh release view v0.3.1 >/dev/null 2>&1; then
+          if gh release view v0.0.1 >/dev/null 2>&1; then
             exit 0
           fi
           cd release
-          mv PhytoScope-Windows-*-0.3.1.zip PhytoScope-Windows-0.3.1.zip
-          sha256sum PhytoScope-Windows-0.3.1.zip > SHA256SUMS.txt
-          gh release create v0.3.1 PhytoScope-Windows-0.3.1.zip SHA256SUMS.txt \
-            --target "$GITHUB_SHA" --title "PhytoScope v0.3.1" \
-            --notes "Rebuilds the Windows desktop package with English application messages, including the genome FASTA import instructions."
+          mv PhytoScope-Windows-*-0.0.1.zip PhytoScope-Windows-0.0.1.zip
+          sha256sum PhytoScope-Windows-0.0.1.zip > SHA256SUMS.txt
+          gh release create v0.0.1 PhytoScope-Windows-0.0.1.zip SHA256SUMS.txt \
+            --latest --target "$GITHUB_SHA" --title "PhytoScope v0.0.1" \
+            --notes "PhytoScope 0.0.1 for Windows x64 with a bundled Java runtime and English application messages."
