@@ -22,9 +22,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: Build and test
+      - name: Build and test (Linux and macOS)
+        if: runner.os != 'Windows'
         shell: bash
         run: sh mvnw -B -Pui-tests verify
+      - name: Build and test (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: call mvnw.cmd -B -Pui-tests verify
       - name: Package the desktop application
         shell: bash
         run: python tools/package_desktop.py --jar target/phytoscope-0.0.1.jar

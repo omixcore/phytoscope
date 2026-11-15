@@ -30,6 +30,8 @@ sh mvnw clean package
 java -jar target/phytoscope-0.0.1.jar
 ```
 
+To launch from IntelliJ, set both the project SDK and the Maven runner JRE to JDK 21. Run `clean javafx:run` in the Maven tool window. From Windows PowerShell, the equivalent command is `.\mvnw.cmd clean javafx:run`.
+
 See [desktop packaging](docs/desktop-distribution.md) to build an archive with a bundled Java runtime.
 
 ## License
