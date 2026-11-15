@@ -199,7 +199,7 @@ The old "Figure 2 = cross-species gold / Figure 4 = comparison" mapping is retir
 
 > **Status: `filled`** — written out in `docs/fcs-paper-manuscript-draft.md` (Data Availability).
 
-- `phytoscope-reference-data` repository (**dual mirrors**: gitee + github, both at `66054b7`):
+- `phytoscope-reference-data` repository (**dual mirrors**: gitee + github, both at `8906399`):
   **9 files / 68,518,847 B** in the repository; **candidate deposit manifest = 8 files /
   65,124,010 B**, of which **only 1 is redistributable** today (horsemint CC BY 4.0)
   (mint TPM matrix withheld), `MANIFEST.json` + `SHA256SUMS.txt` + `LICENSES.md`;

@@ -275,7 +275,7 @@ Complete reference data are distributed in the independent `phytoscope-reference
 (9 files, 68,518,847 bytes **in the repository**; the **candidate deposit manifest** lists 8 files,
 65,124,010 bytes, of which only 1 is redistributable today — see Data Availability; dual gitee/github
 mirrors, the 9-file archive was
-introduced at commit `acac2cf` (the commit shown in Fig. 5) and the mirrors now stand at `66054b7`),
+introduced at commit `acac2cf` (the commit shown in Fig. 5) and the mirrors now stand at `8906399`),
 governed by
 `MANIFEST.json` (per-file bytes, SHA-256, source URL, release, license status) and `LICENSES.md`;
 `SHA256SUMS.txt` allows `sha256sum -c` self-verification (9/9 OK). License status is itemized in
@@ -543,7 +543,9 @@ reported separately. The **repository** holds **9 files** totalling **68,518,847
 slated for the Zenodo data deposit, after withholding the mint TPM matrix) lists **8 files**
 totalling **65,124,010 bytes** (68,518,847 − 3,394,837). Of those, only **1 file is redistributable**
 today (the horsemint annotation, CC BY 4.0); the other **7 require written permission** from the
-rights holders and are **not** publicly downloadable until that permission is obtained. The mint
+rights holders and are **not licensed for public redistribution** until that permission is obtained
+(they are physically retrievable from the repository mirrors, but redistribution is not authorized —
+see `docs/fcs-public-scope-audit.md`). The mint
 4-leaf TPM matrix is withheld from the deposit, see below. Kilobyte-scale examples
 ship inside the software repository; full data are retrieved from the data repository without any
 runtime download. Per-file accession, release, source URL, SHA-256 and license status are itemized in

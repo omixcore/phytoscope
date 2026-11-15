@@ -167,10 +167,12 @@ Release id `445353264`），页面 https://github.com/omixcore/phytoscope/releas
     第 2/11 项的**推送闭环**三方 HEAD 比对是另一动作，推送时刻 SHA 已记为 `0638dbe`（§1 表），
     其后仅为登记性文档提交（§1.1）。
   - Deposit B（参考数据）：数据仓库 **当前实际 HEAD =
-    `66054b700d902fdd8171c3565dc50482d5fa6f25`**（改写前的旧 SHA `249e771` 已不可达，
+    `8906399071c4ac6ac120cfb7f952846fb534a9f4`**（2026-11-15 在 `66054b7` 之上再修正
+    「拟归档清单 vs 可再分发」三口径措辞；改写前的旧 SHA `249e771` 已不可达，
     映射见 §1.2），包内含最终 `LICENSES.md` / `MANIFEST.json`，且**已剔除扣留的薄荷 TPM 矩阵**
     （9 文件 → 拟归档清单 8 文件 / 65,124,010 B，其中可公开再分发仅 1 个 horsemint，
-    见 `docs/fcs-data-license-decision.md`）。
+    见 `docs/fcs-data-license-decision.md`）。**Deposit B ZIP 已于 2026-11-15 从 `8906399` 重建**
+    （旧包 `66054b7` / `e88a9cfa…` 作废），新 SHA 见 `docs/fcs-zenodo-handoff.md` §3。
   - 两包 `unzip -l` / `unzip -t` 留痕见 `docs/fcs-zenodo-handoff.md` §3.2 与
     `docs/fcs-v0.3.0-release-notes.md` §4。**上传与发布仍属 B 类待作者执行**。
 - 第 9 项本地测试的本机绿跑证据在 `docs/fcs-ci-goldset-fix-report.md` 与 B05 全量复跑；
