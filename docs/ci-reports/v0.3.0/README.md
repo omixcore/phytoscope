@@ -7,9 +7,10 @@
 > ## 状态：`collection_state = remote_run_collected`（远端已实跑，结论已回填）
 >
 > **本文件记录的是远端实测结果，本地通过记录不能替代远端结果。**
-> **本目录含两次远端运行，读数时必须先看清是哪一次**：
+> **本目录含三次远端运行，读数时必须先看清是哪一次**：
 > - **§1–§6 = run `43605656726`（commit `49a5fac`，历史记录，ubuntu failure）**；
-> - **§7 = run `43609281554`（commit `0638dbe` = 发布提交，三平台矩阵全 success）← 当前发布口径以此为准**。
+> - **§7 = run `43609281554`（commit `0638dbe` = 发布提交，三平台矩阵全 success，public-data 仍 failure）**；
+> - **§8 = run `43664785766`（commit `2c3b1e6` = dev 当前 tip，四 job 全 success）← 整条 workflow 首次全绿，当前口径以此为准**。
 >
 > （下段为 §1–§6 那次运行的快照口径，保留原文以存事实。）
 > 依据：GitHub Actions run **`43605656726`**（`event=push`、`head_branch=dev`、
@@ -291,3 +292,63 @@ BUILD SUCCESS
 - **不得**把本节结论外推为「已完成三平台**原生**人工验证」：Monocle headless 不能认证原生对话框、
   DPI 缩放、图形驱动、签名/公证或 SmartScreen 提示（§2 硬约束仍有效）。
 - 本节所有数值均来自 GitHub REST API 与 runner 日志，**未由本地结果代入**。
+
+---
+
+## 8. 全绿收口：run `43664785766`（commit `2c3b1e6`，四 job 全 success）
+
+> 本节是 **P1「验证最新提交的 CI」的权威结论**。`2c3b1e6` 是 dev 当前 tip，它修复了
+> `audit_public_splicing_evidence.py` 的 XLSX 魔数 bug（`b"PK\\x03\\x04"` → `b"PK\x03\x04"`），
+> 使此前一直失败的 `public-data-validation` job 首次转绿。这是**整条 workflow 首次全绿**，
+> 相比 §7（三平台绿、public-data 仍红）再进一步。
+
+### 8.1 运行元数据（GitHub REST API 实测）
+
+| 字段 | 值 |
+|---|---|
+| `run_id` | **`43664785766`** |
+| `workflow` | `Validate and package PhytoScope` |
+| `head_sha` | **`2c3b1e64544501e63bba5997f072fd71d1f6ff77`**（dev 当前 tip） |
+| `head_branch` | `dev` |
+| `status` / `conclusion` | `completed` / **`success`** |
+| `created_at` | `2026-11-15T01:48:13Z` |
+| run 页面 | https://github.com/omixcore/phytoscope/actions/runs/43664785766 |
+| `collected_at_utc` | `2026-11-15`（`/actions/runs/43664785766/jobs` 查询，run 已结束） |
+| `collection_state` | `remote_run_collected` |
+
+### 8.2 逐 job 结论（4 个 job 全 success）
+
+| job | job_id | 结论 | started_at (UTC) | completed_at (UTC) | 失败步骤 |
+|---|---|---|---|---|---|
+| `validation (ubuntu-latest)` | **`132661642803`** | **success** | `2026-11-15T01:48:16Z` | `2026-11-15T01:59:23Z` | — |
+| `validation (macos-latest)` | **`132661642787`** | **success** | `2026-11-15T01:48:16Z` | （同 run，completed） | — |
+| `validation (windows-latest)` | **`132661642638`** | **success** | `2026-11-15T01:48:16Z` | （同 run，completed） | — |
+| `public-data-validation` | **`132661642837`** | **success** | `2026-11-15T01:48:17Z` | `2026-11-15T01:49:32Z` | — |
+
+> `public-data-validation` 的 step 5 `Audit public Arabidopsis splicing and proteomics resources`
+> 本次 **success**（不再是 failure）。macos / windows 上的 Linux-only 步骤（bedtools/BLASTP/rice bean/
+> additional refs/full archives）按 `if: runner.os == 'Linux'` 正确 `skipped`，非失败。
+
+### 8.3 与 §7 的差异（关键）
+
+| 项 | §7（`0638dbe`） | §8（`2c3b1e6`） |
+|---|---|---|
+| 三平台 `validation` | success × 3 | success × 3（不变） |
+| `public-data-validation` | **failure**（step 5） | **success**（step 5 修复生效） |
+| 整条 workflow 结论 | **failure**（因 public-data） | **success（全绿）** |
+
+- 修复点：`tools/audit_public_splicing_evidence.py` 的 XLSX 魔数判断
+  `if not candidate.startswith(b"PK\\x03\\x04")` 是**双反斜杠字面量**，把合法 XLSX 一律判为非法；
+  改为 `b"PK\x03\x04"` 后 Springer 静态镜像解析通过、`pastdb_table_s3` 从 0 行恢复为 10 行。
+  另有 `fetch_bytes(allow_self_signed=...)` 仅对已退役的 PastDB 自签证书放行，
+  并把 `pastdb.crg.eu` 已退役的失败归因明确记为「source retired」（非网络）。
+  详见 `public-data-validation/job-summary.md` §归因复核。
+
+### 8.4 口径（强制）
+
+- 现在**可以**说：「**commit `2c3b1e6` 上整条 `Validate and package PhytoScope` workflow 全绿**
+  （三平台 validation × 3 success + public-data-validation success）」，附 run id / job id / 时间戳。
+- **仍不得**说：① 「三平台**原生**人工验证已完成」（headless CI ≠ 原生桌面人工验证，§2 硬约束）；
+  ② 「public-data-validation 的每个外部数据源都 100% 可达」——该 job 现在**脚本层面 exit 0**，
+  但 PastDB 源已退役（记为 retired 而非失败），对外口径须与 `job-summary.md` §归因复核一致。
+- 本节数值均来自 GitHub REST API（`/actions/runs/43664785766/jobs`），未由本地结果代入。

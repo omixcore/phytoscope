@@ -4,6 +4,18 @@
 > **本 job 单列，不并入三平台 `validation` 矩阵。**
 > **本文件记录的是远端实测结果，本地通过记录不能替代远端结果。**
 >
+> ## ✅ 修复已生效（2026-11-15 · run `43664785766` / commit `2c3b1e6`）
+>
+> 本 job 在 commit `2c3b1e6`（dev 当前 tip）上**已转绿**：job id `132661642837`，
+> `conclusion = success`，step 5 `Audit public Arabidopsis splicing and proteomics resources`
+> **success**（`started_at 2026-11-15T01:48:17Z` / `completed_at 2026-11-15T01:49:32Z`）。
+> 修复点：`tools/audit_public_splicing_evidence.py` 的 XLSX 魔数判断由
+> `b"PK\\x03\\x04"`（双反斜杠字面量）改为 `b"PK\x03\x04"`（真实字节序列），
+> 并给 `fetch_bytes` 加 `allow_self_signed` 仅放行 PastDB 自签证书、把已退役的 PastDB
+> 归因明确记为 `source retired`。完整结论见 `README.md` §8。
+> **以下 §结论 / §失败原因 记录的是修复前的历史失败（run `43605656726` / `49a5fac` 与
+> `43609281554` / `0638dbe`），保留作取证与因果链依据，不得再当作当前状态。**
+>
 > **归因更正（2026-11-15）**：本 job 的失败曾被笼统归为「外部网络不可达」。经下载
 > run `43609281554` 的 `report.json` artifact 逐源复核，实际是**三类不同原因**，不可再统称
 > 「外网不可达」：① 脚本 ZIP 魔数判断 bug（`b"PK\\x03\\x04"` 双反斜杠，误判一切合法 XLSX）；
