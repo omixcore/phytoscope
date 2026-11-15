@@ -81,7 +81,8 @@
 > - 「CI 三平台通过」类表述 → 现在**可以使用，但必须绑定证据**：仅限
 >   「三平台矩阵（ubuntu / macos / windows）在 commit `0638dbe` 上通过」
 >   （run `43609281554`，job `132490554008` / `132490554359` / `132490554399`），
->   见 §7.1；**不得**泛化为「整条 workflow 全绿」（`public-data-validation` 仍外部网络失败）。
+>   见 §7.1；**不得**泛化为「整条 workflow 全绿」（`public-data-validation` 仍失败，归因见
+>   §7.1：脚本 bug + PastDB 退役 + 网络环境）。
 
 1. **已基本就绪、只需复核（约 20/30）**：输入规范（#1）、版本一致性（#2/#3）、LICENSE（#7）、Windows 打包与实测（#11/#12）、参考数据机读清单（#14/#15/#17）、六份验证文档（#18–#23）、7 个分析模块实现+金标准（#24–#30）均已落地且有**具体文件/提交/测试类可查**。这些属于「材料齐、待作者复核措辞与许可」。
 
@@ -125,10 +126,12 @@
   `DomainCaseValidationTest 1/0/0/0`、`Gff2ParserSupportTest 5/0/0/0`、
   `ComparisonWorkflowUiTest 1/0/0/0`。**本地通过记录（`216 / 0 / 0 / 7`）不能替代远端结果**，
   两者口径不同；`c79034e` 基线的「金标准 `Skipped: 1`」问题已在远端被证伪修复。
-- `public-data-validation`（PMC/PastDB/ENA 外网依赖，job `132479612205` / `132490554373`，失败于
-  **step 5 `Audit public Arabidopsis splicing and proteomics resources`**）单独归类为
-  `failure_category = external_network`、`counts_in_platform_matrix = false`，
-  **不并入三平台矩阵、不据此判定代码失败**（Q13）。
+- `public-data-validation`（job `132479612205` / `132490554373`，失败于
+  **step 5 `Audit public Arabidopsis splicing and proteomics resources`**）单独归类，
+  `counts_in_platform_matrix = false`，**不并入三平台矩阵、不据此判定代码失败**（Q13）。
+  **归因已更正**：不再是「外部网络不可达」，而是「脚本 XLSX 魔数 bug（已修）+ PastDB 数据源退役
+  （不可修）+ PMC 即时服务/网络环境」三类，逐源取证见
+  `docs/ci-reports/v0.3.0/public-data-validation/job-summary.md` §归因复核。
 - 汇总落点：`docs/ci-reports/v0.3.0/README.md`（§1.1 = 第一次运行按 job 的实测表，
   **§7 = 第二次运行**）+ 逐平台 `job-summary.md`；仍待回收：`surefire-reports/` 明细、
   Linux 三个 JSON、artifact。

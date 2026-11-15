@@ -169,7 +169,8 @@ Release id `445353264`），页面 https://github.com/omixcore/phytoscope/releas
   - Deposit B（参考数据）：数据仓库 **当前实际 HEAD =
     `66054b700d902fdd8171c3565dc50482d5fa6f25`**（改写前的旧 SHA `249e771` 已不可达，
     映射见 §1.2），包内含最终 `LICENSES.md` / `MANIFEST.json`，且**已剔除扣留的薄荷 TPM 矩阵**
-    （9 文件 → 公开 8 文件 / 65,124,010 B，见 `docs/fcs-data-license-decision.md`）。
+    （9 文件 → 拟归档清单 8 文件 / 65,124,010 B，其中可公开再分发仅 1 个 horsemint，
+    见 `docs/fcs-data-license-decision.md`）。
   - 两包 `unzip -l` / `unzip -t` 留痕见 `docs/fcs-zenodo-handoff.md` §3.2 与
     `docs/fcs-v0.3.0-release-notes.md` §4。**上传与发布仍属 B 类待作者执行**。
 - 第 9 项本地测试的本机绿跑证据在 `docs/fcs-ci-goldset-fix-report.md` 与 B05 全量复跑；
@@ -183,7 +184,9 @@ Release id `445353264`），页面 https://github.com/omixcore/phytoscope/releas
     `validation (macos-latest)` **success**（job `132490554359`，`→ 15:19:23Z`）/
     `validation (windows-latest)` **success**（job `132490554399`，`→ 15:24:16Z`）。
     同一次 run 内 `public-data-validation`（job `132490554373`，step 5
-    `Audit public Arabidopsis splicing and proteomics resources`）失败，属**外部网络类失败**，
+    `Audit public Arabidopsis splicing and proteomics resources`）失败，**归因已更正**为
+    「脚本 XLSX 魔数 bug（已修）+ PastDB 数据源退役 + 网络环境」三层（不再笼统称「外部网络」，
+    见 `docs/ci-reports/v0.3.0/public-data-validation/job-summary.md` §归因复核），
     是独立 job、不在三平台矩阵内，**单列不计入代码失败**。
     金标准测试已在远端实跑且 `Skipped: 0`（`ResearchModuleGoldSetTest 1/0/0/0`、
     `DomainCaseValidationTest 1/0/0/0`、`Gff2ParserSupportTest 5/0/0/0`、
@@ -207,7 +210,8 @@ Release id `445353264`），页面 https://github.com/omixcore/phytoscope/releas
   「已完成三平台原生验证」「许可问题已解决」「整条 workflow 全绿」
   「已做三款 GUI 软件同任务实机计时对照」。
 - 禁止把「现有 `v0.2.0` Release」与「`v0.3.0` Release」混为一谈；禁止把 `public-data-validation`
-  外部网络失败计入代码失败；禁止把「发布提交 = `0638dbe`」与「dev tip 在其后登记提交上」写成互相矛盾（§1.1）。
+  的失败计入代码失败（归因见 `docs/ci-reports/v0.3.0/public-data-validation/job-summary.md` §归因复核）；
+  禁止把「发布提交 = `0638dbe`」与「dev tip 在其后登记提交上」写成互相矛盾（§1.1）。
 - `not_collected` / `not_pushed` / `pending_release` / `not_published` 为**尚未执行时的如实值**；
   动作真实执行并取得证据后须回填实测值 + 证据，不得只改状态不写证据。当前回填情况：
   `push_state=pushed`、`release_state=published`、`zenodo_state=not_published`（不变）。

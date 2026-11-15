@@ -13,6 +13,7 @@ import hashlib
 import io
 import json
 import re
+import ssl
 import subprocess
 import sys
 import time
@@ -26,7 +27,13 @@ from pathlib import Path
 GENE_RE = re.compile(r"\bAT[1-5CM]G\d{5}\b", re.IGNORECASE)
 EVENT_RE = re.compile(r"\bAth[A-Z]{2,}\d+\b")
 PEPTIDE = "ESVEEETEEEMR"
-PASTDB_DOWNLOADS = "https://pastdb.crg.eu/wiki/Downloads"
+# PastDB (pastdb.crg.eu) was retired: the host now serves a bare "ERROR 404 NOT
+# FOUND" placeholder even at its root, so this download page is no longer
+# reachable. We keep the official URL for reproducibility and record the failure
+# as "source retired" rather than misattributing it to a transient network fault.
+# Its sibling VastDB (vastdb.crg.eu) is still live, confirming this is a
+# source-side change, not an outage of the whole CRG wiki host.
+PASTDB_DOWNLOADS = "http://pastdb.crg.eu/wiki/Downloads"
 ENA_API = (
     "https://www.ebi.ac.uk/ena/portal/api/filereport?"
     "accession=PRJNA1418670&result=read_run&"
@@ -55,8 +62,16 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def fetch_bytes(url: str, max_bytes: int = MAX_TABLE_BYTES) -> bytes:
+def fetch_bytes(url: str, max_bytes: int = MAX_TABLE_BYTES, allow_self_signed: bool = False) -> bytes:
     last_error = None
+    context = None
+    if allow_self_signed:
+        # PastDB (pastdb.crg.eu) serves a self-signed certificate. This is a
+        # read-only public-data audit, so we tolerate it for that host only.
+        # Other hosts keep the default certificate verification.
+        context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
     for attempt in range(3):
         try:
             request = urllib.request.Request(
@@ -66,7 +81,7 @@ def fetch_bytes(url: str, max_bytes: int = MAX_TABLE_BYTES) -> bytes:
                     "Accept": "*/*",
                 },
             )
-            with urllib.request.urlopen(request, timeout=120) as response:
+            with urllib.request.urlopen(request, timeout=120, context=context) as response:
                 declared = response.headers.get("Content-Length")
                 if declared and int(declared) > max_bytes:
                     raise ValueError(f"remote file exceeds byte limit ({declared} > {max_bytes})")
@@ -207,7 +222,7 @@ def parse_xlsx_hits(data, genes):
 def scrape_pastdb_tables(outdir: Path, genes):
     manifest = {"page_url": PASTDB_DOWNLOADS, "status": "not_checked", "tables": {}, "errors": []}
     try:
-        page_bytes = fetch_bytes(PASTDB_DOWNLOADS, max_bytes=20 * 1024 * 1024)
+        page_bytes = fetch_bytes(PASTDB_DOWNLOADS, max_bytes=20 * 1024 * 1024, allow_self_signed=True)
         page = page_bytes.decode("utf-8", errors="replace")
         manifest["page_sha256"] = sha256(page_bytes)
         parser = AnchorParser()
@@ -233,7 +248,7 @@ def scrape_pastdb_tables(outdir: Path, genes):
             last_error = None
             for url in urls:
                 try:
-                    data = fetch_bytes(url, max_bytes=MAX_TABLE_BYTES)
+                    data = fetch_bytes(url, max_bytes=MAX_TABLE_BYTES, allow_self_signed=True)
                     suffix = Path(urllib.parse.urlparse(url).path).suffix or ".dat"
                     (outdir / f"pastdb_{key}{suffix}").write_bytes(data)
                     if data[:4] == b"PK\x03\x04" and suffix.lower() == ".xlsx":
@@ -407,8 +422,8 @@ def fetch_supplement(name: str, urls: list[str], outdir: Path, genes):
     for url in urls:
         try:
             candidate = fetch_bytes(url)
-            if not candidate.startswith(b"PK\\x03\\x04"):
-                preview = candidate[:120].decode("utf-8", errors="replace").replace("\\n", " ")
+            if not candidate.startswith(b"PK\x03\x04"):
+                preview = candidate[:120].decode("utf-8", errors="replace").replace("\n", " ")
                 raise ValueError(f"response is not an XLSX ZIP payload; preview={preview!r}")
             data = candidate
             info = {"name": name, "url": url, "sha256": sha256(data), "bytes": len(data)}

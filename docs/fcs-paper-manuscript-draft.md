@@ -272,8 +272,9 @@ A saved `.phytoscope` project is a versioned, self-contained unit
   gene, window) plus research parameters (promoter windows, interval format) are restored.
 
 Complete reference data are distributed in the independent `phytoscope-reference-data` repository
-(9 files, 68,518,847 bytes **in the repository**; the **public deposit** is restricted to 8 files,
-65,124,010 bytes — see Data Availability; dual gitee/github mirrors, the 9-file archive was
+(9 files, 68,518,847 bytes **in the repository**; the **candidate deposit manifest** lists 8 files,
+65,124,010 bytes, of which only 1 is redistributable today — see Data Availability; dual gitee/github
+mirrors, the 9-file archive was
 introduced at commit `acac2cf` (the commit shown in Fig. 5) and the mirrors now stand at `66054b7`),
 governed by
 `MANIFEST.json` (per-file bytes, SHA-256, source URL, release, license status) and `LICENSES.md`;
@@ -281,7 +282,7 @@ governed by
 `phytoscope-reference-data/LICENSES.md` (one file confirmed CC BY 4.0; the remainder pending author
 confirmation). The mint 4-leaf TPM matrix is a derived product computed in this work — provenance is
 documented in `PROVENANCE-mint-tpm.md` — but redistribution awaits confirmation of the upstream
-read-archive terms, so it is withheld from the public deposit.
+read-archive terms, so it is withheld from the deposit.
 
 ## 2.6 Comparison and benchmark protocol (phase 6)
 
@@ -511,8 +512,9 @@ To prevent misreading, we state the boundaries explicitly:
   redistribution (`phytoscope-reference-data/LICENSES.md`, `docs/fcs-data-license-decision.md`).
   For the mint 4-leaf TPM matrix the open question is narrower: provenance **is** established (it is
   computed in this work from `SRP565976` leaf reads, see `PROVENANCE-mint-tpm.md`), but the upstream
-  read-archive redistribution terms are unconfirmed, so the file is **withheld from the public
-  deposit** (repository 9 files / 68,518,847 B vs public deposit 8 files / 65,124,010 B).
+  read-archive redistribution terms are unconfirmed, so the file is **withheld from the deposit**
+  (repository 9 files / 68,518,847 B; candidate deposit manifest 8 files / 65,124,010 B, of which
+  only 1 is redistributable today).
 
 ## 4.4 Future work
 
@@ -535,11 +537,14 @@ participants. Native macOS/Linux verification is likewise unexecuted
 
 The complete reference data are distributed from the independent
 `phytoscope-reference-data` repository (dual mirrors on gitee and github), governed by
-`MANIFEST.json`, `SHA256SUMS.txt` and `LICENSES.md`. Two scopes must be distinguished and are
+`MANIFEST.json`, `SHA256SUMS.txt` and `LICENSES.md`. Three scopes must be distinguished and are
 reported separately. The **repository** holds **9 files** totalling **68,518,847 bytes**, and
-`sha256sum -c SHA256SUMS.txt` verifies **9/9 OK**. The **public deposit** is restricted to
-**8 files** totalling **65,124,010 bytes** (68,518,847 − 3,394,837); the mint 4-leaf TPM matrix is
-withheld from public distribution, see below. Kilobyte-scale examples
+`sha256sum -c SHA256SUMS.txt` verifies **9/9 OK**. The **candidate deposit manifest** (the files
+slated for the Zenodo data deposit, after withholding the mint TPM matrix) lists **8 files**
+totalling **65,124,010 bytes** (68,518,847 − 3,394,837). Of those, only **1 file is redistributable**
+today (the horsemint annotation, CC BY 4.0); the other **7 require written permission** from the
+rights holders and are **not** publicly downloadable until that permission is obtained. The mint
+4-leaf TPM matrix is withheld from the deposit, see below. Kilobyte-scale examples
 ship inside the software repository; full data are retrieved from the data repository without any
 runtime download. Per-file accession, release, source URL, SHA-256 and license status are itemized in
 `MANIFEST.json` / `LICENSES.md` (Supplementary Table 1).

@@ -17,9 +17,11 @@
 > 的 8 条三选一结论定稿；两个 deposit 的 Description / Related identifiers / Citation 模板已定稿；
 > `docs/fcs-figure-numbering-map.md` 为图号唯一权威（本文件不涉及图号）。
 >
-> **数据包口径变更（本轮）**：Deposit B **公开归档包由 9 个文件改为 8 个文件**
+> **数据包口径变更（本轮）**：Deposit B **拟归档清单由 9 个文件改为 8 个文件**
 > （`data/species/mint/mentha_longifolia_expression.tsv` 扣留，见 §2 Deposit B 说明）；
 > 仓库 `totals` 仍为 **9 个文件 / 68,518,847 B**，`SHA256SUMS.txt` 仍为 9 行。
+> **其中可合法再分发的仅 1 个（horsemint CC BY 4.0），其余 7 个 `author_authorization_required`
+> 在取得书面许可前不得公开下载。**
 
 ## 0. 占位符清单（全部未回填；集中登记于 `docs/fcs-zenodo-handoff.md`）
 
@@ -69,13 +71,16 @@
 
 ### Deposit B：数据（PhytoScope reference data）
 
-> **公开归档范围 = 8 个数据文件 / 65,124,010 B**（仓库 `totals` 仍为 9 个文件 /
+> **拟归档清单（候选）= 8 个数据文件 / 65,124,010 B**（仓库 `totals` 仍为 9 个文件 /
 > 68,518,847 B）。扣留 1 个文件：
 > `data/species/mint/mentha_longifolia_expression.tsv`（3,394,837 B）——
 > `distribution_status: withdrawn_from_public_deposit`，
 > `license_decision: withdrawn_pending_upstream_confirmation`。
-> **该文件保留在仓库中供内部复现与审计，但不进入公开归档包**；其溯源已确证，见
+> **该文件保留在仓库中供内部复现与审计，但不进入拟归档清单**；其溯源已确证，见
 > `phytoscope-reference-data/PROVENANCE-mint-tpm.md`。
+> **注意**：这 8 个文件里仅 1 个（horsemint CC BY 4.0）可合法再分发，其余 7 个
+> `author_authorization_required` 在取得书面许可前**不得公开下载**——「8 个文件」是拟归档清单，
+> 不是「8 个可公开文件」。
 > `SHA256SUMS.txt` **仍为 9 行**（仓库口径未变），打包时**不删任何字节**，
 > 只在上传的 ZIP 中排除该 1 个文件，并在包内 `README.md` / `LICENSES.md` 顶部保留扣留声明。
 
@@ -113,14 +118,16 @@
   完成基因结构查看、表达矩阵挂载、序列提取、蛋白质相似性与结构域映射等分析，并以 SHA-256 溯源
   与版本化 Manifest 保证结果可复现。本版本（v0.3.0）内置瘦身后的 KB 级示例，完整参考数据见
   配套数据归档（{{DATA_DOI}}）。**软件许可 MIT**。
-- **数据**：PhytoScope 参考数据归档**公开包**，含 **8 个文件 / 65,124,010 B** —— TAIR10 基因组
+- **数据**：PhytoScope 参考数据归档**拟归档清单**，含 **8 个文件 / 65,124,010 B** —— TAIR10 基因组
   FASTA、Araport11 Chr1–Chr5 注释、horsemint（*Mentha longifolia*）染色体级基因组注释、
   E-MTAB-7978 表达图谱；附逐文件 SHA-256 校验和、双 gitee/github 镜像与来源 / 许可清单
   （见 `MANIFEST.json` 与 `LICENSES.md`）。**许可为多许可（Other）**：1 条已确证 CC BY 4.0，
   8 条待确认，逐条见 `LICENSES.md`；不得归并成单一 CC BY 4.0。
   **说明**：数据仓库共 9 个文件 / 68,518,847 B；其中 horsemint 4 叶 TPM 矩阵
-  （`mentha_longifolia_expression.tsv`）**不进入本公开包**（溯源已确证但上游读段许可未落定，
+  （`mentha_longifolia_expression.tsv`）**不进入本拟归档清单**（溯源已确证但上游读段许可未落定，
   处置为 `withdrawn_from_public_deposit`），保留在仓库中供内部复现。
+  **注意**：这 8 个文件里仅 1 个（horsemint CC BY 4.0）可合法再分发，其余 7 个
+  `author_authorization_required` 在取得书面许可前不得公开下载。
 
 ## 4. 贡献者 / 机构
 
@@ -148,7 +155,7 @@
   | 8 | E-MTAB-7978 `expression.tsv` | ⚠️ 进（需许可） | ⚠️ 待确认：需向数据所有者（Mergner / TUM）确认许可 | `author_authorization_required` |
   | 9 | mint 4 叶 TPM `mentha_longifolia_expression.tsv` | ❌ **不进公开包** | ⚠️ **溯源已确证、许可未落定**：本项目自行计算的衍生数据，上游注释/基因组 CC BY 4.0，但 INSDC 读段无明示许可 | `withdrawn_pending_upstream_confirmation` |
 
-  **合计 1 confirmed（CC BY 4.0）+ 8 待确认；公开包 8 个文件 / 65,124,010 B。**
+  **合计 1 confirmed（CC BY 4.0）+ 8 待确认；拟归档清单 8 个文件 / 65,124,010 B（其中可公开仅 1 个 horsemint）。**
 
 - **8 条未定稿 / 未获权利人书面许可前，不得归并成 CC BY 4.0**：即使三选一结论已定稿，
   `license_status` 一律保持 `needs_confirmation`，`conclusion_is_authorization = false`，

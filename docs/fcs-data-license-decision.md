@@ -20,7 +20,10 @@
 > `scripts/**` / 逐文件 `sha256` / `bytes` / `path` / `baseline_blob` 全部不动，
 > `sha256sum -c SHA256SUMS.txt` 仍 9/9 OK；`MANIFEST.json` 的 `totals.files = 9`、
 > `totals.bytes = 68518847`、`len(files) = 9` 保持不变（`totals_unchanged = true`）。
-> **公开归档包为 8 个文件 / 65,124,010 B**（见 §1 #8 与 §4）——仓库口径与公开包口径是两件事。
+> **拟归档清单（Deposit B 候选）为 8 个文件 / 65,124,010 B**（见 §1 #8 与 §4）——
+> 仓库口径、拟归档清单口径、可公开再分发口径是**三件不同的事**，不得混用。
+> **其中可合法再分发的仅 1 个文件**（horsemint 注释，CC BY 4.0）；其余 7 个
+> `author_authorization_required` 在取得书面许可前**不得公开下载**。
 
 ---
 
@@ -45,7 +48,8 @@
 `withdrawn_pending_upstream_confirmation` **1 条**（#8）、
 `redistribute` **0 条**（8 条待确认中无可直接分发项）；另有 1 条 `confirmed`（CC BY 4.0，见 §2.3）。
 合计 **1 confirmed + 8 待确认**，与论文 Data Availability 稳定口径一致。
-**公开归档包 = 8 个文件 / 65,124,010 B**；仓库 `totals` 仍为 9 / 68,518,847 B。
+**拟归档清单（Deposit B 候选）= 8 个文件 / 65,124,010 B**；仓库 `totals` 仍为 9 / 68,518,847 B。
+**其中可合法再分发的仅 1 个（horsemint）；「8 个文件」是拟归档清单，不是「8 个可公开文件」。**
 
 ---
 
@@ -98,7 +102,7 @@ Deposit B license 必须选 Other（多许可），**不得归并 CC BY 4.0**」
 |---|---|---|---|---|
 | **A2** | #1–#6（Araport11 Chr1–5 + TAIR10 FASTA） | ① 向 Phoenix Bioinformatics / TAIR 申请「再分发 substantial subsets」的**书面许可**；**或** ② 拍板在**后续版本**改用 NCBI RefSeq 染色体序列 **CP002684–CP002688**（INSDC 开放数据、无再分发限制） | TAIR Terms of Use <https://phoenixbioinformatics.atlassian.net/wiki/spaces/COM/pages/42216430/TAIR+Terms+of+Use>；Ensembl disclaimer <https://www.ensembl.org/info/about/legal/disclaimer.html> | 替换会**改变 6 个文件的 SHA-256 与字节数**，从而改变 9 文件 / 68,518,847 B 基线、`SHA256SUMS.txt`、金标准测试基线、Figure 5(c)、补表 S1、论文 Data Availability 数字与 Zenodo Deposit B；故**本次不替换**，须整体重跑并修订（设计 §10 末注记） |
 | **A3** | #7（E-MTAB-7978） | 向数据所有者确认许可；**或** 拍板按「EBI 无额外限制 + 引用 DOI **10.1038/s41586-020-2094-2** 并标注 EBI 来源」使用 | 提交者 `julia.mergner@tum.de`（Mergner / Kuster, TUM）；EBI 条款 <https://www.ebi.ac.uk/about/terms-of-use> | 仅需补齐所有者许可声明 / 引用，**不改变文件字节与基线** |
-| **A4** | #8（mint 4 叶 TPM） | **溯源已由本机查清**（本项目用 SRP565976 的 4 个叶片文库 + 本项目 CC BY 4.0 注释自行计算，见 `PROVENANCE-mint-tpm.md`），**不再需要"追根来源"**，只需就许可三选一：① 向 SRP565976 提交者确认是否允许公开再分发该 TPM 汇总值；② 拍板按「仅分发汇总统计量 + 完整引用 SRP565976 + 标注 CC BY 4.0 上游」处理；③ 维持现状（不进公开包） | SRP565976（NCBI/ENA）；上游 CC BY 4.0 <https://creativecommons.org/licenses/by/4.0/>；**禁止编造许可结论** | 现状：不进 Deposit B 公开包，公开包为 8 个文件 / 65,124,010 B；**本次不删除、字节不动**，仓库 `totals` 与 `SHA256SUMS.txt` 不变 |
+| **A4** | #8（mint 4 叶 TPM） | **溯源已由本机查清**（本项目用 SRP565976 的 4 个叶片文库 + 本项目 CC BY 4.0 注释自行计算，见 `PROVENANCE-mint-tpm.md`），**不再需要"追根来源"**，只需就许可三选一：① 向 SRP565976 提交者确认是否允许公开再分发该 TPM 汇总值；② 拍板按「仅分发汇总统计量 + 完整引用 SRP565976 + 标注 CC BY 4.0 上游」处理；③ 维持现状（不进拟归档清单） | SRP565976（NCBI/ENA）；上游 CC BY 4.0 <https://creativecommons.org/licenses/by/4.0/>；**禁止编造许可结论** | 现状：不进 Deposit B 拟归档清单，拟归档清单为 8 个文件 / 65,124,010 B（其中可公开仅 1 个 horsemint）；**本次不删除、字节不动**，仓库 `totals` 与 `SHA256SUMS.txt` 不变 |
 
 > 另：WSU Mint Genome Resources 小示例（KB 级、随主仓保留、**不在本数据仓库**）许可仍需确认；
 > 论文署名作者（Song X, Chen P, Liang F）与 git 身份（`omixcore`）一致性需作者核对（沿用既有清单，非本批新增）。
@@ -112,13 +116,15 @@ Deposit B license 必须选 Other（多许可），**不得归并 CC BY 4.0**」
 - **Deposit B license**：选 **Other（多许可）+ 引用 `LICENSES.md`**，逐条列 1 confirmed（CC BY 4.0）
   + 8 待确认。**8 条未定稿前不得归并成 CC BY 4.0**；即使本批三选一结论已定稿，
   `license_status` 仍为 `needs_confirmation`，故**仍不得归并**（`docs/zenodo-deposit-checklist.md` §5）。
-- **Deposit B 公开归档范围**：**8 个文件 / 65,124,010 B**（9 个中扣留 #8 的 3,394,837 B）。
+- **Deposit B 拟归档清单（候选）**：**8 个文件 / 65,124,010 B**（9 个中扣留 #8 的 3,394,837 B）。
   仓库 `totals` 仍为 9 / 68,518,847 B、`SHA256SUMS.txt` 仍为 9 行。
-  **归档状态保持「待发布」，DOI 占位符保持未回填。**
+  **其中可合法再分发的仅 1 个（horsemint CC BY 4.0）；其余 7 个 `author_authorization_required`
+  在取得书面许可前不得公开下载。** **归档状态保持「待发布」，DOI 占位符保持未回填。**
 - **Deposit A license**：软件 **MIT**（仓库根 `LICENSE`），与数据许可分开。
 - **论文 Data Availability**：稳定口径「9 文件 / 68,518,847 B / `sha256sum -c` 9/9 OK / 双镜像 /
   **1 confirmed + 8 待确认** / DOI 占位 pending Zenodo」**依然属实**（这是**仓库口径**），
-  但**不得**据此声称「9 个文件均可公开下载」——公开包为 8 个文件。本批**不改变**该口径中的任何数字。
+  但**不得**据此声称「9 个文件均可公开下载」——拟归档清单为 8 个文件，其中可公开的仅 1 个。
+  本批**不改变**该口径中的任何数字。
 - **Figure 5(c) / 补表 S1**：9 文件 / 68,518,847 B 的实数据不变，本批不动 `docs/paper-figures/**`。
 
 ---

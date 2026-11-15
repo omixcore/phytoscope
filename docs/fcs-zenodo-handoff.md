@@ -7,9 +7,11 @@
 > 因此：**Zenodo 归档状态保持「待发布」**；§1 五个占位符（含 `{{DATA_DOI}}`）**保持未回填**；
 > 不得在 Zenodo 设为公开。逐条条件见 `phytoscope-reference-data/LICENSES.md` §7。
 >
-> **Deposit B 公开归档范围 = 8 个文件 / 65,124,010 B**（仓库 `totals` 仍为
+> **Deposit B 拟归档清单（候选）= 8 个文件 / 65,124,010 B**（仓库 `totals` 仍为
 > **9 个文件 / 68,518,847 B**、`SHA256SUMS.txt` 仍为 9 行）。扣留
 > `data/species/mint/mentha_longifolia_expression.tsv`（见 §3.3）。
+> **其中可合法再分发的仅 1 个（horsemint CC BY 4.0）；其余 7 个 `author_authorization_required`
+> 在取得书面许可前不得公开下载。**
 
 > 批次：B03 · 执行人：工程师寇豆码（Kou）· 日期：2026-11-14（ISO-8601 UTC 口径同设计 §7.10）
 > 权威规格：`docs/design-fcs-final-delivery.md` §5 B03 #8、§3.1、§7.5；增量 PRD R5。
@@ -68,10 +70,13 @@
 | `phytoscope-reference-data-v0.3.0.zip` | 63,580,701 | 数据仓库 **`66054b7`** | 29 项 / **8 个数据文件**，已剔除扣留文件 |
 | `desktop_program/SHA256SUMS.txt`（主仓内） | 2,158 | 0.3.0 包校验和（Release 资产之一） | 已更新为重建后的值，`sha256=690905ad…` |
 
-> **公开包口径（2026-11-14 重建后已落实）**：数据包已按 **8 个数据文件**（未压缩合计
+> **拟归档包口径（2026-11-14 重建后已落实）**：数据包已按 **8 个数据文件**（未压缩合计
 > 65,124,010 B）重新打包，`data/species/mint/mentha_longifolia_expression.tsv` 已从 ZIP 中剔除
 > （理由见 §3.3）。**仓库内 `totals` 仍为 9 / 68,518,847 B、`SHA256SUMS.txt` 仍为 9 行**——
-> 「仓库口径」与「公开包口径」必须分开表述，不得互相替代。
+> 「仓库口径」「拟归档清单口径」「可公开再分发口径」必须分开表述，不得互相替代。
+> **注意**：这 8 个数据文件里仅 1 个（horsemint CC BY 4.0）可合法再分发，其余 7 个
+> `author_authorization_required` 在取得书面许可前不得公开下载——「8 个文件」是拟归档清单，
+> 不是「8 个可公开文件」。
 
 两包 SHA-256（2026-11-14 重建后实测，上传时供作者核对）：
 - `phytoscope-v0.3.0-source.zip` = `4f1a212591e9e0b32ac41882ed0b656a0c663587afc5ae8cd925709933b1c9f9`
@@ -114,9 +119,9 @@
 | `distribution_status` | `withdrawn_from_public_deposit` |
 | `license_decision` | `withdrawn_pending_upstream_confirmation` |
 | `license_status` | `needs_confirmation`（**不变**） |
-| 处置理由 | 溯源**已确证**（本项目用 SRP565976 的 4 个叶片文库 + 本项目 CC BY 4.0 horsemint 注释自行计算，见 `phytoscope-reference-data/PROVENANCE-mint-tpm.md`）；但上游 INSDC 读段**无明示许可**，故按保守原则**不进入公开归档包** |
+| 处置理由 | 溯源**已确证**（本项目用 SRP565976 的 4 个叶片文库 + 本项目 CC BY 4.0 horsemint 注释自行计算，见 `phytoscope-reference-data/PROVENANCE-mint-tpm.md`）；但上游 INSDC 读段**无明示许可**，故按保守原则**不进入拟归档清单** |
 | **不做什么** | **不删除磁盘文件**（否则 `MintTranscriptomeUiTest` 与既有基线失效）；**不改 `data/**` 字节**；**不改 `SHA256SUMS.txt` 的 9 行**；**不改 `totals`（9 / 68,518,847）** |
-| 公开包结果 | **8 个文件 / 65,124,010 B**（= 68,518,847 − 3,394,837） |
+| 拟归档清单结果 | **8 个文件 / 65,124,010 B**（= 68,518,847 − 3,394,837；其中可公开仅 1 个 horsemint） |
 
 > 打包时的正确做法：**在仓库内不删任何文件**，只在上传的 ZIP 中排除该 1 个路径，
 > 并保留包内 `README.md` / `LICENSES.md` 顶部的扣留声明。
@@ -142,5 +147,6 @@
 - **现有数据归档包不构成已具备公开再分发条件的证据；8 项许可未落定前，Deposit B 不得设为公开可下载。**
 - 对外表述固定为「**A 类 7 项本机已闭环、B 类 6 项物料齐备待作者执行、C 类 1 项给出核查结论**」；
   禁止写「已完成 Zenodo 归档 / 取得 DOI」「14 项全部完成」「已发布 v0.3.0」「数据许可已理清」。
-- **仓库口径 vs 公开包口径**：仓库 9 个文件 / 68,518,847 B / `SHA256SUMS.txt` 9 行（不变）；
-  公开包 8 个文件 / 65,124,010 B。**两者不得混用**。
+- **仓库口径 vs 拟归档清单口径 vs 可公开再分发口径**：仓库 9 个文件 / 68,518,847 B /
+  `SHA256SUMS.txt` 9 行（不变）；拟归档清单 8 个文件 / 65,124,010 B，其中可公开再分发仅 1 个
+  （horsemint）。**三者不得混用**。

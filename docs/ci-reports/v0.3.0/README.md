@@ -21,7 +21,8 @@
 > **ubuntu-latest failure**（step 10 `Java and JavaFX regressions`，
 > 14 个 JavaFX UI 测试在无头环境下 `Platform.startup` latch 超时）；
 > `public-data-validation` failure 在 step 5 `Audit public Arabidopsis splicing and proteomics resources`，
-> 属**外部网络数据源**，单列、不计入代码失败。
+> 原归「外部网络数据源」，**2026-11-15 已更正**为「脚本 XLSX 魔数 bug + PastDB 数据源退役 +
+> 网络环境」三层（见 `public-data-validation/job-summary.md` §归因复核），单列、不计入代码失败。
 >
 > **该 ubuntu 失败已定位并修复，且修复后已在 run `43609281554` 上经远端重跑确认（见 §7）**。
 > 采集时间：**2026-11-14T14:41:50Z**（GitHub REST API，取 run `updated_at` 为快照时间）。
@@ -64,10 +65,10 @@
 | `platforms.{os}.artifacts` | `[]`（artifact 未下载，**待回收**） |
 | `platforms.ubuntu.failure_reason` | **`"Java and JavaFX regressions 步骤失败：14 个 JavaFX UI 测试在无头环境下 Platform.startup latch 超时（代码类，非外网）"`** |
 | `platforms.{windows,macos}.failure_reason` | `""`（该平台本 run 无失败） |
-| `public_data_validation.status` | **`"fail (external network)"`** |
+| `public_data_validation.status` | **`"fail"`**（历史记 `"fail (external network)"`；归因已更正，见 `public-data-validation/job-summary.md`） |
 | `public_data_validation.counts_in_platform_matrix` | **`false`**（固定） |
-| `public_data_validation.failure_category` | **`"external_network"`**（固定，Q13，非代码逻辑） |
-| `public_data_validation.failure_reason` | `"外网 PMC/PastDB/ENA 依赖不可达，非代码缺陷；不据此判定 validation job 失败"` |
+| `public_data_validation.failure_category` | **`"external_network"`**（历史值；2026-11-15 更正为「脚本 bug + 数据源退役 + 网络环境」三层） |
+| `public_data_validation.failure_reason` | `"audit_public_splicing_evidence.py processed_available=false；根因：XLSX 魔数 bug（已修）+ PastDB 数据源退役 + PMC 即时服务返回 HTML/网络环境"` |
 | `evidence_chain_footnote` | `""`（string；**证据链脚注，非失败项**，见设计 §3.1 / §11.2）：B01 曾暴露 `ComparisonWorkflowUiTest` 既有 FX 缺陷 → 主理人第三轮裁定必修 → B01b（`ca8743e`）测试侧两阶段 FX 重构修复（断言 verbatim / `src/main/java` 零改动 / 单条 `verify` 不变）。**不并入 `c79034e` 基线、不并入外部网络类、不进 failure→success 矩阵、不判代码失败**。**注意**：本 run ubuntu 的 FX 失败属**新增的无头环境并发/超时问题**，与该脚注的既有缺陷修复不是同一事项，勿混写 |
 | `overall_honest_statement` | `"A 类 7 项本机已闭环、B 类 6 项物料齐备待作者执行、C 类 1 项给出核查结论"`（固定） |
 | `baseline_reference` | `"docs/prd-fcs-final-delivery.md §1 / §1.1（HEAD c79034e）；本 run 为其后的修复 HEAD"`（固定） |
@@ -140,11 +141,13 @@
    **不得**把「2 of 3 success」概括为「三平台通过」或「CI 全绿」。
    该 ubuntu failure 的修复已在 run `43609281554` 上经远端重跑确认通过（**§7**）；
    引用「三平台通过」时**只允许**绑定 §7 的 run id 与 commit `0638dbe`，不得反向套用到本节这次运行。
-2. `public-data-validation` 的失败是**外部网络类**（PMC/PastDB/ENA 不可达，`failure_category = external_network`），
-   **永远不并入三平台 `validation` 矩阵结论**（`counts_in_platform_matrix = false`），
-   **不据此判定代码失败**，也不混入「CI 转 success」结论。
+2. `public-data-validation` 的失败**归因已更正**为「脚本 XLSX 魔数 bug（已修）+ PastDB 数据源退役 +
+   PMC 即时服务/网络环境」三层（不再笼统称「外部网络不可达」，见
+   `public-data-validation/job-summary.md` §归因复核）。**仍永远不并入三平台 `validation` 矩阵结论**
+   （`counts_in_platform_matrix = false`），**不据此判定代码失败**，也不混入「CI 转 success」结论。
 3. 平台 `failure_reason` 只写代码类原因（`Java and JavaFX regressions` 的 FX 无头 latch 超时属代码/测试环境类；
-   `check_isoform_case` / `Real case` / 金标准门控属历史基线项）；外网类原因一律只归入 `public_data_validation`。
+   `check_isoform_case` / `Real case` / 金标准门控属历史基线项）；`public-data-validation` 的失败原因只写在本 job 的
+   `job-summary.md`，不写入三平台 `failure_reason`。
 4. `docs/fcs-phase2-verification-report.md` 与 `docs/fcs-submission-gap-audit.md` #10
    须与本文件一致：**ubuntu 明确写 failure（附步骤与原因），不得写 pass**；
    金标准计数可引用 §1.1 的远端实测值，但**不得**把本地 `216/0/0/7` 当远端结果。
@@ -232,8 +235,10 @@ old_commit_49a5fac_equals_after_rewrite: 76712bd
 
 - **三平台矩阵 `validation` 三个 job 全部 success** —— `platforms.ubuntu.status = "success"`，
   `status_transition = failure → success`（相对 §1 的 `49a5fac` 那次，亦相对 `c79034e` 基线为 `failure → success`）。
-- `public-data-validation` 仍为**外部网络类失败**（同一 step 5，PMC/PastDB/ENA 不可达），
+- `public-data-validation` 仍失败（同一 step 5）。**归因已更正**：不再是单纯的「外部网络不可达」，
+  而是「脚本 XLSX 魔数 bug（已修）+ PastDB 数据源退役（不可修）+ 本机/CI 网络环境差异」三类，
   `counts_in_platform_matrix = false`，**不并入矩阵结论、不判代码失败**。
+  逐源取证见 `public-data-validation/job-summary.md` §「归因复核」。
 
 ### 7.3 ubuntu 测试计数（该 job 日志实测，`Skipped: 0` 门控通过）
 
@@ -281,7 +286,8 @@ BUILD SUCCESS
 
 - 可以说：「**三平台矩阵（ubuntu / macos / windows）在 `0638dbe` 上通过**」，
   并附 job id 与时间戳。
-- **不得**说「整条 workflow 全绿」——同一 run 内 `public-data-validation` 仍 failure（外部网络）。
+- **不得**说「整条 workflow 全绿」——同一 run 内 `public-data-validation` 仍 failure
+  （归因见 `public-data-validation/job-summary.md` §归因复核：脚本 bug + PastDB 退役 + 网络环境）。
 - **不得**把本节结论外推为「已完成三平台**原生**人工验证」：Monocle headless 不能认证原生对话框、
   DPI 缩放、图形驱动、签名/公证或 SmartScreen 提示（§2 硬约束仍有效）。
 - 本节所有数值均来自 GitHub REST API 与 runner 日志，**未由本地结果代入**。

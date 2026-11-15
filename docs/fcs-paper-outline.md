@@ -200,7 +200,8 @@ The old "Figure 2 = cross-species gold / Figure 4 = comparison" mapping is retir
 > **Status: `filled`** — written out in `docs/fcs-paper-manuscript-draft.md` (Data Availability).
 
 - `phytoscope-reference-data` repository (**dual mirrors**: gitee + github, both at `66054b7`):
-  **9 files / 68,518,847 B** in the repository; **public deposit = 8 files / 65,124,010 B**
+  **9 files / 68,518,847 B** in the repository; **candidate deposit manifest = 8 files /
+  65,124,010 B**, of which **only 1 is redistributable** today (horsemint CC BY 4.0)
   (mint TPM matrix withheld), `MANIFEST.json` + `SHA256SUMS.txt` + `LICENSES.md`;
   `sha256sum -c SHA256SUMS.txt` → **9/9 OK**.
 - Each dataset's accession/release/source URL/SHA-256/access date (→ Supplementary Table 1).
@@ -274,7 +275,7 @@ See §6 below.
 
 | Sup Table | Title | Content | Data source |
 |---|---|---|---|
-| Sup Table 1 | Reference-data inventory & provenance | 9 files (public deposit: 8): path, bytes, SHA-256, source URL, release, license status | `phytoscope-reference-data/MANIFEST.json` + `LICENSES.md` |
+| Sup Table 1 | Reference-data inventory & provenance | 9 files (candidate deposit: 8, of which 1 redistributable): path, bytes, SHA-256, source URL, release, license status | `phytoscope-reference-data/MANIFEST.json` + `LICENSES.md` |
 | Sup Table 2 | Test/evidence coverage matrix | requirement → test class / script → evidence doc → status (P0/P1/P2) | `docs/prd-fcs-submission.md` requirement pool; `docs/fcs-submission-gap-audit.md` 30-item table |
 | Sup Table 3 | Tool capability & design-difference matrix | PhytoScope vs JBrowse2/IGV/TBtools/gffutils/Biopython: shared task, correctness evidence, workflow properties, design difference (no superiority) | `docs/prd-fcs-submission.md` §3.1; `docs/non-model-portability-evidence.md` §"Fair alternatives comparison" |
 | Sup Table 4 | Software & reproduction information | version/tag, DOI (pending), run environment (JDK 21, Maven), reproduce commands, platform status | `docs/chromosome-validation.md` §Reproduce; `docs/desktop-distribution.md`; gap audit §二 |

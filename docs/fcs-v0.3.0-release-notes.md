@@ -115,7 +115,7 @@ git 历史 pack 与 fresh-clone 大小未变；只有当前 checkout 与构建�
 | `../dist/PhytoScope-Windows-AMD64.zip` | 113,094,544 | `927b000219cd9b1d08f577c4fb315ff86538656cfc11451872f05c7e4911aa2c` | `historical`，字节不动 |
 | `../dist/PhytoScope-Windows-0.2.0.zip` | 110,405,267 | `763b1c42350872047f36eb6c944ea3ebfd10ffaaca7a1fb8a59645a2392b3cce` | `historical`，字节不动 |
 | `../dist/phytoscope-v0.3.0-source.zip` | **11,658,264** | `4f1a212591e9e0b32ac41882ed0b656a0c663587afc5ae8cd925709933b1c9f9` | Deposit A（`git archive 0638dbe`，460 项，ZIP 注释即该 SHA） |
-| `../dist/phytoscope-reference-data-v0.3.0.zip` | 63,580,701 | `e88a9cfa172244a71b88fe580991160f536bf6e75a91213960e69aadaa180416` | Deposit B（数据仓 `66054b7`，**29 项 / 8 个数据文件**，已剔除扣留的薄荷 TPM） |
+| `../dist/phytoscope-reference-data-v0.3.0.zip` | 63,580,701 | `e88a9cfa172244a71b88fe580991160f536bf6e75a91213960e69aadaa180416` | Deposit B（数据仓 `66054b7`，**29 项 / 8 个数据文件**，已剔除扣留的薄荷 TPM；其中可公开再分发仅 1 个 horsemint） |
 
 > 新包约 **44 MiB**，**不是** 110 MB 历史 v0.2.0 包（瘦身生效）。两个历史 ZIP
 > **字节未动、未删除、未重建**。
@@ -158,12 +158,14 @@ git 历史 pack 与 fresh-clone 大小未变；只有当前 checkout 与构建�
     `validation (ubuntu-latest)` **failure**（job `132479612471`，失败于
     **step 10 `Java and JavaFX regressions`**，14 个 JavaFX UI 测试在无头环境下
     `Platform.startup` latch 超时）；`public-data-validation` 失败（job `132479612205`，
-    **step 5 `Audit public Arabidopsis splicing and proteomics resources`**）属**外部网络数据源**，不计代码失败。
+    **step 5 `Audit public Arabidopsis splicing and proteomics resources`**）——归因已更正为
+    「脚本 XLSX 魔数 bug + PastDB 数据源退役 + 网络环境」（见
+    `docs/ci-reports/v0.3.0/public-data-validation/job-summary.md` §归因复核），不计代码失败。
   - **第二次（run `43609281554`，`run_attempt=1`，commit `0638dbe` = 发布提交，三平台绿）**：
     `validation (ubuntu-latest)` **success**（job `132490554008`，`15:16:31Z → 15:32:41Z`）、
     `validation (macos-latest)` **success**（job `132490554359`，`→ 15:19:23Z`）、
     `validation (windows-latest)` **success**（job `132490554399`，`→ 15:24:16Z`）；
-    同 run 内 `public-data-validation`（job `132490554373`，step 5 同上）仍为**外部网络失败**，
+    同 run 内 `public-data-validation`（job `132490554373`，step 5 同上）仍失败（归因同上），
     是独立 job、不在三平台矩阵内。
   - **口径**：可以说「**三平台矩阵在 commit `0638dbe` 上通过**」；**不得**说「整条 workflow 全绿」。
 - 金标准链路**确已在远端执行**：`ResearchModuleGoldSetTest 1/0/0/0`、
