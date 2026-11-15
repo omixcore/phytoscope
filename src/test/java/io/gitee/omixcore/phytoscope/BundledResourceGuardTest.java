@@ -24,9 +24,9 @@ class BundledResourceGuardTest {
 
     @Test
     void everyCatalogueResourceExistsAndIsSmall() {
-        assertEquals(6, ExampleDataset.CATALOGUE.size(), "CATALOGUE 应恰好保留 6 个小示例");
+        assertEquals(6, ExampleDataset.CATALOGUE.size(), "");
         for (ExampleDataset d : ExampleDataset.CATALOGUE) {
-            assertEquals(1, d.annotationResources().size(), d.id() + " 必须是单文件示例");
+            assertEquals(1, d.annotationResources().size(), d.id());
             for (String res : d.annotationResources()) assertBundled(res, d.id());
             if (d.expressionResource() != null) assertBundled(d.expressionResource(), d.id());
         }
@@ -37,15 +37,15 @@ class BundledResourceGuardTest {
         for (ExampleDataset d : ExampleDataset.CATALOGUE) {
             for (String res : d.annotationResources()) {
                 assertTrue(EXTERNAL_MARKERS.stream().noneMatch(res::contains),
-                        "外迁资源不得回到 CATALOGUE: " + res);
+                        "" + res);
             }
             if (d.expressionResource() != null) {
                 String res = d.expressionResource();
                 assertTrue(EXTERNAL_MARKERS.stream().noneMatch(res::contains),
-                        "外迁资源不得回到 CATALOGUE: " + res);
+                        "" + res);
             }
         }
-        assertNull(ExampleDataset.byId("mint-genome"), "完整 horsemint 示例已外迁");
+        assertNull(ExampleDataset.byId("mint-genome"), "");
         assertEquals("arabidopsis", ExampleDataset.defaultDataset().id());
         assertNull(ExampleDataset.defaultDataset().expressionResource());
     }
@@ -59,18 +59,18 @@ class BundledResourceGuardTest {
     void oversizedResourceIsRejectedByTheGuard() {
         byte[] oversized = new byte[(int) MAX_BUNDLED_BYTES + 1];
         assertTrue(oversized.length > MAX_BUNDLED_BYTES,
-                "守卫阈值之上必须判为超大文件，否则守卫无效");
+                "");
         assertFalse(oversized.length < MAX_BUNDLED_BYTES,
-                "256 KB 以上的文件不得通过小示例守卫");
+                "");
     }
 
     private void assertBundled(String resource, String id) {
         try (InputStream in = getClass().getResourceAsStream(resource)) {
-            assertNotNull(in, id + " 的资源不存在: " + resource);
+            assertNotNull(in, id + ": " + resource);
             long bytes = in.readAllBytes().length;
-            assertTrue(bytes > 0, resource + " 不得为空");
+            assertTrue(bytes > 0, resource);
             assertTrue(bytes < MAX_BUNDLED_BYTES,
-                    resource + " 单文件 " + bytes + " B 超过 256 KB：完整数据请放入独立数据仓库");
+                    resource + ": " + bytes);
         } catch (IOException e) {
             fail(e);
         }

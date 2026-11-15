@@ -17,19 +17,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /** Real reference coordinates are independently derived by the Python case pipeline. */
 class DomainCaseValidationTest {
-    private static final Path CASE = Path.of("examples/arabidopsis-isoform-validation");
+    private static final Path CASE = Path.of("src/test/resources/examples/arabidopsis-isoform-validation");
     private static final ObjectMapper JSON = new ObjectMapper();
 
     private static Path referenceDataDir() {
         String dir = System.getProperty("phytoscope.referenceDataDir");
         Assumptions.assumeTrue(dir != null && !dir.isBlank(),
-                "依赖已外迁的完整参考数据：TAIR10 全基因组 FASTA 已迁移至独立数据仓库，"
-                        + "需设置 -Dphytoscope.referenceDataDir=<独立数据仓库目录> 以复现 13 个候选的蛋白序列验证");
+                ""
+                        + "Set -Dphytoscope.referenceDataDir to the external reference data directory.");
         return Path.of(dir);
     }
 
     @Test void frozenIsoformsAndDomainBlocksMatchTheApplicationAndRestore() throws Exception {
-        // examples/arabidopsis-isoform-validation/* remains in this repository
+        // The annotation and candidate list are checked-in test fixtures.
         // (out of scope, §0.4); only the genome FASTA moved to the external
         // repository. All 16-candidate / 13-gene / protein / domain / project
         // round-trip assertions below are preserved verbatim.

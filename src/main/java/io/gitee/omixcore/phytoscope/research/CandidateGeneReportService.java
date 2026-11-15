@@ -131,7 +131,7 @@ public final class CandidateGeneReportService {
                     for (SampleValue value : card.expression().values()) {
                         sb.append("  - ").append(value.sample()).append(": ");
                         if (value.missing()) {
-                            sb.append("无表达 (NA)\n");
+                            sb.append("No expression (NA)\n");
                         } else {
                             sb.append(formatValue(value.value())).append('\n');
                         }

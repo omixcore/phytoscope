@@ -18,14 +18,14 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * QA 补充的边角/错误路径测试，独立于工程师自测，覆盖主理人指定的验收易错点。
+ * Regression coverage for annotation and expression edge cases.
  */
 class QaEdgeCaseTest {
 
     @TempDir Path temp;
 
     // ------------------------------------------------------------------
-    // 验收2 补充：CDS 三分类的"缺 ATG 但含终止密码子"仍判"不完整"
+
     // ------------------------------------------------------------------
 
     @Test
@@ -47,14 +47,14 @@ class QaEdgeCaseTest {
                         issue.code() == IssueCode.CDS_INCOMPLETE
                                 && issue.severity() == Severity.WARNING
                                 && "g1".equals(issue.geneId())),
-                "缺起始密码子但含终止密码子的 CDS 应判为 CDS_INCOMPLETE(警告)");
+                "");
         assertFalse(report.issues().stream().anyMatch(issue ->
                         issue.code() == IssueCode.CDS_TRUE_ANOMALY && "g1".equals(issue.geneId())),
-                "缺起始密码子的 CDS 不得误判为真实异常");
+                "");
     }
 
     // ------------------------------------------------------------------
-    // 验收2 补充：phase "." 合法未知不告警；3/-1/非数字才告警
+
     // ------------------------------------------------------------------
 
     @Test
@@ -79,16 +79,16 @@ class QaEdgeCaseTest {
 
         assertFalse(report.issues().stream().anyMatch(issue ->
                         issue.code() == IssueCode.INVALID_PHASE && "g_dot".equals(issue.geneId())),
-                "phase='.' 是合法未知值，不应告警");
+                "");
 
         long badPhaseCount = report.issues().stream()
                 .filter(issue -> issue.code() == IssueCode.INVALID_PHASE && "g_bad".equals(issue.geneId()))
                 .count();
-        assertEquals(3, badPhaseCount, "phase=3/-1/X 应各产生一条 INVALID_PHASE 警告");
+        assertEquals(3, badPhaseCount, "");
     }
 
     // ------------------------------------------------------------------
-    // 验收3 补充：负链基因坐标 + 精确行号追溯 + 缺失表达 NA 而非 0
+
     // ------------------------------------------------------------------
 
     @Test
@@ -104,7 +104,7 @@ class QaEdgeCaseTest {
         var genome = new GenomeDataService();
         genome.loadFromContent(annotation, "minus.gff3");
 
-        // 表达矩阵里没有 g_minus，也没有任何 ID → 该基因无表达记录。
+
         var expression = new ExpressionDataService();
         expression.loadFromFile(writeMatrix("""
                 # unit=TPM
@@ -120,35 +120,35 @@ class QaEdgeCaseTest {
 
         assertEquals(1, report.cards().size());
         var card = report.cards().getFirst();
-        assertEquals('-', card.strand(), "负链基因应显式标注 strand='-'");
-        // GFF3 坐标是基因组坐标（5'->3'），负链也不镜像。
+        assertEquals('-', card.strand(), "");
+
         assertEquals(500, card.overlap().start());
         assertEquals(600, card.overlap().end());
         assertEquals(101, card.overlap().length());
 
-        // 来源追溯：行号必须精确指向该基因所在行。
-        int geneLine = lineNumber(annotation, "ID=g_minus");
-        assertEquals(geneLine, card.source().geneLineNumber(), "证据卡应追溯到基因的原始行号");
 
-        // 缺失表达：present=false，样本全部 missing（NA），不得补 0 或猜值。
-        assertFalse(card.expression().present(), "矩阵缺失该基因时应标记为无表达记录");
+        int geneLine = lineNumber(annotation, "ID=g_minus");
+        assertEquals(geneLine, card.source().geneLineNumber(), "");
+
+
+        assertFalse(card.expression().present(), "");
         assertNull(card.expression().inputId());
         assertTrue(card.expression().values().stream().allMatch(v -> v.missing()));
 
         String csv = report.toCsv();
-        assertTrue(csv.contains("NA"), "CSV 对缺失表达应写 NA 而非 0");
-        assertTrue(csv.contains("-"), "CSV 应保留负链 strand 列");
+        assertTrue(csv.contains("NA"), "");
+        assertTrue(csv.contains("-"), "");
     }
 
     // ------------------------------------------------------------------
-    // 特别核实点3 补充：getSkippedRows() 与 getDiagnostics() 在 replaceWith 后一致性
+
     // ------------------------------------------------------------------
 
     @Test
     void skippedRowsStaysConsistentAfterReplaceWith() throws Exception {
         var withSkips = new GenomeDataService();
         withSkips.loadFromContent("##gff-version 3\nbroken\nbroken\n", "skips");
-        assertTrue(withSkips.getSkippedRows() > 0, "含畸形行时 getSkippedRows 应 > 0");
+        assertTrue(withSkips.getSkippedRows() > 0, "");
 
         var clean = new GenomeDataService();
         clean.loadFromContent("##gff-version 3\n##sequence-region chr1 1 10\n"
@@ -159,13 +159,13 @@ class QaEdgeCaseTest {
 
         assertEquals(withSkips.getDiagnostics().skippedRowTotal(),
                 clean.getDiagnostics().skippedRowTotal(),
-                "replaceWith 应携带结构化诊断总量");
+                "");
         assertEquals(withSkips.getSkippedRows(), clean.getSkippedRows(),
-                "replaceWith 后 getSkippedRows() 必须与 getDiagnostics() 一致（同为最近一次加载）");
+                "");
     }
 
     // ------------------------------------------------------------------
-    // 特别核实点4 补充：ParseResult 4 参便捷构造向后兼容
+
     // ------------------------------------------------------------------
 
     @Test
@@ -175,8 +175,8 @@ class QaEdgeCaseTest {
                 io.gitee.omixcore.phytoscope.model.GenomeMetadata.fromAnnotation(
                         null, null, "", "empty", java.util.List.of()));
 
-        assertNotNull(result.diagnostics(), "4 参构造不应产生 null diagnostics");
-        assertEquals(ParseDiagnostics.empty(), result.diagnostics(), "4 参构造应默认空诊断");
+        assertNotNull(result.diagnostics(), "");
+        assertEquals(ParseDiagnostics.empty(), result.diagnostics(), "");
         assertEquals(0, result.diagnostics().skippedRowTotal());
         assertTrue(result.diagnostics().orphans().isEmpty());
     }
@@ -195,7 +195,7 @@ class QaEdgeCaseTest {
         String[] lines = text.split("\n", -1);
         for (int i = 0; i < lines.length; i++) {
             if (lines[i].contains(needle)) {
-                return i + 1; // 1-based, 与解析器 lineNumber 语义一致
+                return i + 1; // Match the parser’s 1-based line numbers.
             }
         }
         throw new IllegalArgumentException("needle not found: " + needle);

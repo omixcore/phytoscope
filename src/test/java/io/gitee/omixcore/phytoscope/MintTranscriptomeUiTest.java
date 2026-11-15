@@ -180,9 +180,8 @@ class MintTranscriptomeUiTest {
     private static Path requireReferenceData() {
         String dir = System.getProperty("phytoscope.referenceDataDir");
         Assumptions.assumeTrue(dir != null && !dir.isBlank(),
-                "依赖已外迁的完整参考数据：完整 horsemint 注释与 4 叶 TPM 矩阵需 "
-                        + "-Dphytoscope.referenceDataDir=<独立数据仓库目录> 才能复跑端到端 UI 流程；"
-                        + "断言体原样保留供复跑");
+                ""
+                        + "Set -Dphytoscope.referenceDataDir to the external reference data directory.");
         return Path.of(dir);
     }
 }

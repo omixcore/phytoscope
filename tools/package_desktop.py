@@ -1,5 +1,5 @@
 """Build a self-contained OS-specific application image using the current JDK's jpackage."""
-import argparse, os, platform, shutil, subprocess, sys
+import argparse, os, platform, re, shutil, subprocess, sys
 from pathlib import Path
 p=argparse.ArgumentParser();p.add_argument('--jar',type=Path,required=True);p.add_argument('--out',type=Path,default=Path('target/desktop'));a=p.parse_args()
 if not a.jar.is_file(): raise SystemExit('Build the executable JAR first')
@@ -16,9 +16,12 @@ shutil.copy2(a.jar,staging/a.jar.name)
 existing=a.out/('PhytoScope.app' if sys.platform=='darwin' else 'PhytoScope')
 if existing.exists(): shutil.rmtree(existing)
 a.out.mkdir(parents=True,exist_ok=True)
-# macOS rejects bundle versions whose first component is zero, while the
-# Maven application version remains 0.2.0. Use a valid bundle-only version there.
-app_version = '1.0.0' if sys.platform == 'darwin' else '0.2.0'
+version_match = re.fullmatch(r"phytoscope-(\d+\.\d+\.\d+)\.jar", a.jar.name)
+if version_match is None:
+    raise SystemExit("Expected a versioned executable JAR such as phytoscope-0.3.0.jar")
+version = version_match.group(1)
+# macOS requires the first component of its bundle build version to be positive.
+app_version = f"1.{version.split('.', 1)[1]}" if sys.platform == 'darwin' and version.startswith('0.') else version
 command=[str(jpackage),'--type','app-image','--name','PhytoScope','--app-version',app_version,'--vendor','omixcore',
          '--input',str(staging),'--main-jar',a.jar.name,'--dest',str(a.out),
          # Slim runtime: only the JDK modules the application actually uses.
@@ -40,6 +43,6 @@ subprocess.run([str(launcher.resolve()),'--benchmark','--example','rice','--out'
 print('PASS: packaged runtime launched and parsed the rice example')
 
 image_name='PhytoScope.app' if sys.platform=='darwin' else 'PhytoScope'
-archive=shutil.make_archive(str(a.out/('PhytoScope-'+platform.system()+'-'+platform.machine())),
+archive=shutil.make_archive(str(a.out/(f'PhytoScope-{platform.system()}-{platform.machine()}-{version}')),
                            'zip' if sys.platform=='win32' else 'gztar',root_dir=a.out,base_dir=image_name)
 print('Distributable archive:',archive)

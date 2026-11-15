@@ -145,7 +145,7 @@ public final class ResearchAnalysisPane extends BorderPane {
         // Second UI surface for sequence extraction: fail visibly when no FASTA
         // is loaded instead of surfacing only a terse IOException from the service.
         if (sequences == null || !sequences.isLoaded()) {
-            write("序列提取不可用", GeneDetailPane.FASTA_EMPTY_STATE_TEXT);
+            write("Sequence extraction unavailable", GeneDetailPane.FASTA_EMPTY_STATE_TEXT);
             return;
         }
         try {
@@ -161,7 +161,7 @@ public final class ResearchAnalysisPane extends BorderPane {
     private void customInterval() {
         // Match the promoter path: the same single-source empty-state message.
         if (sequences == null || !sequences.isLoaded()) {
-            write("序列提取不可用", GeneDetailPane.FASTA_EMPTY_STATE_TEXT);
+            write("Sequence extraction unavailable", GeneDetailPane.FASTA_EMPTY_STATE_TEXT);
             return;
         }
         try {

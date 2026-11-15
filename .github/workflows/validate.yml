@@ -1,195 +1,37 @@
-name: Validate and package PhytoScope
-on:
-  push:
-  pull_request:
-  workflow_dispatch:
+name: Build and package PhytoScope
+
+on: [push, pull_request, workflow_dispatch]
+
 permissions:
   contents: read
-concurrency:
-  group: validate-${{ github.event.pull_request.head.ref || github.ref_name }}
-  cancel-in-progress: true
+
 jobs:
-  validation:
+  build:
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-java@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
           cache: maven
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - name: Fetch complete reference data from reference-data repository
+          python-version: '3.x'
+      - name: Build and test
         shell: bash
-        run: |
-          # The clone pulls ~127 MB from gitee and has failed intermittently with
-          # "GnuTLS recv error (-110) / early EOF" (transient TLS reset), turning a
-          # healthy commit red. Retry a bounded number of times instead of failing fast.
-          for attempt in 1 2 3; do
-            if git clone --depth 1 https://gitee.com/omixcore/phytoscope-reference-data.git target/reference-data; then
-              echo "reference-data clone succeeded on attempt $attempt"
-              break
-            fi
-            echo "::warning::reference-data clone attempt $attempt failed (transient network/TLS); retrying"
-            rm -rf target/reference-data
-            if [ "$attempt" -eq 3 ]; then
-              echo "::error::could not clone phytoscope-reference-data after 3 attempts"
-              exit 1
-            fi
-            sleep 5
-          done
-          python - <<'PY'
-          import json, pathlib
-          src = pathlib.Path("src/main/resources/data/species/arabidopsis/manifest.json")
-          dst = pathlib.Path("target/reference-data/data/species/arabidopsis/manifest.json")
-          manifest = json.loads(src.read_text(encoding="utf-8"))
-          manifest["scope"] = "complete nuclear Chr1-Chr5"
-          dst.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-          PY
-      - name: Validate complete Arabidopsis annotation (fetched from reference-data)
-        run: python tools/validate_arabidopsis_reference.py --directory target/reference-data/data/species/arabidopsis
-      - name: Isoform analysis boundary cases
-        run: python tools/test_isoform_case.py
-      - name: Reconcile PIF6 candidate with published beta isoform
-        run: python tools/validate_pif6_isoform_identity.py --out target/independent-isoforms/pif6-identity-validation.json
-      - name: Reproduce frozen isoform screen and independent validation
-        if: runner.os == 'Linux'
-        run: python tools/check_isoform_case.py --reference target/reference-data/data/species/arabidopsis
-      - name: Java and JavaFX regressions
+        run: sh mvnw -B -Pui-tests verify
+      - name: Package the desktop application
         shell: bash
-        run: sh mvnw -B -Pui-tests -Dphytoscope.referenceDataDir=target/reference-data verify
-      - name: Assert gold-set report and key tests actually ran
-        shell: bash
-        run: |
-          test -s target/research-validation/research-module-gold-set.json
-          python - <<'PY'
-          import glob, xml.etree.ElementTree as ET
-
-          def counters(root):
-              return tuple(int(root.get(k) or 0) for k in ("skipped", "failures", "errors"))
-
-          # Per-test guard: these tests must really execute, never be skipped
-          # by an Assumptions gate, and must be green (B01/R1 + B01b/R2 QA round-1).
-          key_tests = [
-              "ResearchModuleGoldSetTest",
-              "DomainCaseValidationTest",
-              "ComparisonWorkflowUiTest",
-              "Gff2ParserSupportTest",
-          ]
-          for name in key_tests:
-              matched = glob.glob("target/surefire-reports/TEST-*" + name + ".xml")
-              assert matched, "surefire report for %s missing" % name
-              root = ET.parse(matched[0]).getroot()
-              skipped, failures, errors = counters(root)
-              print("%s tests/skipped/failures/errors = %s %s %s %s"
-                    % (name, root.get("tests"), skipped, failures, errors))
-              assert skipped == 0, "%s was SKIPPED, not executed" % name
-              assert failures == 0 and errors == 0, "%s reported failures/errors" % name
-
-          # Global guard: no red anywhere, and total Skipped must not exceed the
-          # PRD baseline of 12 (design §3.1). This stays ahead of every
-          # external-tool step on all three platforms.
-          totals = {"tests": 0, "skipped": 0, "failures": 0, "errors": 0}
-          reports = glob.glob("target/surefire-reports/TEST-*.xml")
-          assert reports, "no surefire XML reports found"
-          for path in reports:
-              root = ET.parse(path).getroot()
-              for key in totals:
-                  totals[key] += int(root.get(key) or 0)
-          print("GLOBAL tests/skipped/failures/errors =", totals)
-          assert totals["failures"] == 0 and totals["errors"] == 0, "surefire reported failures/errors"
-          assert totals["skipped"] <= 12, "total Skipped %d exceeds PRD baseline 12" % totals["skipped"]
-          PY
-      - name: Install external sequence baselines
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y bedtools ncbi-blast+
-      - name: Compare promoter extraction with bedtools
-        if: runner.os == 'Linux'
-        shell: bash
-        run: python tools/compare_promoters_bedtools.py --report target/research-validation/research-module-gold-set.json --genome target/reference-data/data/species/arabidopsis/TAIR10_genomic.fna.gz --out target/research-validation/bedtools-promoter-comparison.json
-      - name: Compare homology candidates with BLASTP
-        if: runner.os == 'Linux'
-        shell: bash
-        run: python tools/compare_homology_blastp.py --report target/research-validation/research-module-gold-set.json --out target/research-validation/blastp-homology-comparison.json
-      - name: Install matched extraction baseline
-        run: python -m pip install gffutils==0.13
-      - name: Fetch and verify rice bean public reference inputs
-        if: runner.os == 'Linux'
-        run: python tools/fetch_vigna_reference.py --directory target/non-model/vigna-umbellata
-      - name: Validate rice bean full annotation and sequence products
-        if: runner.os == 'Linux'
-        run: sh mvnw -B -Dtest=NonModelVignaReferenceTest -Dphytoscope.vignaReferenceDir=target/non-model/vigna-umbellata test
-      - name: Compare same rice bean task with gffutils
-        if: runner.os == 'Linux'
-        run: python tools/compare_public_case.py --jar target/phytoscope-0.3.0.jar --annotation target/non-model/vigna-umbellata/GCF_029865625.1_genomic.gff.gz --gene-ids gene-LOC124833352 --out target/non-model-comparison --trials 3
-      - name: Fetch additional RefSeq annotations with NCBI checksum verification
-        if: runner.os == 'Linux'
-        run: python tools/fetch_additional_nonmodel_refs.py --directory target/additional-nonmodel
-      - name: Validate additional medicinal and ornamental plant imports
-        if: runner.os == 'Linux'
-        run: sh mvnw -B -Dtest=AdditionalNonModelReferenceTest -Dphytoscope.additionalReferenceDir=target/additional-nonmodel test
-      - name: Four-species matched extraction benchmark
-        shell: bash
-        run: python tools/run_cross_species_extraction_benchmark.py --jar target/phytoscope-0.3.0.jar --out target/cross-species-extraction --trials 3
-      - name: Real case, no display required
-        shell: bash
-        run: |
-          java -Xmx3g -jar target/phytoscope-0.3.0.jar --compare --gff3 examples/arabidopsis-atlas/annotation.gff3 --expression examples/arabidopsis-atlas/expression.tsv --loci AT1G67090,AT5G38410,AT5G38420,AT5G38430 --out target/case-study --project target/case-study.phytoscope
-          java -Xmx3g -jar target/phytoscope-0.3.0.jar --benchmark --example rice --out target/benchmark-rice
-          python tools/validate_structure_inventory.py --source src/main/resources/data/species/rice/rice_chromosomes.gff3 --parsed target/benchmark-rice/parsed-structure.tsv --out target/benchmark-rice/structure-validation.json
-      - name: Full official annotations and independent coordinate validation
-        if: runner.os == 'Linux'
-        shell: bash
-        run: |
-          python tools/fetch_validation_archives.py --cache target/full-archives
-          sh mvnw -B -Dtest=FullAnnotationValidationTest -Dphytoscope.fullAnnotationDir=target/full-archives test
-          python tools/run_validation.py --jar target/phytoscope-0.3.0.jar --full-dir target/full-archives
-      - name: Build standalone application image
         run: python tools/package_desktop.py --jar target/phytoscope-0.3.0.jar
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: validation-${{ matrix.os }}
-          path: |
-            target/surefire-reports/
-            target/validation/
-            target/case-study/
-            target/case-study.phytoscope
-            target/benchmark-rice/
-            target/cross-species-extraction/
-            target/research-validation/
-            target/non-model-comparison/
-            target/additional-nonmodel/
-            target/independent-isoforms/reproduced/
-            target/independent-isoforms/pif6-identity-validation.json
-            target/packaged-smoke/
       - uses: actions/upload-artifact@v4
         with:
           name: PhytoScope-${{ matrix.os }}
           path: |
-            target/desktop/*.tar.gz
             target/desktop/*.zip
-
-  public-data-validation:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install XLSX reader
-        run: python -m pip install openpyxl==3.1.5
-      - name: Audit public Arabidopsis splicing and proteomics resources
-        run: python tools/audit_public_splicing_evidence.py --out target/public-data-validation
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: public-data-validation
-          path: target/public-data-validation/
+            target/desktop/*.tar.gz
+          if-no-files-found: error

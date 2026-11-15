@@ -45,11 +45,11 @@ public class GeneDetailPane extends ScrollPane {
      * sequence. Switching datasets clears the FASTA, so re-import is required.
      */
     public static final String FASTA_EMPTY_STATE_TEXT =
-            "未加载基因组 FASTA — 当前不显示任何序列（不返回空串、占位序列或借用其他组装的序列）。\n"
-          + "请通过 File → Import genome FASTA… 导入与当前注释组装版本匹配的基因组 DNA FASTA。\n"
-          + "支持格式：*.fa / *.fasta / *.fna / *.gz（gzip 自动识别）。\n"
-          + "FASTA 的序列名（如 1、2、3、4、5 或 Chr1…）必须与注释的染色体名一致或可归一匹配；"
-          + "导入后状态栏会提示匹配情况与警告。切换数据集后需重新导入。";
+            "No genome FASTA loaded.\n"
+          + "Use File → Import genome FASTA… to load genomic DNA from the same assembly.\n"
+          + "Supported formats: .fa, .fasta, .fna, and gzip-compressed FASTA.\n"
+          + "Sequence names must match the annotation or resolve to aliases. "
+          + "Check the status bar for warnings. Reimport the FASTA after switching datasets.";
 
     private final VBox content = new VBox(10);
 

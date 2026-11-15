@@ -12,7 +12,7 @@
     "name": "phytoscope-reference-data",
     "gitee": "https://gitee.com/omixcore/phytoscope-reference-data.git",
     "github": "git@github-w1996jy:omixcore/phytoscope-reference-data.git",
-    "note": "完整参考数据已迁移至独立数据仓库，gitee 与 github 同名、互为镜像、同一提交。本地目录 G:/WorkBuddy/2026-10-27-22-02-43/phytoscope-reference-data/ 已 git init 并推送。"
+    "note": "Full reference files are maintained separately. This index records provenance for external and bundled data."
   },
   "datasets": {
     "arabidopsis": {

@@ -74,10 +74,7 @@ A minimal fixture set (`src/test/resources/gff2/`: `cds-phase.gff2`,
 transcript boundaries, multi-parent / no-exon CDS and one negative case. These
 fixtures exercise the **existing importer** on legacy-shaped records; they are
 not an independent GFF2 validation suite and do not establish a separate GFF2
-parser. Validated coverage remains GFF3 and GTF. This boundary is stated
-consistently in `docs/fcs-paper-outline.md` §3.2(b) and
-`docs/fcs-paper-manuscript-draft.md` §2.2; the requirement-side remarks are in
-`docs/prd-fcs-submission.md` R1.1 / R3.1.
+parser. Validated coverage remains GFF3 and GTF.
 
 Out-of-scope items are unchanged: BED3/BED6 and bedGraph tracks remain deferred
 (v2 target), and translation uses the standard nuclear genetic code only. No new

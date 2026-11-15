@@ -68,9 +68,7 @@ class ResearchModuleGoldSetTest {
     private static Path referenceRoot() {
         String dir = System.getProperty("phytoscope.referenceDataDir");
         Assumptions.assumeTrue(dir != null && !dir.isBlank(),
-                "依赖已外迁的完整参考数据：需设置 -Dphytoscope.referenceDataDir=<独立数据仓库目录> "
-                        + "并提供 TAIR10 基因组 FASTA / Chr1.gff3.gz / E-MTAB-7978 表达矩阵，"
-                        + "以复现研究模块 gold-set 数值断言");
+                "Set -Dphytoscope.referenceDataDir to the external reference data directory.");
         return Path.of(dir);
     }
 
@@ -126,7 +124,7 @@ class ResearchModuleGoldSetTest {
         // 2. Sequence QC and 3. protein similarity: use real RBCS gene models
         // and CDS/protein sequences extracted from the pinned genome.
         GenomeDataService rbcs = new GenomeDataService();
-        rbcs.loadFromFile(Path.of("examples/arabidopsis-atlas/annotation.gff3"));
+        rbcs.loadFromFile(Path.of("src/test/resources/examples/arabidopsis-atlas/annotation.gff3"));
         SequenceQualityService quality = new SequenceQualityService();
         List<Map<String, Object>> qcRows = new ArrayList<>();
         List<ProteinHomologyService.Protein> proteins = new ArrayList<>();

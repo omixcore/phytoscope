@@ -1,67 +1,16 @@
-# Desktop distribution
+# Desktop packaging
 
-> **Data-archiving notice (post-`8fd01ca`).** The current application JAR/package
-> contains only six KB-scale example annotations. Complete reference data lives in the
-> independent `phytoscope-reference-data` repository (local directory ready, remote
-> URLs pending user provision) and is not packaged into the app image; there is no
-> in-app download. Only the current checkout and build artifacts got smaller - git
-> history pack (~209 MiB) and fresh-clone size are unchanged.
+Use JDK 21 with `jpackage` and Python 3 on the target operating system.
 
-Build with JDK 21 on each target OS:
-
-```bash
+```sh
 sh mvnw -Pui-tests verify
-python tools/package_desktop.py --jar target/phytoscope-0.3.0.jar --out target/desktop-v0.3.0
+python tools/package_desktop.py --jar target/phytoscope-0.3.0.jar
 ```
 
-The script creates a `jpackage` application image plus an OS/architecture-specific
-archive: `.tar.gz` on Linux/macOS (preserving executable permissions) or `.zip`
-on Windows. Unpack this archive before launching.
+On Windows, replace `sh mvnw` with `mvnw.cmd`.
 
-> **B05 (0.3.0) authoritative archive name.** The single authoritative Windows
-> release asset is **`../dist/PhytoScope-Windows-0.3.0.zip`** (46,185,966 bytes,
-> SHA-256 `dcc2051f63228ad93f5954a326c157f8b04ba82556d67b1311a2964025a7ed6c`).
-> `tools/package_desktop.py` still emits `PhytoScope-Windows-AMD64.zip` (raw
-> jpackage output, no version in the name) and keeps a legacy bundle
-> `--app-version 0.2.0` constant; **that is NOT the application version**. This
-> batch does not modify the script — it builds into an isolated `--out` directory
-> and renames the copy. Application version is `pom.xml` 0.3.0 / tag / ZIP name.
-> Two older archives in `../dist/` — `PhytoScope-Windows-AMD64.zip` (113,094,544 B)
-> and `PhytoScope-Windows-0.2.0.zip` (110,405,267 B) — are labelled **`historical`**,
-> retained **byte-for-byte unchanged**, and are NOT the 0.3.0 release asset.
-> See `docs/fcs-v0.3.0-release-notes.md` and `desktop_program/SHA256SUMS.txt`.
+The script builds an application image and writes an archive under `target/desktop`. Windows builds produce a ZIP. Linux and macOS builds produce a `.tar.gz` archive. Extract the whole archive before launching the application. Keep the launcher and bundled runtime together.
 
-## Packaged application layout
+The app images are unsigned. The packaging script checks that the bundled launcher can parse a built-in example from the command line.
 
-| Item | Purpose |
-| --- | --- |
-| `PhytoScope.exe` (Windows) / `.app` (macOS) / `bin/PhytoScope` (Linux) | Launcher — double-click or run directly |
-| `app/` | Application JAR and bundled libraries |
-| `runtime/` | Bundled Java runtime — recipients need no JDK, Maven or separate Java install |
-
-Keep all items together inside the extracted folder. The image is
-OS/architecture specific and unsigned: it is an application image, not a signed
-installer or app-store distribution. Linux additionally requires its normal
-desktop graphics/font libraries.
-
-## Release checklist
-
-- The current JAR ships only six KB-scale examples; complete reference data is archived separately and is not packaged into the app image.
-- Compute and publish a SHA-256 checksum for every archive (see
-  `desktop_program/SHA256SUMS.txt` for the Windows package).
-- Tag the release commit; attach archives to a GitHub Release instead of
-  linking to branch files, so downloads stay stable across updates.
-- The `Validate and package PhytoScope` workflow builds images on Ubuntu,
-  Windows and macOS and uploads them as separate artifacts with test evidence.
-  Artifacts become available only after the corresponding job succeeds.
-  JavaFX tests use Monocle, so they do not certify OS-native dialogs, display
-  scaling, graphics drivers, signing/notarization or security prompts. A release
-  should record actual native launch/import/export checks on its target machines
-  separately (see `docs/desktop-verification.md`).
-
-## Portable projects
-
-Portable `.phytoscope` projects embed annotation sources and a canonical matrix
-snapshot. The original source label and the import report remain in the manifest;
-invalid cells are represented as missing in the snapshot. File checksums protect
-restoration, and annotation changes after import prevent an inconsistent save.
+Official downloads and their SHA-256 checksums are available from [GitHub Releases](https://github.com/omixcore/phytoscope/releases).

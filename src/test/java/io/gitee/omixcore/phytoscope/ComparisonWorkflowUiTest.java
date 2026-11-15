@@ -340,16 +340,14 @@ class ComparisonWorkflowUiTest {
     private static Path requireReferenceData() {
         String dir = System.getProperty("phytoscope.referenceDataDir");
         Assumptions.assumeTrue(dir != null && !dir.isBlank(),
-                "依赖已外迁的完整参考数据：历史 atlas 端到端工作流需 -Dphytoscope.referenceDataDir=<独立数据仓库目录> "
-                        + "提供完整 Chr1–Chr5 注释、E-MTAB-7978 表达矩阵与 TAIR10 基因组 FASTA；"
-                        + "Q5 已从应用内彻底移除该入口，断言体原样保留供复跑");
+                "Set -Dphytoscope.referenceDataDir to the external reference data directory.");
         return Path.of(dir);
     }
 
     /**
      * Rebuilds the archived full case from external files using public APIs
      * only. These paths are external pointers for conditional reproduction,
-     * never classpath resources (G3 category: 外迁指针 / 条件跳过注释).
+     * Regression coverage for annotation and expression edge cases.
      */
     private static void loadArchivedAtlasCase(MainView view, GenomeDataService genome,
                                               ExpressionDataService expression,

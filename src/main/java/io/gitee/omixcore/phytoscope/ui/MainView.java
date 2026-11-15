@@ -103,7 +103,7 @@ public class MainView extends BorderPane {
 
     /** Fallback status-bar text; the first line of the empty state is preferred. */
     private static final String NO_FASTA_STATUS =
-            "未加载基因组 FASTA — 序列提取需通过 File → Import genome FASTA… 自行导入匹配的 FASTA";
+            "No genome FASTA loaded. Use File → Import genome FASTA… to load a matching reference.";
 
     /**
      * Shown as a tooltip when opening a legacy .phytoscope project whose source
@@ -112,14 +112,12 @@ public class MainView extends BorderPane {
      * FASTA is not stored and must be supplied by the user (R8).
      */
     private static final String LEGACY_PROJECT_HINT =
-            "数据已外迁：此项目保存时的完整参考数据已迁至独立数据仓库，注释/表达字节仍内嵌在项目文件中、可正常打开；"
-                    + "序列需自行通过 File → Import genome FASTA… 导入与当前注释组装版本匹配的 FASTA，"
-                    + "应用不会按旧 classpath 重新加载或伪造序列。";
+            "This project retains its annotation and expression data. " +
+                    "To extract sequences, import a genome FASTA from the same assembly through File → Import genome FASTA….";
 
     /**
-     * 外迁指针 / 遗留登记：仅供旧 .phytoscope 项目来源元数据识别使用，
-     * 绝不会作为 loadFromResource / getResourceAsStream / parseResource / Files.newInputStream
-     * 的实参，也不是任何有效的加载路径。完整数据已迁至独立数据仓库。
+     * Identifies reference metadata in legacy projects.
+     * These entries are identifiers only and are never used as resource paths.
      */
     private static final List<String> ARCHIVED_DATA_MARKERS = List.of(
             "TAIR10_genomic", "Chr1.gff3.gz", "Chr2.gff3.gz", "Chr3.gff3.gz",

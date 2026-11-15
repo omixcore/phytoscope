@@ -18,7 +18,7 @@ class ReferenceDatasetIntegrityTest {
     private static Path referenceDataDir() {
         String dir = System.getProperty("phytoscope.referenceDataDir");
         Assumptions.assumeTrue(dir != null && !dir.isBlank(),
-                "依赖已外迁的完整参考数据：需设置 -Dphytoscope.referenceDataDir=<独立数据仓库目录> 并提供完整 horsemint 注释与 4 叶 TPM 矩阵");
+                "Set -Dphytoscope.referenceDataDir to the external reference data directory.");
         return Path.of(dir);
     }
 
@@ -28,7 +28,7 @@ class ReferenceDatasetIntegrityTest {
         var dataset = ExampleDataset.byId(id);
         assertNotNull(dataset);
         assertEquals(1, dataset.annotationResources().size(),
-                "改后每个示例都是单文件 KB 级资源，不再有 Chr1-Chr5 五部分串联");
+                "");
         if ("arabidopsis".equals(id)) {
             // The 5.5 KB chromosome subset is a single gzip resource; the
             // complete Chr1-Chr5 annotation was archived to the independent
@@ -56,7 +56,7 @@ class ReferenceDatasetIntegrityTest {
                 "Untraceable measured expression must not be bundled");
         var expression = new ExpressionDataService();
         expression.loadExample(dataset);
-        assertTrue(expression.isEmpty(), "默认示例必须显示显式空状态");
+        assertTrue(expression.isEmpty(), "");
         assertEquals("No data loaded", expression.getSource());
         assertEquals(0, expression.getProfileCount());
         assertTrue(dataset.publishedSequenceLengths().isEmpty(), "Lengths come from the original GFF3 header");
