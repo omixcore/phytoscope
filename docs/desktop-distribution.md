@@ -4,7 +4,7 @@ Use JDK 21 with `jpackage` and Python 3 on the target operating system.
 
 ```sh
 sh mvnw -Pui-tests verify
-python tools/package_desktop.py --jar target/phytoscope-0.3.0.jar
+python tools/package_desktop.py --jar target/phytoscope-0.3.1.jar
 ```
 
 On Windows, replace `sh mvnw` with `mvnw.cmd`.

@@ -27,7 +27,7 @@ jobs:
         run: sh mvnw -B -Pui-tests verify
       - name: Package the desktop application
         shell: bash
-        run: python tools/package_desktop.py --jar target/phytoscope-0.3.0.jar
+        run: python tools/package_desktop.py --jar target/phytoscope-0.3.1.jar
       - uses: actions/upload-artifact@v4
         with:
           name: PhytoScope-${{ matrix.os }}
@@ -35,3 +35,33 @@ jobs:
             target/desktop/*.zip
             target/desktop/*.tar.gz
           if-no-files-found: error
+
+  publish-windows-031:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: phytoscope-release-v0.3.1
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: PhytoScope-windows-latest
+          path: release
+      - name: Publish the verified Windows package
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view v0.3.1 >/dev/null 2>&1; then
+            exit 0
+          fi
+          cd release
+          mv PhytoScope-Windows-*-0.3.1.zip PhytoScope-Windows-0.3.1.zip
+          sha256sum PhytoScope-Windows-0.3.1.zip > SHA256SUMS.txt
+          gh release create v0.3.1 PhytoScope-Windows-0.3.1.zip SHA256SUMS.txt \
+            --target "$GITHUB_SHA" --title "PhytoScope v0.3.1" \
+            --notes "Rebuilds the Windows desktop package with English application messages, including the genome FASTA import instructions."
